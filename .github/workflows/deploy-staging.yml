@@ -18,10 +18,10 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies and build
+      - name: Install dependencies and generate application
         run: |
           yarn install
-          yarn build
+          yarn generate
 
       - name: Deploy to AWS S3
         uses: jakejarvis/s3-sync-action@master
