@@ -1,3 +1,10 @@
+<script setup lang="ts">
+   const layout = "weblayout";
+
+</script>
+
 <template>
-   Homepage
+   <NuxtLayout :name="layout">
+      Homepage
+   </NuxtLayout>
 </template>

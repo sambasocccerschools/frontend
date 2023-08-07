@@ -1,3 +1,10 @@
+<script setup lang="ts">
+   const layout = "syncolayout";
+
+</script>
 <template>
-   CRM Starts Here
-   </template>
+   <NuxtLayout :name="layout">
+      CRM Starts Here
+
+   </NuxtLayout>
+</template>

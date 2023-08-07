@@ -1,7 +1,7 @@
 <template>
    <div>
       <WebsiteHeader/>
-   <slot/>
-   <WebsiteFooter/>
+      <slot/>
+      <WebsiteFooter/>
    </div>
 </template>
