@@ -12,7 +12,7 @@
       <div>
          <WebsiteFindYourNearestClass/>
          <div>
-            <img src="@/public/player-pointing.png" alt="Samba Soccer Schools Player - Building confidence, mastering skills">
+            <img src="@/src/assets/player-pointing.png" alt="Samba Soccer Schools Player - Building confidence, mastering skills">
             <div>
                <h2>Building confidence, mastering skills - doing it in Style</h2>
                <p>Samba Soccer Schools - more than just football coaching. Improving your child’s social skills and confidence, developing technique, flair, and footballing ability through our unique Brazilian style.</p>
@@ -40,11 +40,11 @@
             <div class="book-a-free-trial-card">
                <h3>Book a Free Trial</h3>
                <div class="book-a-free-trial-content">
-                  <img src="@/public/img-book-a-trial-1.png" alt=""/>
+                  <img src="@/src/assets/img-book-a-trial-1.png" alt=""/>
                   <p>There are countless football schools around, but we like to think we’re a little different. This is football training where flair, confidence, and close ball control take centre stage alongside a samba rhythm. 
 
 Booking a free trial only takes two minutes, and with venues across London, there’s probably one right on your doorstep.</p>
-                  <img src="@/public/img-book-a-trial-2.png" alt=""/>
+                  <img src="@/src/assets/img-book-a-trial-2.png" alt=""/>
                </div>
                <NuxtLink to="services/book-a-free-trial">Book a FREE Trial Now</NuxtLink>
             </div>
@@ -55,7 +55,7 @@ Booking a free trial only takes two minutes, and with venues across London, ther
 
 <style lang="scss" scoped>
    .header {
-      background-image: url('@/public/homepage-header-bg.png');
+      background-image: url('@/src/assets/homepage-header-bg.png');
       background-size: cover;
       height: 80vh;
       color: #fff;
@@ -78,7 +78,7 @@ Booking a free trial only takes two minutes, and with venues across London, ther
    }
    section {
       &.book-a-free-trial {
-         background-image: url('@/public/bg-book-a-free-trial.svg');
+         background-image: url('@/src/assets/bg-book-a-free-trial.svg');
          padding: 4rem 0;
          .book-a-free-trial-card {
             max-width: 1080px;
