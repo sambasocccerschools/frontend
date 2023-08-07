@@ -14,11 +14,11 @@ import PromoCode from '@/components/website/PromoCode.vue'
       </div>
       <nav class="navbar-menu">
          <NuxtLink to="/">HOME</NuxtLink>
-         <NuxtLink to="/find-a-class">Find a Class</NuxtLink>
-         <NuxtLink to="/services">Services</NuxtLink>
-         <NuxtLink to="/franchise">Franchise</NuxtLink>
+         <!-- <NuxtLink to="/find-a-class">Find a Class</NuxtLink> -->
+         <!-- <NuxtLink to="/services">Services</NuxtLink> -->
+         <!-- <NuxtLink to="/franchise">Franchise</NuxtLink> -->
          <nuxtlink to="/coaching">Coaching</nuxtlink>
-         <NuxtLink to="/contact">Contact</NuxtLink>
+         <!-- <NuxtLink to="/contact">Contact</NuxtLink> -->
       </nav>
    </div>
 </template>
