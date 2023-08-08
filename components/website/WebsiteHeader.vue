@@ -10,7 +10,7 @@ import PromoCode from '@/components/website/PromoCode.vue'
          <span>020 72052723</span>
          <NuxtLink to="/"><img src="@/src/assets/sss-logo.png" alt=""></NuxtLink>
          <NuxtLink to="">Book a Free Trials</NuxtLink>
-         <NuxtLink to="/synco" class="btn btn-login">Login</NuxtLink>
+         <NuxtLink to="/synco/login" class="btn btn-login">Login</NuxtLink>
       </div>
       <nav class="navbar-menu">
          <NuxtLink to="/">HOME</NuxtLink>
