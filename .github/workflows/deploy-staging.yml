@@ -34,11 +34,11 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_S3_STAGING_BUCKET_REGION }}
           SOURCE_DIR: .output/public
 
-      # - name: Invalidate CloudFront
-      #   uses: chetan/invalidate-cloudfront-action@v2
-      #   env:
-      #     DISTRIBUTION: ${{ secrets.DISTRIBUTION }}
-      #     PATHS: "/index.html"
-      #     AWS_REGION: ${{ secrets.AWS_S3_STAGING_BUCKET_REGION }}
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Invalidate CloudFront
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.STAGING_DISTRIBUTION }}
+          PATHS: "/index.html"
+          AWS_REGION: ${{ secrets.AWS_S3_STAGING_BUCKET_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
