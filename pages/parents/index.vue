@@ -1,5 +1,5 @@
 <script setup lang="ts">
-   const layout = "syncolayout";
+   const layout = "parentlayout";
 
 </script>
 <template>

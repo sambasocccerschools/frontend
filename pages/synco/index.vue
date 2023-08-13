@@ -4,7 +4,7 @@
 </script>
 <template>
    <NuxtLayout :name="layout">
-      CRM Starts Here
+      Dashboard
 
    </NuxtLayout>
 </template>

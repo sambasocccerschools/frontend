@@ -2,4 +2,4 @@
    <div>
      <NuxtPage/>
    </div>
- </template>
+ </template>  
