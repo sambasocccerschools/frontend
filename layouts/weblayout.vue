@@ -5,3 +5,5 @@
       <WebsiteFooter/>
    </div>
 </template>
+
+<style src="@/assets/styles/web.scss"/>
