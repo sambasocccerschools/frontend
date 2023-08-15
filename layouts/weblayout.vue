@@ -6,4 +6,4 @@
    </div>
 </template>
 
-<style src="@/assets/styles/web.scss"/>
+<style src="@/assets/styles/web/style.scss" />

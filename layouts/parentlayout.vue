@@ -5,4 +5,4 @@
    </div>
 </template>
 
-<style src="@/assets/styles/parents.scss"/>
+<style src="@/assets/styles/parents/style.scss"/>

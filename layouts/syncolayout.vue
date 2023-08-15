@@ -5,4 +5,4 @@
    </div>
 </template>
 
-<style src="@/assets/styles/synco.scss"/>
+<style src="@/assets/styles/synco/style.scss"/>
