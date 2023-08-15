@@ -31,8 +31,7 @@ import Banner from '@/components/website/Banner.vue'
           <div class="col justify-content-end d-flex">
             <NuxtLink to="/franchise" class="btn btn-link text-light">Franchise</NuxtLink>
             .
-            <nuxtlink to="/coaching" class="btn btn-link text-light">Coaching</nuxtlink>
-            .
+            <Nuxtlink to="/coaching" class="btn btn-link text-light">Coaching</Nuxtlink>
             <NuxtLink to="/contact" class="btn btn-link text-light">Contact</NuxtLink>
           </div>
         </nav>
