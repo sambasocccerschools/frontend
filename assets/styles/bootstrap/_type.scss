@@ -25,10 +25,13 @@
   @extend h6;
 }
 
-
 .lead {
   @include font-size($lead-font-size);
   font-weight: $lead-font-weight;
+}
+.text{
+  &-normal {font-weight: $font-weight-normal}
+  &-semibold {font-weight: $font-weight-semibold}
 }
 
 // Type display classes
