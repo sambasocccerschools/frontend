@@ -1,17 +1,17 @@
 <template>
   <section class="lets-be-friends py-4">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row align-items-center">
         <div class="col-sm-5">
           <h3 class="h1  text-light font-custom mt-3">Let's be friends</h3>
           <p class="lead text-light text-semibold">If we are not playing football you can find us socialising on…</p>
         </div>
         <div class="col d-flex">
-          <NuxtLink class="btn-social">F</NuxtLink>
-          <NuxtLink class="btn-social">F</NuxtLink>
-          <NuxtLink class="btn-social">F</NuxtLink>
-          <NuxtLink class="btn-social">F</NuxtLink>
-          <NuxtLink class="btn-social">F</NuxtLink>
+          <NuxtLink class="btn-social" to="/">F</NuxtLink>
+          <NuxtLink class="btn-social" to="/">I</NuxtLink>
+          <NuxtLink class="btn-social" to="/">Y</NuxtLink>
+          <NuxtLink class="btn-social" to="/">L</NuxtLink>
+          <NuxtLink class="btn-social" to="/">X</NuxtLink>
         </div>
         <div class="col-auto">
           <NuxtLink to="/" class="btn btn-light rounded-5 text-info px-4 btn-lg"><strong>Shop Online</strong></NuxtLink>
