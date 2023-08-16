@@ -25,10 +25,28 @@
   @extend h6;
 }
 
-
 .lead {
   @include font-size($lead-font-size);
   font-weight: $lead-font-weight;
+}
+.text{
+  &-normal {font-weight: $font-weight-normal}
+  &-semibold {font-weight: $font-weight-semibold}
+}
+@font-face {
+  font-family: 'Recline';
+  src: url('../fonts/Recline-LightDemo.eot');
+  src: url('../fonts/Recline-LightDemo.eot?#iefix') format('embedded-opentype'),
+      url('../fonts/Recline-LightDemo.woff') format('woff'),
+      url('../fonts/Recline-LightDemo.svg#Recline-LightDemo') format('svg');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+.font-custom {
+  font-family: 'Recline';
 }
 
 // Type display classes
