@@ -44,13 +44,4 @@ import Banner from '@/components/website/Banner.vue'
    .logo {
       height: 1rem;
    }
-   .navbar {
-      // background-color: $primary;
-      // color: $white;
-      text-align: center;
-      &-menu {
-         a { color: #fff;}
-      }
-   }
-
 </style>

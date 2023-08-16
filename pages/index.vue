@@ -4,10 +4,10 @@
 
 <template>
    <NuxtLayout :name="layout">
-      <header class="header">
-         <h1>Play with Passion</h1>
-         <p>Football training built on flair, confidence and Brazilian rhythm since 2009.</p>
-         <NuxtLink to="/">Learn More</NuxtLink>
+      <header class="header d-flex flex-column align-items-center justify-content-center text-white text-center">
+         <h1><span class="display-3">Play with</span> <br><span class="display-1">Passion</span></h1>
+         <p class="lead">Football training built on flair, confidence and Brazilian rhythm since 2009.</p>
+         <NuxtLink to="/" class="btn btn-info rounded-5 px-4 text-light">Learn More</NuxtLink>
       </header>
       <div>
          <WebsiteFindYourNearestClass/>
@@ -36,7 +36,7 @@
             <div>Reviews Go Here</div>
          </section>
          <!-- Book a Free Trial  -->
-         <section class="book-a-free-trial">
+         <section class="">
             <div class="book-a-free-trial-card">
                <h3>Book a Free Trial</h3>
                <div class="book-a-free-trial-content">
@@ -57,14 +57,7 @@ Booking a free trial only takes two minutes, and with venues across London, ther
    .header {
       background-image: url('@/src/assets/homepage-header-bg.png');
       background-size: cover;
-      height: 80vh;
-      color: #fff;
-      font-size: 3rem;
-      text-align: center;
-      padding: 0 15rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      height: 70vh;
    }
    .services {
       text-align: center;
@@ -79,17 +72,6 @@ Booking a free trial only takes two minutes, and with venues across London, ther
    section {
       &.book-a-free-trial {
          background-image: url('@/src/assets/bg-book-a-free-trial.svg');
-         padding: 4rem 0;
-         .book-a-free-trial-card {
-            max-width: 1080px;
-            background-color: #fff;
-            margin: 4rem auto;
-
-         }
-         .book-a-free-trial-content {
-            display: flex;
-
-         }
       }
    }
 </style>
