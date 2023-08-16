@@ -1,6 +1,7 @@
 <script setup lang="ts">
    const layout = "weblayout";
    import Reviews from '@/components/website/Reviews.vue'
+   import Socials from '@/components/website/Socials.vue'
 </script>
 
 <template>
@@ -187,6 +188,9 @@
             </div>
          </div>
       </section>
+      <!-- Socials -->
+      <Socials/>
+      
    </NuxtLayout>
 </template>
 

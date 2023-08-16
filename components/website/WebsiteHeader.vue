@@ -19,12 +19,22 @@ import Banner from '@/components/website/Banner.vue'
           </div>
         </div>
         <nav class="row py-3">
-          <div class="col">
+          <div class="col d-flex">
             <NuxtLink to="/" class="btn btn-link text-light">HOME</NuxtLink>
             .
             <NuxtLink to="/find-a-class" class="btn btn-link text-light">Find a Class</NuxtLink>
             .
-            <NuxtLink to="/services" class="btn btn-link text-light">Services</NuxtLink>
+            <!-- <NuxtLink to="/services" class="btn btn-link text-light">Services</NuxtLink> -->
+            <div class="dropdown ">
+              <button class="btn btn-link text-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Services
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </div>
             .
             <NuxtLink to="/about-us" class="btn btn-link text-light">About Us</NuxtLink>
           </div>
