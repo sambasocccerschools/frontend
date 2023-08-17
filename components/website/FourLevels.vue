@@ -47,9 +47,7 @@
             <div class="col">
               <img src="@/src/assets/img-level-beginner.png" class="img-fluid" alt="">
             </div>
-            
           </div>
-
  
         </div>
       </section>
@@ -63,6 +61,7 @@ section {
       background-image: url('@/src/assets/bg-primary-waves.svg');
       background-repeat: no-repeat;
       background-position: center bottom;
+      background-size: cover;
       padding-top: 10rem;
       padding-bottom: 3rem;
     }
