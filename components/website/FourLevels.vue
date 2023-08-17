@@ -60,7 +60,7 @@ section {
   &.four-level {
       background-image: url('@/src/assets/bg-primary-waves.svg');
       background-repeat: no-repeat;
-      background-position: center bottom;
+      background-position: center top;
       background-size: cover;
       padding-top: 10rem;
       padding-bottom: 3rem;
