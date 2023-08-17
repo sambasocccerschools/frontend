@@ -126,6 +126,7 @@
       background-image: url('@/src/assets/bg-primary-waves.svg');
       background-repeat: no-repeat;
       background-position: center top;
+      background-size: cover;
       min-height: 30vh;
       padding-top: 10rem;
       padding-bottom: 5rem
