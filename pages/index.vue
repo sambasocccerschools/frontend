@@ -1,8 +1,8 @@
 <script setup lang="ts">
    const layout = "weblayout";
    import Reviews from '@/components/website/Reviews.vue'
-   import Socials from '@/components/website/Socials.vue'
-   import BlogPosts from '@/components/website/BlogPosts.vue'
+   // import Socials from '@/components/website/Socials.vue'
+   // import BlogPosts from '@/components/website/BlogPosts.vue'
 </script>
 
 <template>
@@ -13,7 +13,13 @@
          <NuxtLink to="/" class="btn btn-info rounded-5 px-4 text-light">Learn More</NuxtLink>
       </header>
       <div class="bg-gray-texture">
-         <WebsiteFindYourNearestClass/>
+         <section class="find-nearest-class">
+            <div class="container">
+               <div class="col-sm-10 mx-auto">
+                <WebsiteFindYourNearestClass/>
+               </div>
+            </div>
+         </section>
          <div class="container bg-player">
             <div class="row">
                <div class="col-sm-7 offset-sm-4 text-center">
@@ -52,7 +58,7 @@
             </div>
          </section>
          <!-- Reviews  -->
-         <Reviews/>
+         <WebsiteReviews/>
          <!-- Book a Free Trial  -->
          <section class="py-5 bg-free-trial">
             <div class="container my-2">
@@ -140,9 +146,9 @@
             </div>
          </div>
       </section>
-      <BlogPosts/>
+      <WebsiteBlogPosts/>
       <!-- Socials -->
-      <Socials/>
+      <WebsiteSocials/>
       
    </NuxtLayout>
 </template>
@@ -170,6 +176,9 @@
    }
 
    section {
+      &.find-nearest-class {
+        transform: translateY(-5rem)
+      }
       &.bg-free-trial {
          background-image: url('@/src/assets/bg-book-a-free-trial.svg');
          background-repeat: repeat;
