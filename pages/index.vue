@@ -180,8 +180,9 @@
         transform: translateY(-5rem)
       }
       &.bg-free-trial {
-         background-image: url('@/src/assets/bg-book-a-free-trial.svg');
-         background-repeat: repeat;
+         background-image: url('@/src/assets/bg-yellow-green-texture.svg');
+         background-repeat: no-repeat;
+         background-size: cover;
       }
       &.bg-gray-texture {
          background-image: url('@/src/assets/bg-website-gray-texture.png');

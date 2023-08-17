@@ -48,8 +48,11 @@
       <!-- Benefits -->
       <section class="bg-primary-waves">
         <div class="container-fluid text-center">
-          <h2 class="h1 font-custom text-light col-sm-7 mx-auto">The <em class="text-success">Benefits</em> of our weekly football classes for kids</h2>
-          <div class="row row-cols-sm-4 row-cols-1 gx-sm-5">
+          <div class="row">
+            <h2 class="h1 font-custom text-light col-sm-7 mx-auto">The <em class="text-success">Benefits</em> of our weekly football classes for kids</h2>
+
+          </div>
+          <div class="row row-cols-sm-4 row-cols-1">
             <div class="col">
               <img src="@/src/assets/img-builds-confidence.png" alt="" class="img-fluid">
               <h4 class="text-warning font-custom">Builds Confidence</h4>
