@@ -24,7 +24,7 @@ import Banner from '@/components/website/Banner.vue'
             .
             <NuxtLink to="/find-a-class" class="btn btn-link text-light">Find a Class</NuxtLink>
             .
-            <NuxtLink to="/services" class="btn btn-link text-light">Services</NuxtLink>
+            <!-- <NuxtLink to="/services" class="btn btn-link text-light">Services</NuxtLink> -->
             .
             <NuxtLink to="/about-us" class="btn btn-link text-light">About Us</NuxtLink>
           </div>
@@ -32,7 +32,7 @@ import Banner from '@/components/website/Banner.vue'
             <NuxtLink to="/franchise" class="btn btn-link text-light">Franchise</NuxtLink>
             .
             <Nuxtlink to="/coaching" class="btn btn-link text-light">Coaching</Nuxtlink>
-            <NuxtLink to="/contact" class="btn btn-link text-light">Contact</NuxtLink>
+            <!-- <NuxtLink to="/contact" class="btn btn-link text-light">Contact</NuxtLink> -->
           </div>
         </nav>
       </div>
