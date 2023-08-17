@@ -83,12 +83,7 @@
       <WebsiteFAQ/>
 
       <!-- Four Levels -->
-      <section class="bg-primary-waves">
-        <div class="container">
-          <h2 class="h1 font-custom text-warning">Four Levels</h2>
-
-        </div>
-      </section>
+      <WebsiteFourLevels/>
 
       <!-- Why  -->
       <WebsiteWhyShouldChoose/>
