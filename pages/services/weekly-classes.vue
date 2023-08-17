@@ -79,6 +79,20 @@
         <WebsiteReviews/>
       </div>
 
+      <!-- FAQ -->
+      <WebsiteFAQ/>
+
+      <!-- Four Levels -->
+      <section class="bg-primary-waves">
+        <div class="container">
+          <h2 class="h1 font-custom text-warning">Four Levels</h2>
+
+        </div>
+      </section>
+
+      <!-- Why  -->
+      <WebsiteWhyShouldChoose/>
+
    </NuxtLayout>
 </template>
 <style scoped lang="scss">
