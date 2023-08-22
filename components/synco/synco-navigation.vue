@@ -7,9 +7,9 @@
       [] Dashboard
     </NuxtLink>
     <!-- Weekly Classes -->
-    <NuxtLink to="/synco/weekly-classes/" class="btn-nav disabled border-0" active-class="btn-nav-active">
+    <button class="btn-nav border-0">
       [] Weekly Classes >
-    </NuxtLink>
+    </button>
     <ul class="ms-4">
       <li>
         <NuxtLink to="/synco/weekly-classes/find-a-class" class="btn-nav-link" exact-active-class="text-primary">
