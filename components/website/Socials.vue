@@ -21,24 +21,25 @@
   </section>
 </template>
 <style lang="scss" scoped>
-   @import '@/assets/styles/web/style.scss';
+@import '@/assets/styles/web/web.scss';
 
-  section.lets-be-friends {
-    background-image: url('@/src/assets/bg-banner-waves.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-  }
-  .btn-social {
-    @extend .btn;
-    @extend .btn-light;
-    @extend .rounded-5;
-    @extend .me-2;
-    @extend .text-success;
-    height: 3rem;
-    width: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+section.lets-be-friends {
+  background-image: url('@/src/assets/bg-banner-waves.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.btn-social {
+  @extend .btn;
+  @extend .btn-light;
+  @extend .rounded-5;
+  @extend .me-2;
+  @extend .text-success;
+  height: 3rem;
+  width: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>

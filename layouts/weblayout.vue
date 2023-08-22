@@ -1,9 +1,9 @@
 <template>
    <div>
-      <WebsiteHeader/>
-      <slot/>
-      <WebsiteFooter/>
+      <WebsiteHeader />
+      <slot />
+      <WebsiteFooter />
    </div>
 </template>
 
-<style src="@/assets/styles/web/style.scss" />
+<style src="@/assets/styles/web/web.scss" />
