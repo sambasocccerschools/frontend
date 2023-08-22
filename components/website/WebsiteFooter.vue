@@ -22,7 +22,7 @@
                   <NuxtLink to="/reviews" class="text-light btn btn-link px-0">Reviews</NuxtLink>
                 </li>
                 <li class="col">
-                  <NuxtLink to="/" class="text-light btn btn-link px-0">Services?????</NuxtLink>
+                  <NuxtLink to="/services/weekly-classes" class="text-light btn btn-link px-0">Services?????</NuxtLink>
                 </li>
                 <li class="col">
                   <NuxtLink to="/blog" class="text-light btn btn-link px-0">Blog</NuxtLink>
@@ -31,7 +31,7 @@
                   <NuxtLink to="/find-a-class" class="text-light btn btn-link px-0">Book Now</NuxtLink>
                 </li>
                 <li class="col">
-                  <NuxtLink to="/contact-us" class="text-light btn btn-link px-0">Contact Us</NuxtLink>
+                  <NuxtLink to="/contact" class="text-light btn btn-link px-0">Contact Us</NuxtLink>
                 </li>
               </ul>
             </div>
@@ -76,14 +76,16 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <p class="pt-5 text-center">© 2023, Samba Soccer Schools Global Ltd | All Rights Reserved.</p>
+
     </div>
+  </footer>
+</template>
 
-    <p class="pt-5 text-center">© 2023, Samba Soccer Schools Global Ltd | All Rights Reserved.</p>
-
-  </div>
-</footer></template>
-
-<style lang="scss" scoped>@import '@/assets/styles/web/web.scss';
+<style lang="scss" scoped>
+@import '@/assets/styles/web/web.scss';
 
 .card-contact {
   @extend .bg-info;
@@ -91,4 +93,5 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: right top;
-}</style>
+}
+</style>
