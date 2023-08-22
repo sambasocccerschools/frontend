@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Banner from '@/components/website/Banner.vue'
+// import Banner from '@/components/website/Banner.vue'
 </script>
 
 <template>
    <!-- This is a good example to show or not based on state  -->
-   <Banner/>
-   <div class="bg-primary text-light">
+   <WebsiteBanner/>
+   <div class="bg-primary text-light main-nav">
       <div class="container-fluid">
         <div class="row pt-4">
           <div class="col-5 border-bottom pb-4">
@@ -20,19 +20,19 @@ import Banner from '@/components/website/Banner.vue'
         </div>
         <nav class="row py-3">
           <div class="col d-flex">
-            <NuxtLink to="/" class="btn btn-link text-light">HOME</NuxtLink>
+            <NuxtLink to="/" class="btn btn-link text-light" active-class="current">HOME</NuxtLink>
             .
-            <NuxtLink to="/find-a-class" class="btn btn-link text-light">Find a Class</NuxtLink>
+            <NuxtLink to="/find-a-class" class="btn btn-link text-light" active-class="current">Find a Class</NuxtLink>
             .
-            <!-- <NuxtLink to="/services" class="btn btn-link text-light">Services</NuxtLink> -->
+            <NuxtLink to="/services/weekly-classes" class="btn btn-link text-light" active-class="current">Services</NuxtLink>
             .
-            <NuxtLink to="/about-us" class="btn btn-link text-light">About Us</NuxtLink>
+            <NuxtLink to="/about-us" class="btn btn-link text-light" active-class="current">About Us</NuxtLink>
           </div>
           <div class="col justify-content-end d-flex">
-            <NuxtLink to="/franchise" class="btn btn-link text-light">Franchise</NuxtLink>
+            <NuxtLink to="/franchise" class="btn btn-link text-light" active-class="current">Franchise</NuxtLink>
             .
-            <Nuxtlink to="/coaching" class="btn btn-link text-light">Coaching</Nuxtlink>
-            <!-- <NuxtLink to="/contact" class="btn btn-link text-light">Contact</NuxtLink> -->
+            <NuxtLink to="/coaching" class="btn btn-link text-light" active-class="current">Coaching</NuxtLink>
+            <NuxtLink to="/contact" class="btn btn-link text-light" active-class="current">Contact</NuxtLink>
           </div>
         </nav>
       </div>
@@ -40,8 +40,19 @@ import Banner from '@/components/website/Banner.vue'
 </template>
 
 <style lang="scss">
-   // @import '@/assets/styles/web/style.scss';
+   @import '@/assets/styles/web/style.scss';
+   .main-nav {
+    background-image: url('@/src/assets/bg-primary-texture.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center right;
+   }
    .logo {
       height: 1rem;
+   }
+   .btn.current {
+    // text-decoration: underline;
+    // font-weight: bold;
+    border-bottom: 1px solid $warning;
    }
 </style>
