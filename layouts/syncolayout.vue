@@ -9,7 +9,7 @@ export default {
 <template>
   <div class="d-flex bg-light">
     <SyncoNavigation />
-    <div class="py-5 px-3 col">
+    <div class="py-5 px-3 col vh-100 overflow-y-scroll">
       <div class="container">
         <div class="row mb-4">
           <div class="col">
