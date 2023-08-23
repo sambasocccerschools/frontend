@@ -4,12 +4,20 @@
     <div class="text-center mb-4">
       <img src="@/src/assets/sss-logo-synco-black.png" alt="Synco logo" class="w-50">
     </div>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2"
+      aria-expanded="false" aria-controls="multiCollapseExample2">Toggle second element</button>
+    <div class="collapse multi-collapse" id="multiCollapseExample2">
+      <div class="card card-body">
+        Some placeholder content for the second collapse component of this multi-collapse example. This panel is hidden by
+        default but revealed when the user activates the relevant trigger.
+      </div>
+    </div>
     <NuxtLink to="/synco/dashboard" exact-active-class="btn-nav-active" class="btn-nav">
-      [] Dashboard
+      <Icon name="akar-icons:grid" /> Dashboard
     </NuxtLink>
     <!-- Weekly Classes -->
     <button class="btn-nav border-0">
-      [] Weekly Classes >
+      <Icon name="ph:book-open-bold" />Weekly Classes
     </button>
     <ul class="ms-4">
       <li>
@@ -66,7 +74,10 @@
   @extend .btn;
   @extend .btn-lg;
   @extend .py-3;
-  @extend .text-start;
+  text-align: start;
+  align-items: center;
+  display: flex;
+  gap: .5rem;
 
   &-link {
     @extend .py-2;
