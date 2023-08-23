@@ -1,7 +1,7 @@
 <template>
   <div
-    class="vh-100 border-end border-1 border-secondary d-flex flex-column py-5 px-4 bg-white overflow-y-scroll justify-content-between"
-    style="width:18rem">
+    class="vh-100 border-end border-1 border-secondary d-flex flex-column py-4 px-3 bg-white overflow-y-scroll justify-content-between"
+    style="width:17rem">
     <div>
       <div class="text-center mb-4">
         <img src="@/src/assets/sss-logo-synco-black.png" alt="Synco logo" class="w-50">
@@ -78,8 +78,8 @@
 
 .btn-nav {
   @extend .btn;
-  @extend .btn-lg;
-  @extend .py-2;
+  // @extend .btn-lg;
+  @extend .py-3;
   text-align: start;
   align-items: center;
   display: flex;
