@@ -1,9 +1,12 @@
+<script setup>
+</script>
+
 <template>
   <div class="vh-100 d-flex">
     <SyncoNavigation />
     <div class="bg-light py-5 px-3 col">
       <div class="container">
-        <div class="row mb-2">
+        <div class="row mb-4">
           <div class="col">
             <div class="d-flex align-items-center justify-content-between">
               <div class="d-flex flex-column">
@@ -22,7 +25,9 @@
                 </div>
                 <div class="px-4 d-flex align-items-center">
                   <img src="@/src/assets/img-avatar-small.png" alt="Avatar" class="me-3">
-                  <h5>Nilio Bagga ></h5>
+                  <h5>Nilio Bagga
+                    <Icon name="bi:chevron-down" />
+                  </h5>
                 </div>
               </div>
             </div>
