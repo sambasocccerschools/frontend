@@ -2,9 +2,9 @@
 </script>
 
 <template>
-  <div class="vh-100 d-flex">
+  <div class="d-flex bg-light">
     <SyncoNavigation />
-    <div class="bg-light py-5 px-3 col">
+    <div class="py-5 px-3 col">
       <div class="container">
         <div class="row mb-4">
           <div class="col">

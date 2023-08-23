@@ -1,5 +1,6 @@
 <template>
-  <div class="h-100 border-end border-1 border-secondary d-flex flex-column py-5 px-4" style="width:18rem">
+  <div class="vh-100 border-end border-1 border-secondary d-flex flex-column py-5 px-4 bg-white overflow-y-scroll"
+    style="width:18rem">
     <div class="text-center mb-4">
       <img src="@/src/assets/sss-logo-synco-black.png" alt="Synco logo" class="w-50">
     </div>
