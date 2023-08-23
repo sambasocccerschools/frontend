@@ -1,23 +1,30 @@
-<script setup>
+<script>
+export default {
+  props: [
+    'pageTitle'
+  ],
+}
 </script>
 
 <template>
-  <div class="vh-100 d-flex">
+  <div class="d-flex bg-light">
     <SyncoNavigation />
-    <div class="bg-light py-5 px-3 col">
+    <div class="py-5 px-3 col">
       <div class="container">
         <div class="row mb-4">
           <div class="col">
             <div class="d-flex align-items-center justify-content-between">
               <div class="d-flex flex-column">
                 <h4>Hi Nilio!</h4>
-                <h2>Welcome back 👋</h2>
+                <h2>{{ pageTitle || 'Welcome back 👋' }}</h2>
               </div>
 
               <div class="d-flex align-items-center">
                 <div class="d-flex gap-3">
                   <input type="text" class="form-control form-control-lg" placeholder="Search">
-                  <button class="btn btn-light border rounded-5">Bell</button>
+                  <button class="btn btn-light  bg-white border rounded-5">
+                    <Icon name="ic:outline-notifications-none" class="h4 m-0 text-muuted" />
+                  </button>
                 </div>
                 <div class="border-end border-1 border-muted d-flex flex-column align-items-end text-end px-4">
                   <span class="h5 m-0">January</span>

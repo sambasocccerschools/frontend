@@ -15,6 +15,7 @@ const layout = "syncolayout";
             <NuxtLink to="/synco/dashboard/widgets" class="btn btn-primary text-light shadow-sm">+ Add your own widgets
             </NuxtLink>
           </div>
+          <SyncoInformatics />
         </section>
       </div>
       <div class="col">

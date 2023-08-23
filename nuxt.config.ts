@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   modules: ['nuxt-icon'],
   // Don't prerender SSR Synco and Parents Platform 
   routeRules: {
+    '/**': { ssr: false },
     '/synco/**': { ssr: false },
     '/parents/**': { ssr: false }
   }

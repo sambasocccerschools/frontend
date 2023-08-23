@@ -1,61 +1,76 @@
 <template>
-  <div class="h-100 border-end border-1 border-secondary d-flex flex-column py-5 px-4" style="width:18rem">
-    <div class="text-center mb-4">
-      <img src="@/src/assets/sss-logo-synco-black.png" alt="Synco logo" class="w-50">
+  <div
+    class="vh-100 border-end border-1 border-secondary d-flex flex-column py-5 px-4 bg-white overflow-y-scroll justify-content-between"
+    style="width:18rem">
+    <div>
+      <div class="text-center mb-4">
+        <img src="@/src/assets/sss-logo-synco-black.png" alt="Synco logo" class="w-50">
+      </div>
+
+      <NuxtLink to="/synco/dashboard" exact-active-class="btn-nav-active" class="btn-nav">
+        <Icon name="akar-icons:grid" /> Dashboard
+      </NuxtLink>
+
+      <!-- Weekly Classes -->
+      <button class="btn btn-nav" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWeeklyClasses"
+        aria-expanded="false" aria-controls="collapseWeeklyClasses">
+        <Icon name="ph:book-open-bold" />Weekly Classes
+        <Icon name="pajamas:chevron-down" />
+      </button>
+      <ul class="ms-4 collapse " id="collapseWeeklyClasses">
+        <li>
+          <NuxtLink to="/synco/weekly-classes/find-a-class" class="btn-nav-link" exact-active-class="text-primary">
+            Find a class
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/synco/weekly-classes/members" class="btn-nav-link" exact-active-class="text-primary">
+            Members
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/synco/weekly-classes/sales" class="btn-nav-link" exact-active-class="text-primary">Sales
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/synco/weekly-classes/trials" class="btn-nav-link" exact-active-class="text-primary">Trials
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/synco/weekly-classes/cancellation" class="btn-nav-link" exact-active-class="text-primary">
+            Cancellation
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/synco/weekly-classes/waiting-list" class="btn-nav-link" exact-active-class="text-primary">
+            Waiting
+            List
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/synco/weekly-classes/leads-database" class="btn-nav-link" exact-active-class="text-primary">
+            Leads
+            Database
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/synco/weekly-classes/capacity" class="btn-nav-link" exact-active-class="text-primary">
+            Capacity
+          </NuxtLink>
+        </li>
+      </ul>
+
+      <NuxtLink to="/synco/one-to-one" exact-active-class="btn-nav-active" class="btn-nav">
+        <Icon name="ph:book-open-bold" /> One to One
+      </NuxtLink>
+
+      <NuxtLink to="/synco/venues" exact-active-class="btn-nav-active" class="btn-nav">
+        <Icon name="ph:map-pin" /> Venues
+      </NuxtLink>
     </div>
-    <NuxtLink to="/synco/dashboard" exact-active-class="btn-nav-active" class="btn-nav">
-      [] Dashboard
-    </NuxtLink>
-    <!-- Weekly Classes -->
-    <button class="btn-nav border-0">
-      [] Weekly Classes >
-    </button>
-    <ul class="ms-4">
-      <li>
-        <NuxtLink to="/synco/weekly-classes/find-a-class" class="btn-nav-link" exact-active-class="text-primary">
-          Find a class
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/synco/weekly-classes/members" class="btn-nav-link" exact-active-class="text-primary">
-          Members
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/synco/weekly-classes/sales" class="btn-nav-link" exact-active-class="text-primary">Sales
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/synco/weekly-classes/trials" class="btn-nav-link" exact-active-class="text-primary">Trials
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/synco/weekly-classes/cancellation" class="btn-nav-link" exact-active-class="text-primary">
-          Cancellation
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/synco/weekly-classes/waiting-list" class="btn-nav-link" exact-active-class="text-primary">
-          Waiting
-          List
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/synco/weekly-classes/leads-database" class="btn-nav-link" exact-active-class="text-primary">
-          Leads
-          Database
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/synco/weekly-classes/capacity" class="btn-nav-link" exact-active-class="text-primary">
-          Capacity
-        </NuxtLink>
-      </li>
-    </ul>
 
 
-    <NuxtLink to="/synco/venues">Venues</NuxtLink>
-    <NuxtLink to="/synco">Logout</NuxtLink>
+    <NuxtLink to="/synco" class="btn btn-outline-dark"><span>Logout</span></NuxtLink>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -64,8 +79,11 @@
 .btn-nav {
   @extend .btn;
   @extend .btn-lg;
-  @extend .py-3;
-  @extend .text-start;
+  @extend .py-2;
+  text-align: start;
+  align-items: center;
+  display: flex;
+  gap: .5rem;
 
   &-link {
     @extend .py-2;
@@ -79,6 +97,7 @@
     @extend .text-light;
     @extend .rounded-4;
     box-shadow: 4px 6px 12px 0px rgba(35, 127, 234, 0.25);
+    @extend .mb-1;
   }
 }
 </style>
