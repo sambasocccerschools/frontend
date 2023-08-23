@@ -26,8 +26,8 @@ const layout = "weblayout";
         <div class="col-sm-9 mx-auto">
           <p class="text-light mb-5">Where do we start? Weekly classes are an excellent way to develop skills on a
             consistent basis, build confidence, make friends, establish a healthy routine, and have a lot of fun along the
-            way - but actions speak louder than words. Why not book a free trial class and we’ll be more than happy to
-            show you what we do.  </p>
+            way - but actions speak louder than words. Why not book a free trial class with Samba Soccer Schools, and
+            we’ll be more than happy to show you what we do.  </p>
           <WebsiteFindYourNearestClass />
         </div>
       </div>
