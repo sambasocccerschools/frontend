@@ -15,7 +15,7 @@
         <div class="d-flex gap-2 col-5 justify-content-end  border-bottom pb-4">
           <NuxtLink to="/find-a-class" class="btn btn-light rounded-5">Book a Free Trials</NuxtLink>
           <NuxtLink to="/synco" class="btn btn-outline-light">Synco Login</NuxtLink>
-          <NuxtLink to="/parents/login" class="btn btn-outline-light">Parents Login</NuxtLink>
+          <NuxtLink to="/parents" class="btn btn-outline-light">Parents Login</NuxtLink>
         </div>
       </div>
       <nav class="row py-3">

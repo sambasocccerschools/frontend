@@ -1,10 +1,8 @@
 <script setup lang="ts">
-   const layout = "parentlayout";
 
 </script>
 <template>
-   <NuxtLayout :name="layout">
-      Parent Login
-
-   </NuxtLayout>
+   <NuxtLink to="/">HOME</NuxtLink>
+   Login Parents
+   <NuxtLink to="/parents">Login</NuxtLink>
 </template>
