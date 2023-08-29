@@ -7,14 +7,26 @@
           <p class="lead text-light text-semibold">If we are not playing football you can find us socialising on…</p>
         </div>
         <div class="col d-flex">
-          <NuxtLink class="btn-social" to="/">F</NuxtLink>
-          <NuxtLink class="btn-social" to="/">I</NuxtLink>
-          <NuxtLink class="btn-social" to="/">Y</NuxtLink>
-          <NuxtLink class="btn-social" to="/">L</NuxtLink>
-          <NuxtLink class="btn-social" to="/">X</NuxtLink>
+          <NuxtLink class="btn-social" to="/" target="_blank">
+            <Icon name="gg:facebook" />
+          </NuxtLink>
+          <NuxtLink class="btn-social" to="/" target="_blank">
+            <Icon name="mdi:instagram" />
+          </NuxtLink>
+          <NuxtLink class="btn-social" to="/" target="_blank">
+            <Icon name="ph:youtube-logo-fill" />
+          </NuxtLink>
+          <NuxtLink class="btn-social" to="/" target="_blank">
+            <Icon name="mdi:linkedin" />
+          </NuxtLink>
+          <NuxtLink class="btn-social" to="/" target="_blank">
+            <Icon name="mdi:twitter" />
+          </NuxtLink>
         </div>
         <div class="col-auto">
-          <NuxtLink to="/" class="btn btn-light rounded-5 text-info px-4 btn-lg"><strong>Shop Online</strong></NuxtLink>
+          <NuxtLink to="/" class="btn btn-light rounded-5 text-info px-4 btn-lg d-flex align-items-center">
+            <Icon name="material-symbols:shopping-cart-outline" class="me-2" /><strong>Shop Online</strong>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -41,5 +53,6 @@ section.lets-be-friends {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 2rem;
 }
 </style>

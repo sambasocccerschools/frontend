@@ -68,9 +68,21 @@
                 <h4 class="text-light h4 text-semibold">Contact Us</h4>
                 <p class="text-light">We’d love to hear from you</p>
                 <ul class="list-unstyled text-light">
-                  <li>020 72052723</li>
-                  <li>Find us on Google Maps</li>
-                  <li>info@sambasoccerschools.com</li>
+                  <li class="d-flex align-items-center">
+                    <span class="icon-circle me-2">
+                      <Icon name="material-symbols:phone-iphone-outline" />
+                    </span>020 72052723
+                  </li>
+                  <li class="d-flex align-items-center my-2">
+                    <span class="icon-circle me-2">
+                      <Icon name="mdi:map-marker-outline" />
+                    </span>Find us on Google Maps
+                  </li>
+                  <li class="d-flex align-items-center">
+                    <span class="icon-circle me-2">
+                      <Icon name="akar-icons:envelope" />
+                    </span>info@sambasoccerschools.com
+                  </li>
                 </ul>
               </div>
             </div>
@@ -93,5 +105,19 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: right top;
+}
+
+.icon-circle {
+  @extend .btn;
+  @extend .btn-light;
+  @extend .text-info;
+  border-radius: 50%;
+  height: 2.5rem;
+  width: 2.5rem;
+  @extend .d-flex;
+  @extend .align-items-center;
+  @extend .justify-content-center;
+  padding: 0;
+  font-size: 1.5rem;
 }
 </style>
