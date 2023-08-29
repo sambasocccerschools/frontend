@@ -1,9 +1,9 @@
 <script setup lang="ts">
-   const layout = "weblayout";
+const layout = "weblayout";
 </script>
 
 <template>
   <NuxtLayout :name="layout">
-    Franchise
+    Regional Manager
   </NuxtLayout>
 </template>

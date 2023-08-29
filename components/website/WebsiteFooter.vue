@@ -16,7 +16,7 @@
                   <NuxtLink to="/franchise" class="text-light btn btn-link px-0">Franchise</NuxtLink>
                 </li>
                 <li class="col">
-                  <NuxtLink to="/find-a-class" class="text-light btn btn-link px-0">Find a Class</NuxtLink>
+                  <NuxtLink to="/book" class="text-light btn btn-link px-0">Find a Class</NuxtLink>
                 </li>
                 <li class="col">
                   <NuxtLink to="/reviews" class="text-light btn btn-link px-0">Reviews</NuxtLink>
@@ -28,7 +28,7 @@
                   <NuxtLink to="/blog" class="text-light btn btn-link px-0">Blog</NuxtLink>
                 </li>
                 <li class="col">
-                  <NuxtLink to="/find-a-class" class="text-light btn btn-link px-0">Book Now</NuxtLink>
+                  <NuxtLink to="/book" class="text-light btn btn-link px-0">Book Now</NuxtLink>
                 </li>
                 <li class="col">
                   <NuxtLink to="/contact" class="text-light btn btn-link px-0">Contact Us</NuxtLink>
