@@ -368,7 +368,8 @@ $enable-cssgrid: true !default;
 $enable-button-pointers: true !default;
 $enable-rfs: true !default;
 $enable-validation-icons: true !default;
-$enable-negative-margins: false !default;
+// $enable-negative-margins: false !default;
+$enable-negative-margins: true !default;
 $enable-deprecation-messages: true !default;
 $enable-important-utilities: true !default;
 
@@ -1160,6 +1161,7 @@ $nav-link-disabled-color: var(--#{$prefix}secondary-color) !default;
 $nav-link-focus-box-shadow: $focus-ring-box-shadow !default;
 
 $nav-tabs-border-color: var(--#{$prefix}border-color) !default;
+// $nav-tabs-border-color: var(--#{$prefix}success) !default;
 $nav-tabs-border-width: var(--#{$prefix}border-width) !default;
 $nav-tabs-border-radius: var(--#{$prefix}border-radius) !default;
 $nav-tabs-link-hover-border-color: var(--#{$prefix}secondary-bg) var(--#{$prefix}secondary-bg) $nav-tabs-border-color !default;

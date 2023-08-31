@@ -23,7 +23,8 @@ import Reviews from '@/components/website/Reviews.vue'
          <div class="container bg-player">
             <div class="row">
                <div class="col-sm-7 offset-sm-4 text-center">
-                  <h2 class="display-4 text-primary"><strong>Building confidence, mastering skills - doing it in
+                  <h2 class="display-4 text-primary font-custom"><strong>Building confidence, mastering skills - doing it
+                        in
                         <em class="text-success">Style</em></strong></h2>
                   <p class="lead text-muted">Samba Soccer Schools - more than just football coaching. Improving your
                      child’s social skills and confidence, developing technique, flair, and footballing ability through our
@@ -181,8 +182,7 @@ import Reviews from '@/components/website/Reviews.vue'
          </div>
       </section>
       <WebsiteBlogPosts />
-      <!-- Socials -->
-      <WebsiteSocials />
+
 
    </NuxtLayout>
 </template>
