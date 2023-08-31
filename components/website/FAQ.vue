@@ -96,7 +96,7 @@ export default {
                 month and includes a 5% discount on our SSS uniform. Click below to see our full membership prices.</p>
             </div>
           </div>
-          <NuxtLink to="/find-a-class" class="btn btn-lg btn-primary px-4 d-inline-block ms-sm-5 rounded-5"><span
+          <NuxtLink to="/book" class="btn btn-lg btn-primary px-4 d-inline-block ms-sm-5 rounded-5"><span
               class="text-semibold">Find a Class</span></NuxtLink>
         </div>
       </div>

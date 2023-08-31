@@ -29,29 +29,20 @@
   @include font-size($lead-font-size);
   font-weight: $lead-font-weight;
 }
-.text{
-  &-normal {font-weight: $font-weight-normal}
-  &-semibold {font-weight: $font-weight-semibold}
-}
-@font-face {
-  font-family: 'Recline';
-  src: url('../fonts/Recline-LightDemo.eot');
-  src: url('../fonts/Recline-LightDemo.eot?#iefix') format('embedded-opentype'),
-      url('../fonts/Recline-LightDemo.woff') format('woff'),
-      url('../fonts/Recline-LightDemo.svg#Recline-LightDemo') format('svg');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
 
+.text {
+  &-normal {
+    font-weight: $font-weight-normal
+  }
 
-.font-custom {
-  font-family: 'Recline';
-  font-weight: bolder;
+  &-semibold {
+    font-weight: $font-weight-semibold
+  }
 }
 
 // Type display classes
-@each $display, $font-size in $display-font-sizes {
+@each $display,
+$font-size in $display-font-sizes {
   .display-#{$display} {
     @include font-size($font-size);
     font-family: $display-font-family;
@@ -84,6 +75,7 @@
 .list-inline {
   @include list-unstyled();
 }
+
 .list-inline-item {
   display: inline-block;
 

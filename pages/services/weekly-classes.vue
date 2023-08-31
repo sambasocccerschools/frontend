@@ -9,7 +9,7 @@ const layout = "weblayout";
         <div class="row">
           <div class="col-sm-4 offset-sm-2 height-100 d-flex flex-column justify-content-center align-items-start">
             <h1 class="mb-2 text-primary display-1">WEEKLY <br><span class="font-custom">classes</span></h1>
-            <NuxtLink to="/find-a-class" class="btn btn-primary btn-lg px-5 rounded-5"><strong>Book Now</strong>
+            <NuxtLink to="/book" class="btn btn-primary btn-lg px-5 rounded-5"><strong>Book Now</strong>
             </NuxtLink>
           </div>
           <div class="col-sm-5">
@@ -49,8 +49,8 @@ const layout = "weblayout";
               <p class="text-muted">Our approach is unique in that we place the Brazilian footballing methodology at the
                 core of everything we do. With a skills-based program that focuses on close control, flair, and freedom,
                 your child can learn how to play attractive, winning football with a huge smile on their face. </p>
-              <NuxtLink to="/find-a-class" class="btn btn-info btn-lg text-light rounded-5 px-4"><span
-                  class="text-semibold">Book Now</span></NuxtLink>
+              <NuxtLink to="/book" class="btn btn-info btn-lg text-light rounded-5 px-4"><span class="text-semibold">Book
+                  Now</span></NuxtLink>
             </div>
           </div>
         </div>
@@ -163,4 +163,5 @@ section {
   background-position: center left;
   padding-top: 4rem;
   padding-bottom: 8rem;
-}</style>
+}
+</style>

@@ -10,13 +10,13 @@
               <h4 class="text-success text-semibold mb-3 pt-4">NAVIGATE</h4>
               <ul class="row row-cols-2 list-unstyled">
                 <li class="col">
-                  <NuxtLink to="/about-us" class="text-light btn btn-link px-0">About Us</NuxtLink>
+                  <NuxtLink to="/about" class="text-light btn btn-link px-0">About Us</NuxtLink>
                 </li>
                 <li class="col">
                   <NuxtLink to="/franchise" class="text-light btn btn-link px-0">Franchise</NuxtLink>
                 </li>
                 <li class="col">
-                  <NuxtLink to="/find-a-class" class="text-light btn btn-link px-0">Find a Class</NuxtLink>
+                  <NuxtLink to="/book" class="text-light btn btn-link px-0">Find a Class</NuxtLink>
                 </li>
                 <li class="col">
                   <NuxtLink to="/reviews" class="text-light btn btn-link px-0">Reviews</NuxtLink>
@@ -28,7 +28,7 @@
                   <NuxtLink to="/blog" class="text-light btn btn-link px-0">Blog</NuxtLink>
                 </li>
                 <li class="col">
-                  <NuxtLink to="/find-a-class" class="text-light btn btn-link px-0">Book Now</NuxtLink>
+                  <NuxtLink to="/book" class="text-light btn btn-link px-0">Book Now</NuxtLink>
                 </li>
                 <li class="col">
                   <NuxtLink to="/contact" class="text-light btn btn-link px-0">Contact Us</NuxtLink>
@@ -68,9 +68,21 @@
                 <h4 class="text-light h4 text-semibold">Contact Us</h4>
                 <p class="text-light">We’d love to hear from you</p>
                 <ul class="list-unstyled text-light">
-                  <li>020 72052723</li>
-                  <li>Find us on Google Maps</li>
-                  <li>info@sambasoccerschools.com</li>
+                  <li class="d-flex align-items-center">
+                    <span class="icon-circle me-2">
+                      <Icon name="material-symbols:phone-iphone-outline" />
+                    </span>020 72052723
+                  </li>
+                  <li class="d-flex align-items-center my-2">
+                    <span class="icon-circle me-2">
+                      <Icon name="mdi:map-marker-outline" />
+                    </span>Find us on Google Maps
+                  </li>
+                  <li class="d-flex align-items-center">
+                    <span class="icon-circle me-2">
+                      <Icon name="akar-icons:envelope" />
+                    </span>info@sambasoccerschools.com
+                  </li>
                 </ul>
               </div>
             </div>
@@ -93,5 +105,19 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: right top;
+}
+
+.icon-circle {
+  @extend .btn;
+  @extend .btn-light;
+  @extend .text-info;
+  border-radius: 50%;
+  height: 2.5rem;
+  width: 2.5rem;
+  @extend .d-flex;
+  @extend .align-items-center;
+  @extend .justify-content-center;
+  padding: 0;
+  font-size: 1.5rem;
 }
 </style>
