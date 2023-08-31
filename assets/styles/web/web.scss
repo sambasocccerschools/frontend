@@ -57,13 +57,15 @@
 
 @font-face {
   font-family: 'Recline';
-  src: url('../fonts/Recline-LightDemo.eot');
-  src: url('../fonts/Recline-LightDemo.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/Recline-LightDemo.woff') format('woff'),
-    url('../fonts/Recline-LightDemo.svg#Recline-LightDemo') format('svg');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
+  src: url("../fonts/Recline-Bold.otf") format("opentype");
+  src: url("../fonts/Recline-Bold.ttf");
+  // src: url('../fonts/Recline-Bold.eot');
+  // src: url('../fonts/Recline-Bold.eot?#iefix') format('embedded-opentype'),
+  //   url('../fonts/Recline-Bold.woff') format('woff'),
+  //   url('../fonts/Recline-Bold.svg#Recline-LightDemo') format('svg');
+  // font-weight: 600;
+  // font-style: normal;
+  // font-display: swap;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');

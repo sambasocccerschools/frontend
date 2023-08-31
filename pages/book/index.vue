@@ -5,7 +5,7 @@ const layout = "weblayout";
 <template>
   <NuxtLayout :name="layout">
     <div class="bg-find-a-class">
-      <div class="container ">
+      <div class="container-fluid ">
         <div class="row justify-content-between pt-5 pb-4">
           <div class="col">
             <h1 class="text-info"><em>FIND A CLASS</em></h1>

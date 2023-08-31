@@ -10,7 +10,7 @@
               <h4 class="text-success text-semibold mb-3 pt-4">NAVIGATE</h4>
               <ul class="row row-cols-2 list-unstyled">
                 <li class="col">
-                  <NuxtLink to="/about-us" class="text-light btn btn-link px-0">About Us</NuxtLink>
+                  <NuxtLink to="/about" class="text-light btn btn-link px-0">About Us</NuxtLink>
                 </li>
                 <li class="col">
                   <NuxtLink to="/franchise" class="text-light btn btn-link px-0">Franchise</NuxtLink>
