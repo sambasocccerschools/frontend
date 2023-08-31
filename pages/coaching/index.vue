@@ -168,6 +168,168 @@ const layout = "weblayout";
 
     <WebsiteWhyLearnFromUs />
 
+    <!-- Requirements  -->
+    <section class="py-5">
+      <div class="container">
+        <div class="text-center mt-4">
+          <h2 class="h1 text-info"><em>Requirements</em></h2>
+          <div class="row col-sm-8 mx-auto">
+            <p class="text-muted"><strong>Please check our eligibility criteria for joining our Pathway course before you
+                submit
+                your application.</strong>
+            </p>
+          </div>
+        </div>
+
+      </div>
+      <div class="container-fluid">
+        <div class="card bg-info text-light shadow-lg rounded-4 border-0 my-4">
+          <div class="card-body text-center py-4 ">
+            <h4 class="text-warning font-custom d-inline mx-2 p-0">Eligibility Criteria</h4>
+            <span class="d-inline align-items-center">
+              <Icon name="bi:check2-circle" class="text-warning h2 me-2" />Aged 16-30
+            </span>
+            <span class="d-inline align-items-center">
+              <Icon name="bi:check2-circle" class="text-warning h2 me-2" />A strong passion for football coaching
+            </span>
+            <span class="d-inline align-items-center">
+              <Icon name="bi:check2-circle" class="text-warning h2 me-2" />An eagerness to learn 
+            </span>
+            <span class="d-inline align-items-center">
+              <Icon name="bi:check2-circle" class="text-warning h2 me-2" />Self-confidence
+            </span>
+            <span class="d-inline align-items-center">
+              <Icon name="bi:check2-circle" class="text-warning h2 me-2" />Team player
+            </span>
+            <span class="d-inline align-items-center">
+              <Icon name="bi:check2-circle" class="text-warning h2 me-2" />Playing experience (preferably a minimum of 1-2
+              years)
+            </span>
+            <span class="d-inline align-items-center">
+              <Icon name="bi:check2-circle" class="text-warning h2 me-2" />Football coaching experience (preferable but
+              not
+              essential)
+            </span>
+            <span class="d-inline align-items-center">
+              <Icon name="bi:check2-circle" class="text-warning h2 me-2" />Football coaching qualifications (preferable
+              but
+              not essential)
+            </span>
+            <span class="d-inline align-items-center">
+              <Icon name="bi:check2-circle" class="text-warning h2 me-2" />A desire to make football coaching a long-term
+              profession
+            </span>
+            <span class="d-inline align-items-center">
+              <Icon name="bi:check2-circle" class="text-warning h2 me-2" />A commitment of time and energy to further your
+              coaching development
+            </span>
+          </div>
+        </div>
+
+        <p class="text-center text-muted mb-4">If you feel you tick these boxes, we’d love to hear from you! Continue
+          reading to
+          find out
+          what your next steps
+          are. </p>
+      </div>
+    </section>
+
+    <section class="bg-course-details py-5">
+      <div class="container">
+        <div class="text-center">
+          <h2 class="h1 text-light font-custom mt-4">Course Details</h2>
+          <div class="row">
+            <div class="col-sm-10 mx-auto">
+              <p class="lead text-light mb-4"><strong>The SSS Coaching Pathway lasts six weeks, with seven courses
+                  throughout the
+                  year, and
+                  classes are held on Tuesday evenings between 7-8 pm at the King Solomon Academy near Edgware Road in
+                  London. 
+                </strong>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-auto mx-auto">
+            <div class="card rounded-4 shadow-lg">
+              <div class="card-body pb-2 pt-4 px-5">
+                <h4 class="text-info h5"><strong>Course dates:</strong></h4>
+                <ul class="list-unstyled pe-3">
+                  <li><strong class="text-info py-2 d-inline-block">Course 1:</strong> Tuesday 12th - Tuesday 17th October
+                    (6
+                    weeks)
+                  </li>
+                  <li><strong class="text-info py-2 d-inline-block">Course 2:</strong> Tuesday 31st October - Tuesday 5th
+                    December  (6 weeks)
+                  </li>
+                  <li><strong class="text-info py-2 d-inline-block">Course 3:</strong> Tuesday 9th Jan - Tuesday 13th Feb
+                    (6
+                    weeks)
+                  </li>
+                  <li><strong class="text-info py-2 d-inline-block">Course 4:</strong> Tuesday 20th Feb - Tuesday 26th
+                    March
+                    (6 weeks)
+                  </li>
+                  <li><strong class="text-info py-2 d-inline-block">Course 5:</strong> Tuesday 16th April  - Tuesday 21st
+                    May (6 weeks)
+                  </li>
+                  <li><strong class="text-info py-2 d-inline-block">Course 6:</strong> Tuesday 4th June - Tuesday 9th July
+                    (6 weeks)
+                  </li>
+                  <li><strong class="text-info py-2 d-inline-block">Course 7:</strong> Tuesday 23rd July - Tuesday 27th
+                    August (6 weeks) 
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How does the programme work? -->
+
+    <section class="bg-green-blue-waves py-5">
+      <div class="container">
+        <div class="card border-success border-5 rounded-5">
+          <div class="card-body py-4 px-5">
+            <h2 class="h1 text-center text-primary font-custom">How does the programme work?</h2>
+            <p class="text-center text-primary">Here are the details of our Coaching Pathway course
+            </p>
+            <div class="row row-cols-sm-2 text-muted">
+              <div class="col">
+                <p>Our Pathway Course is designed to teach you our core coaching methodology, allowing you to apply the
+                  same principles within any coaching environment. While we like to encourage children to have fun and
+                  play football with freedom, training sessions are still well-structured, with a robust syllabus
+                  perfected over more than ten years.  </p>
+                <p>Every week, students focus on a particular exercise the tutor demonstrates for around 10 minutes. You
+                  will then be asked to imitate the activity in front of your tutor, who will make suggestions and advise
+                  as you go before delivering overall feedback once the exercise is complete. </p>
+                <p>We’ll be focusing on how well you carry out the set exercises but also how well you build a rapport
+                  with others in the class who will be acting as students. Good student rapport is non-negotiable at Samba
+                  Soccer Schools as we believe this helps us stand out from other football schools. We’re not looking for
+                  robots who simply set drills and shout-out instructions. Rapport, banter, good conversation - call it
+                  what you will - it’s essential in what we do.</p>
+              </div>
+              <div class="col">
+                <p>Your six training sessions are complemented by our online training programme that offers further
+                  theoretical guidance and health and safety information that is vital if you hope to work in the football
+                  industry. </p>
+                <p>There’s no pass or fail in our Pathway Course, but students who have shown an outstanding aptitude for
+                  coaching will be invited to a real Samba Soccer class and asked to demonstrate their skills in a
+                  real-world situation. And if that goes well, we often have coaching positions available, so a training
+                  course can become a full-time job before you know it.</p>
+                <p>So what are you waiting for? If you like a challenge and want to build your football coaching
+                  experience, apply for a space on our football coaching course today and turn that long-standing dream
+                  into a reality. </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </NuxtLayout>
 </template>
 
@@ -180,5 +342,27 @@ const layout = "weblayout";
   // min-height: 30vh;
   padding-top: 10rem;
   padding-bottom: 5rem
+}
+
+
+.bg-gray-texture {
+  background-image: url('@/src/assets/bg-website-gray-texture.png');
+  background-repeat: repeat;
+}
+
+.bg-course-details {
+  background-image: url('@/src/assets/bg-course-details.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+section {
+  &.bg-green-blue-waves {
+    background-image: url('@/src/assets/bg-green-blue-waves.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  }
 }
 </style>
