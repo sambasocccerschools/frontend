@@ -181,8 +181,7 @@ import Reviews from '@/components/website/Reviews.vue'
          </div>
       </section>
       <WebsiteBlogPosts />
-      <!-- Socials -->
-      <WebsiteSocials />
+
 
    </NuxtLayout>
 </template>

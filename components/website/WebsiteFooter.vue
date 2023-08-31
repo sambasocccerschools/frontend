@@ -1,4 +1,6 @@
 <template>
+  <!-- Socials -->
+  <WebsiteSocials />
   <footer class="bg-primary text-light py-5">
     <div class="container-fluid mt-3 ">
       <div class="border-bottom border-light pb-5">
