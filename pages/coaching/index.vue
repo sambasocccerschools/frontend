@@ -330,6 +330,26 @@ const layout = "weblayout";
       </div>
     </section>
 
+    <!-- Apply Today  -->
+    <section class="bg-enquire-splash py-5">
+      <div class="container">
+        <div class="row py-5">
+          <div class="col-sm-4">
+            <em class="h3 text-info">Step 1 </em>
+            <h4 class="h1 font-custom text-primary">Enquire today</h4>
+            <p class="text-muted mt-4">Your Samba Soccer Schools franchise journey begins here. Simply fill out the
+              form
+              below,
+              and we’ll be in touch within 48 hours to answer any questions and get you started on your franchise
+              journey.  </p>
+          </div>
+          <div class="col offset-sm-1">
+            <WebsiteCoachingPathwayForm />
+          </div>
+        </div>
+      </div>
+    </section>
+
   </NuxtLayout>
 </template>
 
