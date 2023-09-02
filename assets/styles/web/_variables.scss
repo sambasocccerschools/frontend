@@ -544,7 +544,8 @@ $border-radius-2xl: $border-radius-xxl !default; // Deprecated in v5.3.0
 // fusv-enable
 
 // scss-docs-start box-shadow-variables
-$box-shadow: 0 .5rem 1rem rgba($black, .15) !default;
+// $box-shadow: 0 .5rem 1rem rgba($black, .15) !default;
+$box-shadow: 0 .5rem 2rem rgba($black, .075) !default;
 $box-shadow-sm: 0 .125rem .25rem rgba($black, .075) !default;
 // $box-shadow-lg: 0 1rem 3rem rgba($black, .175) !default;
 $box-shadow-lg: 0 1rem 4rem rgba($black, .1) !default;

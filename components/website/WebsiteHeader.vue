@@ -5,7 +5,7 @@
 <template>
   <!-- This is a good example to show or not based on state  -->
   <WebsiteBanner />
-  <div class="bg-primary text-light bg-texture-primary">
+  <div class="bg-primary text-light bg-texture-primary shadow-lg">
     <div class="container-fluid">
       <div class="row pt-4">
         <div class="col-5 border-bottom pb-4">

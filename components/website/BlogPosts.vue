@@ -1,6 +1,14 @@
+<script>
+export default {
+   props: [
+      'size'
+   ],
+}
+</script>
+
 <template>
    <!-- Check out our Blogs -->
-   <section class="py-5 my-4">
+   <section class="py-5 my-4" :class="size === 'lg' ? 'section-blogposts-lg' : ''">
       <div class="container">
          <div class="text-center">
             <h2 class="h1"><span class="font-custom text-primary">Check out our</span> <em class="text-success">BLOGS</em>
@@ -50,11 +58,12 @@
                            than a striker. ...</small></p>
                   </div>
                </div>
+            </div>
+         </div>
+         <div class="text-center">
+            <NuxtLink to="/blog" class="btn btn-primary btn-lg rounded-5 px-4 py-2"><span class="font-custom">Check Out Our
+                  Blogs</span></NuxtLink>
          </div>
       </div>
-      <div class="text-center">
-         <NuxtLink to="/blog" class="btn btn-primary btn-lg rounded-5 px-4 py-2"><span class="font-custom">Check Out Our
-               Blogs</span></NuxtLink>
-      </div>
-   </div>
-</section></template>
+   </section>
+</template>
