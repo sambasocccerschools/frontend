@@ -1372,10 +1372,13 @@ $accordion-padding-y: 1rem !default;
 $accordion-padding-x: 1.25rem !default;
 $accordion-color: var(--#{$prefix}body-color) !default;
 $accordion-bg: var(--#{$prefix}body-bg) !default;
-$accordion-border-width: var(--#{$prefix}border-width) !default;
+// $accordion-border-width: var(--#{$prefix}border-width) !default;
+$accordion-border-width: 0 !default;
 $accordion-border-color: var(--#{$prefix}border-color) !default;
-$accordion-border-radius: var(--#{$prefix}border-radius) !default;
+// $accordion-border-radius: var(--#{$prefix}border-radius) !default;
+$accordion-border-radius: $border-radius-xl !default;
 $accordion-inner-border-radius: subtract($accordion-border-radius, $accordion-border-width) !default;
+
 
 $accordion-body-padding-y: $accordion-padding-y !default;
 $accordion-body-padding-x: $accordion-padding-x !default;
@@ -1383,14 +1386,18 @@ $accordion-body-padding-x: $accordion-padding-x !default;
 $accordion-button-padding-y: $accordion-padding-y !default;
 $accordion-button-padding-x: $accordion-padding-x !default;
 $accordion-button-color: var(--#{$prefix}body-color) !default;
+// $accordion-button-bg: var(--#{$prefix}accordion-bg) !default;
 $accordion-button-bg: var(--#{$prefix}accordion-bg) !default;
 $accordion-transition: $btn-transition,
   border-radius .15s ease !default;
-$accordion-button-active-bg: var(--#{$prefix}primary-bg-subtle) !default;
-$accordion-button-active-color: var(--#{$prefix}primary-text-emphasis) !default;
+// $accordion-button-active-bg: var(--#{$prefix}primary-bg-subtle) !default;
+$accordion-button-active-bg: var(--#{$prefix}accordion-bg) !default;
+// $accordion-button-active-color: var(--#{$prefix}primary-text-emphasis) !default;
+$accordion-button-active-color: var(--#{$prefix}dark-text-emphasis) !default;
 
 $accordion-button-focus-border-color: $input-focus-border-color !default;
-$accordion-button-focus-box-shadow: $btn-focus-box-shadow !default;
+// $accordion-button-focus-box-shadow: $btn-focus-box-shadow !default;
+$accordion-button-focus-box-shadow: none !default;
 
 $accordion-icon-width: 1.25rem !default;
 $accordion-icon-color: $body-color !default;
