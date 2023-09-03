@@ -37,9 +37,3 @@
     </div>
   </section>
 </template>
-<style lang="scss" scoped>
-.bg-gray-texture {
-  background-image: url('@/src/assets/bg-website-gray-texture.png');
-  background-repeat: repeat;
-}
-</style>

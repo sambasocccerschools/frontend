@@ -80,3 +80,59 @@
 em {
   font-family: 'Permanent Marker', cursive;
 }
+
+// Backgrounds and shared Styles 
+
+.bg {
+  &-waves {
+    &-green {
+      &-yellow {
+        background-image: url('@/src/assets/bg-yellow-green-texture.svg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+      }
+
+      &-blue {
+        background-image: url('@/src/assets/bg-green-blue-waves.svg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+      }
+    }
+  }
+
+  &-gray-texture {
+    background-image: url('@/src/assets/bg-website-gray-texture.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    // background-color: #FDFDFF;
+    background-color: $light;
+  }
+
+  &-light-texture {}
+
+  &-primary-texture {
+    background-image: url('@/src/assets/bg-primary-texture.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center right;
+    background-color: $primary;
+
+    &-with-top-wave-white {
+      padding-top: 10rem;
+      padding-bottom: 5rem;
+      background-image: url('@/src/assets/bg-white-wave-top.svg'), url('@/src/assets/bg-primary-texture.png');
+      background-repeat: no-repeat;
+      background-size: 100% auto, cover;
+    }
+
+    &-with-top-wave-light {
+      padding-top: 10rem;
+      padding-bottom: 5rem;
+      background-image: url('@/src/assets/bg-light-wave-top.svg'), url('@/src/assets/bg-primary-texture.png');
+      background-repeat: no-repeat;
+      background-size: 100% auto, cover;
+    }
+  }
+}

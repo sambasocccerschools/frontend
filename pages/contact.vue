@@ -125,12 +125,6 @@ const layout = "weblayout";
   padding: 5rem 0 10rem;
 }
 
-.bg-green-blue-waves {
-  background-image: url('@/src/assets/bg-green-blue-waves.svg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-}
 
 .btn-social {
   @extend .btn;

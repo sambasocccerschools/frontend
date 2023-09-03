@@ -78,11 +78,6 @@
 <style lang="scss" scoped>
 @import '@/assets/styles/web/web.scss';
 
-.bg-gray-texture {
-  background-image: url('@/src/assets/bg-website-gray-texture.png');
-  background-repeat: repeat;
-}
-
 .accordion {
   &-header {
     @extend .rounded-top-4;

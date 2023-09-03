@@ -43,7 +43,7 @@ const layout = "weblayout";
       </div>
 
 
-      <div class="bg-primary-waves">
+      <div class="bg-primary-texture-with-top-wave-light">
         <div class="container">
           <div class="row mb-4">
             <div class="col-sm-9 mx-auto text-center">
@@ -94,7 +94,7 @@ const layout = "weblayout";
     <WebsiteWorkForUsProcess />
 
     <!-- Before You Apply -->
-    <section class="bg-before-you-apply py-5 text-light bg-primary">
+    <section class="bg-primary-texture py-5 text-light ">
       <div class="container-fluid ">
         <div class="row mt-4 mb-5 align-items-center">
           <div class="col-sm-5 offset-sm-1">
@@ -254,20 +254,6 @@ const layout = "weblayout";
   align-items: center;
 }
 
-.bg-primary-waves {
-  background-image: url('@/src/assets/bg-primary-waves.svg');
-  background-repeat: no-repeat;
-  background-position: center bottom;
-  background-size: cover;
-  // min-height: 30vh;
-  padding-top: 10rem;
-  padding-bottom: 5rem
-}
-
-.bg-before-you-apply {
-  background-image: url('@/src/assets/bg-primary-texture.svg');
-
-}
 
 .bg-enquire-splash-light-blue {
   background-image: url('@/src/assets/bg-enquire-splash-light-blue.svg');

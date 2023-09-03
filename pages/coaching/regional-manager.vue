@@ -50,7 +50,7 @@ const layout = "weblayout";
     </section>
 
 
-    <section class="what-does-role-include bg-primary-texture bg-primary text-bg-dark py-5">
+    <section class="what-does-role-include bg-primary-texture-with-top-wave-white text-bg-dark py-5">
       <div class="container">
         <div class="my-5 pt-5 text-center">
           <h2 class="display-4 text-warning font-custom mt-5">What does the role include?</h2>
@@ -168,7 +168,7 @@ const layout = "weblayout";
 
     <!-- Become an integral par of the SSS team  -->
 
-    <div class="bg-gray-texture bg-secondary-subtle">
+    <div class="bg-gray-texture">
 
       <section class="py-5 bg-right-top-corner-coach">
         <div class="container">
@@ -497,10 +497,6 @@ header.regional-manager-header {
   background-size: 100% auto, cover;
 }
 
-.bg-gray-texture {
-  background-image: url('@/src/assets/bg-website-gray-texture.png');
-  background-repeat: repeat;
-}
 
 .bg-right-top-corner-coach {
   background-image: url('@/src/assets/bg-right-top-corner-coach.png');

@@ -219,7 +219,7 @@ const layout = "weblayout";
     </section>
 
     <!-- Are We a good fit  -->
-    <section class="bg-are-we-good-fit bg-primary py-5">
+    <section class="bg-primary-texture py-5">
       <div class="container">
         <div class="text-center">
           <h2 class="h1 font-custom text-light">Are we a <em class="text-warning">Good Fit?</em></h2>
@@ -402,9 +402,12 @@ const layout = "weblayout";
   min-height: 80vh;
   padding-top: 7rem;
   padding-bottom: 15rem;
-  background-image: url('@/src/assets/bg-header-franchise.png');
-  background-size: cover;
-  background-position: center 20%;
+  background-image: url('@/src/assets/bg-white-wave-bottom.svg'), url('@/src/assets/bg-header-franchise.png'), ;
+  // background-size: cover;
+  // background-position: center 20%;
+  background-size: 100% auto, cover;
+  background-repeat: no-repeat;
+  background-position: bottom center, bottom center;
 }
 
 .bg-player-airkick {
@@ -429,15 +432,6 @@ const layout = "weblayout";
 }
 
 section {
-  &.bg-gray-texture {
-    background-image: url('@/src/assets/bg-website-gray-texture.png');
-    background-repeat: repeat;
-    background-color: #F8F8F8;
-  }
-
-  &.bg-are-we-good-fit {
-    background-image: url('@/src/assets/bg-primary-texture.svg');
-  }
 
   &.bg-enquire-splash {
     background-image: url('@/src/assets/bg-enquire-splash.svg');

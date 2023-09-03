@@ -57,7 +57,7 @@ const layout = "weblayout";
       </div>
     </section>
     <!-- Benefits -->
-    <section class="bg-primary-waves">
+    <section class="bg-primary-texture-with-top-wave-white">
       <div class="container-fluid text-center">
         <div class="row">
           <h2 class="h1 font-custom text-light col-sm-7 mx-auto">The <em class="text-success">Benefits</em> of our weekly
@@ -124,13 +124,6 @@ header {
   background-position: center center;
 }
 
-.bg-gray-texture {
-  background-image: url('@/src/assets/bg-website-gray-texture.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-color: #FDFDFF;
-}
-
 section {
   &.why-choose {
     background: $primary;
@@ -145,15 +138,6 @@ section {
     background-repeat: repeat;
   }
 
-  &.bg-primary-waves {
-    background-image: url('@/src/assets/bg-primary-waves.svg');
-    background-repeat: no-repeat;
-    background-position: center top;
-    background-size: cover;
-    min-height: 30vh;
-    padding-top: 10rem;
-    padding-bottom: 5rem
-  }
 }
 
 .bg-player-playing {

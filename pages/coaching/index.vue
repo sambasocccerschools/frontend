@@ -65,7 +65,7 @@ const layout = "weblayout";
         </div>
       </div>
 
-      <div class="bg-primary-waves">
+      <div class="bg-primary-texture-with-top-wave-light">
         <div class="container">
 
           <div class="row mb-4">
@@ -290,7 +290,7 @@ const layout = "weblayout";
 
     <!-- How does the programme work? -->
 
-    <section class="bg-green-blue-waves py-5">
+    <section class="bg-waves-green-blue py-5">
       <div class="container">
         <div class="card border-success border-5 rounded-5">
           <div class="card-body py-4 px-5">
@@ -354,22 +354,6 @@ const layout = "weblayout";
 </template>
 
 <style lang="scss" scoped>
-.bg-primary-waves {
-  background-image: url('@/src/assets/bg-primary-waves.svg');
-  background-repeat: no-repeat;
-  background-position: center bottom;
-  background-size: cover;
-  // min-height: 30vh;
-  padding-top: 10rem;
-  padding-bottom: 5rem
-}
-
-
-.bg-gray-texture {
-  background-image: url('@/src/assets/bg-website-gray-texture.png');
-  background-repeat: repeat;
-}
-
 .bg-course-details {
   background-image: url('@/src/assets/bg-course-details.png');
   background-repeat: no-repeat;
@@ -378,13 +362,6 @@ const layout = "weblayout";
 }
 
 section {
-  &.bg-green-blue-waves {
-    background-image: url('@/src/assets/bg-green-blue-waves.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-  }
-
   &.bg-enquire-splash {
     background-image: url('@/src/assets/bg-enquire-splash-light-blue.svg');
     background-repeat: no-repeat;

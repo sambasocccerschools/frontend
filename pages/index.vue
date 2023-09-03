@@ -181,8 +181,8 @@ import Reviews from '@/components/website/Reviews.vue'
             </div>
          </div>
       </section>
-      <WebsiteBlogPosts />
 
+      <WebsiteBlogPosts />
 
    </NuxtLayout>
 </template>
@@ -220,11 +220,6 @@ section {
       background-image: url('@/src/assets/bg-yellow-green-texture.svg');
       background-repeat: no-repeat;
       background-size: cover;
-   }
-
-   &.bg-gray-texture {
-      background-image: url('@/src/assets/bg-website-gray-texture.png');
-      background-repeat: repeat;
    }
 
    &.bg-img-gallery {
