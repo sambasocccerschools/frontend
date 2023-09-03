@@ -270,8 +270,13 @@ const layout = "weblayout";
     </section>
 
     <!-- Follow us on Instagram  -->
+
     <WebsiteFollowUsOnInstagram />
 
+    <!-- Join Our Mailing List  -->
+    <div class="border-bottom border-light border-2">
+      <WebsiteJoinMailingList />
+    </div>
 
   </NuxtLayout>
 </template>
