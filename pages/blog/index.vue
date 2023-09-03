@@ -155,7 +155,7 @@ const layout = "weblayout";
     </section>
 
     <!-- All Blog Posts  -->
-    <section class="py-5">
+    <section class="py-5 mb-4">
       <div class="container">
         <h4>All blog posts</h4>
         <div class="row row-cols-2 my-4 gy-4">
@@ -242,8 +242,37 @@ const layout = "weblayout";
             </div>
           </div>
         </div>
+
+        <div class=" border-top border-secondary border-1">
+          <nav aria-label="blog-nagivation" class="border-top border-secondary border-1 py-4">
+            <ul class="pagination justify-content-between">
+              <li class="page-item disabled">
+                <a class="page-link d-flex align-items-center">
+                  <Icon name="material-symbols:arrow-left-alt" class="me-3 " />
+                  Previous
+                </a>
+              </li>
+              <span class="d-flex">
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+              </span>
+              <li class="page-item">
+                <a class="page-link border-0 d-flex align-items-center" href="#">Next
+                  <Icon name="material-symbols:arrow-right-alt" class="ms-3" />
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
       </div>
     </section>
+
+    <!-- Follow us on Instagram  -->
+    <WebsiteFollowUsOnInstagram />
+
+
   </NuxtLayout>
 </template>
 

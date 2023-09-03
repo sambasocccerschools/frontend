@@ -1286,8 +1286,8 @@ $dropdown-dark-header-color: $gray-500 !default;
 // Pagination
 
 // scss-docs-start pagination-variables
-$pagination-padding-y: .375rem !default;
-$pagination-padding-x: .75rem !default;
+$pagination-padding-y: .4rem !default;
+$pagination-padding-x: 1rem !default;
 $pagination-padding-y-sm: .25rem !default;
 $pagination-padding-x-sm: .5rem !default;
 $pagination-padding-y-lg: .75rem !default;
@@ -1295,12 +1295,14 @@ $pagination-padding-x-lg: 1.5rem !default;
 
 $pagination-font-size: $font-size-base !default;
 
-$pagination-color: var(--#{$prefix}link-color) !default;
+// $pagination-color: var(--#{$prefix}link-color) !default;
+$pagination-color: var(--#{$prefix}body-color) !default;
 $pagination-bg: var(--#{$prefix}body-bg) !default;
-$pagination-border-radius: var(--#{$prefix}border-radius) !default;
+$pagination-border-radius: var(--#{$prefix}border-radius-lg) !default;
 $pagination-border-width: var(--#{$prefix}border-width) !default;
 $pagination-margin-start: calc(#{$pagination-border-width} * -1) !default; // stylelint-disable-line function-disallowed-list
-$pagination-border-color: var(--#{$prefix}border-color) !default;
+// $pagination-border-color: var(--#{$prefix}border-color) !default;
+$pagination-border-color: var(--#{$prefix}transparent) !default;
 
 $pagination-focus-color: var(--#{$prefix}link-hover-color) !default;
 $pagination-focus-bg: var(--#{$prefix}secondary-bg) !default;
@@ -1312,11 +1314,14 @@ $pagination-hover-bg: var(--#{$prefix}tertiary-bg) !default;
 $pagination-hover-border-color: var(--#{$prefix}border-color) !default; // Todo in v6: remove this?
 
 $pagination-active-color: $component-active-color !default;
-$pagination-active-bg: $component-active-bg !default;
+// $pagination-active-bg: $component-active-bg !default;
+$pagination-active-bg: $success !default;
 $pagination-active-border-color: $component-active-bg !default;
 
-$pagination-disabled-color: var(--#{$prefix}secondary-color) !default;
-$pagination-disabled-bg: var(--#{$prefix}secondary-bg) !default;
+// $pagination-disabled-color: var(--#{$prefix}secondary-color) !default;
+$pagination-disabled-color: $gray-600 !default;
+// $pagination-disabled-bg: var(--#{$prefix}secondary-bg) !default;
+$pagination-disabled-bg: var(--#{$prefix}transparent) !default;
 $pagination-disabled-border-color: var(--#{$prefix}border-color) !default;
 
 $pagination-transition: color .15s ease-in-out,
