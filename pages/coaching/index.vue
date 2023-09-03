@@ -384,5 +384,12 @@ section {
     background-size: cover;
     background-position: center center;
   }
+
+  &.bg-enquire-splash {
+    background-image: url('@/src/assets/bg-enquire-splash-light-blue.svg');
+    background-repeat: no-repeat;
+    background-size: 80% auto;
+    background-position: right center;
+  }
 }
 </style>

@@ -329,7 +329,152 @@ const layout = "weblayout";
       </section>
 
 
+
+
+
+
+
+
     </div>
+
+    <!-- Requirements & Our Values  -->
+    <section class="bg-regional-manager-details py-5">
+      <div class="container">
+        <div class="row py-5 my-5">
+          <div class="col-sm-6">
+            <div class="card rounded-4 shadow-lg h-100">
+              <div class="card-body pb-2 pt-4 px-5">
+                <h4 class="text-info h1"><em>Requirements</em></h4>
+                <p class="text-muted py-2 lead">This is a senior part-time position at Samba Soccer Schools. If you’re
+                  interested
+                  in the role and
+                  meet the below criteria, we would love to hear from you!</p>
+                <h5 class="font-custom text-primary mb-3">Eligibility Criteria</h5>
+                <ul class="list-unstyled pe-3 lead">
+                  <li>
+                    <Icon name="ic:baseline-check" class="text-success h4 me-2" />Minimum FA Level 1 in coaching
+                    football
+                  </li>
+                  <li>
+                    <Icon name="ic:baseline-check" class="text-success h4 me-2" />Playing experience
+                  </li>
+                  <li>
+                    <Icon name="ic:baseline-check" class="text-success h4 me-2" />Football coaching experience
+                    (essential)
+                  </li>
+                  <li>
+                    <Icon name="ic:baseline-check" class="text-success h4 me-2" />Previous experience working in a
+                    similar capacity
+                  </li>
+                  <li>
+                    <Icon name="ic:baseline-check" class="text-success h4 me-2" />Leadership/Management experience
+                  </li>
+                  <li>
+                    <Icon name="ic:baseline-check" class="text-success h4 me-2" />Access to a personal vehicle
+                    (preferable)
+                  </li>
+                  <li>
+                    <Icon name="ic:baseline-check" class="text-success h4 me-2" />Proficient user of Excel and Word
+                  </li>
+
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 mx-auto">
+            <div class="card rounded-4 shadow-lg">
+              <div class="card-body pb-2 pt-4 px-5">
+                <h4 class="text-info h1"><em>Our Values</em></h4>
+                <p class="text-muted py-2 lead">At Samba Soccer Schools, we adopt a very particular set of values. Our
+                  Regional Managers must share our values below.</p>
+                <h5 class="font-custom text-primary mb-3">Values</h5>
+                <ul class="list-unstyled pe-3 lead">
+                  <li>
+                    <Icon name="ic:baseline-check" class="text-success h4 me-2" />Dependability: Reliable, trustworthy
+                    and does what they say they will!
+                  </li>
+                  <li>
+                    <Icon name="ic:baseline-check" class="text-success h4 me-2" />Passion: Truly loves what they do and
+                    is proud to let people know!
+                  </li>
+                  <li>
+                    <Icon name="ic:baseline-check" class="text-success h4 me-2" />Work Ethic: Never lets a minute go to
+                    waste.
+                  </li>
+                  <li>
+                    <Icon name="ic:baseline-check" class="text-success h4 me-2" />People-orientated: Sociable – has a
+                    good understanding of human behaviour and knows how to adapt.
+                  </li>
+                  <li>
+                    <Icon name="ic:baseline-check" class="text-success h4 me-2" />Team Player: Willing to sacrifice for
+                    the greater good of the team!
+                  </li>
+
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- if you think  -->
+    <section class="py-5">
+      <div class="container">
+        <div class="row align-items-center my-5">
+          <div class="col-sm-5">
+            <h3 class="display-5 font-custom text-primary">If you think you have what it takes, we’d love to hear from
+              you!
+            </h3>
+          </div>
+          <div class="col offset-sm-1">
+            <h4 class="text-primary">Further details</h4>
+            <ul class="lead">
+              <li>Start Date: Immediate</li>
+              <li>Hours:Sat & Sun: 9am-6pm</li>
+              <li>Salary: £100 per day (Experience dependent)</li>
+              <li>Regions available: North, East, South, West London</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row py-5">
+          <div class="col">
+            <p class="text-muted lead text-center">Regional Split</p>
+            <img src="@/src/assets/img-regional-split.png" alt="regional split" class="img-fluid">
+          </div>
+        </div>
+
+        <div class="row py-5">
+          <div class="col-sm-7 mx-auto text-center">
+            <h3 class="text-success display-5">
+              <em>So what are you waiting for?</em>
+            </h3>
+            <p class="lead text-muted mt-4">
+              If you believe you’d be a good fit for the role and would relish the opportunity, fill out the application
+              form below.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Apply Today  -->
+    <section class="bg-enquire bg-secondary-subtle py-5">
+      <div class="container">
+        <div class="row py-5">
+          <div class="col-sm-4">
+            <h4 class="h1 font-custom text-primary">Apply Today</h4>
+            <p class="text-muted mt-4">Fill in your details below and you can expect to hear from our team within 48
+              hours. Don’t forget to add a cover note and upload your CV at the bottom!</p>
+          </div>
+          <div class="col offset-sm-1">
+            <WebsiteRegionalManagerForm />
+          </div>
+        </div>
+      </div>
+    </section>
 
   </NuxtLayout>
 </template>
@@ -364,12 +509,28 @@ header.regional-manager-header {
   background-position: top right;
 }
 
-section.what-does-role-include {
-  .card-header {
-    height: 5.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+section {
+  &.what-does-role-include {
+    .card-header {
+      height: 5.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &.bg-regional-manager-details {
+    background-image: url('@/src/assets/bg-coaching-kids-gym.png');
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 }
+
+.bg-enquire {
+  background-image: url('@/src/assets/bg-enquire-splash-green.svg'), url('@/src/assets/bg-website-gray-texture.png');
+  background-repeat: no-repeat, repeat;
+  background-size: 80% auto, cover;
+  background-position: right center, center center;
+}
 </style>
+

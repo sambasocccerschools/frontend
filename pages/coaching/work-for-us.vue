@@ -222,7 +222,7 @@ const layout = "weblayout";
     </section>
 
     <!-- Enquire  -->
-    <section class="bg-enquire-splash py-5">
+    <section class="bg-enquire-splash-light-blue py-5">
       <div class="container">
         <div class="row py-5">
           <div class="col-sm-4">
@@ -267,5 +267,12 @@ const layout = "weblayout";
 .bg-before-you-apply {
   background-image: url('@/src/assets/bg-primary-texture.svg');
 
+}
+
+.bg-enquire-splash-light-blue {
+  background-image: url('@/src/assets/bg-enquire-splash-light-blue.svg');
+  background-repeat: no-repeat;
+  background-size: 80% auto;
+  background-position: right center;
 }
 </style>
