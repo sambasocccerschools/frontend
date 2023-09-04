@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const layout = "weblayout";
-import Reviews from '@/components/website/Reviews.vue'
    // import Socials from '@/components/website/Socials.vue'
    // import BlogPosts from '@/components/website/BlogPosts.vue'
 </script>
@@ -74,7 +73,7 @@ import Reviews from '@/components/website/Reviews.vue'
          </div>
       </section>
       <!-- Reviews  -->
-      <WebsiteReviews />
+      <WebsiteReviewsSection />
       <!-- Book a Free Trial  -->
       <section class="py-5 bg-free-trial">
          <div class="container my-2">
@@ -181,8 +180,8 @@ import Reviews from '@/components/website/Reviews.vue'
             </div>
          </div>
       </section>
-      <WebsiteBlogPosts />
 
+      <WebsiteBlogPosts />
 
    </NuxtLayout>
 </template>
@@ -220,11 +219,6 @@ section {
       background-image: url('@/src/assets/bg-yellow-green-texture.svg');
       background-repeat: no-repeat;
       background-size: cover;
-   }
-
-   &.bg-gray-texture {
-      background-image: url('@/src/assets/bg-website-gray-texture.png');
-      background-repeat: repeat;
    }
 
    &.bg-img-gallery {

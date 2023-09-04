@@ -544,7 +544,8 @@ $border-radius-2xl: $border-radius-xxl !default; // Deprecated in v5.3.0
 // fusv-enable
 
 // scss-docs-start box-shadow-variables
-$box-shadow: 0 .5rem 1rem rgba($black, .15) !default;
+// $box-shadow: 0 .5rem 1rem rgba($black, .15) !default;
+$box-shadow: 0 .5rem 2rem rgba($black, .075) !default;
 $box-shadow-sm: 0 .125rem .25rem rgba($black, .075) !default;
 // $box-shadow-lg: 0 1rem 3rem rgba($black, .175) !default;
 $box-shadow-lg: 0 1rem 4rem rgba($black, .1) !default;
@@ -1285,8 +1286,8 @@ $dropdown-dark-header-color: $gray-500 !default;
 // Pagination
 
 // scss-docs-start pagination-variables
-$pagination-padding-y: .375rem !default;
-$pagination-padding-x: .75rem !default;
+$pagination-padding-y: .4rem !default;
+$pagination-padding-x: 1rem !default;
 $pagination-padding-y-sm: .25rem !default;
 $pagination-padding-x-sm: .5rem !default;
 $pagination-padding-y-lg: .75rem !default;
@@ -1294,12 +1295,14 @@ $pagination-padding-x-lg: 1.5rem !default;
 
 $pagination-font-size: $font-size-base !default;
 
-$pagination-color: var(--#{$prefix}link-color) !default;
+// $pagination-color: var(--#{$prefix}link-color) !default;
+$pagination-color: var(--#{$prefix}body-color) !default;
 $pagination-bg: var(--#{$prefix}body-bg) !default;
-$pagination-border-radius: var(--#{$prefix}border-radius) !default;
+$pagination-border-radius: var(--#{$prefix}border-radius-lg) !default;
 $pagination-border-width: var(--#{$prefix}border-width) !default;
 $pagination-margin-start: calc(#{$pagination-border-width} * -1) !default; // stylelint-disable-line function-disallowed-list
-$pagination-border-color: var(--#{$prefix}border-color) !default;
+// $pagination-border-color: var(--#{$prefix}border-color) !default;
+$pagination-border-color: var(--#{$prefix}transparent) !default;
 
 $pagination-focus-color: var(--#{$prefix}link-hover-color) !default;
 $pagination-focus-bg: var(--#{$prefix}secondary-bg) !default;
@@ -1311,11 +1314,14 @@ $pagination-hover-bg: var(--#{$prefix}tertiary-bg) !default;
 $pagination-hover-border-color: var(--#{$prefix}border-color) !default; // Todo in v6: remove this?
 
 $pagination-active-color: $component-active-color !default;
-$pagination-active-bg: $component-active-bg !default;
+// $pagination-active-bg: $component-active-bg !default;
+$pagination-active-bg: $success !default;
 $pagination-active-border-color: $component-active-bg !default;
 
-$pagination-disabled-color: var(--#{$prefix}secondary-color) !default;
-$pagination-disabled-bg: var(--#{$prefix}secondary-bg) !default;
+// $pagination-disabled-color: var(--#{$prefix}secondary-color) !default;
+$pagination-disabled-color: $gray-600 !default;
+// $pagination-disabled-bg: var(--#{$prefix}secondary-bg) !default;
+$pagination-disabled-bg: var(--#{$prefix}transparent) !default;
 $pagination-disabled-border-color: var(--#{$prefix}border-color) !default;
 
 $pagination-transition: color .15s ease-in-out,
@@ -1366,10 +1372,13 @@ $accordion-padding-y: 1rem !default;
 $accordion-padding-x: 1.25rem !default;
 $accordion-color: var(--#{$prefix}body-color) !default;
 $accordion-bg: var(--#{$prefix}body-bg) !default;
-$accordion-border-width: var(--#{$prefix}border-width) !default;
+// $accordion-border-width: var(--#{$prefix}border-width) !default;
+$accordion-border-width: 0 !default;
 $accordion-border-color: var(--#{$prefix}border-color) !default;
-$accordion-border-radius: var(--#{$prefix}border-radius) !default;
+// $accordion-border-radius: var(--#{$prefix}border-radius) !default;
+$accordion-border-radius: $border-radius-xl !default;
 $accordion-inner-border-radius: subtract($accordion-border-radius, $accordion-border-width) !default;
+
 
 $accordion-body-padding-y: $accordion-padding-y !default;
 $accordion-body-padding-x: $accordion-padding-x !default;
@@ -1377,14 +1386,18 @@ $accordion-body-padding-x: $accordion-padding-x !default;
 $accordion-button-padding-y: $accordion-padding-y !default;
 $accordion-button-padding-x: $accordion-padding-x !default;
 $accordion-button-color: var(--#{$prefix}body-color) !default;
+// $accordion-button-bg: var(--#{$prefix}accordion-bg) !default;
 $accordion-button-bg: var(--#{$prefix}accordion-bg) !default;
 $accordion-transition: $btn-transition,
   border-radius .15s ease !default;
-$accordion-button-active-bg: var(--#{$prefix}primary-bg-subtle) !default;
-$accordion-button-active-color: var(--#{$prefix}primary-text-emphasis) !default;
+// $accordion-button-active-bg: var(--#{$prefix}primary-bg-subtle) !default;
+$accordion-button-active-bg: var(--#{$prefix}accordion-bg) !default;
+// $accordion-button-active-color: var(--#{$prefix}primary-text-emphasis) !default;
+$accordion-button-active-color: var(--#{$prefix}dark-text-emphasis) !default;
 
 $accordion-button-focus-border-color: $input-focus-border-color !default;
-$accordion-button-focus-box-shadow: $btn-focus-box-shadow !default;
+// $accordion-button-focus-box-shadow: $btn-focus-box-shadow !default;
+$accordion-button-focus-box-shadow: none !default;
 
 $accordion-icon-width: 1.25rem !default;
 $accordion-icon-color: $body-color !default;

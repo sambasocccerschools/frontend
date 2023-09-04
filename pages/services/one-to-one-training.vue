@@ -66,7 +66,7 @@ const layout = 'weblayout'
     </section>
 
     <section class="">
-      <div class="bg-primary-waves">
+      <div class="bg-primary-texture-with-top-wave-white">
         <div class="container">
 
           <div class="row mb-4">
@@ -143,7 +143,7 @@ const layout = 'weblayout'
               our team will call you shortly.</p>
           </div>
           <div class="col offset-sm-1">
-            <WebsiteFAQOneToOneForm />
+            <WebsiteFormFAQOneToOne />
           </div>
         </div>
       </div>
@@ -167,15 +167,6 @@ const layout = 'weblayout'
   background-position: bottom center;
 }
 
-.bg-primary-waves {
-  background-image: url('@/src/assets/bg-primary-waves.svg');
-  background-repeat: no-repeat;
-  background-position: center bottom;
-  background-size: cover;
-  // min-height: 30vh;
-  padding-top: 10rem;
-  padding-bottom: 5rem
-}
 
 .bg-player-holding-football {
   background-image: url('@/src/assets/bg-player-holding-football.png');

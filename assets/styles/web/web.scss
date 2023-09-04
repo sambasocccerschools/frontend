@@ -55,6 +55,9 @@
 // scss-docs-end import-stack
 
 
+
+// Custom Fonts 
+
 @font-face {
   font-family: 'Recline';
   src: url("../fonts/Recline-Bold.otf") format("opentype");
@@ -79,4 +82,129 @@
 
 em {
   font-family: 'Permanent Marker', cursive;
+}
+
+// Backgrounds and shared Styles 
+
+.bg {
+  &-waves {
+    &-green {
+      &-yellow {
+        background-image: url('@/src/assets/bg-yellow-green-texture.svg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+      }
+
+      &-blue {
+        background-image: url('@/src/assets/bg-green-blue-waves.svg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+      }
+    }
+  }
+
+  &-gray-texture {
+    background-image: url('@/src/assets/bg-website-gray-texture.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    // background-color: #FDFDFF;
+    background-color: $light;
+  }
+
+  &-light-texture {}
+
+  &-primary-texture {
+    background-image: url('@/src/assets/bg-primary-texture.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center right;
+    background-color: $primary;
+
+    &-with-top-wave-white {
+      background-image: url('@/src/assets/bg-white-wave-top.svg'), url('@/src/assets/bg-primary-texture.png');
+      padding-top: 10rem;
+      padding-bottom: 5rem;
+      background-repeat: no-repeat;
+      background-size: 100% auto, cover;
+
+      &-inverted {
+        background-image: url('@/src/assets/bg-white-wave-top-inverted.svg'), url('@/src/assets/bg-primary-texture.png');
+        padding-top: 10rem;
+        padding-bottom: 5rem;
+        background-repeat: no-repeat;
+        background-size: 100% auto, cover;
+      }
+    }
+
+    &-with-top-wave-light {
+      padding-top: 10rem;
+      padding-bottom: 5rem;
+      background-image: url('@/src/assets/bg-light-wave-top.svg'), url('@/src/assets/bg-primary-texture.png');
+      background-repeat: no-repeat;
+      background-size: 100% auto, cover;
+    }
+  }
+
+  &-fixed {
+    background-attachment: fixed;
+  }
+}
+
+// Custom Card 
+
+.card {
+  &-avatar {
+    @extend .card;
+    @extend .border-0;
+    @extend .shadow;
+    @extend .rounded-4;
+    width: 8rem;
+    text-align: center;
+
+    .card {
+      &-body {
+        @extend .rounded-top-4;
+        padding: .5rem;
+
+        img {
+          @extend .rounded-4;
+        }
+      }
+
+      &-footer {
+        color: white;
+        @extend .rounded-bottom-4;
+        height: 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+  }
+}
+
+// Custom Accordions 
+
+.accordion {
+  &-header {
+    @extend .rounded-top-4;
+  }
+
+  &-button {
+    @extend .rounded-4;
+  }
+
+  &-item {
+    @extend .mb-3;
+    @extend .shadow;
+    @extend .rounded-4
+  }
+
+  &-body {
+    @extend .rounded-bottom-4;
+  }
+
 }

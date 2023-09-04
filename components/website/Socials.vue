@@ -7,19 +7,19 @@
           <p class="lead text-light text-semibold">If we are not playing football you can find us socialising on…</p>
         </div>
         <div class="col d-flex">
-          <NuxtLink class="btn-social" to="/" target="_blank">
+          <NuxtLink class="btn-social" to="https://www.facebook.com/sambasoccerschools/" target="_blank">
             <Icon name="gg:facebook" />
           </NuxtLink>
-          <NuxtLink class="btn-social" to="/" target="_blank">
+          <NuxtLink class="btn-social" to="https://www.instagram.com/sambasoccer_uk" target="_blank">
             <Icon name="mdi:instagram" />
           </NuxtLink>
-          <NuxtLink class="btn-social" to="/" target="_blank">
+          <NuxtLink class="btn-social" to="https://www.youtube.com/c/sambasoccerschools" target="_blank">
             <Icon name="ph:youtube-logo-fill" />
           </NuxtLink>
-          <NuxtLink class="btn-social" to="/" target="_blank">
+          <NuxtLink class="btn-social" to="https://uk.linkedin.com/company/samba-soccer-schools-" target="_blank">
             <Icon name="mdi:linkedin" />
           </NuxtLink>
-          <NuxtLink class="btn-social" to="/" target="_blank">
+          <NuxtLink class="btn-social" to="https://twitter.com/samba_soccer" target="_blank">
             <Icon name="mdi:twitter" />
           </NuxtLink>
         </div>

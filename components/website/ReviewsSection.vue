@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-gray-texture py-5 my-5">
+  <section class="bg-gray-texture py-5">
     <div class="container text-center">
       <p class="text-primary text-semibold lead">GOOGLE REVIEWS</p>
       <h2 class="display-4 text-primary"><span class="font-custom">Unforgettable</span> <em class="text-info">MOMENTS</em>
@@ -37,9 +37,3 @@
     </div>
   </section>
 </template>
-<style lang="scss" scoped>
-.bg-gray-texture {
-  background-image: url('@/src/assets/bg-website-gray-texture.png');
-  background-repeat: repeat;
-}
-</style>

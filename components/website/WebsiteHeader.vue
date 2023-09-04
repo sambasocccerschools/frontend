@@ -5,7 +5,7 @@
 <template>
   <!-- This is a good example to show or not based on state  -->
   <WebsiteBanner />
-  <div class="bg-primary text-light bg-texture-primary">
+  <div class="bg-primary text-light bg-primary-texture shadow-lg">
     <div class="container-fluid">
       <div class="row pt-4">
         <div class="col-5 border-bottom pb-4">
@@ -31,7 +31,7 @@
               aria-expanded="false">
               Find a Class
             </button>
-            <ul class="dropdown-menu dropdown-menu-dark bg-texture-primary">
+            <ul class="dropdown-menu dropdown-menu-dark bg-primary-texture">
               <li>
                 <NuxtLink to="/book" class="dropdown-item">Find a Class</NuxtLink>
               </li>
@@ -50,7 +50,7 @@
               aria-expanded="false">
               Services
             </button>
-            <ul class="dropdown-menu dropdown-menu-dark bg-texture-primary">
+            <ul class="dropdown-menu dropdown-menu-dark bg-primary-texture">
               <li>
                 <NuxtLink to="/services/weekly-classes" class="dropdown-item">Weekly Classes</NuxtLink>
               </li>
@@ -75,7 +75,7 @@
               aria-expanded="false">
               About Us
             </button>
-            <ul class="dropdown-menu dropdown-menu-dark bg-texture-primary">
+            <ul class="dropdown-menu dropdown-menu-dark bg-primary-texture">
               <li>
                 <NuxtLink to="/about" class="dropdown-item">About</NuxtLink>
               </li>
@@ -104,7 +104,7 @@
               aria-expanded="false">
               Franchise
             </button>
-            <ul class="dropdown-menu dropdown-menu-dark bg-texture-primary">
+            <ul class="dropdown-menu dropdown-menu-dark bg-primary-texture">
               <li>
                 <NuxtLink to="/franchise" class="dropdown-item">Franchise</NuxtLink>
               </li>
@@ -130,7 +130,7 @@
               aria-expanded="false">
               Coaching
             </button>
-            <ul class="dropdown-menu dropdown-menu-dark bg-texture-primary">
+            <ul class="dropdown-menu dropdown-menu-dark bg-primary-texture">
               <li>
                 <NuxtLink to="/coaching" class="dropdown-item">Coaching</NuxtLink>
               </li>
@@ -154,12 +154,6 @@
 <style lang="scss">
 @import '@/assets/styles/web/web.scss';
 
-.bg-texture-primary {
-  background-image: url('@/src/assets/bg-primary-texture.svg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center right;
-}
 
 .logo {
   height: 1rem;

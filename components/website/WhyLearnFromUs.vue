@@ -8,7 +8,7 @@ export default {
 
 
 <template>
-  <section class="py-5 bg-gray-texture bg-light">
+  <section class="py-5 bg-gray-texture">
     <div class="container">
       <h2 class="h1 font-custom text-primary text-center">Why should you <em class="text-success">learn</em> from us?</h2>
       <div class="row">
@@ -83,10 +83,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/styles/web/web.scss';
 
-.bg-gray-texture {
-  background-image: url('@/src/assets/bg-website-gray-texture.png');
-  background-repeat: repeat;
-}
 
 .btn-choice {
   @extend .btn;
