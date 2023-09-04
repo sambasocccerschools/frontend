@@ -1,12 +1,12 @@
 <script setup lang="ts">
-   const layout = "weblayout";
-   import Reviews from '@/components/website/Reviews.vue'
+const layout = "weblayout";
+import Reviews from '@/components/website/Reviews.vue'
 
 </script>
 
 
 <template>
   <NuxtLayout :name="layout">
-    <Reviews/>
+    <WebsiteReviewsSection />
   </NuxtLayout>
 </template>

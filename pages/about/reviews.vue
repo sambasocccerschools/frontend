@@ -4,6 +4,6 @@ const layout = "weblayout";
 
 <template>
   <NuxtLayout :name="layout">
-    Reviews
+    <WebsiteReviewsSection />
   </NuxtLayout>
 </template>
