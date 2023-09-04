@@ -123,11 +123,19 @@ em {
     background-color: $primary;
 
     &-with-top-wave-white {
+      background-image: url('@/src/assets/bg-white-wave-top.svg'), url('@/src/assets/bg-primary-texture.png');
       padding-top: 10rem;
       padding-bottom: 5rem;
-      background-image: url('@/src/assets/bg-white-wave-top.svg'), url('@/src/assets/bg-primary-texture.png');
       background-repeat: no-repeat;
       background-size: 100% auto, cover;
+
+      &-inverted {
+        background-image: url('@/src/assets/bg-white-wave-top-inverted.svg'), url('@/src/assets/bg-primary-texture.png');
+        padding-top: 10rem;
+        padding-bottom: 5rem;
+        background-repeat: no-repeat;
+        background-size: 100% auto, cover;
+      }
     }
 
     &-with-top-wave-light {
