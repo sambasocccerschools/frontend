@@ -109,11 +109,11 @@ const layout = "weblayout";
 @import '@/assets/styles/web/web.scss';
 
 header.bg-header-meet-the-team {
-  background-image: url('@/src/assets/bg-header-meet-the-team.png');
+  background-image: url('@/src/assets/bg-light-wave-bottom.svg'), url('@/src/assets/bg-header-meet-the-team.png');
   padding: 2rem 0 1rem;
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
+  background-size: 100% auto, cover;
+  background-position: bottom center, center center;
   @extend .bg-warning;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <section class="py-5 bg-light bg-gray-texture">
+  <section class="py-5 bg-gray-texture bg-fixed">
     <div class="container py-5">
       <div class="row">
         <div class="col-sm-8 mx-auto">
@@ -74,28 +74,3 @@
     </div>
   </section>
 </template>
-
-<style lang="scss" scoped>
-@import '@/assets/styles/web/web.scss';
-
-.accordion {
-  &-header {
-    @extend .rounded-top-4;
-  }
-
-  &-button {
-    @extend .rounded-4;
-  }
-
-  &-item {
-    @extend .mb-3;
-    @extend .shadow;
-    @extend .rounded-4
-  }
-
-  &-body {
-    @extend .rounded-bottom-4;
-  }
-
-}
-</style>

@@ -55,6 +55,9 @@
 // scss-docs-end import-stack
 
 
+
+// Custom Fonts 
+
 @font-face {
   font-family: 'Recline';
   src: url("../fonts/Recline-Bold.otf") format("opentype");
@@ -135,7 +138,13 @@ em {
       background-size: 100% auto, cover;
     }
   }
+
+  &-fixed {
+    background-attachment: fixed;
+  }
 }
+
+// Custom Card 
 
 .card {
   &-avatar {
@@ -167,4 +176,27 @@ em {
     }
 
   }
+}
+
+// Custom Accordions 
+
+.accordion {
+  &-header {
+    @extend .rounded-top-4;
+  }
+
+  &-button {
+    @extend .rounded-4;
+  }
+
+  &-item {
+    @extend .mb-3;
+    @extend .shadow;
+    @extend .rounded-4
+  }
+
+  &-body {
+    @extend .rounded-bottom-4;
+  }
+
 }
