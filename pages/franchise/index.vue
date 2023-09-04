@@ -434,7 +434,7 @@ const layout = "weblayout";
 section {
 
   &.bg-enquire-splash {
-    background-image: url('@/src/assets/bg-enquire-splash.svg');
+    background-image: url('@/src/assets/bg-enquire-splash-green.svg');
     background-repeat: no-repeat;
     background-size: 80% auto;
     background-position: right center;
