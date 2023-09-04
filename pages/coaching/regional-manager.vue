@@ -50,7 +50,7 @@ const layout = "weblayout";
     </section>
 
 
-    <section class="what-does-role-include bg-primary-texture-with-top-wave-white text-bg-dark py-5">
+    <section class="what-does-role-include bg-primary-texture-with-top-wave-white atext-bg-dark py-5">
       <div class="container">
         <div class="my-5 pt-5 text-center">
           <h2 class="display-4 text-warning font-custom mt-5">What does the role include?</h2>
@@ -470,7 +470,7 @@ const layout = "weblayout";
               hours. Don’t forget to add a cover note and upload your CV at the bottom!</p>
           </div>
           <div class="col offset-sm-1">
-            <WebsiteRegionalManagerForm />
+            <WebsiteFormRegionalManager />
           </div>
         </div>
       </div>

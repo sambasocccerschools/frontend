@@ -252,7 +252,7 @@ const layout = "weblayout";
                 <p class="text-muted lead">Enter your postcode below to find your nearest class!</p>
               </div>
               <div class="col height-100">
-                <WebsiteSelectVenueForm />
+                <WebsiteFormSelectVenue />
               </div>
             </div>
           </div>

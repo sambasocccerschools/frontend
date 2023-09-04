@@ -5,11 +5,54 @@ const layout = "weblayout";
 <template>
   <NuxtLayout :name="layout">
 
+    <header class="bg-header-meet-the-team d-flex align-items-center">
+      <div class="container text-center">
+        <div class="row align-items-center">
+
+          <div class="text-center col-auto order-sm-1">
+            <img src="@/src/assets/img-meet-the-team-coach-1.png" alt="img-meet-the-team-coach-1" class="img-fluid">
+          </div>
+          <div class="col-auto text-center order-sm-3">
+            <img src="@/src/assets/img-meet-the-team-coach-2.png" alt="img-meet-the-team-coach-2" class="img-fluid">
+          </div>
+          <div class="col order-sm-2">
+            <h1 class="text-info display-2"><em>Meet the team</em></h1>
+
+
+            <p class="lead" style="line-height:2.5rem">With over 50 years of combined football coaching experience,
+              you
+              can
+              rest assured that your
+              child’s progress
+              is in the right hands. Meet some of our senior kids football coaches who work very hard to make sure
+              your
+              child has a safe and enjoyable football experience.</p>
+            <div>
+              <Icon name="carbon:chevron-down" class="display-1 text-muted" />
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Regional Managers -->
+    <WebsiteTeamRegionalManagers />
+
+    <!-- Head Coaches  -->
+    <WebsiteTeamHeadCoaches />
+
+    <!-- Management Team -->
+    <WebsiteTeamManagement />
+
     <!-- Word from founder -->
 
-    <section class="bg-primary-texture-with-top-wave-light bg-primary text-bg-dark py-5">
+    <section class="bg-primary-texture-with-top-wave-white bg-primary text-bg-dark py-5">
       <div class="container">
         <div class="my-5 pt-5 text-center">
+          <img src="@/src/assets/img-founder-nilio-bagga.png" alt="img-founder-nilio-bagga" class="mt-5">
           <h2 class="display-4 text-success font-custom my-5">A Word from our founder</h2>
           <div class="col-sm-8 mx-auto " style="line-height:2.5rem">
             <p class="lead">It was both experiences that eventually kick-started Nilio’s coaching journey. He realised the
@@ -26,9 +69,13 @@ const layout = "weblayout";
 
           </div>
 
+          <div class="mt-5 mb-3 ">
+            <img src="@/src/assets/img-signature-founder.png" alt="Founder Signature" class="mb-5">
+            <h4>Nilio Bagga</h4>
+            <p>Founder and Managing Director</p>
+          </div>
+
         </div>
-
-
 
       </div>
     </section>
@@ -36,14 +83,14 @@ const layout = "weblayout";
     <!--  -->
 
 
-    <section class="bg-waves-green-blue py-4 text-cneter">
+    <section class="bg-waves-green-blue py-5 text-cneter">
       <div class="container">
         <div class="row">
           <div class="col-sm-8 mx-auto">
             <div class="card rounded-4 border-0 bg-light pt-4 pb-5">
               <div class="card-body px-5">
                 <h3 class="display-4 text-info mb-4 font-custom"><em>Book a samba soccer class</em></h3>
-                <WebsiteSelectVenueForm />
+                <WebsiteFormSelectVenue />
 
               </div>
             </div>
@@ -51,5 +98,22 @@ const layout = "weblayout";
         </div>
       </div>
     </section>
+
+
+
+
   </NuxtLayout>
 </template>
+
+<style lang="scss" scoped>
+@import '@/assets/styles/web/web.scss';
+
+header.bg-header-meet-the-team {
+  background-image: url('@/src/assets/bg-header-meet-the-team.png');
+  padding: 2rem 0 1rem;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  @extend .bg-warning;
+}
+</style>

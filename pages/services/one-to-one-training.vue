@@ -143,7 +143,7 @@ const layout = 'weblayout'
               our team will call you shortly.</p>
           </div>
           <div class="col offset-sm-1">
-            <WebsiteFAQOneToOneForm />
+            <WebsiteFormFAQOneToOne />
           </div>
         </div>
       </div>

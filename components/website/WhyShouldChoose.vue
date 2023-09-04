@@ -16,7 +16,7 @@
                 happy to show you what we do. </p>
             </div>
             <div class="col height-100">
-              <WebsiteSelectVenueForm />
+              <WebsiteFormSelectVenue />
             </div>
           </div>
         </div>

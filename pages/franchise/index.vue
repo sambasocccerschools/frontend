@@ -388,7 +388,7 @@ const layout = "weblayout";
               journey.  </p>
           </div>
           <div class="col offset-sm-1">
-            <WebsiteFranchiseForm />
+            <WebsiteFormFranchise />
           </div>
         </div>
       </div>

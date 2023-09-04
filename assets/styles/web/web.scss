@@ -136,3 +136,35 @@ em {
     }
   }
 }
+
+.card {
+  &-avatar {
+    @extend .card;
+    @extend .border-0;
+    @extend .shadow;
+    @extend .rounded-4;
+    width: 8rem;
+    text-align: center;
+
+    .card {
+      &-body {
+        @extend .rounded-top-4;
+        padding: .5rem;
+
+        img {
+          @extend .rounded-4;
+        }
+      }
+
+      &-footer {
+        color: white;
+        @extend .rounded-bottom-4;
+        height: 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+  }
+}

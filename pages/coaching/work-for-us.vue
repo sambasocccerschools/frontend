@@ -232,7 +232,7 @@ const layout = "weblayout";
               luck!</p>
           </div>
           <div class="col offset-sm-1">
-            <WebsiteWorkForUsForm />
+            <WebsiteFormWorkForUs />
           </div>
         </div>
       </div>
