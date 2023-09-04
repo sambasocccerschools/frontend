@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const layout = "weblayout";
-import Reviews from '@/components/website/Reviews.vue'
    // import Socials from '@/components/website/Socials.vue'
    // import BlogPosts from '@/components/website/BlogPosts.vue'
 </script>
@@ -74,7 +73,7 @@ import Reviews from '@/components/website/Reviews.vue'
          </div>
       </section>
       <!-- Reviews  -->
-      <WebsiteReviews />
+      <WebsiteReviewsSection />
       <!-- Book a Free Trial  -->
       <section class="py-5 bg-free-trial">
          <div class="container my-2">

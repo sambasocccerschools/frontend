@@ -21,7 +21,7 @@
                   <NuxtLink to="/book" class="text-light btn btn-link px-0">Find a Class</NuxtLink>
                 </li>
                 <li class="col">
-                  <NuxtLink to="/reviews" class="text-light btn btn-link px-0">Reviews</NuxtLink>
+                  <NuxtLink to="/about/reviews" class="text-light btn btn-link px-0">Reviews</NuxtLink>
                 </li>
                 <li class="col">
                   <NuxtLink to="/services/weekly-classes" class="text-light btn btn-link px-0">Services?????</NuxtLink>
