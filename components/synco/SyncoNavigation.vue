@@ -1,7 +1,7 @@
 <template>
   <div
-    class="vh-100 border-end border-1 border-secondary d-flex flex-column py-4 px-3 bg-white overflow-y-scroll justify-content-between"
-    style="width:17rem">
+    class="vh-100 border-end border-1 border-secondary-subtle d-flex flex-column py-4 px-3 bg-white overflow-y-scroll justify-content-between"
+    style="width:auto">
     <div>
       <div class="text-center mb-4">
         <img src="@/src/assets/sss-logo-synco-black.png" alt="Synco logo" class="w-50">
@@ -84,6 +84,7 @@
   align-items: center;
   display: flex;
   gap: .5rem;
+  font-size: $font-size-lg;
 
   &-link {
     @extend .py-2;

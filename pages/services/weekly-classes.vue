@@ -8,7 +8,7 @@ const layout = "weblayout";
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-4 offset-sm-2 height-100 d-flex flex-column justify-content-center align-items-start">
-            <h1 class="mb-2 text-primary display-1">WEEKLY <br><span class="font-custom">classes</span></h1>
+            <h1 class="mb-2 text-primary display-1"><em>WEEKLY</em> <br><span class="font-custom">classes</span></h1>
             <NuxtLink to="/book" class="btn btn-primary btn-lg px-5 rounded-5"><strong>Book Now</strong>
             </NuxtLink>
           </div>

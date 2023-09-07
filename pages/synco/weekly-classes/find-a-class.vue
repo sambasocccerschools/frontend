@@ -3,8 +3,32 @@ const layout = "syncolayout";
 
 </script>
 <template>
-   <NuxtLayout :name="layout" pageTitle="Find a Class">
+  <NuxtLayout :name="layout" pageTitle="Weekly Classes">
 
+    <div class="card bg-success bg-gradient text-bg-dark">
+      <div class="card-body">
+        <span class="h3">
+          <Icon name="ic:baseline-search" /> Find a Class
+        </span>
+      </div>
+    </div>
 
-   </NuxtLayout>
+    <div class="row mt-4">
+      <div class="col-sm-3 ">
+        <SyncoFormFiltterActivity />
+      </div>
+      <div class="col">
+        <SyncoBookingListItem activity="weekly-class" />
+        <SyncoBookingListItem activity="weekly-class" />
+        <SyncoBookingListItem activity="weekly-class" />
+        <SyncoBookingListItem activity="weekly-class" />
+        <SyncoBookingListItem activity="weekly-class" />
+        <SyncoBookingListItem activity="weekly-class" />
+        <SyncoBookingListItem activity="weekly-class" />
+        <SyncoBookingListItem activity="weekly-class" />
+        <SyncoBookingListItem activity="weekly-class" />
+        <SyncoBookingListItem activity="weekly-class" />
+      </div>
+    </div>
+  </NuxtLayout>
 </template>

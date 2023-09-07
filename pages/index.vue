@@ -7,7 +7,7 @@ const layout = "weblayout";
 <template>
    <NuxtLayout :name="layout">
       <header class="header d-flex flex-column align-items-center justify-content-center text-white text-center">
-         <h1><span class="display-3">Play with</span> <br><em class="display-1">Passion</em></h1>
+         <h1 class="font-custom display-2" display-2>Play with<br><em class="display-1">Passion</em></h1>
          <p class="lead">Football training built on flair, confidence and Brazilian rhythm since 2009.</p>
          <NuxtLink to="/" class="btn btn-info rounded-5 px-4 text-light">Learn More</NuxtLink>
       </header>
