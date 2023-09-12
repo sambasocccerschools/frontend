@@ -1,9 +1,5 @@
-<script setup lang="ts">
-const layout = "syncolayout";
-
-</script>
 <template>
-  <NuxtLayout :name="layout">
+  <NuxtLayout name="syncolayout">
     Capacity
   </NuxtLayout>
 </template>

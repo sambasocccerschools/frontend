@@ -1,6 +1,7 @@
 
 <template>
   <NuxtLayout name="syncolayout">
-    Waiting List
+    One to one
   </NuxtLayout>
 </template>
+

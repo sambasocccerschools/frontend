@@ -1,6 +1,6 @@
 
 <template>
   <NuxtLayout name="syncolayout">
-    Waiting List
+    Trials and conversions
   </NuxtLayout>
 </template>

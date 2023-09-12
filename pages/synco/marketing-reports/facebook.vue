@@ -1,6 +1,6 @@
-
 <template>
   <NuxtLayout name="syncolayout">
-    Waiting List
+    Facebook ads performance
   </NuxtLayout>
 </template>
+

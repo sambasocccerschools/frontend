@@ -1,6 +1,6 @@
 
 <template>
   <NuxtLayout name="syncolayout">
-    Waiting List
+    Coach attendace
   </NuxtLayout>
 </template>

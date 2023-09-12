@@ -1,6 +1,5 @@
-
 <template>
   <NuxtLayout name="syncolayout">
-    Waiting List
+    Holiday Camps
   </NuxtLayout>
 </template>

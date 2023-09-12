@@ -1,6 +1,5 @@
-
 <template>
   <NuxtLayout name="syncolayout">
-    Waiting List
+    Term Dates & Mapping Session Plans
   </NuxtLayout>
 </template>

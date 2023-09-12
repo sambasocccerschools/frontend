@@ -1,9 +1,6 @@
-<script setup lang="ts">
-const layout = "syncolayout";
 
-</script>
 <template>
-  <NuxtLayout :name="layout">
+  <NuxtLayout name="syncolayout">
     <div class="row">
       <div class="col-sm-8">
         <img src="@/src/assets/img-dashboard-quote.png" class="img-fluid"

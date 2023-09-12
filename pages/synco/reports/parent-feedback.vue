@@ -1,6 +1,6 @@
 
 <template>
   <NuxtLayout name="syncolayout">
-    Waiting List
+    Parent Feedback
   </NuxtLayout>
 </template>

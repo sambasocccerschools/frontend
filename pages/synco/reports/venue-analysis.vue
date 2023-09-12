@@ -1,6 +1,7 @@
 
 <template>
   <NuxtLayout name="syncolayout">
-    Waiting List
+    Venue Analysis
   </NuxtLayout>
 </template>
+

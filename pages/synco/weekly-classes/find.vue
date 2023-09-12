@@ -1,9 +1,6 @@
-<script setup lang="ts">
-const layout = "syncolayout";
 
-</script>
 <template>
-  <NuxtLayout :name="layout" pageTitle="Weekly Classes">
+  <NuxtLayout name="syncolayout" pageTitle="Weekly Classes">
 
     <div class="card bg-success bg-gradient text-bg-dark">
       <div class="card-body">

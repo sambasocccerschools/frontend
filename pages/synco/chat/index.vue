@@ -1,6 +1,7 @@
 
 <template>
   <NuxtLayout name="syncolayout">
-    Waiting List
+    Synco chat space
   </NuxtLayout>
 </template>
+
