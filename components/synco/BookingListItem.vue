@@ -38,6 +38,8 @@ export default {
         <small>Outdoor</small>
       </div>
       <div class="w-100">
+        <!-- These depend on the classes per venue -->
+        <!--  -->
         <div class="border-bottom border-1 border-muted pb-2 d-flex justify-content-between align-items-center">
           <div class="d-flex align-items-center justify-content-center gap-3">
             <span class="h6 text-semibold m-0">Class 1</span>
@@ -46,9 +48,12 @@ export default {
             <span class="bg-danger-subtle text-danger d-flex align-items-center rounded-3 px-2">Fully Booked</span>
           </div>
           <div class="">
-            <button class="btn btn-primary btn-sm text-light"><strong>Add to Waiting List</strong></button>
+            <NuxtLink to="/synco/weekly-classes/create/waiting-list" class="btn btn-primary btn-sm text-light"><strong>Add
+                to
+                Waiting List</strong></NuxtLink>
           </div>
         </div>
+        <!--  -->
         <div class="d-flex justify-content-between align-items-center">
           <div class="d-flex align-items-center justify-content-center gap-3">
             <span class="h6 text-semibold m-0">Class 2</span>
@@ -57,8 +62,12 @@ export default {
             <span class="bg-success-subtle text-success d-flex align-items-center rounded-3 px-2">+4 spaces</span>
           </div>
           <div class=" d-flex align-items-center">
-            <button class="btn btn-outline-primary btn-sm me-3"><strong>Book a Membership</strong></button>
-            <button class="btn btn-primary btn-sm text-light"><strong>Book a Free Trial</strong></button>
+            <NuxtLink to="/synco/weekly-classes/create/membership" class="btn btn-outline-primary btn-sm me-3">
+              <strong>Book a
+                Membership</strong></NuxtLink>
+            <NuxtLink to="/synco/weekly-classes/create/free-trial" class="btn btn-primary btn-sm text-light"><strong>Book
+                a
+                Free Trial</strong></NuxtLink>
           </div>
         </div>
       </div>
@@ -66,5 +75,4 @@ export default {
     </div>
 
 
-  </div>
-</template>
+</div></template>
