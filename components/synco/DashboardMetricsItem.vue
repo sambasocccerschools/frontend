@@ -11,17 +11,15 @@ export default {
 
 <template>
   <div class="col">
-    <div class="card rounded-4 h-100 d-flex align-items-center">
-      <div class="card-body flex-stretch">
-        <div class="d-flex">
-          <span class="informatics-circle bg-primary-subtle rounded-5 text-primary me-3">
-            <Icon :name="icon" />
-          </span>
-          <div class=" d-flex flex-column">
-            <small class="text-muted">{{ name }}</small>
-            <div class="d-flex align-items-center">
-              <span class="h4">{{ value }}</span> <span>({{ change }}%)</span>
-            </div>
+    <div class="card rounded-4 h-100 ">
+      <div class="card-body d-flex align-items-center justify-content-start">
+        <span class="informatics-circle bg-primary-subtle rounded-5 text-primary me-2">
+          <Icon :name="icon" />
+        </span>
+        <div class="d-flex flex-column">
+          <small class="text-muted">{{ name }}</small>
+          <div class="d-flex align-items-center">
+            <span class="h6 m-0">{{ value }}</span> <span>({{ change }}%)</span>
           </div>
         </div>
       </div>
@@ -31,11 +29,11 @@ export default {
 
 <style lang="scss" scoped>
 .informatics-circle {
-  height: 3rem;
-  width: 3rem;
+  height: 2rem;
+  width: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
 }
 </style>

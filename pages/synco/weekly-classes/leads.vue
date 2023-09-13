@@ -29,11 +29,15 @@
           <SyncoDashboardMetricsItem name="Leads to sales" value="945" change="+12" icon="ph:users-three" />
         </div>
 
-        <div class="d-flex justify-content-end py-3">
-          <SyncoFiltersAgentsDropdown />
-          <NuxtLink to="/synco/weekly-classes/create/lead" class=" ms-2 btn btn-primary text-light shadow-sm">+ Add a new
-            lead
-          </NuxtLink>
+        <div class="d-flex justify-content-between pt-4 pb-3">
+          <h4>Weekly Classes Facebook Leads</h4>
+          <div>
+            <SyncoFiltersAgentsDropdown />
+            <NuxtLink to="/synco/weekly-classes/create/lead" class=" ms-2 btn btn-primary text-light shadow-sm">+ Add a
+              new
+              lead
+            </NuxtLink>
+          </div>
         </div>
 
         <table class="table table-hover border rounded-4 ">

@@ -37,7 +37,7 @@
 
       </div>
       <div class="col">
-        <SyncoFormTableDataFilters />
+        <SyncoFiltersMembersForm />
       </div>
     </div>
 
