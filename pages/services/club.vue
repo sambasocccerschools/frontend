@@ -34,7 +34,7 @@ const layout = 'weblayout'
                       back.</em>
                   </p>
                   <p class="font-custom text-primary lead mb-4">Looking to take your child's game up a notch?
-                     Private
+                    Private
                     1-2-1
                     football classes are the perfect way to develop skills and boost confidence in a short time.
                   </p>

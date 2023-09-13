@@ -1,78 +1,81 @@
-<script setup >
-const layout = "syncolayout";
-
-const openAddNew = true
-
-
+<script>
+export default {
+  data: () => ({
+    panel: false
+  })
+}
 </script>
+
 <template>
-  <NuxtLayout :name="layout">
+  <NuxtLayout name="syncolayout">
     <div class="row">
       <div class="col">
         <div class="d-flex justify-content-between mb-4">
           <h4>Venues</h4>
-          <button class="btn btn-primary text-light">+ Add New Venue</button>
+          <button class="btn btn-primary text-light" @click="panel = !panel">+ Add New Venue</button>
         </div>
-        <div class="card border rounded-4 shadow-sm">
-          <table class="table table-hover table-sm">
-            <thead class="table-light">
-              <tr class="bg-secondary-subtle">
-                <!-- <th scope="col">Checkbox</th> -->
-                <th scope="col">
-                  <input class="form-check-input" type="checkbox" value="" id="all-table">
-                  <label class="form-check-label ms-3 text-muted" for="all-table">
-                    Area
-                  </label>
-                </th>
-                <th class="text-muted" scope="col">Name of the venue</th>
-                <th class="text-muted" scope="col">Address</th>
-                <th class="text-muted" scope="col">Region</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="align-middle">
-                <th scope="row">
-                  <input class="form-check-input" type="checkbox" value="" id="chelsea">
-                  <label class="form-check-label ms-3 text-muted" for="chelsea">
-                    Chelsea
-                  </label>
-                </th>
-                <td>Chelsea Academy</td>
-                <td>Lots Road, London, SW10 0AB</td>
-                <td>1</td>
-                <td>
-                  <button class="btn btn-link px-1">
-                    <Icon name="emojione-monotone:letter-c" class="text-danger" />
-                  </button>
-                  <button class="btn btn-link px-1">
-                    <Icon name="emojione-monotone:letter-p" class="text-success" />
-                  </button>
-                </td>
-                <td>
-                  <button class="btn btn-link px-1">
-                    <Icon name="solar:calendar-line-duotone" />
-                  </button>
-                  <button class="btn btn-link px-1">
-                    <Icon name="ph:pencil-simple-line" />
-                  </button>
-                  <button class="btn btn-link px-1">
-                    <Icon name="fluent:delete-24-regular" />
-                  </button>
-                </td>
-              </tr>
 
-            </tbody>
-          </table>
-        </div>
+        <table class="table table-hover table-sm border rounded-4 shadow-sm">
+          <thead class="rounded-top-4">
+            <tr class="table-light ">
+              <!-- <th scope="col">Checkbox</th> -->
+              <th scope="col">
+                <input class="form-check-input" type="checkbox" value="" id="all-table">
+                <label class="form-check-label ms-3 text-muted" for="all-table">
+                  Area
+                </label>
+              </th>
+              <th class="text-muted" scope="col">Name of the venue</th>
+              <th class="text-muted" scope="col">Address</th>
+              <th class="text-muted" scope="col">Region</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody class="">
+            <tr class="align-middle">
+              <th scope="row">
+                <input class="form-check-input" type="checkbox" value="" id="chelsea">
+                <label class="form-check-label ms-3 text-muted" for="chelsea">
+                  Chelsea
+                </label>
+              </th>
+              <td>Chelsea Academy</td>
+              <td>Lots Road, London, SW10 0AB</td>
+              <td>1</td>
+              <td>
+                <button class="btn btn-link px-1">
+                  <Icon name="emojione-monotone:letter-c" class="text-danger" />
+                </button>
+                <button class="btn btn-link px-1">
+                  <Icon name="emojione-monotone:letter-p" class="text-success" />
+                </button>
+              </td>
+              <td>
+                <button class="btn btn-link px-1">
+                  <Icon name="solar:calendar-line-duotone" />
+                </button>
+                <button class="btn btn-link px-1">
+                  <Icon name="ph:pencil-simple-line" />
+                </button>
+                <button class="btn btn-link px-1">
+                  <Icon name="fluent:delete-24-regular" />
+                </button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
       </div>
-      <div class="col-sm-4" v-if="openAddNew">
+      <div class="col-sm-4" v-if="panel">
         <div class="card">
           <div class="card-header border-bottom">
-            <h4 class="card-title ">
-              <Icon name="material-symbols:arrow-back" class="me-2" />Add New Venue
-            </h4>
+            <div class="card-title h4">
+              <button class="btn btn-transparent m-0 p-0" @click="panel = !panel">
+                <Icon name="material-symbols:arrow-back" class="me-2" />
+              </button>
+              Add New Venue
+            </div>
           </div>
           <div class="card-body">
             <div class="mb-3">
