@@ -393,9 +393,7 @@
         </li>
       </ul>
 
-      <SyncoConfigurationMenu />
-
-
+      <SyncoMenuConfiguration />
 
     </div>
     <div class="py-5 mt-5"></div>

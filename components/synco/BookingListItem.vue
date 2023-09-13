@@ -54,7 +54,7 @@ export default {
           </div>
         </div>
         <!--  -->
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center mt-2">
           <div class="d-flex align-items-center justify-content-center gap-3">
             <span class="h6 text-semibold m-0">Class 2</span>
             <span class="">8-12 years</span>
@@ -64,7 +64,8 @@ export default {
           <div class=" d-flex align-items-center">
             <NuxtLink to="/synco/weekly-classes/create/membership" class="btn btn-outline-primary btn-sm me-3">
               <strong>Book a
-                Membership</strong></NuxtLink>
+                Membership</strong>
+            </NuxtLink>
             <NuxtLink to="/synco/weekly-classes/create/free-trial" class="btn btn-primary btn-sm text-light"><strong>Book
                 a
                 Free Trial</strong></NuxtLink>
@@ -75,4 +76,5 @@ export default {
     </div>
 
 
-</div></template>
+  </div>
+</template>

@@ -69,7 +69,7 @@
             </div>
 
             <!-- Calendar Selector  -->
-            Calendar Goes Here
+            <SyncoFilterByCalendar />
 
           </div>
         </div>
