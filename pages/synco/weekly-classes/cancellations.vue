@@ -1,8 +1,27 @@
 <template>
   <NuxtLayout name="syncolayout" pageTitle="Cancellations">
 
+
     <div class="row">
       <div class="col-sm-8">
+
+        <div class="row mb-3">
+          <div class="col">
+            <ul class="nav nav-pills">
+              <li class="nav-item rounded-3 me-2">
+                <a class="nav-link active" aria-current="page" href="#">Request to cancel</a>
+              </li>
+              <li class="nav-item border rounded-3 me-2">
+                <a class="nav-link text-dark" href="#">Full Cancellation</a>
+              </li>
+              <li class="nav-item border rounded-3 ">
+                <a class="nav-link text-dark" href="#">All</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+
         <div class="row row-cols-sm-4">
           <SyncoDashboardMetricsItem name="Total Requests" value="22" change="-P200 p/m" icon="ph:users-three" />
           <SyncoDashboardMetricsItem name="Membership Tenure" value="9 Months" change="100" icon="ph:users-three" />
@@ -44,6 +63,8 @@
             </div>
           </div>
         </div> -->
+
+        <h4 class="mt-4">Request to cancel</h4>
 
         <table class="table table-hover border rounded-4 mt-4">
           <thead class="rounded-top-4">

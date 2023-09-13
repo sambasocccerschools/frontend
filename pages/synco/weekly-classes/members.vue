@@ -15,9 +15,6 @@
             <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
               <th scope="col">
-                <input class="form-check-input" type="checkbox" value="" id="all-table">
-              </th>
-              <th scope="col">
                 <label class="form-check-label text-muted" for="all-table">
                   Name
                 </label>
@@ -38,8 +35,7 @@
 
       </div>
       <div class="col">
-        <SyncoFormTableDataFilters />
-
+        <SyncoFiltersMembersForm />
       </div>
     </div>
 
