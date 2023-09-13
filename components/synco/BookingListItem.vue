@@ -8,7 +8,7 @@ export default {
 
 <template>
   <!-- Weekly Class -->
-  <div v-if="activity === 'weekly-class'" class="card rounded-4 p-2 mb-3">
+  <div v-if="activity === 'weekly-class'" class="card rounded-4 p-2 mb-3 border">
     <div class="rounded-4 bg-secondary text-light px-4 py-3 d-flex align-items-center justify-content-between">
       <div>
         <Icon name="material-symbols:location-on" class="h1" />The King Fahad Academy, East Acton Lane, London W3 7HD

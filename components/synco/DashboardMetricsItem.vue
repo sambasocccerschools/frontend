@@ -11,7 +11,7 @@ export default {
 
 <template>
   <div class="col">
-    <div class="card rounded-5 h-100 d-flex align-items-center">
+    <div class="card rounded-4 h-100 d-flex align-items-center">
       <div class="card-body flex-stretch">
         <div class="d-flex">
           <span class="informatics-circle bg-primary-subtle rounded-5 text-primary me-3">
