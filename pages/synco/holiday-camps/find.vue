@@ -1,4 +1,10 @@
-
+<script>
+export default {
+  data: () => ({
+    camps: 10,
+  })
+}
+</script>
 <template>
   <NuxtLayout name="syncolayout" pageTitle="Holiday Camp Students">
 
@@ -15,16 +21,7 @@
         <SyncoHolidayCampsFormsFindCamp />
       </div>
       <div class="col">
-        <SyncoBookingListItem activity="holiday-camp" />
-        <SyncoBookingListItem activity="holiday-camp" />
-        <SyncoBookingListItem activity="holiday-camp" />
-        <SyncoBookingListItem activity="holiday-camp" />
-        <SyncoBookingListItem activity="holiday-camp" />
-        <SyncoBookingListItem activity="holiday-camp" />
-        <SyncoBookingListItem activity="holiday-camp" />
-        <SyncoBookingListItem activity="holiday-camp" />
-        <SyncoBookingListItem activity="holiday-camp" />
-        <SyncoBookingListItem activity="holiday-camp" />
+        <SyncoBookingListItem activity="holiday-camp" v-for="camp in camps" />
       </div>
     </div>
   </NuxtLayout>
