@@ -59,9 +59,9 @@
             </tr>
           </thead>
           <tbody>
-            <LazySyncoLeadsListItem />
-            <LazySyncoLeadsListItem />
-            <LazySyncoLeadsListItem />
+            <LazySyncoWeeklyClassesLeadsListItem />
+            <LazySyncoWeeklyClassesLeadsListItem />
+            <LazySyncoWeeklyClassesLeadsListItem />
           </tbody>
         </table>
 
