@@ -77,7 +77,7 @@ export default {
 
       </div>
       <div class="col">
-        <SyncoFiltersOneToOneLeadsForm />
+        <SyncoOneToOneFormsFindLead />
       </div>
     </div>
 
@@ -129,7 +129,7 @@ export default {
         </table>
       </div>
       <div class="col">
-        <SyncoFiltersOneToOneSalesForm />
+        <SyncoOneToOneFormsFindSale />
       </div>
     </div>
 

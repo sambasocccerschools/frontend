@@ -35,7 +35,7 @@
 
       </div>
       <div class="col">
-        <SyncoFiltersMembersForm />
+        <SyncoWeeklyClassesFormsFindMember />
       </div>
     </div>
 

@@ -1,4 +1,6 @@
 
+import { SyncoFiltersFilterWeeklyClassesForm } from '.nuxt/components';
+
 <template>
   <NuxtLayout name="syncolayout" pageTitle="Weekly Classes">
 
@@ -12,7 +14,7 @@
 
     <div class="row mt-4">
       <div class="col-sm-3 ">
-        <SyncoFormFiltterActivity />
+        <SyncoWeeklyClassesFormsFindClass />
       </div>
       <div class="col">
         <SyncoBookingListItem activity="weekly-class" />

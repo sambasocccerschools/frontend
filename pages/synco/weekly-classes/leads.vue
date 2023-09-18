@@ -67,7 +67,7 @@
 
       </div>
       <div class="col">
-        <SyncoFiltersLeadsForm />
+        <SyncoWeeklyClassesFormsFindLead />
       </div>
     </div>
 
