@@ -12,7 +12,7 @@
 
     <div class="row mt-4">
       <div class="col-sm-3 ">
-        <SyncoHolidayCampsFormsFindACamp />
+        <SyncoHolidayCampsFormsFindCamp />
       </div>
       <div class="col">
         <SyncoBookingListItem activity="holiday-camp" />
