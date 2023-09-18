@@ -21,7 +21,7 @@ export default {
         <SyncoHolidayCampsFormsFindCamp />
       </div>
       <div class="col">
-        <SyncoBookingListItem activity="holiday-camp" v-for="camp in camps" />
+        <SyncoHolidayCampsListItem v-for="camp in camps" />
       </div>
     </div>
   </NuxtLayout>
