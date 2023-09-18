@@ -121,9 +121,9 @@
       </ul>
 
       <!-- Email Management  -->
-      <NuxtLink to="/synco/email-management" exact-active-class="btn-nav-active" class="btn-nav">
+      <!-- <NuxtLink to="/synco/email-management" exact-active-class="btn-nav-active" class="btn-nav border-danger">
         <Icon name="material-symbols:folder-managed-outline" /> Email Management
-      </NuxtLink>
+      </NuxtLink> -->
 
       <!-- Surveys  -->
       <button class="btn btn-nav" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSurveys"
@@ -138,7 +138,7 @@
           </NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/synco/surveys/reports" class="btn-nav-link" exact-active-class="text-primary">
+          <NuxtLink to="/synco/surveys" class="btn-nav-link" exact-active-class="text-primary">
             Reports
           </NuxtLink>
         </li>
@@ -154,7 +154,7 @@
       <ul class="ms-2 collapse show" id="collapseEmailMarketing">
         <li>
           <NuxtLink to="/synco/email-marketing/create" class="btn-nav-link" exact-active-class="text-primary">
-            Create a survey
+            Create a campaign
           </NuxtLink>
         </li>
         <li>
@@ -201,7 +201,7 @@
         <Icon name="ph:car-profile-bold" />Reports
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse show" id="collapseReports">
+      <ul class="ms-2 collapse " id="collapseReports">
         <li>
           <NuxtLink to="/synco/reports/members" class="btn-nav-link" exact-active-class="text-primary">
             Members
