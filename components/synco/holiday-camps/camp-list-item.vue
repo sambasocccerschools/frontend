@@ -1,5 +1,6 @@
 <template>
-  <li class="list-group-item py-3 d-flex w-100 rounded-0 border-bottom-0 border-end-0 border-start-0">
+  <li
+    class="list-group-item list-group-item-action py-3 d-flex w-100 rounded-0 border-bottom-0 border-end-0 border-start-0">
     <input class="form-check-input me-2" type="checkbox" value="" id="camp-1">
     <span class="w-100">
       <span class="d-flex justify-content-between">
