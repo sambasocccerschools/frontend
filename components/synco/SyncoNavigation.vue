@@ -1,3 +1,8 @@
+<script>
+const { href } = useRoute()
+console.log(href)
+</script>
+
 <template>
   <div
     class="vh-100 border-end border-1 border-secondary-subtle d-flex flex-column py-4 ps-2 pe-3 bg-white overflow-y-scroll justify-content-between"
@@ -17,7 +22,7 @@
         <Icon name="ph:book-open-bold" />Weekly Classes
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse show" id="collapseWeeklyClasses">
+      <ul class="ms-2 collapse" :class="route" id="collapseWeeklyClasses">
         <li>
           <NuxtLink to="/synco/weekly-classes/find" class="btn-nav-link" exact-active-class="text-primary">
             Find a class
@@ -71,7 +76,7 @@
         <Icon name="ph:book-open-bold" />Holiday Camps
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse show" id="collapseHolidayCamps">
+      <ul class="ms-2 collapse" id="collapseHolidayCamps">
         <li>
           <NuxtLink to="/synco/holiday-camps/find" class="btn-nav-link" exact-active-class="text-primary">
             Find a camp
@@ -96,7 +101,7 @@
         <Icon name="clarity:users-line" />Club
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse show" id="collapseClub">
+      <ul class="ms-2 collapse" id="collapseClub">
         <li>
           <NuxtLink to="/synco/club/find" class="btn-nav-link" exact-active-class="text-primary">
             Find a club
@@ -131,7 +136,7 @@
         <Icon name="ph:car-profile-bold" />Surveys
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse show" id="collapseSurveys">
+      <ul class="ms-2 collapse " id="collapseSurveys">
         <li>
           <NuxtLink to="/synco/surveys/create" class="btn-nav-link" exact-active-class="text-primary">
             Create a survey
