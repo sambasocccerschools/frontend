@@ -51,7 +51,7 @@ export default {
           <h4>Coach Recruitment Leads</h4>
           <div>
             <SyncoFiltersAgentsDropdown />
-            <NuxtLink to="/synco/recruitment/create/lead" class=" ms-2 btn btn-primary text-light shadow-sm">+ Add a
+            <NuxtLink to="/synco/recruitment/create" class=" ms-2 btn btn-primary text-light shadow-sm">+ Add a
               new
               lead
             </NuxtLink>
@@ -100,7 +100,7 @@ export default {
           <h4>Pathway Recruitment Leads</h4>
           <div>
             <SyncoFiltersAgentsDropdown />
-            <NuxtLink to="/synco/recruitment/create/lead" class=" ms-2 btn btn-primary text-light shadow-sm">+ Add a
+            <NuxtLink to="/synco/recruitment/create" class=" ms-2 btn btn-primary text-light shadow-sm">+ Add a
               new
               lead
             </NuxtLink>
@@ -147,7 +147,7 @@ export default {
           <h4>Regional Manager Leads</h4>
           <div>
             <SyncoFiltersAgentsDropdown />
-            <NuxtLink to="/synco/recruitment/create/lead" class=" ms-2 btn btn-primary text-light shadow-sm">+ Add a
+            <NuxtLink to="/synco/recruitment/create" class=" ms-2 btn btn-primary text-light shadow-sm">+ Add a
               new
               lead
             </NuxtLink>

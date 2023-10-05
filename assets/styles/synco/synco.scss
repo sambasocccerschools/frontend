@@ -85,3 +85,36 @@
     @extend .mb-1;
   }
 }
+
+.icon-circle {
+  height: 3rem;
+  width: 3rem;
+  background-color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $h3-font-size;
+  @extend .rounded-circle;
+
+  &-success {
+    color: #099699;
+    background-color: #F0F9F9;
+  }
+
+  &-secondary {
+    color: #3DAFDB;
+    background-color: #F3FAFD;
+  }
+
+  &-danger {}
+
+  &-info {
+    color: #6F65F1;
+    background-color: #F6F6FE;
+  }
+
+  &-warning {
+    background-color: #FEF8F4;
+    color: #F38B4D
+  }
+}

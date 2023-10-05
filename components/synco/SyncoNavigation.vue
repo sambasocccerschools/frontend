@@ -1,6 +1,10 @@
 <script>
 const { href } = useRoute()
 console.log(href)
+
+const show = (path) => {
+  if (href.includes(path)) return true
+}
 </script>
 
 <template>
@@ -22,7 +26,7 @@ console.log(href)
         <Icon name="ph:book-open-bold" />Weekly Classes
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse" :class="route" id="collapseWeeklyClasses">
+      <ul class="ms-2 collapse" id="collapseWeeklyClasses">
         <li>
           <NuxtLink to="/synco/weekly-classes/find" class="btn-nav-link" exact-active-class="text-primary">
             Find a class
