@@ -17,13 +17,13 @@ export default {
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <NuxtLink to="/synco/email-marketing/reportds" class="text-dark">Email Marketing</NuxtLink>
+          <NuxtLink to="/synco/email-marketing/reports" class="text-dark">Email Marketing</NuxtLink>
         </li>
         <li class="breadcrumb-item active text-semibold" aria-current="page">{{ title }}</li>
       </ol>
     </nav>
     <h2 class="mb-5">
-      <NuxtLink to="/synco/email-marketing/reportds">
+      <NuxtLink to="/synco/email-marketing/reports">
         <Icon name="material-symbols:arrow-left-alt" class="me-2 text-dark" />
       </NuxtLink>
       Campaign Overview
