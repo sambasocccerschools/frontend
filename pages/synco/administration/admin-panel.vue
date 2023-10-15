@@ -1,8 +1,29 @@
 <script>
+const router = useRouter()
+
 export default {
+
   data: () => ({
+    members: [
+      {
+        id: 1,
+        fullname: 'Rob Moya',
+        email: 'rob@sambasoccerschools.com',
+        role: 'Admin',
+        phone: '346789',
+        position: 'Team lead',
+        activity: '2 days ago',
+        profile: '@/src/assets/img-avatar-member-admin.png'
+      }
+    ],
     panel: false
-  })
+  }),
+  methods: {
+    goTo(id) {
+      console.log(`/synco/administration/members/`, id)
+      router.push({ path: `/synco/administration/members/${id}` });
+    }
+  }
 }
 </script>
 
@@ -28,16 +49,17 @@ export default {
             </tr>
           </thead>
           <tbody class="">
-            <tr class="align-middle">
+
+            <tr class="align-middle" v-for="member in members" @click="goTo(member.id)">
               <th scope="row">
-                <img src="@/src/assets/img-avatar-member-admin.png" alt="" width="25" class="me-2">
-                Mark Jones
+                <img :src="member.profile" alt="" width="25" class="me-2">
+                {{ member.fullname }}
               </th>
-              <td>Admin</td>
-              <td>12345678</td>
-              <td>sarag@gmail.com</td>
-              <td>Team Lead</td>
-              <td>2 Days Ago</td>
+              <td>{{ member.position }}</td>
+              <td>{{ member.phone }}</td>
+              <td>{{ member.email }}</td>
+              <td>{{ member.role }}</td>
+              <td>{{ member.activity }}</td>
             </tr>
 
           </tbody>
