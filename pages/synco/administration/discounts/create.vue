@@ -5,7 +5,7 @@ export default {
 
   data: () => ({
     // These will get replaces by arrays 
-    coachLeads: 10,
+    // coachLeads: 10,
 
   }),
   methods: {
