@@ -11,7 +11,7 @@ export default {
       method: 'CODE',
       type: 'Amount of products',
       used: 15,
-      status: 'ACTIVE'
+      status: 'ACTIVE' //ACTIVE, PAUSED
     }]
   }),
 
