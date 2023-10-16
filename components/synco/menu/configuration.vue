@@ -16,17 +16,18 @@
         </button>
         <ul class="ps-4 collapse show" id="collapseConfWeeklyClasses">
           <li>
-            <NuxtLink to="/synco/config/venues/create" class="btn-nav-link" exact-active-class="text-primary">
+            <NuxtLink to="/synco/config/weekly-classes/venues" class="btn-nav-link" exact-active-class="text-primary">
               Add a Venue
             </NuxtLink>
           </li>
-          <li>
+          <!-- <li>
             <NuxtLink to="/synco/config/venues/terms" class="btn-nav-link" exact-active-class="text-primary">
               Terms
             </NuxtLink>
-          </li>
+          </li> -->
           <li>
-            <NuxtLink to="/synco/config/venues/session-plans" class="btn-nav-link" exact-active-class="text-primary">
+            <NuxtLink to="/synco/config/weekly-classes/session-plans" class="btn-nav-link"
+              exact-active-class="text-primary">
               Session plans
             </NuxtLink>
           </li>
