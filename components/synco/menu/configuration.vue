@@ -42,8 +42,7 @@
         </button>
         <ul class="ps-4 collapse show" id="collapseConfHolidayCamps">
           <li>
-            <NuxtLink to="/synco/config/holiday-camps/venues/create" class="btn-nav-link"
-              exact-active-class="text-primary">
+            <NuxtLink to="/synco/config/holiday-camps/venues" class="btn-nav-link" exact-active-class="text-primary">
               Add a Venue
             </NuxtLink>
           </li>
