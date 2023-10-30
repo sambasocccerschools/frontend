@@ -16,7 +16,7 @@ export default {
     <div class="card">
       <div class="card-header border-bottom border-light">
         <h2 class="mb-5 card-title mt-2">
-          <NuxtLink to="/synco/config/holiday-camps/session-plans">
+          <NuxtLink to="/synco/config/birthday-parties/session-plans">
             <Icon name="material-symbols:arrow-left-alt" class="me-2 text-dark" />
           </NuxtLink>
           Create session
