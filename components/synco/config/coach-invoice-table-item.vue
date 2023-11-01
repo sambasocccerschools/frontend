@@ -1,18 +1,6 @@
-
-import { spawn } from 'child_process';
-
-import { spawn } from 'child_process';
-
-import { spawn } from 'child_process';
-
-import { spawn } from 'child_process';
-
-import { spawn } from 'child_process';
-
-import { spawn } from 'child_process';
 <script>
 export default {
-  inheritAttrs: false,
+  // inheritAttrs: false,
   data: () => ({
     show: false,
   }),
