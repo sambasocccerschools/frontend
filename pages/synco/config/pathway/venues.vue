@@ -1,7 +1,11 @@
 <script>
 export default {
   data: () => ({
-    panel: false
+    panel: false,
+    venues: [
+      { id: 1, type: 'pathway', area: 'Chelsea', name: 'Chelsea Academy', address: 'Lots Road, London, SW10 0AB', region: 1, parking: true, congestion: false }
+    ],
+    selectedVenue: null
   })
 }
 </script>
@@ -11,7 +15,7 @@ export default {
     <div class="row">
       <div class="col">
         <div class="d-flex justify-content-between mb-4">
-          <h4>Venues</h4>
+          <h4>Pathway Venues</h4>
           <button class="btn btn-primary text-light" @click="panel = !panel">+ Add New Venue</button>
         </div>
 
@@ -20,10 +24,7 @@ export default {
             <tr class="table-light ">
               <!-- <th scope="col">Checkbox</th> -->
               <th scope="col">
-                <input class="form-check-input" type="checkbox" value="" id="all-table">
-                <label class="form-check-label ms-3 text-muted" for="all-table">
-                  Area
-                </label>
+                Area
               </th>
               <th class="text-muted" scope="col">Name of the venue</th>
               <th class="text-muted" scope="col">Address</th>
@@ -33,29 +34,26 @@ export default {
             </tr>
           </thead>
           <tbody class="">
-            <tr class="align-middle">
+            <tr class="align-middle" v-for="venue in venues">
               <th scope="row">
-                <input class="form-check-input" type="checkbox" value="" id="chelsea">
-                <label class="form-check-label ms-3 text-muted" for="chelsea">
-                  Chelsea
-                </label>
+                {{ venue.area }}
               </th>
-              <td>Chelsea Academy</td>
-              <td>Lots Road, London, SW10 0AB</td>
-              <td>1</td>
+              <td>{{ venue.name }}</td>
+              <td>{{ venue.address }}</td>
+              <td>{{ venue.region }}</td>
               <td>
                 <button class="btn btn-link px-1">
-                  <Icon name="emojione-monotone:letter-c" class="text-danger" />
+                  <Icon name="emojione-monotone:letter-c" :class="venue.congestion ? 'text-success' : 'text-danger'" />
                 </button>
                 <button class="btn btn-link px-1">
-                  <Icon name="emojione-monotone:letter-p" class="text-success" />
+                  <Icon name="emojione-monotone:letter-p" :class="venue.parking ? 'text-success' : 'text-danger'" />
                 </button>
               </td>
               <td>
                 <button class="btn btn-link px-1">
                   <Icon name="solar:calendar-line-duotone" />
                 </button>
-                <button class="btn btn-link px-1">
+                <button class="btn btn-link px-1" @click="selectedVenue = venue">
                   <Icon name="ph:pencil-simple-line" />
                 </button>
                 <button class="btn btn-link px-1">
@@ -67,11 +65,11 @@ export default {
           </tbody>
         </table>
       </div>
-      <div class="col-sm-4" v-if="panel">
+      <div class="col-sm-4" v-if="panel || selectedVenue">
         <div class="card">
           <div class="card-header border-bottom">
             <div class="card-title h4">
-              <button class="btn btn-transparent m-0 p-0" @click="panel = !panel">
+              <button class="btn btn-transparent m-0 p-0" @click="panel = !panel; selectedVenue = null">
                 <Icon name="material-symbols:arrow-back" class="me-2" />
               </button>
               Add New Venue
