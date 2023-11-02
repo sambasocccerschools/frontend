@@ -1,11 +1,12 @@
 <script>
 const router = useRouter()
 
+
 export default {
   data: () => ({
     tab: 'Beginners', // Beginners, Intermediate, Advanced
     courses: [
-      { id: 1, level: 'Beginners', name: '5 Ball Beginner Skills', durationInMin: 45, skills: 10 },
+      { id: 1, level: 'Beginners', name: '5 Important Attributes the best strikers need', durationInMin: 45, skills: 10 },
       { id: 2, level: 'Intermediate', name: '10 Ball Mastery Skills', durationInMin: 45, skills: 10 }
     ]
   }),
@@ -40,16 +41,33 @@ export default {
         </div>
       </div>
 
-      <div class="card-body">
-        <div class="card" style="width: 18rem;" v-for="course in courses.filter(item => item.level === tab)"
-          @click="goTo(course.id)">
+      <div class="card-body py-4">
+        <div class="card" style="width: 18rem;" v-for="course in courses.filter(item => item.level === tab)">
           <img src="@/src/assets/img-blog-4.png" class="card-img-top rounded-4" alt="{{ course.name }}">
           <div class="card-body">
-            <h5 class="card-title">{{ course.name }}</h5>
-            <p class="card-text">
-              <span>{{ course.durationInMin }}min</span>
-              <span>{{ course.skills }} Skills</span>
-              <span>{{ course.level }}</span>
+            <div class="d-flex align-items-start justify-content-between">
+              <h5 class="card-title w-100 mt-2">{{ course.name }}</h5>
+              <div class="col-auto m-0">
+                <button @click="goTo(course.id)" class="btn btn-transparent p-1">
+                  <Icon name="ph:pencil-simple-line" />
+                </button>
+                <button class="btn btn-transparent p-1">
+                  <Icon name="ph:trash-thin" />
+                </button>
+              </div>
+            </div>
+            <p class="card-text d-flex text-muted">
+              <span class="d-flex align-items-center me-2">
+                <Icon name="ic:round-access-time" class="h4 mb-0 me-1 text-muted" /> {{ course.durationInMin }} min
+              </span>
+              <span class="me-2">
+                <Icon name="solar:medal-ribbon-linear" class="h4 mb-0 me-1 text-muted" />{{ course.skills }} Skills
+              </span>
+              <span>
+                <Icon
+                  name="streamline:phone-signal-full-phone-mobile-device-signal-wireless-smartphone-iphone-bar-bars-full-android"
+                  class="h4 mb-0 me-1 text-muted" />{{ course.level }}
+              </span>
             </p>
             <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
             <span class="text-danger">Why do we need a completed progress bar ?</span>
