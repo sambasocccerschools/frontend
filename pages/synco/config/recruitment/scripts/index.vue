@@ -8,7 +8,6 @@ export default {
 }
 </script>
 
-
 <template>
   <NuxtLayout name="syncolayout">
     <div class="d-flex align-items-center justify-content-between mb-3">
