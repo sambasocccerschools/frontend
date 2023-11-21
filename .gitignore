@@ -19,6 +19,7 @@ logs
 .vscode/
 
 # Local env
+.vscode/
 .env
 .env.*
 !.env.example
