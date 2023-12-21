@@ -1,4 +1,5 @@
-<script setup lang="ts">
+<script setup>
+const { login, email, password, remember } = useSynco()
 
 </script>
 <template>
@@ -7,26 +8,26 @@
       <div class="row vh-100 align-items-center">
         <div class="col-sm-6 bg-synco-login  vh-100"></div>
         <div class="col-sm-6">
-          <div class="px-sm-5 mx-sm-5">
+          <form class="px-sm-5 mx-sm-5" @submit.prevent="login">
             <div class="text-center">
               <img src="@/src/assets/sss-logo-primary.png" alt="SSS Logo">
               <h1>Welcome Back</h1>
               <p>Seize the day and make it extraordinary!</p>
             </div>
-            <form action="/synco/dashboard" class="pt-2 pb-5">
+            <div class="pt-2 pb-5">
               <div class="mb-4">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" name="email" id="email" class="form-control form-control-lg rounded-4"
-                  placeholder="Enter email">
+                  placeholder="Enter email" v-model="email">
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" name="password" id="password" class="form-control form-control-lg rounded-4"
-                  placeholder="Enter password">
+                  placeholder="Enter password" v-model="password">
               </div>
               <div class="mb-3 d-flex align-items-center justify-content-between">
                 <div class="form-check my-2">
-                  <input type="checkbox" class="form-check-input" id="Remember me">
+                  <input type="checkbox" class="form-check-input" id="Remember me" v-model="remember">
                   <label class="form-check-label" for="Remember me">Remember me</label>
                 </div>
                 <NuxtLink to="/synco/forgot-password" class="text-muted">Forgot Password</NuxtLink>
@@ -39,8 +40,8 @@
               <div class="text-center">
                 <img src="@/src/assets/sss-logo-synco-black.png" alt="SSS Synco Logo">
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

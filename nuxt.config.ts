@@ -7,5 +7,5 @@ export default defineNuxtConfig({
     '/**': { ssr: false },
     '/synco/**': { ssr: false },
     '/parents/**': { ssr: false }
-  }
+  },
 })
