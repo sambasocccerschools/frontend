@@ -1,9 +1,9 @@
+<script setup>
+const { venues } = useVenues()
+</script>
 <script>
 export default {
   data: () => ({
-    venues: [
-      { id: 1, type: 'pathway', area: 'Chelsea', name: 'Chelsea Academy', address: 'Lots Road, London, SW10 0AB', region: 1, parking: true, congestion: false, capacity: '4/8' }
-    ],
     sessionPlans: 5,
     students: [
       {

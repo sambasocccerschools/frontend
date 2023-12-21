@@ -1,3 +1,6 @@
+<script setup>
+const { venues } = useVenues()
+</script>
 <script>
 export default {
   data: () => ({
@@ -33,16 +36,16 @@ export default {
             </tr>
           </thead>
           <tbody class="">
-            <tr class="align-middle">
+            <tr class="align-middle" v-for="venue in venues">
               <th scope="row">
                 <input class="form-check-input" type="checkbox" value="" id="chelsea">
                 <label class="form-check-label ms-3 text-muted" for="chelsea">
-                  Chelsea
+                  {{ venue.area }}
                 </label>
               </th>
-              <td>Chelsea Academy</td>
-              <td>Lots Road, London, SW10 0AB</td>
-              <td>1</td>
+              <td>{{ venue.name }}</td>
+              <td>{{ venue.address }}</td>
+              <td>{{ venue.region }}</td>
               <td>
                 <button class="btn btn-link px-1">
                   <Icon name="emojione-monotone:letter-c" class="text-danger" />
@@ -62,8 +65,9 @@ export default {
                   <Icon name="fluent:delete-24-regular" />
                 </button>
               </td>
-            </tr>
 
+            </tr>
+            <tr v-if="venues.length === 0">No venues</tr>
           </tbody>
         </table>
       </div>
