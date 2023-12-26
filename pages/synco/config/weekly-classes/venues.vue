@@ -1,5 +1,6 @@
 <script setup>
 const { venues } = useVenues()
+const { countries, getCountries } = useCountry()
 </script>
 <script>
 export default {

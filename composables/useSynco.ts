@@ -19,7 +19,10 @@ export default function useSynco() {
     // });
     if (email.value || password.value) {
       const response = await useFetch(`${url}/v1/auth/login`, {
-        method: 'POST',
+        method: "POST",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
         body: {
           email: email.value,
           password: password.value,
