@@ -1,7 +1,3 @@
-<script setup lang="ts">
-// import Banner from '@/components/website/Banner.vue'
-</script>
-
 <template>
   <!-- This is a good example to show or not based on state  -->
   <WebsiteBanner />
@@ -17,7 +13,9 @@
         <div class="d-flex gap-2 col-5 justify-content-end  border-bottom pb-4">
           <NuxtLink to="/book" class="btn btn-light rounded-5"><span class="font-custom">Book a Free Trial</span>
           </NuxtLink>
-          <NuxtLink to="/synco" class="btn btn-outline-light">Synco Login</NuxtLink>
+          <div>
+            <NuxtLink to="/synco" class="btn btn-outline-light">Synco Login</NuxtLink>
+          </div>
           <NuxtLink to="/parents" class="btn btn-outline-light">Parents Login</NuxtLink>
         </div>
       </div>
