@@ -1,7 +1,6 @@
 <script>
 const router = useRouter()
 
-
 export default {
   data: () => ({
     abilityGroups: [
@@ -18,52 +17,58 @@ export default {
           title: '',
           duration: '',
           description: '',
-          img: ''
-        }
-      }
-    ]
+          img: '',
+        },
+      },
+    ],
   }),
   methods: {
     goTo(id) {
       console.log(id)
-      router.push({ path: `/synco/config/holiday-camps/session-plans/${id}` });
-    }
-  }
+      router.push({ path: `/synco/config/holiday-camps/session-plans/${id}` })
+    },
+  },
 }
 </script>
 
-
-
 <template>
   <NuxtLayout name="syncolayout">
-    <div class="d-flex align-items-center  mb-4 ">
+    <div class="d-flex align-items-center mb-4">
       <h4 class="me-5">Create Session Plans</h4>
       <button class="btn text-light btn-sm btn-primary me-3">4 Days</button>
       <button class="btn btn-sm btn-light border">5 Days</button>
-      <span class="text-danger">Where do you set these options?, you can filter by list AND days ?</span>
+      <span class="text-danger"
+        >Where do you set these options?, you can filter by list AND days
+        ?</span
+      >
     </div>
 
     <div class="row">
       <div class="col-sm-3">
         <div class="card">
-          <div class="card-header ">
+          <div class="card-header">
             <h4 class="card-title mt-3">Lists</h4>
           </div>
           <ul class="list-group">
-            <li v-for="group in abilityGroups"
-              class="list-group-item list-group-item-action border-top  border py-3 d-flex w-100 rounded-0 border-bottom-0 border-end-0 border-start-0">
+            <li
+              v-for="group in abilityGroups"
+              class="list-group-item list-group-item-action border-top d-flex w-100 rounded-0 border-bottom-0 border-end-0 border-start-0 border py-3"
+            >
               <span class="w-100 d-flex">
                 <img src="@/src/assets/img-avatar-ability-group.png" />
                 <span class="d-flex flex-column ms-3">
                   <strong>{{ group.name }}</strong>
                   <span class="text-muted">{{ group.ages }}</span>
                 </span>
-
               </span>
             </li>
             <li class="list-group-item border-0 py-4">
-              <button class="btn btn-primary btn-sm text-light">Add ability group</button> <span class="text-danger">What
-                happens when you click here ?</span>
+              <button class="btn btn-primary btn-sm text-light">
+                Add ability group
+              </button>
+              <span class="text-danger"
+                >What happens when you click here ?</span
+              >
             </li>
           </ul>
         </div>
@@ -111,4 +116,3 @@ export default {
     </div>
   </NuxtLayout>
 </template>
-

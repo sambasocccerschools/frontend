@@ -1,7 +1,3 @@
-
 <template>
-  <NuxtLayout name="syncolayout">
-    One to one
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> One to one </NuxtLayout>
 </template>
-

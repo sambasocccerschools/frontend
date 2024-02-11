@@ -14,9 +14,7 @@
     <td>Referral</td>
     <td>10th Oct 2023</td>
     <td>
-      <span class="badge bg-warning-subtle px-1 text-warning">
-        Pending
-      </span>
+      <span class="badge bg-warning-subtle text-warning px-1"> Pending </span>
     </td>
     <!-- Active, Waiting List, Frozen, Cancelled -->
   </tr>

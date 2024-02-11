@@ -1,6 +1,3 @@
 <template>
-  <NuxtLayout name="syncolayout">
-    Capacity
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Capacity </NuxtLayout>
 </template>
-

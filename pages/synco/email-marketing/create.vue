@@ -1,6 +1,5 @@
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Email Marketing Campaigns">
+  <NuxtLayout name="syncolayout" page-title="Email Marketing Campaigns">
     Content
   </NuxtLayout>
 </template>
-

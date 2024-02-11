@@ -1,20 +1,20 @@
 <template>
   <tr class="align-middle">
     <th scope="row">
-      <input class="form-check-input" type="checkbox" value="" id="tomjones">
+      <input id="tomjones" class="form-check-input" type="checkbox" value="" />
     </th>
-    <td><label class="form-check-label text-muted" for="tomjones">
+    <td>
+      <label class="form-check-label text-muted" for="tomjones">
         Tom Jones
-      </label></td>
+      </label>
+    </td>
     <td>7</td>
     <td>Acton</td>
     <td>Sat 1st Nov 22</td>
     <td>Jaffar Bukari</td>
     <td>12 months, 47.99 per months</td>
     <td>
-      <span class="badge bg-success-subtle px-1 text-success">
-        Active
-      </span>
+      <span class="badge bg-success-subtle text-success px-1"> Active </span>
     </td>
     <!-- Active, Waiting List, Frozen, Cancelled -->
   </tr>

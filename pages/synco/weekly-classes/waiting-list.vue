@@ -1,16 +1,35 @@
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Waiting List">
-
+  <NuxtLayout name="syncolayout" page-title="Waiting List">
     <div class="row">
       <div class="col-sm-8">
         <div class="row row-cols-sm-4">
-          <SyncoDashboardMetricsItem name="Top Sales Agent" value="Abdul Ali" change="+12" icon="ph:users-three" />
-          <SyncoDashboardMetricsItem name="Total Members" value="1920" change="+12" icon="ph:users-three" />
-          <SyncoDashboardMetricsItem name="Total New Members" value="57" change="+100%" icon="ph:users-three" />
-          <SyncoDashboardMetricsItem name="Average Monthly Fee" value="£35.00" change="+12" icon="ph:users-three" />
+          <SyncoDashboardMetricsItem
+            name="Top Sales Agent"
+            value="Abdul Ali"
+            change="+12"
+            icon="ph:users-three"
+          />
+          <SyncoDashboardMetricsItem
+            name="Total Members"
+            value="1920"
+            change="+12"
+            icon="ph:users-three"
+          />
+          <SyncoDashboardMetricsItem
+            name="Total New Members"
+            value="57"
+            change="+100%"
+            icon="ph:users-three"
+          />
+          <SyncoDashboardMetricsItem
+            name="Average Monthly Fee"
+            value="£35.00"
+            change="+12"
+            icon="ph:users-three"
+          />
         </div>
 
-        <table class="table table-hover border rounded-4 mt-4">
+        <table class="table-hover rounded-4 mt-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
@@ -32,13 +51,10 @@
             <LazySyncoWeeklyClassesMembersTableItem status="waiting" />
           </tbody>
         </table>
-
       </div>
       <div class="col">
         <SyncoWeeklyClassesFormsFindMember />
-
       </div>
     </div>
-
   </NuxtLayout>
 </template>

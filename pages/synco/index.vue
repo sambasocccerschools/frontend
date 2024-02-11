@@ -10,14 +10,14 @@
               <h1>Welcome Back</h1>
               <p>Seize the day and make it extraordinary!</p>
             </div>
-            <form @submit.prevent="login" class="pt-2 pb-5">
+            <form class="pb-5 pt-2" @submit.prevent="login">
               <div class="mb-4">
                 <label for="email" class="form-label">Email</label>
                 <input
-                  type="email"
-                  v-model="email"
-                  name="email"
                   id="email"
+                  v-model="email"
+                  type="email"
+                  name="email"
                   class="form-control form-control-lg rounded-4"
                   placeholder="Enter email"
                 />
@@ -25,23 +25,23 @@
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input
-                  type="password"
-                  v-model="password"
-                  name="password"
                   id="password"
+                  v-model="password"
+                  type="password"
+                  name="password"
                   class="form-control form-control-lg rounded-4"
                   placeholder="Enter password"
                 />
               </div>
               <div
-                class="mb-3 d-flex align-items-center justify-content-between"
+                class="d-flex align-items-center justify-content-between mb-3"
               >
                 <div class="form-check my-2">
                   <input
-                    type="checkbox"
-                    v-model="remember"
-                    class="form-check-input"
                     id="Remember me"
+                    v-model="remember"
+                    type="checkbox"
+                    class="form-check-input"
                   />
                   <label class="form-check-label" for="Remember me"
                     >Remember me</label
@@ -51,10 +51,10 @@
                   >Forgot Password</NuxtLink
                 >
               </div>
-              <div class="mt-5 mb-4">
+              <div class="mb-4 mt-5">
                 <button
                   type="submit"
-                  class="btn btn-primary btn-lg rounded-4 text-light py-3 w-100"
+                  class="btn btn-primary btn-lg rounded-4 text-light w-100 py-3"
                 >
                   <span class="text-light">Log In</span>
                 </button>
@@ -74,45 +74,45 @@
 </template>
 
 <script lang="ts" setup>
-import { useStore } from "~/store";
+import { useStore } from '~/stores'
 
-const config = useRuntimeConfig();
-const router = useRouter();
-const store = useStore();
-const token = useCookie("token");
-const email = ref("synco@samba.com");
-const password = ref("password");
-const remember = ref(false);
+const config = useRuntimeConfig()
+const router = useRouter()
+const store = useStore()
+const token = useCookie('token')
+const email = ref('synco@samba.com')
+const password = ref('password')
+const remember = ref(false)
 
 const login = async () => {
   const { data, error }: any = await useFetch(
-    config.public.API_BASE_URL + "/v1/auth/login",
+    config.public.API_BASE_URL + '/v1/auth/login',
     {
-      method: "POST",
+      method: 'POST',
       body: {
         email,
         password,
         remember,
       },
-    }
-  );
+    },
+  )
   if (data.value) {
-    console.log(data.value, "data");
-    router.push('/synco/dashboard');
-    store.authenticated = true;
-    token.value = data?.value?.access_token;
+    console.log(data.value, 'data')
+    router.push('/synco/dashboard')
+    store.authenticated = true
+    token.value = data?.value?.access_token
   }
   if (error.value) {
-    console.log(error.value, "data");
+    console.log(error.value, 'data')
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/synco/synco.scss";
+@import '@/assets/styles/synco/synco.scss';
 
 .bg-synco-login {
-  background-image: url("@/src/assets/bg-synco-login.png");
+  background-image: url('@/src/assets/bg-synco-login.png');
   background-repeat: no-repeat;
   background-size: cover;
 }

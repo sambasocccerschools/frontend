@@ -2,17 +2,14 @@
 export default {
   data: () => ({
     show: false,
-    nearbyClubs: 2
-  })
+    nearbyClubs: 2,
+  }),
 }
-
 </script>
 <template>
   <!-- Need to see how to turn this into a link -->
   <tr class="align-middle">
-    <th scope="row">
-      01-06-2023
-    </th>
+    <th scope="row">01-06-2023</th>
     <td>
       <label class="form-check-label text-muted" for="tomjones">
         Steve Jones
@@ -24,7 +21,7 @@ export default {
     <td>W14 9EB</td>
     <td>Jaffar King</td>
     <td>
-      <span class="badge bg-warning-subtle px-1 text-warning">
+      <span class="badge bg-warning-subtle text-warning px-1">
         Call Pending
       </span>
       <button class="btn btn-light btn-sm" @click="show = !show">

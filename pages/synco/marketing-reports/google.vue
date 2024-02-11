@@ -1,6 +1,3 @@
 <template>
-  <NuxtLayout name="syncolayout">
-    Google ads performance
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Google ads performance </NuxtLayout>
 </template>
-

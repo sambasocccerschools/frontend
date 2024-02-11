@@ -19,9 +19,7 @@
       <Icon class="text-danger" name="pepicons-pop:times-circle" />
     </td>
     <td>
-      <span class="badge bg-warning-subtle px-1 text-warning">
-        Pending
-      </span>
+      <span class="badge bg-warning-subtle text-warning px-1"> Pending </span>
     </td>
     <!-- pending , Rejected, recruited-->
   </tr>

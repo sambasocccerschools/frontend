@@ -8,12 +8,15 @@ export default {
 
 <template>
   <!-- Club -->
-  <div class="card rounded-4 p-2 mb-3 border">
-    <div class="rounded-4 bg-secondary text-light px-4 py-3 d-flex align-items-center justify-content-between">
+  <div class="card rounded-4 mb-3 border p-2">
+    <div
+      class="rounded-4 bg-secondary text-light d-flex align-items-center justify-content-between px-4 py-3"
+    >
       <div>
-        <Icon name="material-symbols:location-on" class="h1" />Camden Youth League - Under 8’s
+        <Icon name="material-symbols:location-on" class="h1" />Camden Youth
+        League - Under 8’s
       </div>
-      <div class="gap-3 d-flex">
+      <div class="d-flex gap-3">
         <button class="btn btn-light rounded-circle btn-sm">
           <Icon name="mingcute:currency-pound-2-fill" />
         </button>
@@ -31,37 +34,51 @@ export default {
         </button>
       </div>
     </div>
-    <div class="card-body bg-muted mt-3 rounded-4 px-4 text-muted" style="background: #F6F6F7">
+    <div
+      class="card-body bg-muted rounded-4 text-muted mt-3 px-4"
+      style="background: #f6f6f7"
+    >
       <div class="row row-cols-4">
-        <div class="pe-4 col border-end border-muted border-1 d-flex flex-column">
+        <div
+          class="col border-end border-muted border-1 d-flex flex-column pe-4"
+        >
           <span class="h4">Training</span>
           <div>
             <small class="d-flex align-items-center">
-              <Icon name="mdi:map-marker" class="h5 me-1 mt-2" /> King Solomon Academy
+              <Icon name="mdi:map-marker" class="h5 me-1 mt-2" /> King Solomon
+              Academy
             </small>
             <small class="d-flex align-items-start">
-              <Icon name="material-symbols:calendar-month" class="h5 me-1" /> Wednesday <br /> Outdoor
+              <Icon name="material-symbols:calendar-month" class="h5 me-1" />
+              Wednesday <br />
+              Outdoor
             </small>
             <small class="d-flex align-items-center">
-              <Icon name="ic:outline-access-time-filled" class="h5 me-1 mt-2" /> 9:30am - 10:30am
+              <Icon name="ic:outline-access-time-filled" class="h5 me-1 mt-2" />
+              9:30am - 10:30am
             </small>
           </div>
         </div>
-        <div class="pe-4 col d-flex flex-column">
+        <div class="col d-flex flex-column pe-4">
           <span class="h4">Matches</span>
           <div>
             <small class="d-flex align-items-center">
               <Icon name="mdi:map-marker" class="h5 me-1 mt-2" /> Corams Field
             </small>
             <small class="d-flex align-items-start">
-              <Icon name="material-symbols:calendar-month" class="h5 me-1" /> Saturdays <br /> Alternative
+              <Icon name="material-symbols:calendar-month" class="h5 me-1" />
+              Saturdays <br />
+              Alternative
             </small>
             <small class="d-flex align-items-center">
-              <Icon name="ic:outline-access-time-filled" class="h5 me-1 mt-2" /> ---
+              <Icon name="ic:outline-access-time-filled" class="h5 me-1 mt-2" />
+              ---
             </small>
           </div>
         </div>
-        <div class="px-4 col border-start border-end border-muted border-1 d-flex flex-column">
+        <div
+          class="col border-start border-end border-muted border-1 d-flex flex-column px-4"
+        >
           <span class="h4">Capacity</span>
           <div class="d-flex justify-content-between">
             <div>
@@ -69,8 +86,7 @@ export default {
                 Total
               </small>
               <small class="d-flex align-items-start">
-                86 Booked
-                of 125 Spaces
+                86 Booked of 125 Spaces
               </small>
               <small class="badge bg-success-subtle text-success">
                 +4 spaces
@@ -79,23 +95,27 @@ export default {
             <div><small>Chart Goes Here</small></div>
           </div>
         </div>
-        <div class="ps-4 col d-flex flex-column justify-content-around">
-          <NuxtLink to="/synco/club/create/free-trial" class="btn btn-outline-dark btn-sm">
-            <strong>Book
-              a
-              Free Trial</strong>
+        <div class="col d-flex flex-column justify-content-around ps-4">
+          <NuxtLink
+            to="/synco/club/create/free-trial"
+            class="btn btn-outline-dark btn-sm"
+          >
+            <strong>Book a Free Trial</strong>
           </NuxtLink>
-          <NuxtLink to="/synco/club/create/membership" class="btn btn-primary text-light btn-sm">
-            <strong>Book a
-              Membership</strong>
+          <NuxtLink
+            to="/synco/club/create/membership"
+            class="btn btn-primary text-light btn-sm"
+          >
+            <strong>Book a Membership</strong>
           </NuxtLink>
-          <NuxtLink to="/synco/club/create/waiting-list" class="btn btn-primary btn-sm text-light">
-            <strong>Add to Waiting
-              List</strong>
+          <NuxtLink
+            to="/synco/club/create/waiting-list"
+            class="btn btn-primary btn-sm text-light"
+          >
+            <strong>Add to Waiting List</strong>
           </NuxtLink>
         </div>
       </div>
     </div>
   </div>
 </template>
-

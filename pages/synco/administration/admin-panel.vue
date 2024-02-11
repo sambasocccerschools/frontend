@@ -2,7 +2,6 @@
 const router = useRouter()
 
 export default {
-
   data: () => ({
     members: [
       {
@@ -13,32 +12,34 @@ export default {
         phone: '346789',
         position: 'Team lead',
         activity: '2 days ago',
-        profile: '@/src/assets/img-avatar-member-admin.png'
-      }
+        profile: '@/src/assets/img-avatar-member-admin.png',
+      },
     ],
-    panel: false
+    panel: false,
   }),
   methods: {
     goTo(id) {
       console.log(`/synco/administration/members/`, id)
-      router.push({ path: `/synco/administration/members/${id}` });
-    }
-  }
+      router.push({ path: `/synco/administration/members/${id}` })
+    },
+  },
 }
 </script>
 
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Admin panel">
+  <NuxtLayout name="syncolayout" page-title="Admin panel">
     <div class="row">
       <div class="col">
         <div class="d-flex justify-content-between mb-4">
           <h4>Admin panel</h4>
-          <button class="btn btn-primary text-light" @click="panel = !panel">+ Add New Member</button>
+          <button class="btn btn-primary text-light" @click="panel = !panel">
+            + Add New Member
+          </button>
         </div>
 
-        <table class="table table-hover table-sm border rounded-4 shadow-sm">
+        <table class="table-hover table-sm rounded-4 table border shadow-sm">
           <thead class="rounded-top-4">
-            <tr class="table-light ">
+            <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
               <th scope="col">User</th>
               <th class="text-muted" scope="col">Role</th>
@@ -49,10 +50,13 @@ export default {
             </tr>
           </thead>
           <tbody class="">
-
-            <tr class="align-middle" v-for="member in members" @click="goTo(member.id)">
+            <tr
+              v-for="member in members"
+              class="align-middle"
+              @click="goTo(member.id)"
+            >
               <th scope="row">
-                <img :src="member.profile" alt="" width="25" class="me-2">
+                <img :src="member.profile" alt="" width="25" class="me-2" />
                 {{ member.fullname }}
               </th>
               <td>{{ member.position }}</td>
@@ -61,15 +65,17 @@ export default {
               <td>{{ member.role }}</td>
               <td>{{ member.activity }}</td>
             </tr>
-
           </tbody>
         </table>
       </div>
-      <div class="col-sm-4" v-if="panel">
+      <div v-if="panel" class="col-sm-4">
         <div class="card">
           <div class="card-header border-bottom">
             <div class="card-title h4">
-              <button class="btn btn-transparent m-0 p-0" @click="panel = !panel">
+              <button
+                class="btn btn-transparent m-0 p-0"
+                @click="panel = !panel"
+              >
                 <Icon name="material-symbols:arrow-back" class="me-2" />
               </button>
               Add New Member
@@ -79,7 +85,6 @@ export default {
             <SyncoAdministrationFormsAddMember />
           </div>
         </div>
-
       </div>
     </div>
   </NuxtLayout>

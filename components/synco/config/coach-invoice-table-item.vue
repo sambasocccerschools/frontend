@@ -1,13 +1,11 @@
 <script>
 export default {
+  props: ['props'],
   // inheritAttrs: false,
   data: () => ({
     show: false,
   }),
-  props: ['props'],
-
 }
-
 </script>
 <template>
   <tr class="align-middle">
@@ -31,16 +29,17 @@ export default {
   </tr>
   <tr v-if="show">
     <td colspan="8">
-      <span class="h6 ">Details</span>
+      <span class="h6">Details</span>
       <span v-for="session in props.sessions">
         <span class="d-block">
           <span class="col-3 d-inline-block">{{ session.id }}</span>
           <span class="col-3 d-inline-block">{{ session.address }}</span>
           <span class="col-3 d-inline-block">{{ session.date }}</span>
-          <span class="col-3 d-inline-block text-end pe-3">£{{ session.accountInPounds }}</span>
+          <span class="col-3 d-inline-block pe-3 text-end"
+            >£{{ session.accountInPounds }}</span
+          >
         </span>
       </span>
-
     </td>
   </tr>
 </template>

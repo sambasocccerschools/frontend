@@ -1,8 +1,3 @@
-
 <template>
-   <NuxtLayout name="syncolayout">
-      Map Sessions
-   </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Map Sessions </NuxtLayout>
 </template>
- 
- 

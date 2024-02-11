@@ -1,5 +1,1 @@
-
-<template>
-  TV Dashboard
-</template>
-
+<template>TV Dashboard</template>

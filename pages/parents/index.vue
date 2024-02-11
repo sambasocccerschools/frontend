@@ -1,43 +1,67 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 <template>
-  <section class="synco-login vh-100 ">
+  <section class="synco-login vh-100">
     <div class="container-fluid">
       <div class="row vh-100 align-items-center">
-        <div class="col-sm-6 bg-parents-login  vh-100"></div>
+        <div class="col-sm-6 bg-parents-login vh-100"></div>
         <div class="col-sm-6">
           <div class="px-sm-5 mx-sm-5">
             <div class="text-center">
-              <img src="@/src/assets/sss-logo-primary.png" alt="SSS Logo">
+              <img src="@/src/assets/sss-logo-primary.png" alt="SSS Logo" />
               <h1>Welcome Back</h1>
               <p>Bookings made simple</p>
             </div>
-            <form action="/parents/dashboard" class="pt-2 pb-5">
+            <form action="/parents/dashboard" class="pb-5 pt-2">
               <div class="mb-4">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" name="email" id="email" class="form-control form-control-lg rounded-4"
-                  placeholder="Enter email">
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  class="form-control form-control-lg rounded-4"
+                  placeholder="Enter email"
+                />
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" id="password" class="form-control form-control-lg rounded-4"
-                  placeholder="Enter password">
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  class="form-control form-control-lg rounded-4"
+                  placeholder="Enter password"
+                />
               </div>
-              <div class="mb-3 d-flex align-items-center justify-content-between">
+              <div
+                class="d-flex align-items-center justify-content-between mb-3"
+              >
                 <div class="form-check my-2">
-                  <input type="checkbox" class="form-check-input" id="Remember me">
-                  <label class="form-check-label" for="Remember me">Remember me</label>
+                  <input
+                    id="Remember me"
+                    type="checkbox"
+                    class="form-check-input"
+                  />
+                  <label class="form-check-label" for="Remember me"
+                    >Remember me</label
+                  >
                 </div>
-                <NuxtLink to="/parents/forgot-password" class="text-muted">Forgot Password</NuxtLink>
+                <NuxtLink to="/parents/forgot-password" class="text-muted"
+                  >Forgot Password</NuxtLink
+                >
               </div>
-              <div class="mt-5 mb-4">
-                <button type="submit" class="btn btn-primary btn-lg rounded-4 text-light py-3 w-100"><span
-                    class="text-light">Log
-                    In</span></button>
+              <div class="mb-4 mt-5">
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-lg rounded-4 text-light w-100 py-3"
+                >
+                  <span class="text-light">Log In</span>
+                </button>
               </div>
               <div class="text-center">
-                <img src="@/src/assets/sss-logo-parents-blue.png" alt="Samba Soccer Schools Parents Logo">
+                <img
+                  src="@/src/assets/sss-logo-parents-blue.png"
+                  alt="Samba Soccer Schools Parents Logo"
+                />
               </div>
             </form>
           </div>

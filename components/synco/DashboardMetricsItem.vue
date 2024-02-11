@@ -4,16 +4,18 @@ export default {
     'name', // Name of the Metric
     'value', // Value of the Metric string
     'change', // the percentage of the metric that changed
-    'icon' // Use the current icon naming convention
+    'icon', // Use the current icon naming convention
   ],
 }
 </script>
 
 <template>
   <div class="col">
-    <div class="card rounded-4 h-100 ">
+    <div class="card rounded-4 h-100">
       <div class="card-body d-flex align-items-center justify-content-start">
-        <span class="informatics-circle bg-primary-subtle rounded-5 text-primary me-2">
+        <span
+          class="informatics-circle bg-primary-subtle rounded-5 text-primary me-2"
+        >
           <Icon :name="icon" />
         </span>
         <div class="d-flex flex-column">

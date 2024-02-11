@@ -1,8 +1,18 @@
 module.exports = {
-  "root": true,
-  "parser": "@babel/eslint-parser",
-  "parserOptions": {
-    "sourceType": "module"
+  root: true,
+  env: {
+    browser: true,
+    node: true,
   },
-  "extends": ["@nuxt/eslint-config"],
-};
+  parser: 'vue-eslint-parser',
+  parserOptions: {
+    parser: '@typescript-eslint/parser',
+    sourceType: 'module',
+  },
+  extends: ['@nuxt/eslint-config', 'plugin:prettier/recommended'],
+  plugins: [],
+  rules: {
+    'vue/multi-word-component-names': 0,
+    'prettier/prettier': ['error', { singleQuote: true, semi: false }],
+  },
+}

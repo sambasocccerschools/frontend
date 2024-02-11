@@ -2,43 +2,60 @@
 export default {
   data: () => ({
     view: 'list', // list or card
-    surveys: 8
-  })
+    surveys: 8,
+  }),
 }
 </script>
 
-
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Email Marketing Campaigns">
+  <NuxtLayout name="syncolayout" page-title="Email Marketing Campaigns">
     <h4 class="h4 mb-4">Reports</h4>
     <div class="d-flex justify-content-between align-items-center">
-
-      <ul class="nav nav-pills bg-white p-2 border rounded-4 mb-4">
+      <ul class="nav nav-pills rounded-4 mb-4 border bg-white p-2">
         <li class="nav-item">
-          <button class="nav-link rounded-4" :class="view === 'list' ? 'active' : ' text-dark'" @click="view = 'list'"
-            href="#">List
-            View</button>
+          <button
+            class="nav-link rounded-4"
+            :class="view === 'list' ? 'active' : ' text-dark'"
+            href="#"
+            @click="view = 'list'"
+          >
+            List View
+          </button>
         </li>
         <li class="nav-item">
-          <button class="nav-link rounded-4" :class="view === 'card' ? 'active' : ' text-dark'"
-            @click="view = 'card'">Card
-            View</button>
+          <button
+            class="nav-link rounded-4"
+            :class="view === 'card' ? 'active' : ' text-dark'"
+            @click="view = 'card'"
+          >
+            Card View
+          </button>
         </li>
       </ul>
-      <NuxtLink to="/synco/email-marketing/create" @click="view = 'card'"
-        class=" ms-2 btn btn-primary text-light shadow-sm">+
-        Create Campaign</NuxtLink>
+      <NuxtLink
+        to="/synco/email-marketing/create"
+        class="btn btn-primary text-light ms-2 shadow-sm"
+        @click="view = 'card'"
+        >+ Create Campaign</NuxtLink
+      >
     </div>
 
-    <form action="" class="row border-bottom  pb-4 mb-4">
+    <form action="" class="row border-bottom mb-4 pb-4">
       <div class="form-group col-sm-3">
-        <label for="search-survey" class="form-label">Search for campaign</label>
+        <label for="search-survey" class="form-label"
+          >Search for campaign</label
+        >
         <div class="input-group">
-          <span class="input-group-text" id="search-survey">
+          <span id="search-survey" class="input-group-text">
             <Icon name="ic:baseline-search" />
           </span>
-          <input type="text" class="form-control" placeholder="Search" aria-label="Search"
-            aria-describedby="search-addon">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search"
+            aria-label="Search"
+            aria-describedby="search-addon"
+          />
         </div>
       </div>
       <div class="form-group col-sm-2">

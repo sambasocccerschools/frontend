@@ -1,6 +1,3 @@
-
 <template>
-  <NuxtLayout name="syncolayout">
-    Parent Feedback
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Parent Feedback </NuxtLayout>
 </template>

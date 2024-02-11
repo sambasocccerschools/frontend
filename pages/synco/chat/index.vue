@@ -1,7 +1,3 @@
-
 <template>
-  <NuxtLayout name="syncolayout">
-    Synco chat space
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Synco chat space </NuxtLayout>
 </template>
-

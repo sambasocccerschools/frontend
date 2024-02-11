@@ -1,33 +1,50 @@
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Cancellations">
-
-
+  <NuxtLayout name="syncolayout" page-title="Cancellations">
     <div class="row">
       <div class="col-sm-8">
-
         <div class="row mb-3">
           <div class="col">
             <ul class="nav nav-pills">
               <li class="nav-item rounded-3 me-2">
-                <a class="nav-link active" aria-current="page" href="#">Request to cancel</a>
+                <a class="nav-link active" aria-current="page" href="#"
+                  >Request to cancel</a
+                >
               </li>
-              <li class="nav-item border rounded-3 me-2">
+              <li class="nav-item rounded-3 me-2 border">
                 <a class="nav-link text-dark" href="#">Full Cancellation</a>
               </li>
-              <li class="nav-item border rounded-3 ">
+              <li class="nav-item rounded-3 border">
                 <a class="nav-link text-dark" href="#">All</a>
               </li>
             </ul>
           </div>
         </div>
 
-
         <div class="row row-cols-sm-4">
-          <SyncoDashboardMetricsItem name="Total Requests" value="22" change="-P200 p/m" icon="ph:users-three" />
-          <SyncoDashboardMetricsItem name="Membership Tenure" value="9 Months" change="100" icon="ph:users-three" />
-          <SyncoDashboardMetricsItem name="Top Reasons for request to cancel" value="Price" change=""
-            icon="ph:users-three" />
-          <SyncoDashboardMetricsItem name="Venue with most requests" value="Acton" change="" icon="ph:users-three" />
+          <SyncoDashboardMetricsItem
+            name="Total Requests"
+            value="22"
+            change="-P200 p/m"
+            icon="ph:users-three"
+          />
+          <SyncoDashboardMetricsItem
+            name="Membership Tenure"
+            value="9 Months"
+            change="100"
+            icon="ph:users-three"
+          />
+          <SyncoDashboardMetricsItem
+            name="Top Reasons for request to cancel"
+            value="Price"
+            change=""
+            icon="ph:users-three"
+          />
+          <SyncoDashboardMetricsItem
+            name="Venue with most requests"
+            value="Acton"
+            change=""
+            icon="ph:users-three"
+          />
         </div>
 
         <!-- <div class="d-flex justify-content-end py-3">
@@ -66,12 +83,17 @@
 
         <h4 class="mt-4">Request to cancel</h4>
 
-        <table class="table table-hover border rounded-4 mt-4">
+        <table class="table-hover rounded-4 mt-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
               <th scope="col">
-                <input class="form-check-input" type="checkbox" value="" id="all-table">
+                <input
+                  id="all-table"
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                />
               </th>
               <th scope="col">
                 <label class="form-check-label text-muted" for="all-table">
@@ -90,12 +112,10 @@
             <LazySyncoWeeklyClassesCancellationsTableItem />
           </tbody>
         </table>
-
       </div>
       <div class="col">
         <SyncoWeeklyClassesFormsFindCancellation />
       </div>
     </div>
-
   </NuxtLayout>
 </template>

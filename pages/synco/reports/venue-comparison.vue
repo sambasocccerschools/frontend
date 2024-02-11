@@ -1,7 +1,3 @@
-
 <template>
-  <NuxtLayout name="syncolayout">
-    Venue Comparison
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Venue Comparison </NuxtLayout>
 </template>
-

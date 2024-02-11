@@ -1,16 +1,35 @@
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Members">
-
+  <NuxtLayout name="syncolayout" page-title="Members">
     <div class="row">
       <div class="col-sm-8">
         <div class="row row-cols-sm-4">
-          <SyncoDashboardMetricsItem name="Total Students" value="3021" change="+12" icon="ph:users-three" />
-          <SyncoDashboardMetricsItem name="Monthly Revenue" value="£75,000" change="+12" icon="ph:users-three" />
-          <SyncoDashboardMetricsItem name="Av. Monthly Fee" value="£35.00" change="+100" icon="ph:users-three" />
-          <SyncoDashboardMetricsItem name="Av. Life Cycle" value="18 months" change="+12" icon="ph:users-three" />
+          <SyncoDashboardMetricsItem
+            name="Total Students"
+            value="3021"
+            change="+12"
+            icon="ph:users-three"
+          />
+          <SyncoDashboardMetricsItem
+            name="Monthly Revenue"
+            value="£75,000"
+            change="+12"
+            icon="ph:users-three"
+          />
+          <SyncoDashboardMetricsItem
+            name="Av. Monthly Fee"
+            value="£35.00"
+            change="+100"
+            icon="ph:users-three"
+          />
+          <SyncoDashboardMetricsItem
+            name="Av. Life Cycle"
+            value="18 months"
+            change="+12"
+            icon="ph:users-three"
+          />
         </div>
 
-        <table class="table table-hover border rounded-4 mt-4">
+        <table class="table-hover rounded-4 mt-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
@@ -32,12 +51,10 @@
             <LazySyncoWeeklyClassesMembersTableItem />
           </tbody>
         </table>
-
       </div>
       <div class="col">
         <SyncoWeeklyClassesFormsFindMember />
       </div>
     </div>
-
   </NuxtLayout>
 </template>

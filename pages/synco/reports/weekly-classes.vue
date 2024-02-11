@@ -1,6 +1,3 @@
-
 <template>
-  <NuxtLayout name="syncolayout">
-    Weekly Classes
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Weekly Classes </NuxtLayout>
 </template>

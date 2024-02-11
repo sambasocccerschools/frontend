@@ -3,7 +3,5 @@ const layout = 'weblayout'
 </script>
 
 <template>
-   <NuxtLayout :name="layout">
-      Holiday Camps
-   </NuxtLayout>
+  <NuxtLayout :name="layout"> Holiday Camps </NuxtLayout>
 </template>

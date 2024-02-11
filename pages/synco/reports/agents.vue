@@ -1,6 +1,5 @@
-
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Agent Performance">
+  <NuxtLayout name="syncolayout" page-title="Agent Performance">
     wovnk
   </NuxtLayout>
 </template>

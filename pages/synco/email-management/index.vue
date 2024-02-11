@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Email Management">
+  <NuxtLayout name="syncolayout" page-title="Email Management">
     Content
   </NuxtLayout>
 </template>

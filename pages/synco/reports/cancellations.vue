@@ -1,7 +1,3 @@
-
 <template>
-  <NuxtLayout name="syncolayout">
-    Cancellations
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Cancellations </NuxtLayout>
 </template>
-

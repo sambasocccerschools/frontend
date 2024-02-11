@@ -3,10 +3,19 @@ export default {
   data: () => ({
     panel: false,
     venues: [
-      { id: 1, type: 'pathway', area: 'Chelsea', name: 'Chelsea Academy', address: 'Lots Road, London, SW10 0AB', region: 1, parking: true, congestion: false }
+      {
+        id: 1,
+        type: 'pathway',
+        area: 'Chelsea',
+        name: 'Chelsea Academy',
+        address: 'Lots Road, London, SW10 0AB',
+        region: 1,
+        parking: true,
+        congestion: false,
+      },
     ],
-    selectedVenue: null
-  })
+    selectedVenue: null,
+  }),
 }
 </script>
 
@@ -16,16 +25,16 @@ export default {
       <div class="col">
         <div class="d-flex justify-content-between mb-4">
           <h4>Pathway Venues</h4>
-          <button class="btn btn-primary text-light" @click="panel = !panel">+ Add New Venue</button>
+          <button class="btn btn-primary text-light" @click="panel = !panel">
+            + Add New Venue
+          </button>
         </div>
 
-        <table class="table table-hover table-sm border rounded-4 shadow-sm">
+        <table class="table-hover table-sm rounded-4 table border shadow-sm">
           <thead class="rounded-top-4">
-            <tr class="table-light ">
+            <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
-              <th scope="col">
-                Area
-              </th>
+              <th scope="col">Area</th>
               <th class="text-muted" scope="col">Name of the venue</th>
               <th class="text-muted" scope="col">Address</th>
               <th class="text-muted" scope="col">Region</th>
@@ -34,7 +43,7 @@ export default {
             </tr>
           </thead>
           <tbody class="">
-            <tr class="align-middle" v-for="venue in venues">
+            <tr v-for="venue in venues" class="align-middle">
               <th scope="row">
                 {{ venue.area }}
               </th>
@@ -43,17 +52,26 @@ export default {
               <td>{{ venue.region }}</td>
               <td>
                 <button class="btn btn-link px-1">
-                  <Icon name="emojione-monotone:letter-c" :class="venue.congestion ? 'text-success' : 'text-danger'" />
+                  <Icon
+                    name="emojione-monotone:letter-c"
+                    :class="venue.congestion ? 'text-success' : 'text-danger'"
+                  />
                 </button>
                 <button class="btn btn-link px-1">
-                  <Icon name="emojione-monotone:letter-p" :class="venue.parking ? 'text-success' : 'text-danger'" />
+                  <Icon
+                    name="emojione-monotone:letter-p"
+                    :class="venue.parking ? 'text-success' : 'text-danger'"
+                  />
                 </button>
               </td>
               <td>
                 <button class="btn btn-link px-1">
                   <Icon name="solar:calendar-line-duotone" />
                 </button>
-                <button class="btn btn-link px-1" @click="selectedVenue = venue">
+                <button
+                  class="btn btn-link px-1"
+                  @click="selectedVenue = venue"
+                >
                   <Icon name="ph:pencil-simple-line" />
                 </button>
                 <button class="btn btn-link px-1">
@@ -61,15 +79,20 @@ export default {
                 </button>
               </td>
             </tr>
-
           </tbody>
         </table>
       </div>
-      <div class="col-sm-4" v-if="panel || selectedVenue">
+      <div v-if="panel || selectedVenue" class="col-sm-4">
         <div class="card">
           <div class="card-header border-bottom">
             <div class="card-title h4">
-              <button class="btn btn-transparent m-0 p-0" @click="panel = !panel; selectedVenue = null">
+              <button
+                class="btn btn-transparent m-0 p-0"
+                @click="
+                  panel = !panel
+                  selectedVenue = null
+                "
+              >
                 <Icon name="material-symbols:arrow-back" class="me-2" />
               </button>
               Add New Venue
@@ -78,32 +101,56 @@ export default {
           <div class="card-body">
             <div class="mb-3">
               <label for="area" class="form-label">Area</label>
-              <input type="text" class="form-control" id="area" placeholder="Chelsea">
+              <input
+                id="area"
+                type="text"
+                class="form-control"
+                placeholder="Chelsea"
+              />
             </div>
             <div class="mb-3">
               <label for="name" class="form-label">Name of Venue</label>
-              <input type="text" class="form-control" id="name" placeholder="Chelsea Academy">
+              <input
+                id="name"
+                type="text"
+                class="form-control"
+                placeholder="Chelsea Academy"
+              />
             </div>
             <div class="mb-3">
               <label for="address" class="form-label">Address</label>
-              <input type="text" class="form-control" id="address" placeholder="Lots road, London, SW10 0AB">
+              <input
+                id="address"
+                type="text"
+                class="form-control"
+                placeholder="Lots road, London, SW10 0AB"
+              />
             </div>
             <!-- Parking COngestion  -->
-            <div class="mb-3 row">
+            <div class="row mb-3">
               <div class="col">
                 <label for="parking" class="form-label">Parking</label>
                 <div class="d-flex gap-3">
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="parking" id="parkingyes" checked>
+                    <input
+                      id="parkingyes"
+                      class="form-check-input"
+                      type="radio"
+                      name="parking"
+                      checked
+                    />
                     <label class="form-check-label" for="parkingyes">
                       Yes
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="parking" id="parkingno">
-                    <label class="form-check-label" for="parkingno">
-                      No
-                    </label>
+                    <input
+                      id="parkingno"
+                      class="form-check-input"
+                      type="radio"
+                      name="parking"
+                    />
+                    <label class="form-check-label" for="parkingno"> No </label>
                   </div>
                 </div>
               </div>
@@ -112,33 +159,57 @@ export default {
 
                 <div class="d-flex gap-3">
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="congestion" id="congestionyes" checked>
+                    <input
+                      id="congestionyes"
+                      class="form-check-input"
+                      type="radio"
+                      name="congestion"
+                      checked
+                    />
                     <label class="form-check-label" for="congestionyes">
                       Yes
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="congestion" id="congestionno">
+                    <input
+                      id="congestionno"
+                      class="form-check-input"
+                      type="radio"
+                      name="congestion"
+                    />
                     <label class="form-check-label" for="congestionno">
                       No
                     </label>
                   </div>
                 </div>
               </div>
-
             </div>
             <div class="form-floating mb-3">
-              <textarea class="form-control" placeholder="Add a parking note" id="parking-note"></textarea>
+              <textarea
+                id="parking-note"
+                class="form-control"
+                placeholder="Add a parking note"
+              ></textarea>
               <label for="parking-note">Add a parking note</label>
             </div>
             <div class="mb-3">
-              <label for="enter-facility" class="form-label">How to enter facility</label>
-              <textarea class="form-control" placeholder="Add notes" id="enter-facility"></textarea>
+              <label for="enter-facility" class="form-label"
+                >How to enter facility</label
+              >
+              <textarea
+                id="enter-facility"
+                class="form-control"
+                placeholder="Add notes"
+              ></textarea>
             </div>
 
             <div class="mb-3">
               <label for="region" class="form-label">Region</label>
-              <select class="form-select" aria-label="Default select example" id="region">
+              <select
+                id="region"
+                class="form-select"
+                aria-label="Default select example"
+              >
                 <option selected>--</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -147,14 +218,15 @@ export default {
             </div>
 
             <div class="d-flex gap-4">
-              <button class="btn btn-outline-secondary btn-lg w-100">Cancel</button>
-              <button class="btn btn-primary btn-lg w-100 text-light">Update</button>
+              <button class="btn btn-outline-secondary btn-lg w-100">
+                Cancel
+              </button>
+              <button class="btn btn-primary btn-lg w-100 text-light">
+                Update
+              </button>
             </div>
-
-
           </div>
         </div>
-
       </div>
     </div>
   </NuxtLayout>

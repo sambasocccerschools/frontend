@@ -1,11 +1,17 @@
-
 <script>
 export default {
   data: () => ({
     referrals: [
-      { id: 1, refereeName: 'Jim Jones', phone: '082648956', date: '13th May', referredBy: 'Ethan Bond Vaughan', notes: null },
-    ]
-  })
+      {
+        id: 1,
+        refereeName: 'Jim Jones',
+        phone: '082648956',
+        date: '13th May',
+        referredBy: 'Ethan Bond Vaughan',
+        notes: null,
+      },
+    ],
+  }),
 }
 </script>
 
@@ -18,13 +24,11 @@ export default {
       </span>
     </div>
 
-    <table class="table table-hover border rounded-4 ">
+    <table class="table-hover rounded-4 table border">
       <thead class="rounded-top-4">
         <tr class="table-light">
           <!-- <th scope="col">Checkbox</th> -->
-          <th scope="col">
-            Referee Name
-          </th>
+          <th scope="col">Referee Name</th>
           <th class="text-muted" scope="col">Telephone</th>
           <th class="text-muted" scope="col">Date</th>
           <th class="text-muted" scope="col">Referred by</th>
@@ -33,7 +37,7 @@ export default {
       </thead>
       <tbody>
         <!-- Need to see how to turn this into a link -->
-        <tr class="align-middle" v-for="referral in referrals">
+        <tr v-for="referral in referrals" class="align-middle">
           <th scope="row">
             {{ referral.refereeName }}
           </th>
@@ -46,5 +50,3 @@ export default {
     </table>
   </NuxtLayout>
 </template>
- 
- 
