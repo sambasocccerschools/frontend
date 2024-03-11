@@ -1,7 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['nuxt-icon', '@pinia/nuxt'],
+  modules: ['nuxt-icon', '@pinia/nuxt', 'dayjs-nuxt'],
+  dayjs: {
+    plugins: ['relativeTime', 'customParseFormat'],
+  },
   runtimeConfig: {
     public: {
       API_BASE_URL: process.env.API_BASE_URL,

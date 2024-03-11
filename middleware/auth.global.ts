@@ -1,26 +1,21 @@
 // middleware/auth.ts
+
 import { useStore } from '~/stores'
 
 export default defineNuxtRouteMiddleware((to) => {
   const store = useStore()
   const token = useCookie('token')
 
-  if (token.value) {
-    // check if value exists
-    store.authenticated = true
+  const authenticated = !!token.value
+  if (authenticated) {
+    store.updateAuthenticated(authenticated)
   }
 
-  // if token exists and url is /login redirect to homepage
-  if (token.value && to?.path === '/synco') {
-    return navigateTo('/')
-  }
-  if (!token.value && to?.path === '/synco/dashboard') {
-    return navigateTo('/')
+  if (!authenticated && to?.path.includes('/synco/')) {
+    return navigateTo('/synco')
   }
 
-  // if token doesn't exist redirect to log in
-  // if (!token.value && to?.path !== '/pacientes/login') {
-  //   abortNavigation();
-  //   return navigateTo('/pacientes/login');
-  // }
+  if (authenticated && to?.path === '/synco') {
+    return navigateTo('/synco/dashboard')
+  }
 })

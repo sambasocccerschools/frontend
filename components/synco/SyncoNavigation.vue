@@ -1,27 +1,18 @@
 <script lang="ts" setup>
 import { useStore } from '~/stores'
 
-const config = useRuntimeConfig()
 const token = useCookie('token')
 const href: any = useRoute()
 const router = useRouter()
 const store = useStore()
-
+const { $api } = useNuxtApp()
 const logout = async () => {
-  const { data, error }: any = await useFetch(
-    config.public.API_BASE_URL + '/v1/auth/logout',
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token.value}`,
-      },
-    },
-  )
+  const { data, error } = await $api.auth.logout()
   if (data.value) {
-    console.log(data.value, 'data')
-    router.push('/synco')
-    store.authenticated = false
+    store.updateAuthenticated(false)
+    store.setUser(undefined)
     token.value = null
+    router.push('/synco')
   }
   if (error.value) {
     console.log(error.value, 'data')

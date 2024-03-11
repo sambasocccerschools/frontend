@@ -1,7 +1,13 @@
-<script>
-export default {
-  props: ['pageTitle'],
-}
+<script lang="ts" setup>
+const store = useStore()
+
+defineProps<{
+  pageTitle: string
+}>()
+
+const userFullName = computed(() => {
+  return store.user ? `${store.user.first_name} ${store.user.last_name}` : ''
+})
 </script>
 
 <template>
@@ -44,7 +50,7 @@ export default {
                     class="me-3"
                   />
                   <h5>
-                    Nilio Bagga
+                    {{ userFullName }}
                     <Icon name="bi:chevron-down" />
                   </h5>
                 </div>

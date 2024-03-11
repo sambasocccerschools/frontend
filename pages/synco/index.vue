@@ -75,8 +75,9 @@
 
 <script lang="ts" setup>
 import { useStore } from '~/stores'
+import type { ILoginInput } from '~/types'
 
-const config = useRuntimeConfig()
+const { $api } = useNuxtApp()
 const router = useRouter()
 const store = useStore()
 const token = useCookie('token')
@@ -85,25 +86,21 @@ const password = ref('password')
 const remember = ref(false)
 
 const login = async () => {
-  const { data, error }: any = await useFetch(
-    config.public.API_BASE_URL + '/v1/auth/login',
-    {
-      method: 'POST',
-      body: {
-        email,
-        password,
-        remember,
-      },
-    },
-  )
-  if (data.value) {
-    console.log(data.value, 'data')
-    router.push('/synco/dashboard')
-    store.authenticated = true
-    token.value = data?.value?.access_token
+  const credentials: ILoginInput = {
+    email: email.value,
+    password: password.value,
+    remember: remember.value,
   }
-  if (error.value) {
-    console.log(error.value, 'data')
+  const loginResponse = await $api.auth.login(credentials)
+  if (loginResponse.data.value) {
+    token.value = loginResponse.data.value.access_token
+    store.updateAuthenticated(true)
+
+    // Make profile api to get profile data and store
+    const profileResponse = await $api.profile.getProfile()
+    store.setUser(profileResponse.data.value?.data)
+
+    router.push('/synco/dashboard')
   }
 }
 </script>

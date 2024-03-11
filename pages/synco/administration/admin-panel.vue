@@ -1,28 +1,28 @@
-<script>
+<script lang="ts" setup>
+import type { ICreateUserParams } from '~/types/index'
+const { $api } = useNuxtApp()
 const router = useRouter()
 
-export default {
-  data: () => ({
-    members: [
-      {
-        id: 1,
-        fullname: 'Rob Moya',
-        email: 'rob@sambasoccerschools.com',
-        role: 'Admin',
-        phone: '346789',
-        position: 'Team lead',
-        activity: '2 days ago',
-        profile: '@/src/assets/img-avatar-member-admin.png',
-      },
-    ],
-    panel: false,
-  }),
-  methods: {
-    goTo(id) {
-      console.log(`/synco/administration/members/`, id)
-      router.push({ path: `/synco/administration/members/${id}` })
-    },
-  },
+const page = ref(1)
+const panel = ref(false)
+const isLoadingCreateMember = ref(false)
+const limit = 25
+const { data: usersData } = await $api.users.getUsers({
+  page: page.value,
+  limit,
+})
+
+const goTo = (id: string) => {
+  router.push({ path: `/synco/administration/members/${id}` })
+}
+
+const createMember = async (input: ICreateUserParams) => {
+  isLoadingCreateMember.value = true
+  const { error } = await $api.users.createUser(input)
+  isLoadingCreateMember.value = false
+  if (error) {
+    // handle error
+  }
 }
 </script>
 
@@ -51,19 +51,30 @@ export default {
           </thead>
           <tbody class="">
             <tr
-              v-for="member in members"
+              v-for="member in usersData?.data"
+              :key="member.id"
               class="align-middle"
               @click="goTo(member.id)"
             >
               <th scope="row">
-                <img :src="member.profile" alt="" width="25" class="me-2" />
-                {{ member.fullname }}
+                <img
+                  :src="member.avatar_image?.url"
+                  alt=""
+                  width="25"
+                  class="me-2"
+                />
+                {{ member.first_name }} {{ member.last_name }}
               </th>
               <td>{{ member.position }}</td>
-              <td>{{ member.phone }}</td>
+              <td>{{ member.phone_number }}</td>
               <td>{{ member.email }}</td>
-              <td>{{ member.role }}</td>
-              <td>{{ member.activity }}</td>
+              <td>{{ member.position }}</td>
+              <td
+                v-if="member.last_active_at && member.last_active_at.length > 0"
+              >
+                {{ $dayjs(member.last_active_at, 'DD/MM/YYYY') }}
+              </td>
+              <td v-else></td>
             </tr>
           </tbody>
         </table>
@@ -82,7 +93,10 @@ export default {
             </div>
           </div>
           <div class="card-body">
-            <SyncoAdministrationFormsAddMember />
+            <SyncoAdministrationFormsAddMember
+              :loading="isLoadingCreateMember"
+              @create-member="createMember"
+            />
           </div>
         </div>
       </div>

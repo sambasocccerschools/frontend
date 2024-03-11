@@ -16,6 +16,12 @@ export default {
     ],
     selectedVenue: null,
   }),
+  methods: {
+    addNewVenue() {
+      this.panel = !this.panel
+      this.selectedVenue = null
+    },
+  },
 }
 </script>
 
@@ -86,13 +92,7 @@ export default {
         <div class="card">
           <div class="card-header border-bottom">
             <div class="card-title h4">
-              <button
-                class="btn btn-transparent m-0 p-0"
-                @click="
-                  panel = !panel
-                  selectedVenue = null
-                "
-              >
+              <button class="btn btn-transparent m-0 p-0" @click="addNewVenue">
                 <Icon name="material-symbols:arrow-back" class="me-2" />
               </button>
               Add New Venue
