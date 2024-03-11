@@ -98,7 +98,7 @@ const login = async () => {
 
     // Make profile api to get profile data and store
     const profileResponse = await $api.profile.getProfile()
-    store.setUser(profileResponse.data.value?.data)
+    store.setUser(profileResponse?.data)
 
     router.push('/synco/dashboard')
   }

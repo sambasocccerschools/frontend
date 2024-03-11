@@ -1,19 +1,51 @@
-<script>
-export default {
-  data: () => ({
-    id: 1,
-    fullname: 'Rob Moya',
-    email: 'rob@sambasoccerschools.com',
-    role: 'Admin',
-    phone: '346789',
-    position: 'Team lead',
-    activity: '2 days ago',
-    profile: '@/src/assets/img-avatar-member-admin.png',
-    country: 'United Kingdom',
-    city: 'London',
-    postalcode: 'ERT 1136',
-  }),
+<script setup lang="ts">
+const { $api, $toast } = useNuxtApp()
+const route = useRoute()
+const userId = route.params.id as string
+const { data } = useAsyncData(`user:${userId}`, () =>
+  $api.users.getUser(userId),
+)
+const user = data.value?.data
+
+const isDeletingUser = ref(false)
+const isSuspendingUser = ref(false)
+const isRestoringUser = ref(false)
+// const deleteUser = async () => {
+//   try {
+//     isDeletingUser.value = true
+//     await $api.users.delete()
+//   } catch (error: any) {
+//     $toast.error(error?.data?.message ?? error?.message)
+//   } finally {
+//     isDeletingUser.value = false
+//   }
+// }
+const suspendUser = async () => {
+  try {
+    isSuspendingUser.value = true
+    await $api.users.deactivateUser(userId)
+    $toast.success('User is suspended')
+  } catch (error: any) {
+    $toast.error(error?.data?.message ?? error?.message)
+  } finally {
+    isSuspendingUser.value = false
+  }
 }
+
+const restoreUser = async () => {
+  try {
+    isDeletingUser.value = true
+    await $api.users.restoreUser(userId)
+    $toast.success('User is unsuspended')
+  } catch (error: any) {
+    $toast.error(error?.data?.message ?? error?.message)
+  } finally {
+    isDeletingUser.value = false
+  }
+}
+const isDisabled = computed(
+  () => isDeletingUser.value || isSuspendingUser.value || isRestoringUser.value,
+)
 </script>
 
 <template>
@@ -22,20 +54,26 @@ export default {
       <div class="row">
         <div class="col-sm-10 mx-auto">
           <!-- Top -->
-          <div class="card mb-4 border border">
+          <div class="card mb-4 border">
             <div
               class="card-body d-flex align-items-center justify-content-between"
             >
               <div class="d-flex align-items-center">
                 <img
-                  src="@/src/assets/img-avatar-member-admin.png"
-                  alt=""
+                  :src="
+                    user?.avatar_image
+                      ? user.avatar_image.url
+                      : '@/src/assets/img-avatar-member-admin.png'
+                  "
+                  :alt="user?.avatar_image.name ?? ''"
                   class="me-4"
                 />
                 <div>
-                  <h3>{{ fullname }}</h3>
-                  <p class="text-muted mb-1">{{ email }}</p>
-                  <p class="text-muted m-0">{{ role }} | {{ position }}</p>
+                  <h3>{{ `${user?.first_name} ${user?.last_name}` }}</h3>
+                  <p class="text-muted mb-1">{{ user?.email }}</p>
+                  <p class="text-muted m-0">
+                    {{ user?.role }} | {{ user?.position }}
+                  </p>
                 </div>
               </div>
 
@@ -60,20 +98,24 @@ export default {
               </div>
               <div class="card-body">
                 <span class="text-muted mb-2">Full Name</span>
-                <div class="h5 text-normal mb-3">{{ fullname }}</div>
+                <div class="h5 text-normal mb-3">
+                  {{ `${user?.first_name} ${user?.last_name}` }}
+                </div>
 
                 <div class="row row-cols-2 gy-3">
                   <div class="col">
                     <span class="text-muted mb-2">Email Address</span>
-                    <div class="h5 text-normal">{{ email }}</div>
+                    <div class="h5 text-normal">{{ user?.email }}</div>
                   </div>
                   <div class="col">
                     <span class="text-muted mb-2">Phone</span>
-                    <div class="h5 text-normal">{{ phone }}</div>
+                    <div class="h5 text-normal">{{ user?.phone_number }}</div>
                   </div>
                   <div class="col">
                     <span class="text-muted mb-2">Bio</span>
-                    <div class="h5 text-normal">{{ position }}, {{ role }}</div>
+                    <div class="h5 text-normal">
+                      {{ user?.bio }}
+                    </div>
                   </div>
                   <div class="col">
                     <span class="text-muted mb-2">Password</span>
@@ -98,16 +140,16 @@ export default {
               </div>
               <div class="card-body">
                 <span class="text-muted mb-2">Country</span>
-                <div class="h5 text-normal mb-3">{{ country }}</div>
+                <div class="h5 text-normal mb-3">{{ user?.country }}</div>
 
                 <div class="row row-cols-2 gy-3">
                   <div class="col">
                     <span class="text-muted mb-2">City</span>
-                    <div class="h5 text-normal">{{ city }}</div>
+                    <div class="h5 text-normal">{{ user?.city }}</div>
                   </div>
                   <div class="col">
                     <span class="text-muted mb-2">Postal Code</span>
-                    <div class="h5 text-normal">{{ postalcode }}</div>
+                    <div class="h5 text-normal">{{ user?.postal_code }}</div>
                   </div>
                 </div>
               </div>
@@ -136,9 +178,33 @@ export default {
 
           <!-- Actions  -->
           <div class="mb-5 pb-5 text-center">
-            <button class="btn border">Suspend</button>
-            <button class="btn mx-4 border">Delete</button>
-            <button class="btn btn-primary text-light">Save</button>
+            <button
+              :disabled="isDisabled"
+              class="btn mx-4 border"
+              @click="suspendUser"
+            >
+              <span
+                v-if="isSuspendingUser"
+                class="spinner-border text-primary spinner-border-sm"
+                role="status"
+              ></span>
+              <span v-else>Suspend</span>
+            </button>
+            <!-- <button
+              :disabled="isDisabled"
+              class="btn mx-4 border"
+              @click="deleteUser"
+            >
+              <span
+                v-if="isDeletingUser"
+                class="spinner-border text-primary spinner-border-sm"
+                role="status"
+              ></span>
+              <span v-else>Delete</span>
+            </button> -->
+            <button :disabled="isDisabled" class="btn btn-primary text-light">
+              Save
+            </button>
           </div>
         </div>
       </div>

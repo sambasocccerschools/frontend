@@ -6,6 +6,7 @@ import type {
   IGetUsersResponse,
   ICreateUserParams,
   ICreateUserResponse,
+  IGetUserResponse,
 } from '~/types'
 
 class UsersModule extends FetchFactory {
@@ -45,6 +46,18 @@ class UsersModule extends FetchFactory {
       formData,
       fetchOptions,
     )
+  }
+
+  async getUser(id: string) {
+    return this.call<IGetUserResponse>('GET', `${this.RESOURCE}/${id}`)
+  }
+
+  async deactivateUser(id: string) {
+    return this.call<{ message: string }>('DELETE', `${this.RESOURCE}/${id}`)
+  }
+
+  async restoreUser(id: string) {
+    return this.call<{ message: string }>('POST', `${this.RESOURCE}/${id}`)
   }
 }
 

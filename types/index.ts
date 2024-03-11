@@ -156,6 +156,7 @@ export type IUser = {
   email: string
   position: string | null
   bio: string | null
+  role: string | null
   country: ICountry
   city: ICity
   postal_code: string | null
@@ -163,9 +164,7 @@ export type IUser = {
   avatar_image: IAvatar
   created_at: string
 }
-export type IProfileResponse = {
-  data: IUser
-}
+export type IProfileResponse = GenericResponse<IUser>
 
 // Users
 
@@ -213,3 +212,9 @@ export type ICreateUserParams = {
 export type ICreateUserResponse = {
   message: string
 }
+
+export type GenericResponse<T> = {
+  data: T
+}
+
+export type IGetUserResponse = GenericResponse<IUser>
