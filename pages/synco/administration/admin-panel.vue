@@ -2,7 +2,7 @@
 import type { ICreateUserParams } from '~/types/index'
 const { $api } = useNuxtApp()
 const router = useRouter()
-
+const { $toast } = useNuxtApp()
 const page = ref(1)
 const panel = ref(false)
 const isLoadingCreateMember = ref(false)
@@ -17,11 +17,21 @@ const goTo = (id: string) => {
 }
 
 const createMember = async (input: ICreateUserParams) => {
-  isLoadingCreateMember.value = true
-  const { error } = await $api.users.createUser(input)
-  isLoadingCreateMember.value = false
-  if (error) {
-    // handle error
+  try {
+    isLoadingCreateMember.value = true
+    await $api.users.createUser(input)
+
+    // refetch users
+    await $api.users.getUsers({
+      page: page.value,
+      limit,
+    })
+
+    $toast.success('User is created successfully')
+  } catch (error: any) {
+    $toast.error((error?.data as any)?.message)
+  } finally {
+    isLoadingCreateMember.value = false
   }
 }
 </script>
@@ -95,7 +105,7 @@ const createMember = async (input: ICreateUserParams) => {
           <div class="card-body">
             <SyncoAdministrationFormsAddMember
               :loading="isLoadingCreateMember"
-              @create-member="createMember"
+              :create-member="createMember"
             />
           </div>
         </div>

@@ -207,6 +207,7 @@ export type ICreateUserParams = {
   position: string
   password: string
   password_confirmation: string
+  avatar_image?: File | null
 }
 
 export type ICreateUserResponse = {
