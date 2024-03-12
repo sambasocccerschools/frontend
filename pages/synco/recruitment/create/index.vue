@@ -4,13 +4,10 @@ export default {
     // coachLeads: 10,
     // pathwayLeads: 10,
     // regionalManagerLeads: 8
-  })
+  }),
 }
 </script>
 
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Add">
-
-
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout" page-title="Add"> </NuxtLayout>
 </template>

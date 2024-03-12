@@ -1,6 +1,3 @@
 <template>
-  <NuxtLayout name="syncolayout">
-    Website performance
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Website performance </NuxtLayout>
 </template>
-

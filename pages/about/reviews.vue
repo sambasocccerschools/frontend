@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const layout = "weblayout";
+const layout = 'weblayout'
 </script>
 
 <template>

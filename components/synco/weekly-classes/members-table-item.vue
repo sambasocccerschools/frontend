@@ -1,8 +1,8 @@
 <script>
-// Use for model 
+// Use for model
 export default {
   props: [
-    'status' // waiting , active, frozen, cancelled
+    'status', // waiting , active, frozen, cancelled
   ],
 }
 </script>
@@ -22,10 +22,13 @@ export default {
     <td>12 months, 47.99 per months</td>
     <td>6 months</td>
     <td>
-      <span v-if="status === 'waiting'" class="badge bg-light-subtle px-1 text-dark">
+      <span
+        v-if="status === 'waiting'"
+        class="badge bg-light-subtle text-dark px-1"
+      >
         Waiting list
       </span>
-      <span v-else class="badge bg-success-subtle px-1 text-success">
+      <span v-else class="badge bg-success-subtle text-success px-1">
         Active
       </span>
     </td>

@@ -14,9 +14,7 @@
     <td>12 months</td>
     <td>Jaffar Bukari</td>
     <td>
-      <span class="badge bg-success-subtle px-1 text-success">
-        Active
-      </span>
+      <span class="badge bg-success-subtle text-success px-1"> Active </span>
     </td>
     <!-- Active, Waiting List, Frozen, Cancelled -->
   </tr>

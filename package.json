@@ -4,27 +4,48 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "start": "bun run dev -o",
     "generate": "nuxt generate",
     "staging-generate": "npx nuxi generate --dotenv .env.staging",
     "production-generate": "npx nuxi generate --dotenv .env.production",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint ."
+    "lint:js": "eslint . --ext .ts,.vue",
+    "lint:prettier": "prettier --check .",
+    "lint": "bun lint:js && bun lint:prettier",
+    "lint:fix": "prettier --write --list-different . && bun lint:js --fix"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@nuxt/eslint-config": "^0.2.0",
     "@nuxtjs/eslint-module": "^4.1.0",
-    "@nuxtjs/tailwindcss": "^6.8.0",
     "@popperjs/core": "^2.11.8",
-    "@types/node": "^18.17.1",
-    "eslint": "^8.46.0",
-    "nuxt": "^3.6.5",
-    "nuxt-icon": "^0.5.0",
+    "@types/node": "^20.11.17",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "dayjs-nuxt": "^2.1.9",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-nuxt": "^4.0.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "nuxt": "^3.10.3",
+    "nuxt-icon": "^0.6.8",
+    "ofetch": "^1.3.3",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "typescript": "^5.3.3",
+    "vue-eslint-parser": "^9.4.2",
     "vuex": "^4.1.0"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
+    "@vee-validate/yup": "^4.12.6",
     "pinia": "^2.1.7",
-    "sass": "^1.64.2"
+    "sass": "~1.64.2",
+    "vee-validate": "^4.12.6",
+    "vue-toast-notification": "^3",
+    "yup": "^1.4.0",
+    "yup-phone": "^1.3.2",
+    "yup-phone-lite": "^2.0.1"
   }
 }

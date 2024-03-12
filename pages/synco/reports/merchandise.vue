@@ -1,7 +1,3 @@
-
 <template>
-  <NuxtLayout name="syncolayout">
-    Merchandise
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Merchandise </NuxtLayout>
 </template>
-

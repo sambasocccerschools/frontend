@@ -1,45 +1,36 @@
 <script lang="ts" setup>
-import { useStore } from "~/store";
+import { useStore } from '~/stores'
 
-const config = useRuntimeConfig();
-const token = useCookie("token");
-const href: any = useRoute();
-const router = useRouter();
-const store = useStore();
-
+const token = useCookie('token')
+const href: any = useRoute()
+const router = useRouter()
+const store = useStore()
+const { $api } = useNuxtApp()
 const logout = async () => {
-  const { data, error }: any = await useFetch(
-    config.public.API_BASE_URL + "/v1/auth/logout",
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token.value}`,
-      },
-    }
-  );
+  const { data, error } = await $api.auth.logout()
   if (data.value) {
-    console.log(data.value, "data");
-    router.push("/synco");
-    store.authenticated = false;
-    token.value = null;
+    store.updateAuthenticated(false)
+    store.setUser(undefined)
+    token.value = null
+    router.push('/synco')
   }
   if (error.value) {
-    console.log(error.value, "data");
+    console.log(error.value, 'data')
   }
-};
+}
 
 const show = (path: any) => {
-  if (href.includes(path)) return true;
-};
+  if (href.includes(path)) return true
+}
 </script>
 
 <template>
   <div
-    class="vh-100 border-end border-1 border-secondary-subtle d-flex flex-column py-4 ps-2 pe-3 bg-white overflow-y-scroll justify-content-between"
+    class="vh-100 border-end border-1 border-secondary-subtle d-flex flex-column justify-content-between overflow-y-scroll bg-white py-4 pe-3 ps-2"
     style="width: auto"
   >
     <div>
-      <div class="text-center mb-4">
+      <div class="mb-4 text-center">
         <img
           src="@/src/assets/sss-logo-synco-black.png"
           alt="Synco logo"
@@ -67,7 +58,7 @@ const show = (path: any) => {
         <Icon name="ph:book-open-bold" />Weekly Classes
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse" id="collapseWeeklyClasses">
+      <ul id="collapseWeeklyClasses" class="collapse ms-2">
         <li>
           <NuxtLink
             to="/synco/weekly-classes/find"
@@ -161,7 +152,7 @@ const show = (path: any) => {
         <Icon name="ph:book-open-bold" />Holiday Camps
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse" id="collapseHolidayCamps">
+      <ul id="collapseHolidayCamps" class="collapse ms-2">
         <li>
           <NuxtLink
             to="/synco/holiday-camps/find"
@@ -203,7 +194,7 @@ const show = (path: any) => {
         <Icon name="clarity:users-line" />Club
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse" id="collapseClub">
+      <ul id="collapseClub" class="collapse ms-2">
         <li>
           <NuxtLink
             to="/synco/club/find"
@@ -259,7 +250,7 @@ const show = (path: any) => {
         <Icon name="ph:car-profile-bold" />Surveys
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse" id="collapseSurveys">
+      <ul id="collapseSurveys" class="collapse ms-2">
         <li>
           <NuxtLink
             to="/synco/surveys/create"
@@ -292,7 +283,7 @@ const show = (path: any) => {
         <Icon name="ph:car-profile-bold" />Email Marketing
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse show" id="collapseEmailMarketing">
+      <ul id="collapseEmailMarketing" class="show collapse ms-2">
         <li>
           <NuxtLink
             to="/synco/email-marketing/create"
@@ -334,7 +325,7 @@ const show = (path: any) => {
         <Icon name="ph:car-profile-bold" />Recruitment
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse show" id="collapseRecruitment">
+      <ul id="collapseRecruitment" class="show collapse ms-2">
         <li>
           <NuxtLink
             to="/synco/recruitment/coaches-leads"
@@ -376,7 +367,7 @@ const show = (path: any) => {
         <Icon name="ph:car-profile-bold" />Reports
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse" id="collapseReports">
+      <ul id="collapseReports" class="collapse ms-2">
         <li>
           <NuxtLink
             to="/synco/reports/members"
@@ -562,7 +553,7 @@ const show = (path: any) => {
         <Icon name="ph:car-profile-bold" />Marketing reports
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse show" id="collapseMarketingReports">
+      <ul id="collapseMarketingReports" class="show collapse ms-2">
         <li>
           <NuxtLink
             to="/synco/marketing-reports/facebook"
@@ -623,7 +614,7 @@ const show = (path: any) => {
         <Icon name="ph:car-profile-bold" />Templates
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse show" id="collapseTemplates">
+      <ul id="collapseTemplates" class="show collapse ms-2">
         <li>
           <NuxtLink
             to="/synco/templates/create"
@@ -656,7 +647,7 @@ const show = (path: any) => {
         <Icon name="material-symbols:manage-accounts-outline" />Administration
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul class="ms-2 collapse show" id="collapseAdministration">
+      <ul id="collapseAdministration" class="show collapse ms-2">
         <li>
           <NuxtLink
             to="/synco/administration/todos"
@@ -715,8 +706,8 @@ const show = (path: any) => {
 
       <SyncoMenuConfiguration />
     </div>
-    <div class="py-5 mt-5"></div>
+    <div class="mt-5 py-5"></div>
 
-    <button @click="logout" class="btn btn-outline-dark">Logout</button>
+    <button class="btn btn-outline-dark" @click="logout">Logout</button>
   </div>
 </template>

@@ -1,5 +1,3 @@
 <template>
-  <NuxtLayout name="syncolayout">
-    Holiday Camps
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Holiday Camps </NuxtLayout>
 </template>

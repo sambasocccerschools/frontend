@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Booking Form">
+  <NuxtLayout name="syncolayout" page-title="Booking Form">
     Book a Free Trial
   </NuxtLayout>
 </template>

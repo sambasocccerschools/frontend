@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Account Information">
+  <NuxtLayout name="syncolayout" page-title="Account Information">
     Some ID
   </NuxtLayout>
 </template>

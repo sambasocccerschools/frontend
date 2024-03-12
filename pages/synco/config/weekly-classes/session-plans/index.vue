@@ -1,7 +1,3 @@
-
 <template>
-  <NuxtLayout name="syncolayout">
-    Create Session Plans
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Create Session Plans </NuxtLayout>
 </template>
-

@@ -1,3 +1,1 @@
-<template>
-  Calendar Goes Here
-</template>
+<template>Calendar Goes Here</template>

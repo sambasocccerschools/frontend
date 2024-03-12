@@ -1,5 +1,3 @@
 <template>
-  <NuxtLayout name="syncolayout">
-    New Business
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> New Business </NuxtLayout>
 </template>

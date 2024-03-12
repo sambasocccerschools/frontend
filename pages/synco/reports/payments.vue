@@ -1,6 +1,3 @@
-
 <template>
-  <NuxtLayout name="syncolayout">
-    Payment Metrics
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Payment Metrics </NuxtLayout>
 </template>

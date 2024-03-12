@@ -1,8 +1,8 @@
 <template>
-   <div>
-      parent navigation
-      <slot />
-   </div>
+  <div>
+    parent navigation
+    <slot />
+  </div>
 </template>
 
-<style src="@/assets/styles/parents/parents.scss"/>
+<style src="@/assets/styles/parents/parents.scss" />

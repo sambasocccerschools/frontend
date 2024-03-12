@@ -1,6 +1,3 @@
 <template>
-  <NuxtLayout name="syncolayout">
-    Club
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Club </NuxtLayout>
 </template>
-

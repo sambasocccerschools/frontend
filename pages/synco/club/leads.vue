@@ -2,20 +2,19 @@
 export default {
   data: () => ({
     tab: 1, // 1 leads 2 sales 3 all,
-    // These will get replaces by arrays 
+    // These will get replaces by arrays
     leads: 10,
     // sales: 10,
-  })
+  }),
 }
 </script>
 
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="One to One">
-
-    <div class="card text-light mb-4" style="background-color: #FE6E4E">
+  <NuxtLayout name="syncolayout" page-title="One to One">
+    <div class="card text-light mb-4" style="background-color: #fe6e4e">
       <div class="card-body p-4">
         <span class="h2">
-          <Icon name="ion:ios-football-outline" class="mb-1 h1" /> Club Leads
+          <Icon name="ion:ios-football-outline" class="h1 mb-1" /> Club Leads
         </span>
       </div>
     </div>
@@ -30,26 +29,47 @@ export default {
     </ul> -->
 
     <!-- Leads Tab-->
-    <div class="row" v-if="tab === 1">
+    <div v-if="tab === 1" class="row">
       <div class="col-sm-8">
         <div class="row row-cols-sm-4">
-          <SyncoDashboardMetricsItem name="Total Leads" value="945" change="+12" icon="ph:users-three" />
-          <SyncoDashboardMetricsItem name="New Leads" value="945" change="+12" icon="ph:users-three" />
-          <SyncoDashboardMetricsItem name="Leads to trials" value="945" change="+100" icon="ph:users-three" />
-          <SyncoDashboardMetricsItem name="Leads to sales" value="Online" change="" icon="ph:users-three" />
+          <SyncoDashboardMetricsItem
+            name="Total Leads"
+            value="945"
+            change="+12"
+            icon="ph:users-three"
+          />
+          <SyncoDashboardMetricsItem
+            name="New Leads"
+            value="945"
+            change="+12"
+            icon="ph:users-three"
+          />
+          <SyncoDashboardMetricsItem
+            name="Leads to trials"
+            value="945"
+            change="+100"
+            icon="ph:users-three"
+          />
+          <SyncoDashboardMetricsItem
+            name="Leads to sales"
+            value="Online"
+            change=""
+            icon="ph:users-three"
+          />
         </div>
-        <div class="d-flex justify-content-between pt-4 pb-3">
+        <div class="d-flex justify-content-between pb-3 pt-4">
           <h4>Club Leads</h4>
           <div>
             <SyncoFiltersAgentsDropdown />
-            <NuxtLink to="/synco/club/create/lead" class=" ms-2 btn btn-primary text-light shadow-sm">+ Add a
-              new
-              lead
+            <NuxtLink
+              to="/synco/club/create/lead"
+              class="btn btn-primary text-light ms-2 shadow-sm"
+              >+ Add a new lead
             </NuxtLink>
           </div>
         </div>
 
-        <table class="table table-hover border rounded-4 ">
+        <table class="table-hover rounded-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
@@ -72,14 +92,11 @@ export default {
             <LazySyncoClubLeadsTableItem v-for="item in leads" />
           </tbody>
         </table>
-
       </div>
       <div class="col">
         <SyncoClubFormsFindLead />
       </div>
     </div>
-
-
 
     <!-- Sales Tab-->
     <!-- <div class="row" v-if="tab === 2">
@@ -125,6 +142,5 @@ export default {
         <SyncoBirthdayPartiesFormsFindLeadOrSale />
       </div>
     </div> -->
-
   </NuxtLayout>
 </template>

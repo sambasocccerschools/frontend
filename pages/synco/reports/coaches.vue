@@ -1,6 +1,3 @@
-
 <template>
-  <NuxtLayout name="syncolayout">
-    Coach attendace
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Coach attendace </NuxtLayout>
 </template>

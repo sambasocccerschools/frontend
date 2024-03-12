@@ -1,5 +1,3 @@
 <template>
-  <NuxtLayout name="syncolayout">
-    Members
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Members </NuxtLayout>
 </template>

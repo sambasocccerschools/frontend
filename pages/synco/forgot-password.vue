@@ -10,22 +10,22 @@
               <h1>Did you forget your password?</h1>
               <p>Enter your email address</p>
             </div>
-            <form @submit.prevent="forgotPassword" class="pt-2 pb-5">
+            <form class="pb-5 pt-2" @submit.prevent="forgotPassword">
               <div class="mb-4">
                 <label for="email" class="form-label">Email</label>
                 <input
-                  type="email"
-                  v-model="email"
-                  name="email"
                   id="email"
+                  v-model="email"
+                  type="email"
+                  name="email"
                   class="form-control form-control-lg rounded-4"
                   placeholder="Enter email"
                 />
               </div>
-              <div class="mt-5 mb-4">
+              <div class="mb-4 mt-5">
                 <button
                   type="submit"
-                  class="btn btn-primary btn-lg rounded-4 text-light py-3 w-100"
+                  class="btn btn-primary btn-lg rounded-4 text-light w-100 py-3"
                 >
                   <span class="text-light">Reset Password</span>
                 </button>
@@ -51,37 +51,37 @@
 </template>
 
 <script setup>
-const email = ref("test@samba.com");
-const error = ref(null);
-const success = ref(null);
-const config = useRuntimeConfig();
+const email = ref('test@samba.com')
+const error = ref(null)
+const success = ref(null)
+const config = useRuntimeConfig()
 
 const forgotPassword = async () => {
   const { data, error } = await useFetch(
-    config.public.API_BASE_URL + "/v1/auth/forgetPassword",
+    config.public.API_BASE_URL + '/v1/auth/forgetPassword',
     {
-      method: "POST",
+      method: 'POST',
       body: {
         email,
       },
-    }
-  );
+    },
+  )
   if (data.value) {
-    console.log(data.value, 'data');
-    success.value = data.value.messages;
+    console.log(data.value, 'data')
+    success.value = data.value.messages
   }
-  if(error.value) {
-    console.log(error.value, 'error');
-    error.value = error.value.messages;
+  if (error.value) {
+    console.log(error.value, 'error')
+    error.value = error.value.messages
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/synco/synco.scss";
+@import '@/assets/styles/synco/synco.scss';
 
 .bg-synco-login {
-  background-image: url("@/src/assets/bg-synco-login.png");
+  background-image: url('@/src/assets/bg-synco-login.png');
   background-repeat: no-repeat;
   background-size: cover;
 }

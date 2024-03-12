@@ -1,5 +1,3 @@
 <template>
-  <NuxtLayout name="syncolayout">
-    Add a Widget
-  </NuxtLayout>
+  <NuxtLayout name="syncolayout"> Add a Widget </NuxtLayout>
 </template>

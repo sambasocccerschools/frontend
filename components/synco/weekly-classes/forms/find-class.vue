@@ -1,108 +1,155 @@
+<script setup lang="ts">
+import { ref, computed, watchEffect } from 'vue'
+
+import type { IVenue } from '~/types/index'
+const props = defineProps<{
+  venues?: IVenue[]
+}>()
+const days = ref([
+  { name: 'Monday', value: 'Monday' },
+  { name: 'Tuesday', value: 'Tuesday' },
+  { name: 'Wednesday', value: 'Wednesday' },
+  { name: 'Thursday', value: 'Thursday' },
+  { name: 'Friday', value: 'Friday' },
+  { name: 'Saturday', value: 'Saturday' },
+  { name: 'Sunday', value: 'Sunday' },
+])
+const searchVenue = ref('')
+const searchPostcode = ref('')
+const selectedVenues = ref<string[]>([])
+const selectedDays = ref([])
+const selectedAges = ref([])
+const emit = defineEmits(['filtered'])
+
+const filteredItems = computed(() => {
+  return {
+    venue: searchVenue.value,
+    postcode: searchPostcode.value,
+    venues: selectedVenues.value,
+    days: selectedDays.value,
+    ages: selectedAges.value,
+  }
+})
+
+const toggleAll = (isChecked: boolean) => {
+  if (isChecked) {
+    selectedVenues.value = (props.venues || []).map((venue) => venue.id)
+    selectedVenues.value.push('all')
+  } else {
+    selectedVenues.value = []
+  }
+}
+
+watchEffect(() => {
+  emit('filtered', filteredItems.value)
+})
+</script>
+
 <template>
   <!-- Filter By Date  -->
   <div class="card">
     <div class="card-header d-flex flex-column">
-      <h5 class="card-title mb-4 h4">Search by filter</h5>
+      <h5 class="card-title h4 mb-4">Search by filter</h5>
       <!-- <button class="btn btn-primary btn-sm text-light shadow-sm">Apply Filter</button> -->
       <div class="input-group mb-3">
-        <span class="input-group-text" id="search-addon">
+        <span id="search-addon" class="input-group-text">
           <Icon name="ic:baseline-search" />
         </span>
-        <input type="text" class="form-control" placeholder="Search Venue" aria-label="Search Venue"
-          aria-describedby="search-addon">
+        <input
+          v-model="searchVenue"
+          type="text"
+          class="form-control"
+          placeholder="Search Venue"
+          aria-label="Search Venue"
+          aria-describedby="search-addon"
+        />
       </div>
       <div class="input-group mb-3">
-        <span class="input-group-text" id="postcode-addon">
+        <span id="postcode-addon" class="input-group-text">
           <Icon name="ic:baseline-search" />
         </span>
-        <input type="text" class="form-control" placeholder="Search by postcode" aria-label="Search by postcode"
-          aria-describedby="postcode-addon">
+        <input
+          v-model="searchPostcode"
+          type="text"
+          class="form-control"
+          placeholder="Search by postcode"
+          aria-label="Search by postcode"
+          aria-describedby="postcode-addon"
+        />
       </div>
-
     </div>
     <div class="card-body">
       <!-- Venues  -->
       <div class="form-group mb-4">
-        <label for="venue"
-          class="form-label border-bottom border-1 d-flex border-secondary-subtle pb-2 mb-3">Venues</label>
-
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="venue1" checked>
-          <label class="form-check-label" for="venue1">All venues</label>
+        <label
+          for="venue"
+          class="form-label border-bottom border-1 d-flex border-secondary-subtle mb-3 pb-2"
+          >Venues</label
+        >
+        <div class="form-check mb-3">
+          <input
+            id="all_venues"
+            v-model="selectedVenues"
+            type="checkbox"
+            class="form-check-input"
+            value="all"
+            @change="toggleAll($event.target?.checked)"
+          />
+          <label class="form-check-label" for="all_venues">All venues</label>
         </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="venue2">
-          <label class="form-check-label" for="venue2">Acton</label>
+        <div v-for="venue in venues" :key="venue.id" class="form-check mb-3">
+          <input
+            :id="venue.id"
+            v-model="selectedVenues"
+            type="checkbox"
+            class="form-check-input"
+            :value="venue.id"
+          />
+          <label class="form-check-label" :for="venue.id">{{
+            venue.name
+          }}</label>
         </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="venue3">
-          <label class="form-check-label" for="venue3">Chelsea</label>
-        </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="venue4">
-          <label class="form-check-label" for="venue4">Kensington</label>
-        </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="venue5">
-          <label class="form-check-label" for="venue5">London</label>
-        </div>
-        <button class="btn btn-link px-0">Show more</button>
+        <!-- <button class="btn btn-link px-0">Show more</button> -->
       </div>
 
       <!-- Days -->
       <div class="form-group mb-4">
-        <label for="days" class="form-label border-bottom border-1 d-flex border-secondary-subtle pb-2 mb-3">Days</label>
-
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="Sunday">
-          <label class="form-check-label" for="Sunday">Sunday</label>
+        <label
+          for="days"
+          class="form-label border-bottom border-1 d-flex border-secondary-subtle mb-3 pb-2"
+          >Days</label
+        >
+        <div v-for="day in days" :key="day.value" class="form-check mb-3">
+          <input
+            :id="day.value"
+            v-model="selectedDays"
+            :value="day.value"
+            type="checkbox"
+            class="form-check-input"
+          />
+          <label class="form-check-label" :for="day.value">{{
+            day.name
+          }}</label>
         </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="Monday">
-          <label class="form-check-label" for="Monday">Monday</label>
-        </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="Tuesday">
-          <label class="form-check-label" for="Tuesday">Tuesday</label>
-        </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="Wednesday">
-          <label class="form-check-label" for="Wednesday">Wednesday</label>
-        </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="Thursday">
-          <label class="form-check-label" for="Thursday">Thursday</label>
-        </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="Friday">
-          <label class="form-check-label" for="Friday">Friday</label>
-        </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="Saturday">
-          <label class="form-check-label" for="Saturday">Saturday</label>
-        </div>
-
-
       </div>
 
       <!-- Students Years -->
       <div class="form-group mb-3">
-        <label for="venue" class="form-label border-bottom border-1 d-flex border-secondary-subtle pb-2 mb-3">Student
-          Age</label>
-
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="4to7">
-          <label class="form-check-label" for="4to7">4-7</label>
+        <label
+          for="venue"
+          class="form-label border-bottom border-1 d-flex border-secondary-subtle mb-3 pb-2"
+          >Student Age</label
+        >
+        <div v-for="age in ['4-7', '8-12']" :key="age" class="form-check mb-3">
+          <input
+            :id="age"
+            v-model="selectedAges"
+            type="checkbox"
+            class="form-check-input"
+          />
+          <label class="form-check-label" :for="age">{{ age }}</label>
         </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="8to12">
-          <label class="form-check-label" for="8to12">8-12</label>
-        </div>
-
-
-
       </div>
-
     </div>
   </div>
 </template>

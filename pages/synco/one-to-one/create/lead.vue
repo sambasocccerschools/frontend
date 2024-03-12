@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Create One to One">
+  <NuxtLayout name="syncolayout" page-title="Create One to One">
     Create One to one
   </NuxtLayout>
 </template>

@@ -1,15 +1,18 @@
 <script>
 export default {
+  props: ['props'],
   // inheritAttrs: false,
   data: () => ({
     show: false,
   }),
-  props: ['props'],
 }
 </script>
 <template>
   <!-- Need to see how to turn this into a link -->
-  <tr class="align-middle" :class="show ? 'table-info border-bottom border-info' : ''">
+  <tr
+    class="align-middle"
+    :class="show ? 'table-info border-bottom border-info' : ''"
+  >
     <th scope="row">
       {{ props.title }}
     </th>
@@ -19,10 +22,9 @@ export default {
     <td>{{ props.venue }}</td>
     <td>{{ props.region }}</td>
     <td>
-      <span class="badge bg-warning-subtle px-1 text-warning">
+      <span class="badge bg-warning-subtle text-warning px-1">
         {{ props.status }}
       </span>
-
     </td>
     <td>{{ props.assignedTo }}</td>
     <td>
@@ -36,7 +38,6 @@ export default {
     <td colspan="9">
       <span class="h6">Details</span>
       <span class="d-block">{{ props.details }}</span>
-
     </td>
   </tr>
 </template>
