@@ -6,19 +6,12 @@ import type { ILoginInput, ILoginResponse, ILogoutResponse } from '~/types'
 class AuthModule extends FetchFactory {
   private RESOURCE = '/v1/auth'
 
-  async login(
-    credentials: ILoginInput,
-    asyncDataOptions?: AsyncDataOptions<ILoginResponse>,
-  ) {
-    return useAsyncData(() => {
-      const fetchOptions: FetchOptions<'json'> = {}
-      return this.call<ILoginResponse>(
-        'POST',
-        `${this.RESOURCE}/login`,
-        credentials,
-        fetchOptions,
-      )
-    }, asyncDataOptions)
+  async login(credentials: ILoginInput) {
+    return this.call<ILoginResponse>(
+      'POST',
+      `${this.RESOURCE}/login`,
+      credentials,
+    )
   }
 
   async logout(asyncDataOptions?: AsyncDataOptions<ILogoutResponse>) {

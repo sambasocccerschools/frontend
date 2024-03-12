@@ -16,6 +16,7 @@
                 <input
                   id="email"
                   v-model="email"
+                  :disabled="isLogging"
                   type="email"
                   name="email"
                   class="form-control form-control-lg rounded-4"
@@ -27,6 +28,7 @@
                 <input
                   id="password"
                   v-model="password"
+                  :disabled="isLogging"
                   type="password"
                   name="password"
                   class="form-control form-control-lg rounded-4"
@@ -42,6 +44,7 @@
                     v-model="remember"
                     type="checkbox"
                     class="form-check-input"
+                    :disabled="isLogging"
                   />
                   <label class="form-check-label" for="Remember me"
                     >Remember me</label
@@ -56,7 +59,12 @@
                   type="submit"
                   class="btn btn-primary btn-lg rounded-4 text-light w-100 py-3"
                 >
-                  <span class="text-light">Log In</span>
+                  <span
+                    v-if="isLogging"
+                    class="spinner-border text-primary spinner-border-sm"
+                    role="status"
+                  ></span>
+                  <span v-else class="text-light">Log In</span>
                 </button>
               </div>
               <div class="text-center">
@@ -74,33 +82,50 @@
 </template>
 
 <script lang="ts" setup>
+import { useToast } from 'vue-toast-notification'
 import { useStore } from '~/stores'
 import type { ILoginInput } from '~/types'
 
 const { $api } = useNuxtApp()
-const router = useRouter()
+const toast = useToast()
 const store = useStore()
 const token = useCookie('token')
-const email = ref('synco@samba.com')
-const password = ref('password')
+const email = ref('')
+const password = ref('')
 const remember = ref(false)
+const isLogging = ref(false)
 
 const login = async () => {
-  const credentials: ILoginInput = {
-    email: email.value,
-    password: password.value,
-    remember: remember.value,
-  }
-  const loginResponse = await $api.auth.login(credentials)
-  if (loginResponse.data.value) {
-    token.value = loginResponse.data.value.access_token
+  try {
+    isLogging.value = true
+
+    const credentials: ILoginInput = {
+      email: email.value,
+      password: password.value,
+      remember: remember.value,
+    }
+    const loginResponse = await $api.auth.login(credentials)
+
+    token.value = loginResponse.access_token
     store.updateAuthenticated(true)
 
-    // Make profile api to get profile data and store
-    const profileResponse = await $api.profile.getProfile()
-    store.setUser(profileResponse?.data)
+    $api.profile
+      .getProfile({
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      })
+      .then((response) => {
+        store.setUser(response?.data)
+      })
 
-    router.push('/synco/dashboard')
+    await navigateTo({
+      path: '/synco/dashboard',
+    })
+  } catch (error: any) {
+    toast.error(error?.data?.messages)
+  } finally {
+    isLogging.value = false
   }
 }
 </script>

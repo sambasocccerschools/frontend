@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import type { ICreateUserParams } from '~/types/index'
+import { useToast } from 'vue-toast-notification'
 const { $api } = useNuxtApp()
 const router = useRouter()
-const { $toast } = useNuxtApp()
+const toast = useToast()
 const page = ref(1)
 const panel = ref(false)
 const isLoadingCreateMember = ref(false)
@@ -27,9 +28,9 @@ const createMember = async (input: ICreateUserParams) => {
       limit,
     })
 
-    $toast.success('User is created successfully')
+    toast.success('User is created successfully')
   } catch (error: any) {
-    $toast.error((error?.data as any)?.message)
+    toast.error((error?.data as any)?.message)
   } finally {
     isLoadingCreateMember.value = false
   }

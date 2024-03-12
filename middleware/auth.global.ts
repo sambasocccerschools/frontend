@@ -6,8 +6,8 @@ export default defineNuxtRouteMiddleware((to) => {
   const store = useStore()
   const token = useCookie('token')
 
-  const authenticated = !!token.value
-  if (authenticated) {
+  const authenticated = !!token.value || store.authenticated
+  if (token.value) {
     store.updateAuthenticated(authenticated)
   }
 

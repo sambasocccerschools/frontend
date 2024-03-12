@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const { $api, $toast } = useNuxtApp()
+import { useToast } from 'vue-toast-notification'
+const toast = useToast()
+const { $api } = useNuxtApp()
 const route = useRoute()
 const userId = route.params.id as string
 const { data } = useAsyncData(`user:${userId}`, () =>
@@ -15,7 +17,7 @@ const isRestoringUser = ref(false)
 //     isDeletingUser.value = true
 //     await $api.users.delete()
 //   } catch (error: any) {
-//     $toast.error(error?.data?.message ?? error?.message)
+//     toast.error(error?.data?.message ?? error?.message)
 //   } finally {
 //     isDeletingUser.value = false
 //   }
@@ -24,9 +26,9 @@ const suspendUser = async () => {
   try {
     isSuspendingUser.value = true
     await $api.users.deactivateUser(userId)
-    $toast.success('User is suspended')
+    toast.success('User is suspended')
   } catch (error: any) {
-    $toast.error(error?.data?.message ?? error?.message)
+    toast.error(error?.data?.message ?? error?.message)
   } finally {
     isSuspendingUser.value = false
   }
@@ -36,9 +38,9 @@ const restoreUser = async () => {
   try {
     isDeletingUser.value = true
     await $api.users.restoreUser(userId)
-    $toast.success('User is unsuspended')
+    toast.success('User is unsuspended')
   } catch (error: any) {
-    $toast.error(error?.data?.message ?? error?.message)
+    toast.error(error?.data?.message ?? error?.message)
   } finally {
     isDeletingUser.value = false
   }
