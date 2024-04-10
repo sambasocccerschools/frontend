@@ -99,25 +99,25 @@ const login = async () => {
   try {
     isLogging.value = true
 
-    const credentials: ILoginInput = {
-      email: email.value,
-      password: password.value,
-      remember: remember.value,
-    }
-    const loginResponse = await $api.auth.login(credentials)
+    // const credentials: ILoginInput = {
+    //   email: email.value,
+    //   password: password.value,
+    //   remember: remember.value,
+    // }
+    // const loginResponse = await $api.auth.login(credentials)
 
-    token.value = loginResponse.access_token
+    // token.value = loginResponse.access_token
     store.updateAuthenticated(true)
 
-    $api.profile
-      .getProfile({
-        headers: {
-          Authorization: `Bearer ${token.value}`,
-        },
-      })
-      .then((response) => {
-        store.setUser(response?.data)
-      })
+    // $api.profile
+    //   .getProfile({
+    //     headers: {
+    //       Authorization: `Bearer ${token.value}`,
+    //     },
+    //   })
+    //   .then((response) => {
+    //     store.setUser(response?.data)
+    //   })
 
     await navigateTo({
       path: '/synco/dashboard',
