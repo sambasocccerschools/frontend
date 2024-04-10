@@ -218,3 +218,57 @@ export type GenericResponse<T> = {
 }
 
 export type IGetUserResponse = GenericResponse<IUser>
+
+export type IParent = {
+  firstName:string
+  lastName:string
+  email:string
+  phoneNumber:string
+  relationToChild:string
+  marketingChannel:string
+}
+
+export type IStudent = {
+  firstName:string
+  lastName:string
+  dateOfBirth:string
+  age:number
+  gender:string
+  medicalInformation:string
+  activityOfInterest:string
+}
+
+export type IEmergencyContact = {
+  firstName:string
+  lastName:string
+  phoneNumber:string
+  relationToChild:string
+}
+
+export type IComment = {
+    text:string
+    avatar:string
+    name:string
+    created:string
+}
+
+export type IStudentListItem={
+    "First Name":string
+    "Last Name":string
+    "Age":number
+    "Gender":string
+    "Date of Birth":string
+    "Activity of interest":string
+}
+
+export type IParentListItem = {
+    "First Name":string
+    "Last Name":string
+    "Status":string
+    "Email":string
+    "Gocardless ID":string
+    "Created":string
+    "Address":string
+    "Phone number":string
+    "Students":IStudentListItem[]|null|undefined
+}
