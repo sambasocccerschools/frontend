@@ -8,25 +8,12 @@ const props = defineProps<{
 
 let student = ref<IStudent>(props.student).value
 
-const activities  = ref([
-    {label:"Select from drop down", value:""},
-    {label:"Weekly classes", value:"Weekly classes"},
-    {label:"One to one", value:"One to one"},
-    {label:"Holiday camps", value:"Holiday camps"},
-    {label:"Clubs", value:"Clubs"},
-    {label:"Merchandise", value:"Merchandise"},
-])
-
-const addStudent = ()=>{
-    console.log("add student")
-}
-
 </script>
 
 <template>
-    <h4 class="mt-4"><strong>Students</strong></h4>
+    <slot name="external_title"></slot>
     <div class="card rounded-4 mt-4 px-3">
-        <h5 class="py-4"><strong>Student information</strong></h5>
+        <slot name="internal_title"></slot>
         <div class="row">
             <div class="col-6">
                 <div class="form-group mb-3 w-100">
@@ -118,33 +105,7 @@ const addStudent = ()=>{
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-6">
-                <div class="form-group mb-3 w-100">
-                    <label for="studentAoI" class="form-labelform-label-light"
-                    >Activity of interest</label
-                    >
-                    <select
-                    id="studentAoI"
-                    class="form-control form-control-lg"
-                    v-model="student.activityOfInterest"
-                    >
-                    <option v-for="(activity,index) in activities" :value="activity.value" :key="index">{{activity.label}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-6">
-            </div>
-        </div>
+        <slot name="additional_rows"></slot>
     </div>
-    <div class="card rounded-4 mt-4 px-3">
-        <div class="d-flex justify-content-between my-4">
-            <button
-                class="btn btn-primary text-light btn-lg"
-                @click="addStudent"
-                >
-                + Add new student
-            </button>
-        </div>
-    </div>
+    <slot name="footer"></slot>
 </template>

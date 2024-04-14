@@ -28,16 +28,12 @@ const marketingChannels = ref([
     {label:"Newspaper", value:"Newspaper"},
 ])
 
-const addParent = ()=>{
-    console.log("add parent")
-}
-
 </script>
 
 <template>
-  <h4 class="mt-4"><strong>Parents</strong></h4>
+  <slot name="external_title"></slot>
   <div class="card rounded-4 mt-4 px-3">
-    <h5 class="py-4"><strong>Parent information</strong></h5>
+    <slot name="internal_title"></slot>
     <div class="row">
       <div class="col-6">
         <div class="form-group mb-3 w-100">
@@ -128,15 +124,7 @@ const addParent = ()=>{
         </div>
       </div>
     </div>
+    <slot name="additional_rows"></slot>
   </div>
-  <div class="card rounded-4 mt-4 px-3">
-    <div class="d-flex justify-content-between my-4">
-      <button
-          class="btn btn-primary text-light btn-lg"
-          @click="addParent"
-        >
-          + Add new parent
-        </button>
-      </div>
-  </div>
+  <slot name="footer"></slot>
 </template>
