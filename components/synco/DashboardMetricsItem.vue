@@ -21,7 +21,7 @@ export default {
         <div class="d-flex flex-column">
           <small class="text-muted">{{ name }}</small>
           <div class="d-flex align-items-center">
-            <span class="h6 m-0">{{ value }}</span> <span>({{ change }}%)</span>
+            <span class="h6 m-0">{{ value }}</span> <span v-if="change">({{ change }}%)</span>
           </div>
         </div>
       </div>
