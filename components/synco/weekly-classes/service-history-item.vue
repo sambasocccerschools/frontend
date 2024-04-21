@@ -20,13 +20,6 @@
     >
       <div class="w-100 d-flex flex-row justify-content-between">
         <slot name="fields"></slot>
-        <div class="d-flex flex-column px-3">
-          <label>Booking Source</label>
-          <span>Ben Marcus</span>
-        </div>
-        <div class="d-flex flex-column px-3 justify-content-center">
-          <button type="button" class="btn rounded-circle"><Icon class="h3" name="ph:dots-three-vertical"/></button>
-        </div>
       </div>
       <slot name="footer"></slot>
     </div>
