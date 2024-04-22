@@ -1,15 +1,21 @@
 <script>
 // Use for model
+const router = useRouter();
 export default {
   props: [
     'status', // waiting , active, frozen, cancelled
   ],
+  methods:{
+    async navigateToUser(id){
+      await router.push({path:`/synco/user/${id}`})
+    }
+  }
 }
 </script>
 
 <template>
   <!-- Need to see how to turn this into a link -->
-  <tr class="align-middle">
+  <tr class="align-middle" @click="navigateToUser(1)" style="cursor: pointer;">
     <th scope="row">
       <label class="form-check-label text-muted" for="tomjones">
         Tom Jones

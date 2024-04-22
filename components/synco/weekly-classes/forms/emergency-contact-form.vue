@@ -20,18 +20,12 @@ const emergencyContactChildRelation = ref([
     {label:"Aunt", value:"Aunt"},
     {label:"Cousin", value:"Cousin"},
 ])
-
-const addLead = ()=>{
-    console.log("add lead")
-}
-const cancel = ()=>{
-    console.log("cancel")
-}
 </script>
 
 <template>
+    <slot name="external_title"></slot>
     <div class="card rounded-4 mt-4 px-3">
-        <h5 class="py-4"><strong>Emergency contact details</strong></h5>
+        <slot name="internal_title"></slot>
         <div class="row mb-4">
             <div class="col-12">
                 <div class="form-check">
@@ -102,25 +96,7 @@ const cancel = ()=>{
                 </div>
             </div>
         </div>
+        <slot name="additional_rows"></slot>
     </div>
-    <div class="row mt-4 px-3">
-        <div class="col-12 d-flex flex-row my-4">
-            <div class="">
-                <button
-                    class="btn btn-outline-secondary btn-lg"
-                    @click="cancel"
-                >
-                    Cancel
-                </button>
-            </div>
-            <div class="px-4">
-                <button
-                    class="btn btn-primary text-light btn-lg"
-                    @click="addLead"
-                >
-                    Add Lead
-                </button>
-            </div>
-        </div>
-    </div>
+    <slot name="footer"></slot>
 </template>
