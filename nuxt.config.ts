@@ -1,7 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['nuxt-icon', '@pinia/nuxt', 'dayjs-nuxt'],
+  modules: [
+    'nuxt-icon',
+    '@pinia/nuxt',
+    'dayjs-nuxt',
+    '@samk-dev/nuxt-vcalendar',
+  ],
   dayjs: {
     plugins: ['relativeTime', 'customParseFormat'],
   },

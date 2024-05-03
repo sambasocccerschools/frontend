@@ -31,10 +31,16 @@
           <span class="h6"><strong>Price:</strong> £120 per child</span>
           <small>(Sibling discount available)</small>
         </div>
-        <button class="btn btn-primary btn-sm rounded-3">
+        <button class="btn btn-primary btn-sm rounded-3" @click="navigateTo">
           <strong>Book Holiday Camp</strong>
         </button>
       </div>
     </div>
   </div>
 </template>
+<script setup lang="ts">
+const router = useRouter()
+const navigateTo = async () => {
+  await router.push({ path: `/book/camp` })
+}
+</script>

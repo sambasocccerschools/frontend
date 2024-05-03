@@ -235,7 +235,9 @@ export type IStudent = {
   age: number
   gender: string
   medicalInformation: string
-  activityOfInterest: string
+  activityOfInterest?: string | null
+  class?: string | null
+  time?: string | null
 }
 
 export type IEmergencyContact = {
@@ -276,4 +278,44 @@ export type IParentListItem = {
 export type IAccountCardHeader = {
   Status: string
   Color: string
+}
+
+export type IPersonalDetails = {
+  FirstName: string
+  LastName: string
+  EmailAddress: string
+  BillingAddress: string
+}
+
+export type IBankDetails = {
+  AccountHolderName: string
+  SortCode: number | null
+  AccountNumber: number | null
+  CanAuthoriseDirectDebits: boolean
+}
+
+export type IProduct = {
+  Name: string
+  Price: number
+}
+
+export type IDirectDebit = {
+  Product: IProduct
+  PersonalDetails: IPersonalDetails
+  BankDetails: IBankDetails
+}
+
+export type IDirectDebitSetup = {
+  AuthorizeTermsConditions: boolean
+  AuthorizeChildPhotos: boolean
+  CardName: string
+  CardNumber: string
+  CardExpirationDate: string
+  CardCVC: string
+  CardCountry: string
+  CardZip: string
+  AccountHolderName?: string | null
+  SortCode?: number | null
+  AccountNumber?: number | null
+  ApplePay?: string
 }

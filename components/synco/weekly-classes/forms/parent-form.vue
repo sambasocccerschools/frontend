@@ -3,40 +3,41 @@ import { ref } from 'vue'
 
 import type { IParent } from '~/types/index'
 const props = defineProps<{
-    parent: IParent
+  parent: IParent
+  noBorder?: boolean | null
 }>()
 
 let parent = ref<IParent>(props.parent).value
+let noBorder = ref<boolean>(props.noBorder ?? false).value
 
 const parentChildRelation = ref([
-    {label:"Select from drop down", value:""},
-    {label:"Mother", value:"Mother"},
-    {label:"Father", value:"Father"},
-    {label:"Brother", value:"Brother"},
-    {label:"Sister", value:"Sister"},
-    {label:"Grandmother", value:"Grandmother"},
-    {label:"Grandfather", value:"Grandfather"},
-    {label:"Uncle", value:"Uncle"},
-    {label:"Aunt", value:"Aunt"},
-    {label:"Cousin", value:"Cousin"},
+  { label: 'Select from drop down', value: '' },
+  { label: 'Mother', value: 'Mother' },
+  { label: 'Father', value: 'Father' },
+  { label: 'Brother', value: 'Brother' },
+  { label: 'Sister', value: 'Sister' },
+  { label: 'Grandmother', value: 'Grandmother' },
+  { label: 'Grandfather', value: 'Grandfather' },
+  { label: 'Uncle', value: 'Uncle' },
+  { label: 'Aunt', value: 'Aunt' },
+  { label: 'Cousin', value: 'Cousin' },
 ])
 
 const marketingChannels = ref([
-    {label:"Select from drop down", value:""},
-    {label:"Social Media", value:"Social Media"},
-    {label:"TV", value:"TV"},
-    {label:"Newspaper", value:"Newspaper"},
+  { label: 'Select from drop down', value: '' },
+  { label: 'Social Media', value: 'Social Media' },
+  { label: 'TV', value: 'TV' },
+  { label: 'Newspaper', value: 'Newspaper' },
 ])
-
 </script>
 
 <template>
   <slot name="external_title"></slot>
-  <div class="card rounded-4 mt-4 px-3">
+  <div class="card rounded-4 mt-4 px-3" :class="noBorder ? 'border-0' : ''">
     <slot name="internal_title"></slot>
     <div class="row">
       <div class="col-6">
-        <div class="form-group mb-3 w-100">
+        <div class="form-group w-100 mb-3">
           <label for="parentFirstName" class="form-labelform-label-light"
             >First name</label
           >
@@ -50,7 +51,7 @@ const marketingChannels = ref([
         </div>
       </div>
       <div class="col-6">
-        <div class="form-group mb-3 w-100">
+        <div class="form-group w-100 mb-3">
           <label for="parentLastName" class="form-labelform-label-light"
             >Last name</label
           >
@@ -66,7 +67,7 @@ const marketingChannels = ref([
     </div>
     <div class="row">
       <div class="col-6">
-        <div class="form-group mb-3 w-100">
+        <div class="form-group w-100 mb-3">
           <label for="parentEmail" class="form-labelform-label-light"
             >Email</label
           >
@@ -80,7 +81,7 @@ const marketingChannels = ref([
         </div>
       </div>
       <div class="col-6">
-        <div class="form-group mb-3 w-100">
+        <div class="form-group w-100 mb-3">
           <label for="parentPhoneNumber" class="form-labelform-label-light"
             >Phone number</label
           >
@@ -96,7 +97,7 @@ const marketingChannels = ref([
     </div>
     <div class="row">
       <div class="col-6">
-        <div class="form-group mb-3 w-100">
+        <div class="form-group w-100 mb-3">
           <label for="parentRelation" class="form-labelform-label-light"
             >Relation to child</label
           >
@@ -105,12 +106,18 @@ const marketingChannels = ref([
             class="form-control form-control-lg"
             v-model="parent.relationToChild"
           >
-            <option v-for="(relation,index) in parentChildRelation" :value="relation.value" :key="index">{{relation.label}}</option>
+            <option
+              v-for="(relation, index) in parentChildRelation"
+              :value="relation.value"
+              :key="index"
+            >
+              {{ relation.label }}
+            </option>
           </select>
         </div>
       </div>
       <div class="col-6">
-        <div class="form-group mb-3 w-100">
+        <div class="form-group w-100 mb-3">
           <label for="parentMarketingChannel" class="form-labelform-label-light"
             >How did you hear about us?</label
           >
@@ -119,7 +126,13 @@ const marketingChannels = ref([
             class="form-control form-control-lg"
             v-model="parent.marketingChannel"
           >
-            <option v-for="(channel,index) in marketingChannels" :value="channel.value" :key="index">{{channel.label}}</option>
+            <option
+              v-for="(channel, index) in marketingChannels"
+              :value="channel.value"
+              :key="index"
+            >
+              {{ channel.label }}
+            </option>
           </select>
         </div>
       </div>

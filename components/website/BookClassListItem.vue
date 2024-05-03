@@ -37,7 +37,10 @@
             >
           </div>
           <div class="">
-            <button class="btn bg-info-subtle text-primary btn-sm">
+            <button
+              class="btn bg-info-subtle text-primary btn-sm"
+              @click="navigateTo('waiting-list')"
+            >
               <strong>Add to Waiting List</strong>
             </button>
           </div>
@@ -53,10 +56,16 @@
             >
           </div>
           <div class="d-flex align-items-center">
-            <button class="btn btn-outline-primary btn-sm me-3">
+            <button
+              class="btn btn-outline-primary btn-sm me-3"
+              @click="navigateTo('membership')"
+            >
               <strong>Book a Membership</strong>
             </button>
-            <button class="btn btn-primary btn-sm">
+            <button
+              class="btn btn-primary btn-sm"
+              @click="navigateTo('free-trial')"
+            >
               <strong>Book a Free Trial</strong>
             </button>
           </div>
@@ -65,6 +74,13 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const router = useRouter()
+const navigateTo = async (route: string) => {
+  await router.push({ path: `/book/${route}` })
+}
+</script>
 
 <style lang="scss" scoped>
 .btn-venue {
