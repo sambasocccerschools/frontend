@@ -39,6 +39,7 @@ export default {
           Color: '#A4A5A6',
         },
       ],
+      showBookings: false,
     }
   },
   methods: {
@@ -48,8 +49,25 @@ export default {
     toggleFilter() {
       this.showFilter = !this.showFilter
     },
-    addBooking() {
-      console.log('addBooking')
+    toggleBooking() {
+      this.showBookings = !this.showBookings
+    },
+    async addBooking(booking) {
+      let path = ''
+      switch (booking) {
+        case 'waiting-list':
+          path = '/synco/weekly-classes/create/waiting-list'
+          break
+        case 'free-trial':
+          path = '/synco/weekly-classes/create/free-trial'
+          break
+        case 'membership':
+          path = '/synco/weekly-classes/create/membership'
+          break
+        default:
+          break
+      }
+      await router.push({ path: `${path}` })
     },
   },
 }
@@ -251,13 +269,42 @@ export default {
               </div>
             </div>
           </div>
-          <button
-            type="button"
-            class="btn btn-primary text-light mx-2"
-            @click="addBooking"
-          >
-            + Add booking
-          </button>
+          <div class="dropdown">
+            <button
+              type="button"
+              class="btn btn-primary text-light dropdown-toggle mx-2"
+              @click="toggleBooking"
+              data-toggle="dropdown"
+              :aria-expanded="showBookings"
+              data-display="static"
+            >
+              + Add booking
+            </button>
+            <div
+              class="position-absolute card rounded-4 bg-white p-4 shadow-lg"
+              v-if="showBookings"
+              style="right: 0px; top: 40px; z-index: 1000"
+            >
+              <button
+                class="dropdown-item my-2"
+                @click="addBooking('waiting-list')"
+              >
+                Add to Waiting List
+              </button>
+              <button
+                class="dropdown-item my-2"
+                @click="addBooking('free-trial')"
+              >
+                Book Free Trial
+              </button>
+              <button
+                class="dropdown-item my-2"
+                @click="addBooking('membership')"
+              >
+                Book Memebership
+              </button>
+            </div>
+          </div>
         </div>
       </template>
       <template v-else-if="selection == 'Student Profile'">
