@@ -319,3 +319,38 @@ export type IDirectDebitSetup = {
   AccountNumber?: number | null
   ApplePay?: string
 }
+
+export type ITermHeader = {
+  Name: string
+  Seasson: string
+  StartDate: string
+  EndDate: string
+  ExclusionDates: string[]
+}
+export type ITermItem = {
+  SessionNumber: number
+  Beginner: string
+  Intermediate: string
+  Advanced: string
+  Pro: string
+}
+
+export type ITermCard = {
+  Header: ITermHeader
+  Items: ITermItem[]
+}
+
+export type IClassItem = {
+  Name: string
+  Capacity: number
+  Day: string
+  StartTime: string
+  EndTime: string
+  AutumnTerm: string
+  SpringTerm: string
+  SummerTerm: string
+  AutumnFacility?: string | null
+  SpringFacility?: string | null
+  SummerFacility?: string | null
+  FreeTrialDates?: string | null
+}
