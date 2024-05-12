@@ -354,3 +354,11 @@ export type IClassItem = {
   SummerFacility?: string | null
   FreeTrialDates?: string | null
 }
+
+export type IHolidayCampSessionPlanItem = {
+  CampName: string
+  Camp: string
+  StartDate: string
+  EndDate: string
+  Days: string[]
+}
