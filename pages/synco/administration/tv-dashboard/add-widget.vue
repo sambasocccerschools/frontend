@@ -1,42 +1,53 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { ILoop } from '~/types/index'
 
 let dashboards = ref<string[]>(['Sales', 'Trials'])
-let dummyLoop = ref<ILoop>({
-  LoopName: 'New Loop',
-  Interval: '30 seconds',
-  Dashboards: dashboards.value,
-}).value
-let loops = ref<ILoop[]>([
-  dummyLoop,
-  dummyLoop,
-  dummyLoop,
-  dummyLoop,
-  dummyLoop,
-  dummyLoop,
-])
 let newDashboards = ref<string>('')
 let selectedDashboard = ref<number>(0)
 let dashboardDialog = ref<boolean>(false)
 let sendToTVDialog = ref<boolean>(false)
-let loopDialog = ref<boolean>(false)
+let widgetDialog = ref<boolean>(false)
 let dashboardLink = ref<string>('https://share.sunco.com/dashboard')
-let selected = ref<string>('Loops')
-let newLoop = ref<ILoop>({
-  LoopName: '',
-  Interval: '',
-  Dashboards: [],
-})
+let selected = ref<string>('reports')
+let selectedWidget = ref<string>('')
+let selectedView = ref<string>('Title view')
+let selectedMetrics = ref<string[]>([])
+let views = ref<string[]>(['Title view', 'Graph view'])
+let keyMetrics = ref<string[]>(['All Members', 'New Members', 'Title (Name)'])
+let reports = ref<string[]>([
+  'Members',
+  'New Business',
+  'Cancellations',
+  'Capacity',
+  'Trials and Conversions',
+  'Club',
+  'Weekly Classes',
+  'One to One',
+  'Birthday Party',
+  'Holiday Camp',
+  'Merchandise',
+  'Waiting List',
+])
+let marketing = ref<string[]>([
+  'Members',
+  'New Business',
+  'Cancellations',
+  'Capacity',
+  'Trials and Conversions',
+  'Club',
+  'Weekly Classes',
+  'One to One',
+  'Birthday Party',
+  'Holiday Camp',
+  'Merchandise',
+  'Waiting List',
+])
 
 const toggleDashboardDialog = () => {
   dashboardDialog.value = !dashboardDialog.value
 }
 const toggleSendToTVDialog = () => {
   sendToTVDialog.value = !sendToTVDialog.value
-}
-const toggleLoopDialog = () => {
-  loopDialog.value = !loopDialog.value
 }
 const addDashboard = () => {
   if (!!newDashboards.value) {
@@ -45,10 +56,25 @@ const addDashboard = () => {
     newDashboards.value = ''
   }
 }
-const changeSelected = (selection: string) => {
-  selected.value = selection
+const openWidgetDialog = (selection: string) => {
+  selectedWidget.value = selection
+  toggleWidgetDialog()
+}
+const toggleWidgetDialog = () => {
+  widgetDialog.value = !widgetDialog.value
+}
+const toggleMetric = (metric: string) => {
+  if (selectedMetrics.value.includes(metric)) {
+    selectedMetrics.value = selectedMetrics.value.filter((x) => x != metric)
+  } else {
+    selectedMetrics.value.push(metric)
+  }
+}
+const toggleSelectedView = (view: string) => {
+  selectedView.value = view
 }
 </script>
+
 <template>
   <div class="d-flex flex-column bg-tv-dark">
     <div
@@ -170,12 +196,9 @@ const changeSelected = (selection: string) => {
               </div>
             </div>
           </div>
-          <NuxtLink
-            to="/synco/administration/tv-dashboard/add-widget"
-            class="btn btn-primary mx-2"
-          >
+          <button class="btn btn-primary mx-2" disabled>
             <Icon name="ph:plus" /> Add widget
-          </NuxtLink>
+          </button>
         </div>
         <div class="d-flex align-items-center px-4">
           <img
@@ -191,91 +214,76 @@ const changeSelected = (selection: string) => {
       </div>
     </div>
     <div class="d-flex flex-column h-100 p-4">
-      <span class="h2 my-3">Admin</span>
-      <div class="d-flex justify-content-between flex-row">
-        <div class="d-flex border-gray rounded-3 bg-tv-light-dark flex-row p-2">
-          <button
-            type="button"
-            class="btn"
-            :class="selected == 'Dashboard' ? 'btn-primary' : 'btn-secondary'"
-            @click="changeSelected('Dashboard')"
-          >
-            Dashboard
-          </button>
-          <button
-            type="button"
-            class="btn"
-            :class="selected == 'Loops' ? 'btn-primary' : 'btn-secondary'"
-            @click="changeSelected('Loops')"
-          >
-            Loops
-          </button>
-        </div>
-        <div>
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click="
-              selected == 'Dashboard'
-                ? toggleDashboardDialog()
-                : toggleLoopDialog()
-            "
-          >
-            <Icon name="ph:plus" /> Add {{ selected }}
-          </button>
+      <div
+        class="d-flex justify-content-between align-items-center my-4 flex-row"
+      >
+        <NuxtLink class="h3 m-0" to="/synco/administration/tv-dashboard">
+          <Icon name="material-symbols:arrow-back" class="me-2" />Connect your
+          data
+        </NuxtLink>
+
+        <div style="width: 300px">
+          <div class="form-group w-100">
+            <input
+              type="text"
+              class="form-control form-control-lg"
+              placeholder="Search"
+            />
+          </div>
         </div>
       </div>
-      <hr class="w-100" />
-      <template v-if="selected == 'Dashboard'">
-        <span class="text-primary my-3"
-          >{{ dashboards.length }} Dashboards</span
-        >
-        <div class="rounded-3 bg-tv-light-dark w-100">
-          <template v-for="(dashboard, index) in dashboards" :key="index">
+      <div
+        class="d-flex justify-content-between align-items-center my-4 flex-row"
+        :class="selected == 'reports' ? '' : 'hover-hand'"
+        @click="selected = 'reports'"
+      >
+        <span class="h4"><strong>Your Reports</strong></span>
+        <Icon
+          :name="selected == 'reports' ? 'ph:caret-up' : 'ph:caret-down'"
+          :class="selected == 'reports' ? 'text-primary' : 'text-light'"
+          style="width: 25px; height: 25px; margin-right: 100px"
+        />
+      </div>
+      <div
+        class="d-flex justify-content-between align-items-center border-bottom-gray flex-row"
+      >
+        <div class="row w-100 pb-4" v-if="selected == 'reports'">
+          <div class="col-2" v-for="item in reports">
             <div
-              class="d-flex justify-content-between align-items-center flex-row p-3"
-              :class="
-                index < dashboards.length - 1 ? 'border-bottom-gray ' : ''
-              "
+              class="bg-tv-light-dark rounded-3 border-gray hover-hand my-2 p-4 text-center"
+              @click="openWidgetDialog(item)"
             >
-              <span>{{ dashboard }}</span>
-              <div class="d-flex flex-row">
-                <button type="button" class="btn btn-secondary mx-2 p-0">
-                  <Icon name="ph:link" style="width: 20px; height: 20px" />
-                </button>
-                <button type="button" class="btn btn-secondary mx-2 p-0">
-                  <Icon
-                    name="ph:dots-three-vertical"
-                    style="width: 20px; height: 20px"
-                  />
-                </button>
-              </div>
+              {{ item }}
             </div>
-          </template>
+          </div>
         </div>
-      </template>
-      <template v-else-if="selected == 'Loops'">
-        <span class="text-primary my-3">{{ loops.length }} Loops</span>
-        <div class="rounded-3 bg-tv-light-dark w-100">
-          <template v-for="(loop, index) in loops" :key="index">
+      </div>
+      <div
+        class="d-flex justify-content-between align-items-center my-4 flex-row"
+        :class="selected == 'marketing' ? '' : 'hover-hand'"
+        @click="selected = 'marketing'"
+      >
+        <span class="h4"><strong>Marketing</strong></span>
+        <Icon
+          :name="selected == 'marketing' ? 'ph:caret-up' : 'ph:caret-down'"
+          :class="selected == 'marketing' ? 'text-primary' : 'text-light'"
+          style="width: 25px; height: 25px; margin-right: 100px"
+        />
+      </div>
+      <div
+        class="d-flex justify-content-between align-items-center border-bottom-gray flex-row"
+      >
+        <div class="row w-100 pb-4" v-if="selected == 'marketing'">
+          <div class="col-2" v-for="item in marketing">
             <div
-              class="d-flex justify-content-between align-items-center flex-row p-3"
-              :class="index < loops.length - 1 ? 'border-bottom-gray ' : ''"
+              class="bg-tv-light-dark rounded-3 border-gray hover-hand my-2 p-4 text-center"
+              @click="openWidgetDialog(item)"
             >
-              <span>{{ loop.LoopName }}</span>
-              <span>{{ loop.Dashboards?.length }} dashboards</span>
-              <div class="d-flex flex-row">
-                <button type="button" class="btn btn-secondary mx-2 p-0">
-                  <Icon
-                    name="ph:dots-three-vertical"
-                    style="width: 20px; height: 20px"
-                  />
-                </button>
-              </div>
+              {{ item }}
             </div>
-          </template>
+          </div>
         </div>
-      </template>
+      </div>
     </div>
   </div>
   <template v-if="dashboardDialog">
@@ -449,7 +457,7 @@ const changeSelected = (selection: string) => {
       </div>
     </div>
   </template>
-  <template v-if="loopDialog">
+  <template v-if="widgetDialog">
     <div class="modal-backdrop fade show"></div>
     <div
       class="modal fade show centered d-block"
@@ -457,104 +465,169 @@ const changeSelected = (selection: string) => {
       role="dialog"
       tabindex="-1"
     >
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-right">
         <div class="modal-content bg-tv-light-dark border-gray">
           <div class="modal-header border-bottom-gray">
-            <div class="d-flex justify-content-between w-100 flex-row">
+            <div
+              class="d-flex justify-content-between w-100 align-items-center flex-row"
+            >
               <div>
                 <button
                   class="btn btn-outline-secondary border-0"
-                  @click="toggleLoopDialog"
+                  @click="toggleWidgetDialog"
                 >
-                  <Icon name="ph:x" />
+                  <Icon name="ph:x" style="height: 20px; width: 20px" />
                 </button>
               </div>
               <div>
                 <span class="h4">
-                  <strong> Add Loop</strong>
+                  <strong>{{ selectedWidget }}</strong>
                 </span>
               </div>
-              <div></div>
+
+              <div>
+                <div class="dropdown">
+                  <button
+                    class="btn btn-outline-secondary border-0"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <Icon name="ph:faders" style="height: 20px; width: 20px" />
+                  </button>
+                  <div
+                    class="dropdown-menu bg-tv-light-dark border-gray rounded-4 px-4 py-2"
+                    style="width: 200px"
+                  >
+                    <div class="my-4">
+                      <span class="h5">Choose one</span>
+                    </div>
+                    <template v-for="view in views">
+                      <div
+                        class="d-flex h5 align-items-center my-3 flex-row"
+                        @click="toggleSelectedView(view)"
+                      >
+                        <Icon
+                          name="ph:check-circle"
+                          class="me-3"
+                          :class="view == selectedView ? 'text-primary' : ''"
+                        />
+                        <span>{{ view }}</span>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="modal-body py-4">
-            <div class="row">
-              <div class="col-6">
-                <div class="form-group w-100 mb-3">
-                  <label for="name" class="form-labelform-label-light"
-                    >Class name</label
+          <div class="modal-body my-4 py-4">
+            <span class="my-2">Key Metrics</span>
+            <template v-if="selectedView == 'Title view'">
+              <template v-for="metric in keyMetrics">
+                <div
+                  class="w-100 rounded-3 my-3 p-2"
+                  :class="
+                    selectedMetrics.includes(metric)
+                      ? 'border-primary'
+                      : 'border'
+                  "
+                  style="height: 50px"
+                  @click="toggleMetric(metric)"
+                >
+                  <div
+                    class="d-flex justify-content-between align-items-center hover-hand flex-row"
+                    style="height: 100%"
                   >
-                  <input
-                    id="name"
-                    type="text"
-                    class="form-control form-control-lg"
-                    placeholder="Name your loop"
-                    v-model="newLoop.LoopName"
-                  />
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="form-group w-100 mb-3">
-                  <label for="interval" class="form-labelform-label-light"
-                    >Interval</label
-                  >
-                  <input
-                    id="interval"
-                    type="text"
-                    class="form-control form-control-lg"
-                    placeholder=""
-                    v-model="newLoop.Interval"
-                  />
-                </div>
-              </div>
-              <template v-for="(dashboard, index) in newLoop.Dashboards">
-                <div class="col-6">
-                  <div class="form-group w-100 mb-3">
-                    <label for="dashboard" class="form-labelform-label-light"
-                      >Select the dashboard to include</label
+                    <span
+                      :class="
+                        selectedMetrics.includes(metric)
+                          ? 'text-primary'
+                          : 'text-light'
+                      "
+                      >{{ metric }}</span
                     >
-                    <select
-                      id="dashboard"
-                      class="form-control form-control-lg"
-                      v-model="newLoop.Dashboards[index]"
-                    >
-                      <option value="">Select a dashboard</option>
-                      <option
-                        v-for="(dashboard, index) in dashboards"
-                        :value="dashboard"
-                        :key="index"
-                      >
-                        {{ dashboard }}
-                      </option>
-                    </select>
+                    <Icon
+                      style="height: 20px; width: 20px"
+                      :name="
+                        selectedMetrics.includes(metric)
+                          ? 'ph:check-square'
+                          : 'ph:square'
+                      "
+                      :class="
+                        selectedMetrics.includes(metric)
+                          ? 'text-primary'
+                          : 'text-light'
+                      "
+                    />
                   </div>
                 </div>
               </template>
-              <div class="col-6">
-                <button
-                  type="button"
-                  class="btn btn-outline-primary btn-lg"
-                  @click="newLoop.Dashboards.push('')"
-                  style="margin-top: 19.2px"
+            </template>
+            <template v-else-if="selectedView == 'Graph view'">
+              <template v-for="metric in keyMetrics">
+                <div
+                  class="rounded-4 hover-hand my-4 p-3"
+                  style="width: 70%"
+                  :class="
+                    selectedMetrics.includes(metric)
+                      ? 'border-primary'
+                      : 'border'
+                  "
+                  @click="toggleMetric(metric)"
                 >
-                  <Icon name="ph:plus" /> Add dashboard
-                </button>
-              </div>
-            </div>
+                  <span>
+                    <Icon
+                      class="bg-tv-light-dark"
+                      style="
+                        height: 30px;
+                        width: 30px;
+                        margin-top: -50px;
+                        margin-left: -20px;
+                      "
+                      :name="
+                        selectedMetrics.includes(metric)
+                          ? 'ph:check-circle'
+                          : 'ph:circle'
+                      "
+                      :class="
+                        selectedMetrics.includes(metric)
+                          ? 'text-primary'
+                          : 'text-light'
+                      "
+                    />
+                  </span>
+                  <span
+                    class="h5"
+                    :class="
+                      selectedMetrics.includes(metric)
+                        ? 'text-primary'
+                        : 'text-light'
+                    "
+                    >{{ metric }}</span
+                  >
+                  <div style="height: 100px"></div>
+                </div>
+              </template>
+            </template>
           </div>
           <div class="modal-footer border-0">
             <div class="d-flex justify-content-end flex-row">
+              <div class="mx-2"></div>
               <div class="mx-2">
                 <button
                   type="button"
-                  class="btn btn-outline-secondary"
-                  @click="toggleLoopDialog"
+                  class="btn btn-primary"
+                  v-if="selectedView == 'Title view'"
                 >
-                  Cancel
+                  Add to dashboard
                 </button>
-              </div>
-              <div class="mx-2">
-                <button type="button" class="btn btn-primary">Done</button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  v-if="selectedView == 'Graph view'"
+                >
+                  Select widget
+                </button>
               </div>
             </div>
           </div>
@@ -606,6 +679,11 @@ const changeSelected = (selection: string) => {
 .form-control.form-control-lg::placeholder {
   color: #6a6b6c;
 }
+
+.border-primary {
+  border: 1px solid #6be795 !important;
+}
+
 .border-gray {
   border: 1px solid #6a6b6c;
 }
@@ -648,5 +726,8 @@ const changeSelected = (selection: string) => {
 }
 .h-100 {
   height: calc(100vh - 63px) !important;
+}
+.hover-hand:hover {
+  cursor: pointer;
 }
 </style>
