@@ -56,11 +56,13 @@ const changeSelected = (selection) => {
       style="height: 63px"
     >
       <div class="px-3">
-        <img
-          src="@/src/assets/sss-logo-synco-white.png"
-          alt="Synco logo"
-          style="width: 130px"
-        />
+        <NuxtLink to="/synco/administration/tv-dashboard">
+          <img
+            src="@/src/assets/sss-logo-synco-white.png"
+            alt="Synco logo"
+            style="width: 130px"
+          />
+        </NuxtLink>
       </div>
       <div>
         <NuxtLink to="/synco/dashboard" class="btn btn-primary">
