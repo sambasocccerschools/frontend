@@ -362,3 +362,9 @@ export type IHolidayCampSessionPlanItem = {
   EndDate: string
   Days: string[]
 }
+
+export type ILoop = {
+  LoopName: string
+  Interval: string
+  Dashboards: string[]
+}
