@@ -147,9 +147,12 @@ const addDashboard = () => {
               </div>
             </div>
           </div>
-          <button class="btn btn-primary mx-2">
+          <NuxtLink
+            to="/synco/administration/tv-dashboard/add-widget"
+            class="btn btn-primary mx-2"
+          >
             <Icon name="ph:plus" /> Add widget
-          </button>
+          </NuxtLink>
         </div>
         <div class="d-flex align-items-center px-4">
           <img
