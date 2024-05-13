@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { ILoop } from '~/types/index'
 
 let dashboards = ref<string[]>(['Sales', 'Trials'])
 let newDashboards = ref<string>('')
@@ -9,7 +8,7 @@ let dashboardDialog = ref<boolean>(false)
 let sendToTVDialog = ref<boolean>(false)
 let widgetDialog = ref<boolean>(false)
 let dashboardLink = ref<string>('https://share.sunco.com/dashboard')
-let selected = ref<string>('')
+let selected = ref<string>('reports')
 let selectedWidget = ref<string>('')
 let selectedView = ref<string>('Title view')
 let selectedMetrics = ref<string[]>([])
