@@ -1,174 +1,122 @@
-<script>
-export default {
-  data: () => ({
-    // audiences: 8
-    terms: [
-      { name: 'Autumn 23 Saturdays', sessions: 4 },
-      { name: '', sessions: 8 },
-    ],
-  }),
-  methods: {
-    duplicateTerm() {
-      console.log('duplicate')
-    },
-    sendToTrash() {
-      console.log('sendToTrash')
-    },
-    saveTerm() {
-      console.log('save Term')
-    },
-  },
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { ITermCard, ITermItem, ITermHeader } from '~/types/index'
+
+let header = ref<ITermHeader>({
+  Name: 'Term 1',
+  Seasson: 'Spring',
+  StartDate: 'Saturday, 9/9/2023',
+  EndDate: 'Saturday, 9/9/2023',
+  ExclusionDates: ['Saturday 15th October', 'Saturday 15th October'],
+})
+let item = ref<ITermItem>({
+  SessionNumber: 1,
+  Beginner: 'Session Plan BCPELE3 Saturday, 9/9/2023',
+  Intermediate: 'Session Plan BCPELE3 Saturday, 9/9/2023',
+  Advanced: 'Session Plan BCPELE3 Saturday, 9/9/2023',
+  Pro: 'Session Plan BCPELE3 Saturday, 9/9/2023',
+})
+let term = ref<ITermCard>({
+  Header: header.value,
+  Items: [item.value, item.value, item.value],
+}).value
+
+let showTermCard = ref<boolean>(false)
+let newEditState = ref<string>('')
+
+let showAssignSessionCard = ref<boolean>(false)
+
+const toggleShowTermCard = (newEditText: string) => {
+  showTermCard.value = !showTermCard.value
+  newEditState.value = newEditText
+}
+
+const toggleAssignSessionCard = (selected: string) => {
+  showAssignSessionCard.value = !showAssignSessionCard.value
 }
 </script>
 
 <template>
   <NuxtLayout name="syncolayout">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col">
-          <h4 class="mb-4">Term Dates & Mapping Session Plans</h4>
-          <h5 class="mb-4">Add a term</h5>
-
-          <!-- Term Card -->
-          <div v-for="term in terms" class="card mb-3">
-            <div class="card-body p-4">
-              <div class="row row-cols-2 gy-4">
-                <div class="col">
-                  <label for="term-name">Term name</label>
-                  <input
-                    id="term-name"
-                    type="text"
-                    class="form-control mt-2"
-                    placeholder="Autumn 23 Saturdays"
-                    name="term-name"
-                  />
-                </div>
-                <div class="col">
-                  <label for="term">Term</label>
-                  <input
-                    id="term"
-                    type="text"
-                    class="form-control mt-2"
-                    placeholder="Autumn"
-                    name="term"
-                  />
-                </div>
-                <div class="col">
-                  <label for="start-date">Start date</label>
-                  <input
-                    id="start-date"
-                    type="date"
-                    class="form-control mt-2"
-                    name="start-date"
-                  />
-                  <!-- <input type="date" id="start" name="trip-start" value="2018-07-22" min="2018-01-01" max="2018-12-31" /> -->
-                </div>
-                <div class="col">
-                  <label for="end-date">End date</label>
-                  <input
-                    id="end-date"
-                    type="date"
-                    class="form-control mt-2"
-                    name="end-date"
-                  />
-                </div>
-                <div class="col">
-                  <label for="half-term-exclusion-date"
-                    >Half-Term Exclusion Date(s)</label
-                  >
-                  <input
-                    id="half-term-exclusion-date"
-                    type="date"
-                    class="form-control mt-2"
-                    name="half-term-exclusion-date"
-                  />
-                </div>
-                <div class="col">
-                  <label for="total-number-of-sessions"
-                    >Total Number of Sessions</label
-                  >
-                  <input
-                    id="total-number-of-sessions"
-                    type="number"
-                    class="form-control mt-2"
-                    name="total-number-of-sessions"
-                  />
-                </div>
-              </div>
-              <div
-                class="d-flex align-items-center justify-content-between mt-4"
-              >
-                <NuxtLink
-                  to="/synco/config/weekly-classes/terms/map-sessions"
-                  class="btn btn-outline-primary"
-                  >Map Session</NuxtLink
-                >
-                <div>
-                  <button
-                    class="btn btn-outline-primary"
-                    @click="duplicateTerm()"
-                  >
-                    Duplicate
-                  </button>
-                  <button class="btn btn-link text-dark" @click="sendToTrash()">
-                    <Icon name="ph:trash-thin" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <button class="btn btn-primary btn-lg text-light" @click="terms++">
-            Add New Term
-          </button>
-        </div>
-        <div class="col">
-          <h4 class="mb-4">Map Sessions Plans</h4>
-
-          <div v-for="term in terms" class="card mb-4">
-            <div class="card-header">
-              <h4 class="card-title h5 mt-3">Sprint Term</h4>
-              <div class="card-body px-2">
-                <div class="row row-cols-2 gy-2">
-                  <div v-for="sessions in term.sessions" class="col">
-                    <div class="card border">
-                      <div class="card-body py-2">
-                        <div
-                          class="d-flex justify-content-between align-items-center"
-                        >
-                          <strong>Session #</strong>
-                          <button class="btn btn-link btn-sm text-dark p-0">
-                            <Icon name="ph:pencil-simple-line" />
-                          </button>
-                        </div>
-                        <div
-                          class="d-flex justify-content-between align-items-center"
-                        >
-                          <small class="text-muted"
-                            >Saturday, 9/9/2023, 11:00</small
-                          >
-                          <button class="btn btn-link btn-sm text-warning p-0">
-                            <Icon name="ic:round-access-time-filled" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="d-flex justify-content-end">
-            <button
-              class="btn btn-primary btn-lg text-light px-5"
-              @click="saveTerm()"
-            >
-              Save
-            </button>
-          </div>
+    <div class="d-flex flex-column">
+      <span class="h3 my-4">Term Dates & Mapping Session Plans</span>
+      <div class="d-flex justify-content-between my-4 flex-row">
+        <span class="h4">Terms</span>
+        <NuxtLink
+          to="/synco/config/weekly-classes/terms/create"
+          class="btn btn-primary text-light"
+        >
+          Add new term
+        </NuxtLink>
+      </div>
+      <div class="card rounded-4">
+        <div v-for="index in 5">
+          <SyncoConfigTermsSessionCard
+            :term="term"
+            @toggle-show-card="toggleShowTermCard"
+            @toggle-assign-session-card="toggleAssignSessionCard"
+          ></SyncoConfigTermsSessionCard>
         </div>
       </div>
     </div>
+    <template v-if="showTermCard">
+      <div class="modal-backdrop fade show"></div>
+      <div
+        class="modal fade show centered d-block"
+        aria-modal="true"
+        role="dialog"
+        tabindex="-1"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <SyncoConfigTermsTermCard
+              :term="term"
+              @toggle-assign-session-card="toggleAssignSessionCard"
+            >
+              <template v-slot:header>
+                <div class="d-flex justify-content-between flex-row">
+                  <span class="h4">Edit term</span>
+                  <button
+                    class="btn btn-outline-secondary border-0"
+                    @click="toggleShowTermCard"
+                  >
+                    X
+                  </button>
+                </div>
+              </template>
+              <template v-slot:footer>
+                <div class="d-flex justify-content-end flex-row">
+                  <button
+                    class="btn btn-outline-secondary me-2"
+                    @click="toggleShowTermCard"
+                  >
+                    Cancel
+                  </button>
+                  <button class="btn btn-primary text-light">Save</button>
+                </div>
+              </template>
+            </SyncoConfigTermsTermCard>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-if="showAssignSessionCard">
+      <div class="modal-backdrop fade show"></div>
+      <div
+        class="modal fade show centered d-block"
+        aria-modal="true"
+        role="dialog"
+        tabindex="-1"
+      >
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <SyncoConfigTermsSessionPlanCard
+              :term="term"
+              @toggle-assign-session-card="toggleAssignSessionCard"
+            ></SyncoConfigTermsSessionPlanCard>
+          </div>
+        </div>
+      </div>
+    </template>
   </NuxtLayout>
 </template>

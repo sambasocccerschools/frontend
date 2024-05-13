@@ -67,9 +67,15 @@ export default {
                 </button>
               </td>
               <td>
-                <button class="btn btn-link px-1">
+                <NuxtLink
+                  class="btn btn-link px-1"
+                  to="/synco/config/weekly-classes/schedule-classes"
+                >
                   <Icon name="solar:calendar-line-duotone" />
-                </button>
+                </NuxtLink>
+                <!-- <button class="btn btn-link px-1">
+                  <Icon name="solar:calendar-line-duotone" />
+                </button> -->
                 <button class="btn btn-link px-1">
                   <Icon name="ph:pencil-simple-line" />
                 </button>
