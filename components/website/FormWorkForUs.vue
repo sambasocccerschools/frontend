@@ -122,6 +122,15 @@
               />
               <!-- <div id="londonPostCodeHelp" class="form-text">We'll never share your email with anyone else.</div> -->
             </div>
+            <div class="mb-4">
+              <button
+                id="profile-tab"
+                class="btn btn-success text-light w-100 rounded-4"
+                type="button"
+              >
+                Next
+              </button>
+            </div>
           </div>
           <div
             id="section2-tab-pane"
@@ -130,7 +139,161 @@
             aria-labelledby="profile-tab"
             tabindex="0"
           >
-            Section 2
+            <div class="d-flex flex-column mb-4">
+              <label for="qualifications" class="form-labelform-label-light">
+                Please select which qualifications you have below
+              </label>
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="qualifications"
+                  id="FALevel1"
+                  value="FALevel1"
+                />
+                <label class="form-check-label" for="FALevel1">
+                  FA Level 1
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="qualifications"
+                  id="FALevel2"
+                  value="FALevel2"
+                />
+                <label class="form-check-label" for="FALevel2">
+                  FA Level 2
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="qualifications"
+                  id="DBS"
+                  value="DBS"
+                />
+                <label class="form-check-label" for="DBS">
+                  DBS (within the year)
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="qualifications"
+                  id="FutsalLevel1"
+                  value="FutsalLevel1"
+                />
+                <label class="form-check-label" for="FutsalLevel1">
+                  Futsal Level 1
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="qualifications"
+                  id="UEFAB"
+                  value="UEFAB"
+                />
+                <label class="form-check-label" for="UEFAB"> UEFA B </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="qualifications"
+                  id="FirstAid"
+                  value="FirstAid"
+                />
+                <label class="form-check-label" for="FirstAid">
+                  First Aid (within 2 years)
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="qualifications"
+                  id="none"
+                  value="none"
+                />
+                <label class="form-check-label" for="none"> None </label>
+              </div>
+            </div>
+            <div class="d-flex flex-column mb-4">
+              <label for="experience" class="form-labelform-label-light">
+                How many years football coaching experience do you have?
+              </label>
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="experience"
+                  id="none"
+                  value="none"
+                />
+                <label class="form-check-label" for="none"> None </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="experience"
+                  id="1Year"
+                  value="1"
+                />
+                <label class="form-check-label" for="1Year"> 1 Year </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="experience"
+                  id="2Year"
+                  value="2"
+                />
+                <label class="form-check-label" for="2Year"> 2 Year </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="experience"
+                  id="3Year"
+                  value="3"
+                />
+                <label class="form-check-label" for="3Year">
+                  More than 3 Year
+                </label>
+              </div>
+            </div>
+            <div class="mb-4">
+              <div class="form-group w-100 mb-3">
+                <label for="venues" class="form-labelform-label-light"
+                  >Please select which two venues you are available for your
+                  voluntary work experience (Select all available
+                  options)</label
+                >
+                <select id="venues" class="form-control form-control-lg">
+                  <option>Select venue</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-4">
+              <button
+                id="profile-tab"
+                class="btn btn-success text-light w-100 rounded-4"
+                type="button"
+              >
+                Next
+              </button>
+            </div>
           </div>
           <div
             id="section3-tab-pane"
@@ -139,7 +302,84 @@
             aria-labelledby="contact-tab"
             tabindex="0"
           >
-            Section 3
+            <div class="form-group w-100 mb-4">
+              <label for="coverNote" class="form-labelform-label-light">
+                Please Add a short cover note (500 words max)
+              </label>
+              <textarea
+                id="coverNote"
+                class="form-control form-control-lg"
+                rows="4"
+                placeholder="Message"
+              ></textarea>
+            </div>
+            <div class="d-flex flex-column mb-4">
+              <label for="marketing" class="form-labelform-label-light">
+                How did you hear about this opportunity?
+              </label>
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="marketing"
+                  id="indeed"
+                  value="indeed"
+                />
+                <label class="form-check-label" for="indeed"> Indeed </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="marketing"
+                  id="facebook"
+                  value="facebook"
+                />
+                <label class="form-check-label" for="facebook">
+                  Facebook
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="marketing"
+                  id="google"
+                  value="google"
+                />
+                <label class="form-check-label" for="google"> Google </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="marketing"
+                  id="referal"
+                  value="referal"
+                />
+                <label class="form-check-label" for="referal"> Referal </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="marketing"
+                  id="other"
+                  value="other"
+                />
+                <label class="form-check-label" for="other"> Other </label>
+              </div>
+            </div>
+            <div class="mb-4">
+              <button
+                id="profile-tab"
+                class="btn btn-success text-light w-100 rounded-4"
+                type="button"
+              >
+                Send
+              </button>
+            </div>
           </div>
         </div>
       </form>
