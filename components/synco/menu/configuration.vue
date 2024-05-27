@@ -12,7 +12,7 @@
       <Icon name="solar:settings-outline" />Configuration
       <Icon name="pajamas:chevron-down" />
     </button>
-    <ul id="collapseConfiguration" class="show collapse ms-2">
+    <ul id="collapseConfiguration" class="collapse ms-2">
       <!-- Config > Weekly Classes  -->
       <li>
         <button
@@ -26,7 +26,7 @@
           Weekly Classes
           <Icon name="pajamas:chevron-down" />
         </button>
-        <ul id="collapseConfWeeklyClasses" class="show collapse ps-4">
+        <ul id="collapseConfWeeklyClasses" class="collapse ps-4">
           <li>
             <NuxtLink
               to="/synco/config/weekly-classes/venues"
@@ -69,7 +69,7 @@
           Holiday Camps
           <Icon name="pajamas:chevron-down" />
         </button>
-        <ul id="collapseConfHolidayCamps" class="show collapse ps-4">
+        <ul id="collapseConfHolidayCamps" class="collapse ps-4">
           <li>
             <NuxtLink
               to="/synco/config/holiday-camps/venues"
@@ -113,7 +113,7 @@
           Birthday Parties
           <Icon name="pajamas:chevron-down" />
         </button>
-        <ul id="collapseConfBirthdayParties" class="show collapse ps-4">
+        <ul id="collapseConfBirthdayParties" class="collapse ps-4">
           <li>
             <NuxtLink
               to="/synco/config/birthday-parties/session-plans"
@@ -155,7 +155,7 @@
           Coach Pro
           <Icon name="pajamas:chevron-down" />
         </button>
-        <ul id="collapseConfCoachPro" class="show collapse ps-4">
+        <ul id="collapseConfCoachPro" class="collapse ps-4">
           <li>
             <NuxtLink
               to="/synco/config/coachpro/coaches"
@@ -226,7 +226,7 @@
           Parent Connect
           <Icon name="pajamas:chevron-down" />
         </button>
-        <ul id="collapseConfParentConnect" class="show collapse ps-4">
+        <ul id="collapseConfParentConnect" class="collapse ps-4">
           <li>
             <NuxtLink
               to="/synco/config/parent-connect/courses/create"
@@ -270,7 +270,7 @@
           Recruitment
           <Icon name="pajamas:chevron-down" />
         </button>
-        <ul id="collapseConfRecruitment" class="show collapse ps-4">
+        <ul id="collapseConfRecruitment" class="collapse ps-4">
           <li>
             <NuxtLink
               to="/synco/config/recruitment/scripts"
@@ -305,7 +305,7 @@
           Pathway
           <Icon name="pajamas:chevron-down" />
         </button>
-        <ul id="collapseConfPathway" class="show collapse ps-4">
+        <ul id="collapseConfPathway" class="collapse ps-4">
           <li>
             <NuxtLink
               to="/synco/config/pathway/venues"
