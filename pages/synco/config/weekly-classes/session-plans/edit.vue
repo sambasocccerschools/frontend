@@ -1,5 +1,70 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { ISessionPlan, IExerciseSessionPlan } from '~/types/index'
+
+const smallSideGames = ref<IExerciseSessionPlan>({
+  Title: 'Small-side games',
+  SubTitle:
+    'This skills tutorial will help you understand how to perform the Penguim.',
+  ImagesUrls: ['field-positions.png'],
+  VideoUrl: '',
+  Duration: '10 mins',
+  Description: '',
+})
+const introduction = ref<IExerciseSessionPlan>({
+  Title: 'Introduction (Head coach)',
+  SubTitle:
+    'This skills tutorial will help you understand how to perform the Penguim.',
+  ImagesUrls: ['@/src/assets/field-positions.png'],
+  VideoUrl: '',
+  Duration: '10 mins',
+  Description: '',
+})
+const warmup = ref<IExerciseSessionPlan>({
+  Title: 'Warm up activity',
+  SubTitle:
+    'This skills tutorial will help you understand how to perform the Penguim.',
+  ImagesUrls: ['@/src/assets/field-positions.png'],
+  VideoUrl: '',
+  Duration: '10 mins',
+  Description: '',
+})
+const technical = ref<IExerciseSessionPlan>({
+  Title: 'Technical exercise',
+  SubTitle:
+    'This skills tutorial will help you understand how to perform the Penguim.',
+  ImagesUrls: ['@/src/assets/field-positions.png'],
+  VideoUrl: '',
+  Duration: '10 mins',
+  Description: '',
+})
+const lesson = ref<IExerciseSessionPlan>({
+  Title: 'Lesson debrief',
+  SubTitle:
+    'This skills tutorial will help you understand how to perform the Penguim.',
+  ImagesUrls: ['@/src/assets/field-positions.png'],
+  VideoUrl: '',
+  Duration: '10 mins',
+  Description: '',
+})
+
+const sessionPlan = ref<ISessionPlan>({
+  TotalDuration: '4 Hours',
+  PlayerImageUrl: '',
+  SubTitle: 'In todays lesson, students will learn to perform the Pinguim',
+  Title: 'The Pinguim',
+  BannerUrl: 'bg-stadium.png',
+  VideosUrls: [''],
+  Exercises: [
+    smallSideGames.value,
+    introduction.value,
+    warmup.value,
+    technical.value,
+    lesson.value,
+  ],
+})
+
+let selectedExercise = ref<number>(-1)
 
 const selectionAreas = ref<string[]>([
   'Session Plans',
@@ -79,8 +144,8 @@ const selectNotification = (selected: string) => {
           </div>
           <template v-if="selection == 'Session Plans'">
             <div class="row">
-              <div class="col-6" style="border-right: 1px solid lightgray">
-                <div class="card rounded-3 bg-stadium border-0">
+              <div class="col-12" style="border-right: 1px solid lightgray">
+                <!-- <div class="card rounded-3 bg-stadium border-0">
                   <div class="row h-100 w-100">
                     <div class="col-5">
                       <div
@@ -94,189 +159,185 @@ const selectNotification = (selected: string) => {
                       <img src="@/src/assets/img-pele.png" height="100px" />
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <div class="d-flex flex-column">
-                  <span class="h5 mt-4"><strong>Skill of the day</strong></span>
-                  <span class="h5"
-                    >The Pinguim
-                    <Icon class="text-primary" name="ph:speaker-high"
-                  /></span>
-                  <span class="text-muted"
-                    >In todays lesson, students will learn to perform the
-                    Pinguim.</span
+                  <div
+                    class="d-flex justify-content-between align-items-center flex-row"
                   >
+                    <div class="d-flex flex-column">
+                      <span class="h3 mt-4"
+                        ><strong>Skill of the day</strong></span
+                      >
+                      <span class="h5"
+                        >{{ sessionPlan.Title }}
+                        <Icon class="text-primary" name="ph:speaker-high"
+                      /></span>
+                      <span class="text-muted">{{ sessionPlan.SubTitle }}</span>
+                    </div>
+                    <NuxtImg
+                      :src="sessionPlan.BannerUrl"
+                      style="width: 600px; height: 120px"
+                    />
+                  </div>
                   <hr class="w-100" />
-                  <video
-                    class="rounded-4"
-                    src="@/src/assets/field-positions.png"
-                    controls
-                  ></video>
+                  <template v-for="video in sessionPlan.VideosUrls">
+                    <video class="rounded-4" :src="video" controls></video>
+                  </template>
                   <div class="d-flex justify-content-between mt-4 flex-row">
-                    <span class="h5">Session Plan</span>
+                    <span class="h3"><strong>Session Plan</strong></span>
                     <span class="h5 text-primary">
                       <Icon name="ph:download-simple" class="" />
                     </span>
                   </div>
                   <span class="text-small text-muted mb-4">
-                    <Icon name="ph:clock" /> 4 Hours
+                    <Icon name="ph:clock" /> {{ sessionPlan.TotalDuration }}
                   </span>
-                  <div class="row my-3">
-                    <div class="col-4">
-                      <img
-                        src="@/src/assets/field-positions.png"
-                        class="rounded-4 w-100"
-                      />
-                    </div>
-                    <div class="col-8 d-flex flex-column">
-                      <span class="h6"><strong>Small-side games</strong></span>
-                      <span class="text-muted">
-                        This skills tutorial will help you understand how to
-                        perform the Penguim.
-                      </span>
-                      <span class="text-muted">10 min </span>
-                    </div>
-                  </div>
-                  <div class="row my-3">
-                    <div class="col-4">
-                      <img
-                        src="@/src/assets/field-positions.png"
-                        class="rounded-4 w-100"
-                      />
-                    </div>
-                    <div class="col-8 d-flex flex-column">
-                      <span class="h6"
-                        ><strong>Introduction (Head coach)</strong></span
+
+                  <template v-for="(exercise, index) in sessionPlan.Exercises">
+                    <div
+                      class="row hover-hand my-3"
+                      v-if="selectedExercise != index"
+                      @click="selectedExercise = index"
+                    >
+                      <div class="col-2">
+                        <NuxtImg
+                          :src="exercise.ImagesUrls[0]"
+                          class="rounded-4 w-100"
+                        />
+                      </div>
+                      <div
+                        class="col-10 d-flex flex-column"
+                        @click="selectedExercise = index"
                       >
-                      <span class="text-muted">
-                        This skills tutorial will help you understand how to
-                        perform the Penguim.
-                      </span>
-                      <span class="text-muted">10 min </span>
+                        <span class="h6"
+                          ><strong>{{ exercise.Title }}</strong></span
+                        >
+                        <span class="text-muted">
+                          {{ exercise.SubTitle }}
+                        </span>
+                        <span class="text-muted">{{ exercise.Duration }}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="row my-3">
-                    <div class="col-4">
-                      <img
-                        src="@/src/assets/field-positions.png"
-                        class="rounded-4 w-100"
-                      />
+                    <div class="row my-3" v-if="selectedExercise == index">
+                      <div class="col-12">
+                        <div class="d-flex flex-column">
+                          <div
+                            class="d-flex flex-column hover-hand"
+                            @click="selectedExercise = -1"
+                          >
+                            <span class="h4">
+                              <strong>{{ exercise.Title }}</strong>
+                            </span>
+                            <NuxtImg
+                              :src="exercise.ImagesUrls[0]"
+                              class="rounded-4 w-100 my-4"
+                              style="max-width: 80%"
+                            />
+                          </div>
+                          <template
+                            v-for="(image, index) in exercise.ImagesUrls"
+                          >
+                            <template v-if="index > 0">
+                              <NuxtImg
+                                :src="image"
+                                class="rounded-4 w-100 my-4"
+                                style="max-width: 80%"
+                              />
+                            </template>
+                          </template>
+                          <span class="text-primary">
+                            Time Duration: {{ exercise.Duration }}
+                          </span>
+                          <div class="d-flex flex-column">
+                            {{ exercise.Description }}
+                            <!--                             
+                              <span class="h5 my-2">
+                                <strong>Organization</strong>
+                              </span>
+                              <span>
+                                Set up two small-sided games. You will need the
+                                following:
+                              </span>
+                              <ul>
+                                <li>4 pop-up goals</li>
+                                <li>Bibs to clearly divide teams</li>
+                                <li>4 blue cones to divide the two pitches</li>
+                                <li>5 footballs</li>
+                              </ul>
+                              <span class="h5 my-2"
+                                ><strong>Description</strong></span
+                              >
+                              <span>
+                                Begin the lesson with two small-sided games.
+                                Organise players based on ability into four teams.
+                                If you do not have many students, use one pitch
+                                only. Keep an eye on both games, unless you have a
+                                support coach working with you.
+                              </span>
+                              <span class="h5 my-2"><strong>Rules</strong></span>
+                              <span>
+                                Before you start the game, quickly reiterate the
+                                rules of the game:
+                              </span>
+                              <ol>
+                                <li>No slide tackles</li>
+                                <li>
+                                  If the ball rolls out of play, students should
+                                  all freeze and wait for a new ball to be rolled
+                                  in (have 5 football nearby ready)
+                                </li>
+                              </ol>
+                              <span class="h5 my-2"
+                                ><strong>Conditions</strong></span
+                              >
+                              <span>
+                                You can select a condition from below to stop
+                                students from all chasing the ball and/or playing
+                                as solo players. Keep classes fun by variating the
+                                conditions each week.
+                              </span>
+                              <ol>
+                                <li>
+                                  Players can only shoot once every member of the
+                                  team has touched the ball.
+                                </li>
+                                <li>
+                                  Only can only shoot once they have built 3-5
+                                  passes.
+                                </li>
+                                <li>
+                                  Only one member of each team is selected as the
+                                  goalscorer.
+                                </li>
+                              </ol>
+                              <span class="h5 my-2">
+                                <strong
+                                  >How to maintain the tone & intensity</strong
+                                >
+                              </span>
+                              <span>
+                                Set up two small-sided games. You will need the
+                                following:
+                              </span>
+                              <ul>
+                                <li>4 pop-up goals</li>
+                                <li>Bibs to clearly divide teams</li>
+                                <li>4 blue cones to divide the two pitches</li>
+                                <li>5 footballs</li>
+                              </ul> 
+                            -->
+                            <div v-if="!!exercise.VideoUrl">
+                              <video
+                                class="rounded-4"
+                                :src="exercise.VideoUrl"
+                                controls
+                              ></video>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-8 d-flex flex-column">
-                      <span class="h6"><strong>Warm up activity</strong></span>
-                      <span class="text-muted">
-                        This skills tutorial will help you understand how to
-                        perform the Penguim.
-                      </span>
-                      <span class="text-muted">10 min </span>
-                    </div>
-                  </div>
-                  <div class="row my-3">
-                    <div class="col-4">
-                      <img
-                        src="@/src/assets/field-positions.png"
-                        class="rounded-4 w-100"
-                      />
-                    </div>
-                    <div class="col-8 d-flex flex-column">
-                      <span class="h6"
-                        ><strong>Technical exercise</strong></span
-                      >
-                      <span class="text-muted">
-                        This skills tutorial will help you understand how to
-                        perform the Penguim.
-                      </span>
-                      <span class="text-muted">10 min </span>
-                    </div>
-                  </div>
-                  <div class="row my-3">
-                    <div class="col-4">
-                      <img
-                        src="@/src/assets/field-positions.png"
-                        class="rounded-4 w-100"
-                      />
-                    </div>
-                    <div class="col-8 d-flex flex-column">
-                      <span class="h6"><strong>Lesson debrief</strong></span>
-                      <span class="text-muted">
-                        This skills tutorial will help you understand how to
-                        perform the Penguim.
-                      </span>
-                      <span class="text-muted">10 min </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6" style="border-left: 1px solid lightgray">
-                <div class="d-flex flex-column">
-                  <span class="h4"><strong>Small-side games</strong></span>
-                  <img
-                    src="@/src/assets/field-positions.png"
-                    class="rounded-4 w-100 my-4"
-                    style="max-width: 80%"
-                  />
-                  <span class="text-primary"> Time Duration: 10 mins </span>
-                  <span class="h5 my-2"><strong>Organization</strong></span>
-                  <span
-                    >Set up two small-sided games. You will need the
-                    following:</span
-                  >
-                  <ul>
-                    <li>4 pop-up goals</li>
-                    <li>Bibs to clearly divide teams</li>
-                    <li>4 blue cones to divide the two pitches</li>
-                    <li>5 footballs</li>
-                  </ul>
-                  <span class="h5 my-2"><strong>Description</strong></span>
-                  <span>
-                    Begin the lesson with two small-sided games. Organise
-                    players based on ability into four teams. If you do not have
-                    many students, use one pitch only. Keep an eye on both
-                    games, unless you have a support coach working with you.
-                  </span>
-                  <span class="h5 my-2"><strong>Rules</strong></span>
-                  <span>
-                    Before you start the game, quickly reiterate the rules of
-                    the game:
-                  </span>
-                  <ol>
-                    <li>No slide tackles</li>
-                    <li>
-                      If the ball rolls out of play, students should all freeze
-                      and wait for a new ball to be rolled in (have 5 football
-                      nearby ready)
-                    </li>
-                  </ol>
-                  <span class="h5 my-2"><strong>Conditions</strong></span>
-                  <span>
-                    You can select a condition from below to stop students from
-                    all chasing the ball and/or playing as solo players. Keep
-                    classes fun by variating the conditions each week.
-                  </span>
-                  <ol>
-                    <li>
-                      Players can only shoot once every member of the team has
-                      touched the ball.
-                    </li>
-                    <li>
-                      Only can only shoot once they have built 3-5 passes.
-                    </li>
-                    <li>
-                      Only one member of each team is selected as the
-                      goalscorer.
-                    </li>
-                  </ol>
-                  <span class="h5 my-2">
-                    <strong>How to maintain the tone & intensity</strong>
-                  </span>
-                  <span>
-                    Set up two small-sided games. You will need the following:
-                  </span>
-                  <ul>
-                    <li>4 pop-up goals</li>
-                    <li>Bibs to clearly divide teams</li>
-                    <li>4 blue cones to divide the two pitches</li>
-                    <li>5 footballs</li>
-                  </ul>
+                  </template>
                 </div>
               </div>
             </div>
@@ -615,5 +676,8 @@ const selectNotification = (selected: string) => {
 }
 .nav-unselected {
   border-bottom: 1px solid #e2e1e5;
+}
+.hover-hand:hover {
+  cursor: pointer;
 }
 </style>

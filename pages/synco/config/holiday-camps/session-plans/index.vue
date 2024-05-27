@@ -10,8 +10,41 @@ export default {
     ],
     sessions: [
       {
-        id: 'BCPELE124',
-        title: 'BCPELE',
+        id: 'BCPELE1',
+        title: 'Day 1',
+        player: '',
+        exercise: {
+          title: '',
+          duration: '',
+          description: '',
+          img: '',
+        },
+      },
+      {
+        id: 'BCPELE2',
+        title: 'Day 2',
+        player: '',
+        exercise: {
+          title: '',
+          duration: '',
+          description: '',
+          img: '',
+        },
+      },
+      {
+        id: 'BCPELE3',
+        title: 'Day 3',
+        player: '',
+        exercise: {
+          title: '',
+          duration: '',
+          description: '',
+          img: '',
+        },
+      },
+      {
+        id: 'BCPELE4',
+        title: 'Day 4',
         player: '',
         exercise: {
           title: '',
@@ -77,37 +110,37 @@ export default {
         <div class="card">
           <div class="card-body">
             <div class="row row-cols-6">
-              <div v-for="session in sessions" class="col">
-                <div class="card border" @click="goTo(session.id)">
-                  <div class="card-body d-flex align-items-center flex-column">
-                    <Icon name="ph:pencil-simple-line" />
-                    <span>{{ session.title }} </span>
+              <div v-for="session in sessions" class="col-auto my-2" @click="">
+                <NuxtLink
+                  class=""
+                  :to="`/synco/config/holiday-camps/session-plans/${session.id}`"
+                >
+                  <div class="card plan-item border">
+                    <div
+                      class="card-body d-flex align-items-center flex-column justify-content-center"
+                    >
+                      <Icon name="ph:pencil-simple-line" />
+                      <span>{{ session.title }}</span>
+                    </div>
                   </div>
-                </div>
+                </NuxtLink>
               </div>
-              <div class="col">
-                <div class="card border">
-                  <div class="card-body d-flex align-items-center flex-column">
-                    <Icon name="ph:pencil-simple-line" />
-                    <span>Day 2</span>
+              <div class="col-auto my-2">
+                <NuxtLink
+                  class=""
+                  to="/synco/config/holiday-camps/session-plans/create"
+                >
+                  <div class="card plan-item border-dashed">
+                    <div
+                      class="card-body d-flex align-items-center justify-content-center flex-column"
+                    >
+                      <strong><Icon name="ph:plus" /></strong>
+                      <span class="text-center">
+                        Add new Beginner Session Plan
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card border">
-                  <div class="card-body d-flex align-items-center flex-column">
-                    <Icon name="ph:pencil-simple-line" />
-                    <span>Day 3</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card border">
-                  <div class="card-body d-flex align-items-center flex-column">
-                    <Icon name="ph:pencil-simple-line" />
-                    <span>Day 4</span>
-                  </div>
-                </div>
+                </NuxtLink>
               </div>
             </div>
           </div>
@@ -116,3 +149,16 @@ export default {
     </div>
   </NuxtLayout>
 </template>
+
+<style scoped>
+.text-sm {
+  font-size: 0.6rem;
+}
+.plan-item {
+  width: 168px;
+  height: 100px;
+}
+.border-dashed {
+  border: 1px dashed var(--bs-border-color) !important;
+}
+</style>

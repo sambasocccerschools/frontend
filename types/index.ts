@@ -368,3 +368,22 @@ export type ILoop = {
   Interval: string
   Dashboards: string[]
 }
+
+export type IExerciseSessionPlan = {
+  Title: string
+  SubTitle: string
+  ImagesUrls: string[]
+  Description: string
+  Duration: string
+  VideoUrl: string
+}
+
+export type ISessionPlan = {
+  PlayerImageUrl: string
+  Title: string
+  SubTitle: string
+  BannerUrl: string
+  VideosUrls: string[]
+  TotalDuration: string
+  Exercises: IExerciseSessionPlan[]
+}

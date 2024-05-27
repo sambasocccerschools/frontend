@@ -1,6 +1,7 @@
 // stores/index.ts
 
 import type { IUser } from '~/types'
+import { defineStore } from 'pinia'
 
 export const useStore = defineStore('store', {
   state: () => ({
@@ -16,4 +17,5 @@ export const useStore = defineStore('store', {
       this.user = user
     },
   },
+  persist: true,
 })
