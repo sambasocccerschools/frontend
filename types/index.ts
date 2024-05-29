@@ -387,3 +387,17 @@ export type ISessionPlan = {
   TotalDuration: string
   Exercises: IExerciseSessionPlan[]
 }
+
+export type IKeyValuePair = {
+  Key: string
+  Value: string
+}
+
+export type ICandidateEventItem = {
+  ImageUrl: string
+  Title: string
+  Date: string
+  Description: string
+  EventType: string
+  ExtraInformation?: IKeyValuePair[] | null | undefined
+}
