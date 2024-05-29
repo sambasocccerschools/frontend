@@ -12,10 +12,10 @@ import { ref } from 'vue'
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item">Config</li>
-                <li class="breadcrumb-item">Weekly classes</li>
+                <li class="breadcrumb-item">Holiday Camp</li>
                 <li class="breadcrumb-item">
                   <NuxtLink
-                    to="/synco/config/weekly-classes/session-plans"
+                    to="/synco/config/holiday-camps/session-plans"
                     class="text-dark"
                   >
                     Session plans
@@ -38,7 +38,7 @@ import { ref } from 'vue'
         <div class="col-10 pb-4" style="border-bottom: 1px solid lightgray">
           <NuxtLink
             class="h4 m-0"
-            to="/synco/config/weekly-classes/session-plans"
+            to="/synco/config/holiday-camps/session-plans"
           >
             <Icon name="material-symbols:arrow-back" class="me-2" />Create
             session

@@ -6,6 +6,8 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'dayjs-nuxt',
     '@samk-dev/nuxt-vcalendar',
+    '@nuxt/image',
+    '@pinia-plugin-persistedstate/nuxt',
   ],
   dayjs: {
     plugins: ['relativeTime', 'customParseFormat'],
@@ -17,8 +19,15 @@ export default defineNuxtConfig({
   },
   // Don't prerender SSR Synco and Parents Platform
   routeRules: {
-    '/**': { ssr: false },
+    '/**': { ssr: false }, // TODO:revisar
     '/synco/**': { ssr: false },
     '/parents/**': { ssr: false },
+  },
+  image: {
+    inject: true,
+    // dir: '/src/assets',
+  },
+  piniaPersistedstate: {
+    storage: 'sessionStorage',
   },
 })

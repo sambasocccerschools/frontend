@@ -1,8 +1,8 @@
 <script lang="ts" setup>
+import { nextTick, onMounted, ref } from 'vue'
 import { useStore } from '~/stores'
 
 const token = useCookie('token')
-const href: any = useRoute()
 const router = useRouter()
 const store = useStore()
 const { $api } = useNuxtApp()
@@ -19,9 +19,31 @@ const logout = async () => {
   }
 }
 
-const show = (path: any) => {
-  if (href.includes(path)) return true
+const show = (path: any, position: number) => {
+  let currentPath = router.currentRoute.value.path.split('/')
+  return currentPath[position] == path
 }
+
+onMounted(async () => {
+  await nextTick()
+  let ul = document.querySelectorAll(
+    `a[href='${router.currentRoute.value.path}']`,
+  )
+  if (ul[0]) {
+    ul[0]?.scrollIntoView()
+  } else {
+    let div = document.getElementById(router.currentRoute.value.path)
+    if (!div) {
+      let path = router.currentRoute.value.path.split('/')
+      path[path.length - 1] = ''
+      div = document.getElementById(path.join('/'))
+
+      console.log(router.currentRoute.value.path)
+      console.log(path.join('/'))
+    }
+    div?.scrollIntoView()
+  }
+})
 </script>
 
 <template>
@@ -58,7 +80,11 @@ const show = (path: any) => {
         <Icon name="ph:book-open-bold" />Weekly Classes
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul id="collapseWeeklyClasses" class="collapse ms-2">
+      <ul
+        id="collapseWeeklyClasses"
+        class="collapse ms-2"
+        :class="show('weekly-classes', 2) ? 'show' : ''"
+      >
         <li>
           <NuxtLink
             to="/synco/weekly-classes/find"
@@ -152,7 +178,11 @@ const show = (path: any) => {
         <Icon name="ph:book-open-bold" />Holiday Camps
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul id="collapseHolidayCamps" class="collapse ms-2">
+      <ul
+        id="collapseHolidayCamps"
+        class="collapse ms-2"
+        :class="show('holiday-camps', 2) ? 'show' : ''"
+      >
         <li>
           <NuxtLink
             to="/synco/holiday-camps/find"
@@ -194,7 +224,11 @@ const show = (path: any) => {
         <Icon name="clarity:users-line" />Club
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul id="collapseClub" class="collapse ms-2">
+      <ul
+        id="collapseClub"
+        class="collapse ms-2"
+        :class="show('club', 2) ? 'show' : ''"
+      >
         <li>
           <NuxtLink
             to="/synco/club/find"
@@ -250,7 +284,11 @@ const show = (path: any) => {
         <Icon name="ph:car-profile-bold" />Surveys
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul id="collapseSurveys" class="collapse ms-2">
+      <ul
+        id="collapseSurveys"
+        class="collapse ms-2"
+        :class="show('surveys', 2) ? 'show' : ''"
+      >
         <li>
           <NuxtLink
             to="/synco/surveys/create"
@@ -283,7 +321,11 @@ const show = (path: any) => {
         <Icon name="ph:car-profile-bold" />Email Marketing
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul id="collapseEmailMarketing" class="show collapse ms-2">
+      <ul
+        id="collapseEmailMarketing"
+        class="collapse ms-2"
+        :class="show('email-marketing', 2) ? 'show' : ''"
+      >
         <li>
           <NuxtLink
             to="/synco/email-marketing/create"
@@ -325,7 +367,11 @@ const show = (path: any) => {
         <Icon name="ph:car-profile-bold" />Recruitment
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul id="collapseRecruitment" class="show collapse ms-2">
+      <ul
+        id="collapseRecruitment"
+        class="collapse ms-2"
+        :class="show('recruitment', 2) ? 'show' : ''"
+      >
         <li>
           <NuxtLink
             to="/synco/recruitment/coaches-leads"
@@ -367,7 +413,11 @@ const show = (path: any) => {
         <Icon name="ph:car-profile-bold" />Reports
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul id="collapseReports" class="collapse ms-2">
+      <ul
+        id="collapseReports"
+        class="collapse ms-2"
+        :class="show('reports', 2) ? 'show' : ''"
+      >
         <li>
           <NuxtLink
             to="/synco/reports/members"
@@ -553,7 +603,11 @@ const show = (path: any) => {
         <Icon name="ph:car-profile-bold" />Marketing reports
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul id="collapseMarketingReports" class="show collapse ms-2">
+      <ul
+        id="collapseMarketingReports"
+        class="collapse ms-2"
+        :class="show('marketing-reports', 2) ? 'show' : ''"
+      >
         <li>
           <NuxtLink
             to="/synco/marketing-reports/facebook"
@@ -614,7 +668,11 @@ const show = (path: any) => {
         <Icon name="ph:car-profile-bold" />Templates
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul id="collapseTemplates" class="show collapse ms-2">
+      <ul
+        id="collapseTemplates"
+        class="collapse ms-2"
+        :class="show('templates', 2) ? 'show' : ''"
+      >
         <li>
           <NuxtLink
             to="/synco/templates/create"
@@ -647,7 +705,11 @@ const show = (path: any) => {
         <Icon name="material-symbols:manage-accounts-outline" />Administration
         <Icon name="pajamas:chevron-down" />
       </button>
-      <ul id="collapseAdministration" class="show collapse ms-2">
+      <ul
+        id="collapseAdministration"
+        class="collapse ms-2"
+        :class="show('administration', 2) ? 'show' : ''"
+      >
         <li>
           <NuxtLink
             to="/synco/administration/todos"
@@ -704,7 +766,382 @@ const show = (path: any) => {
         </li>
       </ul>
 
-      <SyncoMenuConfiguration />
+      <!-- <SyncoMenuConfiguration /> -->
+      <!-- Configuration  -->
+      <button
+        class="btn btn-nav"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseConfiguration"
+        aria-expanded="false"
+        aria-controls="collapseConfiguration"
+      >
+        <Icon name="solar:settings-outline" />Configuration
+        <Icon name="pajamas:chevron-down" />
+      </button>
+      <ul
+        id="collapseConfiguration"
+        class="collapse ms-2"
+        :class="show('config', 2) ? 'show' : ''"
+        ref="test"
+      >
+        <!-- Config > Weekly Classes  -->
+        <li>
+          <button
+            class="btn btn-nav-link"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseConfWeeklyClasses"
+            aria-expanded="false"
+            aria-controls="collapseConfWeeklyClasses"
+          >
+            Weekly Classes
+            <Icon name="pajamas:chevron-down" />
+          </button>
+          <ul
+            id="collapseConfWeeklyClasses"
+            class="collapse ps-4"
+            :class="show('weekly-classes', 3) ? 'show' : ''"
+          >
+            <li>
+              <NuxtLink
+                to="/synco/config/weekly-classes/venues"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Add a Venue
+              </NuxtLink>
+              <div id="/synco/config/weekly-classes/schedule-classes"></div>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/weekly-classes/terms"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Terms
+              </NuxtLink>
+              <div id="/synco/config/weekly-classes/terms/create"></div>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/weekly-classes/session-plans"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Session plans
+              </NuxtLink>
+              <div id="/synco/config/weekly-classes/session-plans/edit"></div>
+              <div id="/synco/config/weekly-classes/session-plans/create"></div>
+            </li>
+          </ul>
+        </li>
+        <!-- Config > Holiday Camps  -->
+        <li>
+          <button
+            class="btn btn-nav-link"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseConfHolidayCamps"
+            aria-expanded="false"
+            aria-controls="collapseConfHolidayCamps"
+          >
+            Holiday Camps
+            <Icon name="pajamas:chevron-down" />
+          </button>
+          <ul
+            id="collapseConfHolidayCamps"
+            class="collapse ps-4"
+            :class="show('holiday-camps', 3) ? 'show' : ''"
+          >
+            <li>
+              <NuxtLink
+                to="/synco/config/holiday-camps/venues"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Add a Venue
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/holiday-camps/dates"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Dates
+              </NuxtLink>
+              <div id="/synco/config/holiday-camps/dates/create"></div>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/holiday-camps/session-plans"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Session plans
+              </NuxtLink>
+              <div id="/synco/config/holiday-camps/session-plans/"></div>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Config > Birthday Parties  -->
+        <li>
+          <button
+            class="btn btn-nav-link"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseConfBirthdayParties"
+            aria-expanded="false"
+            aria-controls="collapseConfBirthdayParties"
+          >
+            Birthday Parties
+            <Icon name="pajamas:chevron-down" />
+          </button>
+          <ul
+            id="collapseConfBirthdayParties"
+            class="collapse ps-4"
+            :class="show('birthday-parties', 3) ? 'show' : ''"
+          >
+            <li>
+              <NuxtLink
+                to="/synco/config/birthday-parties/session-plans"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Session Plans
+              </NuxtLink>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Config > Club  -->
+        <li>
+          <!-- <button class="btn btn-nav-link" type="button" data-bs-toggle="collapse"
+          data-bs-target="#collapseConfBirthdayParties" aria-expanded="false" aria-controls="collapseConfBirthdayParties">
+          Birthday Parties
+          <Icon name="pajamas:chevron-down" />
+        </button> -->
+          <NuxtLink
+            to="/synco/config/club"
+            class="btn-nav-link"
+            exact-active-class="text-primary"
+          >
+            Club
+          </NuxtLink>
+        </li>
+
+        <!-- Config > Coach Pro  -->
+        <li>
+          <button
+            class="btn btn-nav-link"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseConfCoachPro"
+            aria-expanded="false"
+            aria-controls="collapseConfCoachPro"
+          >
+            Coach Pro
+            <Icon name="pajamas:chevron-down" />
+          </button>
+          <ul
+            id="collapseConfCoachPro"
+            class="collapse ps-4"
+            :class="show('coachpro', 3) ? 'show' : ''"
+          >
+            <li>
+              <NuxtLink
+                to="/synco/config/coachpro/coaches"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Coach profile
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/coachpro/contract"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Contract
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/coachpro/music"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Music
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/coachpro/courses"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Courses
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/coachpro/issues"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Issues List
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/coachpro/referrals"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Referrals
+              </NuxtLink>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Config > Parent Connect  -->
+        <li>
+          <button
+            class="btn btn-nav-link"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseConfParentConnect"
+            aria-expanded="false"
+            aria-controls="collapseConfParentConnect"
+          >
+            Parent Connect
+            <Icon name="pajamas:chevron-down" />
+          </button>
+          <ul
+            id="collapseConfParentConnect"
+            class="collapse ps-4"
+            :class="show('parent-connect', 3) ? 'show' : ''"
+          >
+            <li>
+              <NuxtLink
+                to="/synco/config/parent-connect/courses/create"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Create a course
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/parent-connect/courses"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                List of Courses
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/parent-connect/loyalty-points"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Loyalty Points
+              </NuxtLink>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Config > Recruitment  -->
+        <li>
+          <button
+            class="btn btn-nav-link"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseConfRecruitment"
+            aria-expanded="false"
+            aria-controls="collapseConfRecruitment"
+          >
+            Recruitment
+            <Icon name="pajamas:chevron-down" />
+          </button>
+          <ul
+            id="collapseConfRecruitment"
+            class="collapse ps-4"
+            :class="show('recruitment', 3) ? 'show' : ''"
+          >
+            <li>
+              <NuxtLink
+                to="/synco/config/recruitment/scripts"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Scripts
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/recruitment/franchise-questions"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Franchise Questions
+              </NuxtLink>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Config > Pathway  -->
+        <li>
+          <button
+            class="btn btn-nav-link"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseConfPathway"
+            aria-expanded="false"
+            aria-controls="collapseConfPathway"
+          >
+            Pathway
+            <Icon name="pajamas:chevron-down" />
+          </button>
+          <ul
+            id="collapseConfPathway"
+            class="collapse ps-4"
+            :class="show('pathway', 3) ? 'show' : ''"
+          >
+            <li>
+              <NuxtLink
+                to="/synco/config/pathway/venues"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Add a venue
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/pathway/courses"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Add a course
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/pathway/students"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Students
+              </NuxtLink>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
     <div class="mt-5 py-5"></div>
 

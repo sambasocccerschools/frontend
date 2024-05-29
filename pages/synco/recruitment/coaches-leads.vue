@@ -87,7 +87,7 @@ export default {
           <div>
             <SyncoFiltersAgentsDropdown />
             <NuxtLink
-              to="/synco/recruitment/create"
+              to="/synco/recruitment/create/coach"
               class="btn btn-primary text-light ms-2 shadow-sm"
               >+ Add a new lead
             </NuxtLink>
@@ -152,7 +152,7 @@ export default {
           <div>
             <SyncoFiltersAgentsDropdown />
             <NuxtLink
-              to="/synco/recruitment/create"
+              to="/synco/recruitment/create/pathway"
               class="btn btn-primary text-light ms-2 shadow-sm"
               >+ Add a new lead
             </NuxtLink>
@@ -216,7 +216,7 @@ export default {
           <div>
             <SyncoFiltersAgentsDropdown />
             <NuxtLink
-              to="/synco/recruitment/create"
+              to="/synco/recruitment/create/regional-manager"
               class="btn btn-primary text-light ms-2 shadow-sm"
               >+ Add a new lead
             </NuxtLink>
