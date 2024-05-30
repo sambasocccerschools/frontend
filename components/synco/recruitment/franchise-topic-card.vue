@@ -11,7 +11,7 @@ let questions = ref<IFranchiseQuestion[]>(props.questions)
 const changeAnswer = (question: IFranchiseQuestion) => {}
 </script>
 <template>
-  <div class="card rounded-4 my-4 p-4" :class="noBorder ? 'border-0' : ''">
+  <div class="card rounded-4 mb-4 p-4" :class="noBorder ? 'border-0' : ''">
     <slot name="internal_title"></slot>
     <div class="d-flex flex-column">
       <div class="d-flex flex-row">
