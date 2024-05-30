@@ -401,3 +401,13 @@ export type ICandidateEventItem = {
   EventType: string
   ExtraInformation?: IKeyValuePair[] | null | undefined
 }
+
+export type IFranchiseQuestion = {
+  Number: number
+  Question: string
+  Answer?: boolean | null
+}
+export type IFranchiseTopicQuestions = {
+  Title: string
+  Questions: IFranchiseQuestion[]
+}
