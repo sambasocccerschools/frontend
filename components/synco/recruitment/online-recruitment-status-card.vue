@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import type { IKeyValuePair } from '~/types'
 const props = defineProps<{
   noBorder?: boolean | null
 }>()
@@ -7,8 +8,36 @@ let noBorder = ref<boolean>(props.noBorder ?? false).value
 let currentStep = ref<number>(1)
 let scheduleMeet = ref<boolean>(false)
 let showInterviewQuestions = ref<boolean>(false)
-let callScore = ref<number>(0)
+// let callScore = ref<number>(0)
 let showStatus = ref<boolean>(false)
+let showPathwayCourse = ref<boolean>(false)
+
+let callScorecard = ref<IKeyValuePair[]>([
+  {
+    Key: 'Communication skill',
+    Value: '',
+  },
+  {
+    Key: 'Passion for coaching',
+    Value: '',
+  },
+  {
+    Key: 'Experience',
+    Value: '',
+  },
+  {
+    Key: 'Knowledge of SSS',
+    Value: '',
+  },
+])
+
+let callScore = computed<number>(() => {
+  let scores = callScorecard.value.map((x) => (+x.Value * 100) / 5)
+  let totalScore = 0
+  scores.forEach((x) => (totalScore += x))
+  totalScore = totalScore / scores.length
+  return totalScore
+})
 </script>
 <template>
   <div class="card rounded-4 p-4" :class="noBorder ? 'border-0' : ''">
@@ -114,6 +143,7 @@ let showStatus = ref<boolean>(false)
           <button
             type="button"
             class="btn btn-secondary border-1 text-secondary mx-2 bg-white p-3"
+            @click="showPathwayCourse = !showPathwayCourse"
           >
             <Icon name="ph:check" />
           </button>
@@ -179,4 +209,114 @@ let showStatus = ref<boolean>(false)
       </template>
     </div>
   </div>
+
+  <template v-if="showInterviewQuestions">
+    <div class="modal-backdrop fade show"></div>
+    <div
+      class="modal fade show centered d-block"
+      aria-modal="true"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-tv-light-dark border-gray">
+          <div class="modal-header border-bottom-gray">
+            <div class="d-flex justify-content-between w-100 flex-row">
+              <div></div>
+              <div>
+                <span class="h4">
+                  <strong> Interview Questions & Call Scorecard</strong>
+                </span>
+              </div>
+              <div>
+                <button
+                  class="btn btn-outline-secondary border-0"
+                  @click="showInterviewQuestions = !showInterviewQuestions"
+                >
+                  <Icon name="ph:x" />
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-body py-0">
+            <SyncoRecruitmentInterviewQuestionsCallScoreCard
+              :call-scorecard="callScorecard"
+            >
+            </SyncoRecruitmentInterviewQuestionsCallScoreCard>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template v-if="showPathwayCourse">
+    <div class="modal-backdrop fade show"></div>
+    <div
+      class="modal fade show centered d-block"
+      aria-modal="true"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-tv-light-dark border-gray">
+          <div class="modal-header border-bottom-gray">
+            <div class="d-flex justify-content-between w-100 flex-row">
+              <div>
+                <button
+                  class="btn btn-outline-secondary border-0"
+                  @click="showPathwayCourse = !showPathwayCourse"
+                >
+                  <Icon name="ph:x" />
+                </button>
+              </div>
+              <div>
+                <span class="h4">
+                  <strong>Pathway Course</strong>
+                </span>
+              </div>
+              <div></div>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex flex-column">
+              <div class="form-group w-100 my-2">
+                <label for="venue" class="form-labelform-label-light">
+                  Select venue
+                </label>
+                <select id="venue" class="form-control form-control-lg">
+                  <option>Select Option</option>
+                </select>
+              </div>
+              <div class="form-group w-100 my-2">
+                <label for="class" class="form-labelform-label-light">
+                  Select course
+                </label>
+                <select id="class" class="form-control form-control-lg">
+                  <option>Select Option</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row w-100">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100"
+                  @click="showPathwayCourse = !showPathwayCourse"
+                >
+                  Cancel
+                </button>
+              </div>
+              <div class="col-6">
+                <button type="button" class="btn btn-primary text-light w-100">
+                  Send Confirmation
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
 </template>

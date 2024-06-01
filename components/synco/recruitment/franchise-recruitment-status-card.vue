@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { IKeyValuePair } from '~/types'
 const props = defineProps<{
   noBorder?: boolean | null
 }>()
@@ -8,9 +9,37 @@ let currentStep = ref<number>(0)
 let qualifyLead = ref<boolean>(false)
 let scheduleMeet = ref<boolean>(false)
 let showInterviewQuestions = ref<boolean>(false)
-let callScore = ref<number>(0)
+// let callScore = ref<number>(0)
 let showDiscovery = ref<boolean>(false)
+let showDiscoveryCard = ref<boolean>(false)
 let showOffer = ref<boolean>(false)
+let showSendOffer = ref<boolean>(false)
+let callScorecard = ref<IKeyValuePair[]>([
+  {
+    Key: 'Communication skill',
+    Value: '',
+  },
+  {
+    Key: 'Passion for coaching',
+    Value: '',
+  },
+  {
+    Key: 'Experience',
+    Value: '',
+  },
+  {
+    Key: 'Knowledge of SSS',
+    Value: '',
+  },
+])
+
+let callScore = computed<number>(() => {
+  let scores = callScorecard.value.map((x) => (+x.Value * 100) / 5)
+  let totalScore = 0
+  scores.forEach((x) => (totalScore += x))
+  totalScore = totalScore / scores.length
+  return totalScore
+})
 </script>
 <template>
   <div class="card rounded-4 p-4" :class="noBorder ? 'border-0' : ''">
@@ -164,6 +193,7 @@ let showOffer = ref<boolean>(false)
           <button
             type="button"
             class="btn btn-secondary border-1 text-secondary mx-2 bg-white p-3"
+            @click="showDiscoveryCard = !showDiscoveryCard"
           >
             <Icon name="ph:check" />
           </button>
@@ -187,12 +217,12 @@ let showOffer = ref<boolean>(false)
         <span class="text-muted">23 April, 2023</span>
       </div>
       <template v-if="showDiscovery">
-        <div class="d-flex justify-content-between flex-row">
-          <span class="text-muted">23 April, 2023</span>
+        <div class="d-flex align-items-center flex-row">
+          <span class="text-muted me-3">23 April, 2023</span>
           <button
             type="button"
             class="btn btn-primary text-light mx-1"
-            @click="showDiscovery = !showDiscovery"
+            @click="showOffer = !showOffer"
           >
             Continue
           </button>
@@ -241,11 +271,184 @@ let showOffer = ref<boolean>(false)
           >
             <Icon name="ph:x" />
           </button>
-          <button type="button" class="btn btn-success text-light mx-1">
+          <button
+            type="button"
+            class="btn btn-success text-light mx-1"
+            @click="showSendOffer = !showSendOffer"
+          >
             <Icon name="ph:check" /> Send offer
           </button>
         </div>
       </template>
     </div>
   </div>
+
+  <template v-if="showInterviewQuestions">
+    <div class="modal-backdrop fade show"></div>
+    <div
+      class="modal fade show centered d-block"
+      aria-modal="true"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-tv-light-dark border-gray">
+          <div class="modal-header border-bottom-gray">
+            <div class="d-flex justify-content-between w-100 flex-row">
+              <div></div>
+              <div>
+                <span class="h4">
+                  <strong> Interview Questions & Call Scorecard</strong>
+                </span>
+              </div>
+              <div>
+                <button
+                  class="btn btn-outline-secondary border-0"
+                  @click="showInterviewQuestions = !showInterviewQuestions"
+                >
+                  <Icon name="ph:x" />
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-body py-0">
+            <SyncoRecruitmentInterviewQuestionsCallScoreCard
+              :call-scorecard="callScorecard"
+            >
+            </SyncoRecruitmentInterviewQuestionsCallScoreCard>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template v-if="showDiscoveryCard">
+    <div class="modal-backdrop fade show"></div>
+    <div
+      class="modal fade show centered d-block"
+      aria-modal="true"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-tv-light-dark border-gray">
+          <div class="modal-header border-bottom-gray">
+            <div class="d-flex justify-content-between w-100 flex-row">
+              <div>
+                <button
+                  class="btn btn-outline-secondary border-0"
+                  @click="showDiscoveryCard = !showDiscoveryCard"
+                >
+                  <Icon name="ph:x" />
+                </button>
+              </div>
+              <div>
+                <span class="h4">
+                  <strong>Discovery day</strong>
+                </span>
+              </div>
+              <div></div>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex flex-column">
+              <div class="form-group w-100 my-2">
+                <label for="date" class="form-labelform-label-light">
+                  Date
+                </label>
+                <input
+                  id="date"
+                  name="date"
+                  type="date"
+                  class="form-control form-control-lg"
+                />
+              </div>
+              <div class="form-group w-100 my-2">
+                <label for="time" class="form-labelform-label-light">
+                  Time
+                </label>
+                <input
+                  id="time"
+                  name="time"
+                  type="time"
+                  class="form-control form-control-lg"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row w-100">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100"
+                  @click="showDiscoveryCard = !showDiscoveryCard"
+                >
+                  Cancel
+                </button>
+              </div>
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-primary text-light w-100"
+                  @click="showDiscovery = !showDiscovery"
+                >
+                  Book
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template v-if="showSendOffer">
+    <div class="modal-backdrop fade show"></div>
+    <div
+      class="modal fade show centered d-block"
+      aria-modal="true"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-tv-light-dark border-gray">
+          <div class="modal-header border-bottom-gray">
+            <div class="d-flex justify-content-between w-100 flex-row">
+              <div>
+                <button
+                  class="btn btn-outline-secondary border-0"
+                  @click="showSendOffer = !showSendOffer"
+                >
+                  <Icon name="ph:x" />
+                </button>
+              </div>
+              <div>
+                <span class="h4">
+                  <strong>Send Franchise Provisional Offer</strong>
+                </span>
+              </div>
+              <div></div>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div
+              class="d-flex flex-column justify-content-center align-items-center"
+            >
+              <span>Send a provision offer to prospect lead.</span>
+            </div>
+          </div>
+          <div class="modal-footer border-0">
+            <div class="row w-100">
+              <div class="col-12">
+                <button type="button" class="btn btn-primary text-light w-100">
+                  Send Email Offer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
 </template>

@@ -411,3 +411,11 @@ export type IFranchiseTopicQuestions = {
   Title: string
   Questions: IFranchiseQuestion[]
 }
+
+export type ICoachPracticalAssessment = {
+  Venue: string
+  Class: string
+  Date: string
+  RegionalManager: string
+  Scores?: IKeyValuePair[] | null | undefined
+}

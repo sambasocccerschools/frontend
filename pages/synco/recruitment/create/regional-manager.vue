@@ -120,7 +120,7 @@ const selectInformation = (selected: string) => {
       </div>
       <div class="col-4">
         <div class="my-3">
-          <SyncoRecruitmentPhoneRecruitmentStatusCard>
+          <SyncoRecruitmentPhoneRecruitmentStatusCard :is-region-manager="true">
             <template v-slot:internal_title>
               <span class="h3 mb-4"><strong>Recruitment status</strong></span>
             </template>
