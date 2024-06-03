@@ -11,7 +11,7 @@
               <h1>Welcome Back</h1>
               <p>Bookings made simple</p>
             </div>
-            <form action="/parents/dashboard" class="pb-5 pt-2">
+            <form action="/parents/account-profile" class="pb-5 pt-2">
               <div class="mb-4">
                 <label for="email" class="form-label">Email</label>
                 <input
