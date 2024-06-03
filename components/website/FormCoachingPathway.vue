@@ -54,73 +54,21 @@
             aria-labelledby="home-tab"
             tabindex="0"
           >
+            <SyncoRecruitmentFormsCandidateInformationCard :no-border="true">
+            </SyncoRecruitmentFormsCandidateInformationCard>
             <div class="mb-4">
-              <label for="firstname" class="form-label">First Name</label>
-              <input
-                id="firstname"
-                type="text"
-                class="form-control bg-light border-0"
-                aria-describedby="firstnameHelp"
-                placeholder="First Name"
-              />
-              <!-- <div id="firstnameHelp" class="form-text">We'll never share your email with anyone else.</div> -->
-            </div>
-            <div class="mb-4">
-              <label for="surname" class="form-label">Surname</label>
-              <input
-                id="surname"
-                type="text"
-                class="form-control bg-light border-0"
-                aria-describedby="surnameHelp"
-                placeholder="Surname"
-              />
-              <!-- <div id="surnameHelp" class="form-text">We'll never share your email with anyone else.</div> -->
-            </div>
-            <div class="mb-4">
-              <label for="phone" class="form-label">Telephone Number</label>
-              <input
-                id="phone"
-                type="phone"
-                class="form-control bg-light border-0"
-                aria-describedby="phoneHelp"
-                placeholder="Telephone Number"
-              />
-              <!-- <div id="phoneHelp" class="form-text">We'll never share your email with anyone else.</div> -->
-            </div>
-            <div class="mb-4">
-              <label for="email" class="form-label">Email address</label>
-              <input
-                id="email"
-                type="email"
-                class="form-control bg-light border-0"
-                aria-describedby="emailHelp"
-                placeholder="Email"
-              />
-              <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
-            </div>
-            <div class="mb-4">
-              <label for="age" class="form-label">Age</label>
-              <input
-                id="age"
-                type="text"
-                class="form-control bg-light border-0"
-                aria-describedby="ageHelp"
-                placeholder="Age"
-              />
-              <!-- <div id="ageHelp" class="form-text">We'll never share your email with anyone else.</div> -->
-            </div>
-            <div class="mb-4">
-              <label for="london-postcode" class="form-label"
-                >London Postcode</label
+              <button
+                id="profile-tab"
+                class="btn btn-success text-light w-100 rounded-4"
+                type="button"
+                data-bs-toggle="tab"
+                data-bs-target="#section2-tab-pane"
+                role="tab"
+                aria-controls="section2-tab-pane"
+                aria-selected="false"
               >
-              <input
-                id="london-postcode"
-                type="text"
-                class="form-control bg-light border-0"
-                aria-describedby="londonPostCodeHelp"
-                placeholder="London Postcode"
-              />
-              <!-- <div id="londonPostCodeHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                Next
+              </button>
             </div>
           </div>
           <div
@@ -130,7 +78,22 @@
             aria-labelledby="profile-tab"
             tabindex="0"
           >
-            Section 2
+            <SyncoRecruitmentFormsJobSpecificationsCard :no-border="true">
+            </SyncoRecruitmentFormsJobSpecificationsCard>
+            <div class="mb-4">
+              <button
+                class="btn btn-success text-light w-100 rounded-4"
+                id="contact-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#section3-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="section3-tab-pane"
+                aria-selected="false"
+              >
+                Next
+              </button>
+            </div>
           </div>
           <div
             id="section3-tab-pane"
@@ -139,7 +102,14 @@
             aria-labelledby="contact-tab"
             tabindex="0"
           >
-            Section 3
+            <SyncoRecruitmentFormsFurtherDetailsCard :no-border="true">
+            </SyncoRecruitmentFormsFurtherDetailsCard>
+            <button
+              type="submit"
+              class="btn btn-success bg-gradient rounded-5 w-100"
+            >
+              <strong class="text-light">Send</strong>
+            </button>
           </div>
         </div>
       </form>
