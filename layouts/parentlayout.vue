@@ -24,7 +24,11 @@ const userFullName = computed(() => {
 
               <div class="d-flex align-items-center">
                 <div class="d-flex gap-3">
-                  <NuxtLink to="/" class="btn btn-primary text-light rounded-4">
+                  <NuxtLink
+                    to="/"
+                    class="btn btn-primary text-light rounded-4 border-0"
+                    style="background-color: #00a6e3"
+                  >
                     Go back to the website
                   </NuxtLink>
                   <button class="btn btn-light rounded-5 border bg-white">

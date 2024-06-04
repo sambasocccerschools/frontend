@@ -48,13 +48,13 @@ onMounted(async () => {
 
 <template>
   <div
-    class="vh-100 border-end border-1 border-secondary-subtle d-flex flex-column justify-content-between overflow-y-scroll bg-white py-4 pe-3 ps-2"
+    class="vh-100 border-end border-1 border-secondary-subtle d-flex flex-column justify-content-between bg-blue-gradient overflow-y-scroll py-4 pe-3 ps-2"
     style="width: auto"
   >
-    <div>
+    <div class="">
       <div class="mb-4 text-center">
         <img
-          src="@/src/assets/sss-logo-parents-blue.png"
+          src="@/src/assets/sss-logo-parents-white.png"
           alt="Samba Soccer Schools Parents Logo"
           class="w-100"
         />
@@ -63,7 +63,7 @@ onMounted(async () => {
       <NuxtLink
         to="/parents/account-profile"
         exact-active-class="btn-success text-light"
-        class="btn-nav rounded-4"
+        class="btn-nav rounded-4 text-light"
       >
         <Icon
           name="akar-icons:grid"
@@ -75,7 +75,7 @@ onMounted(async () => {
       <NuxtLink
         to="/parents/my-bookings"
         exact-active-class="btn-success text-light"
-        class="btn-nav rounded-4"
+        class="btn-nav rounded-4 text-light"
       >
         <Icon
           name="ph:book-open-user"
@@ -87,7 +87,7 @@ onMounted(async () => {
       <NuxtLink
         to="/parents/refer-a-friend"
         exact-active-class="btn-success text-light"
-        class="btn-nav rounded-4"
+        class="btn-nav rounded-4 text-light"
       >
         <Icon
           name="ph:user-gear"
@@ -99,7 +99,7 @@ onMounted(async () => {
       <NuxtLink
         to="/parents/rewards"
         exact-active-class="btn-success text-light"
-        class="btn-nav rounded-4"
+        class="btn-nav rounded-4 text-light"
       >
         <Icon
           name="ph:medal"
@@ -111,7 +111,7 @@ onMounted(async () => {
       <NuxtLink
         to="/parents/surveys"
         exact-active-class="btn-success text-light"
-        class="btn-nav rounded-4"
+        class="btn-nav rounded-4 text-light"
       >
         <Icon
           name="ph:book-open-user"
@@ -122,7 +122,7 @@ onMounted(async () => {
 
       <!-- Settings  -->
       <button
-        class="btn-nav rounded-4 w-100"
+        class="btn btn-nav rounded-4 w-100 text-light"
         type="button"
         data-bs-toggle="collapse"
         data-bs-target="#collapseSettings"
@@ -140,8 +140,11 @@ onMounted(async () => {
         <li>
           <NuxtLink
             to="/parents/settings"
-            class="btn-nav-link"
-            exact-active-class="text-success"
+            :class="
+              show('settings', 2)
+                ? 'btn btn-success'
+                : 'btn-nav-link text-light'
+            "
           >
             Settings
           </NuxtLink>
@@ -150,6 +153,28 @@ onMounted(async () => {
     </div>
     <div class="mt-5 py-5"></div>
 
-    <button class="btn btn-outline-dark" @click="logout">Logout</button>
+    <button class="btn btn-outline-light" @click="logout">
+      <Icon name="ph:sign-out" />
+      Logout
+    </button>
   </div>
 </template>
+
+<style scoped>
+.bg-blue-gradient {
+  background: linear-gradient(45deg, #042c89, #005498) !important;
+}
+ul li::marker {
+  color: white;
+}
+ul li a {
+  text-decoration: none;
+}
+.btn-success {
+  background-color: #0dd180;
+  color: white;
+}
+.text-success {
+  color: #0dd180 !important;
+}
+</style>
