@@ -68,7 +68,10 @@ const selectInformation = (selected: string) => {
 </script>
 
 <template>
-  <NuxtLayout name="syncolayout" page-title="Account Information">
+  <NuxtLayout
+    name="syncolayout"
+    page-title="Regional Manager Account Information"
+  >
     <div class="d-flex flex-row py-4">
       <NuxtLink class="h3 my-auto" to="/synco/recruitment/coaches-leads">
         <Icon name="material-symbols:arrow-back" class="me-2" />
@@ -117,7 +120,7 @@ const selectInformation = (selected: string) => {
       </div>
       <div class="col-4">
         <div class="my-3">
-          <SyncoRecruitmentPhoneRecruitmentStatusCard>
+          <SyncoRecruitmentPhoneRecruitmentStatusCard :is-region-manager="true">
             <template v-slot:internal_title>
               <span class="h3 mb-4"><strong>Recruitment status</strong></span>
             </template>

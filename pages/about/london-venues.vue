@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { WebsiteReviews } from '.nuxt/components'
-
 const layout = 'weblayout'
 </script>
 

@@ -1,15 +1,67 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { IKeyValuePair, ICoachPracticalAssessment } from '~/types'
 const props = defineProps<{
   noBorder?: boolean | null
+  isRegionManager?: boolean | null
 }>()
 let noBorder = ref<boolean>(props.noBorder ?? false).value
+let isRegionManager = ref<boolean>(props.isRegionManager ?? false).value
 let currentStep = ref<number>(0)
 let scheduleCall = ref<boolean>(false)
 let showInterviewQuestions = ref<boolean>(false)
-let callScore = ref<number>(0)
-let hasPractucalAssessment = ref<boolean>(false)
+// let callScore = ref<number>(0)
+let hasPracticalAssessment = ref<boolean>(false)
+let showBookPracticalAssessment = ref<boolean>(false)
 let showResults = ref<boolean>(false)
+let showResultsCard = ref<boolean>(false)
+let showSendOffer = ref<boolean>(false)
+let callScorecard = ref<IKeyValuePair[]>([
+  {
+    Key: 'Communication skill',
+    Value: '',
+  },
+  {
+    Key: 'Passion for coaching',
+    Value: '',
+  },
+  {
+    Key: 'Experience',
+    Value: '',
+  },
+  {
+    Key: 'Knowledge of SSS',
+    Value: '',
+  },
+])
+let coachPracticalAssessment = ref<ICoachPracticalAssessment>({
+  Venue: '',
+  Class: '',
+  Date: '',
+  RegionalManager: '',
+  Scores: [
+    {
+      Key: 'Punctuality of the coach',
+      Value: '',
+    },
+    {
+      Key: 'Status of the campus',
+      Value: '',
+    },
+    {
+      Key: 'Punctuality',
+      Value: '',
+    },
+  ],
+})
+
+let callScore = computed<number>(() => {
+  let scores = callScorecard.value.map((x) => (+x.Value * 100) / 5)
+  let totalScore = 0
+  scores.forEach((x) => (totalScore += x))
+  totalScore = totalScore / scores.length
+  return totalScore
+})
 </script>
 <template>
   <div class="card rounded-4 p-4" :class="noBorder ? 'border-0' : ''">
@@ -116,6 +168,7 @@ let showResults = ref<boolean>(false)
           <button
             type="button"
             class="btn btn-secondary border-1 text-secondary mx-2 bg-white p-3"
+            @click="showBookPracticalAssessment = !showBookPracticalAssessment"
           >
             <Icon name="ph:check" />
           </button>
@@ -135,20 +188,23 @@ let showResults = ref<boolean>(false)
           />
         </span>
       </div>
-      <div class="py-2" v-if="!hasPractucalAssessment">
+      <div class="py-2" v-if="!hasPracticalAssessment">
         <button
           type="button"
           class="btn btn-primary text-light"
-          @click="hasPractucalAssessment = !hasPractucalAssessment"
+          @click="hasPracticalAssessment = !hasPracticalAssessment"
         >
           Scorecard
         </button>
       </div>
-      <template v-if="hasPractucalAssessment">
+      <template v-if="hasPracticalAssessment">
         <div class="d-flex justify-content-between flex-row">
-          <span class="badgge bg-primary text-light rounded-3 px-3 py-2">
+          <button
+            class="btn btn-primary text-light"
+            @click="showResults = !showResults"
+          >
             Saturday 9th July / Acton 2-3pm
-          </span>
+          </button>
           <span class="badgge text-secondary rounded-3 bg-white px-3 py-2">
             Michael Smith
           </span>
@@ -197,7 +253,7 @@ let showResults = ref<boolean>(false)
           <button
             type="button"
             class="btn btn-primary text-light mx-1"
-            @click="showResults = !showResults"
+            @click="showResultsCard = !showResultsCard"
           >
             See Results
           </button>
@@ -207,11 +263,433 @@ let showResults = ref<boolean>(false)
           >
             <Icon name="ph:x" />
           </button>
-          <button type="button" class="btn btn-success text-light mx-1">
+          <button
+            type="button"
+            class="btn btn-success text-light mx-1"
+            @click="showSendOffer = !showSendOffer"
+          >
             <Icon name="ph:check" /> Send offer
           </button>
         </div>
       </template>
     </div>
   </div>
+
+  <template v-if="showInterviewQuestions">
+    <div class="modal-backdrop fade show"></div>
+    <div
+      class="modal fade show centered d-block"
+      aria-modal="true"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-tv-light-dark border-gray">
+          <div class="modal-header border-bottom-gray">
+            <div class="d-flex justify-content-between w-100 flex-row">
+              <div></div>
+              <div>
+                <span class="h4">
+                  <strong> Interview Questions & Call Scorecard</strong>
+                </span>
+              </div>
+              <div>
+                <button
+                  class="btn btn-outline-secondary border-0"
+                  @click="showInterviewQuestions = !showInterviewQuestions"
+                >
+                  <Icon name="ph:x" />
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-body py-0">
+            <SyncoRecruitmentInterviewQuestionsCallScoreCard
+              :call-scorecard="callScorecard"
+            >
+            </SyncoRecruitmentInterviewQuestionsCallScoreCard>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template v-if="showBookPracticalAssessment">
+    <div class="modal-backdrop fade show"></div>
+    <div
+      class="modal fade show centered d-block"
+      aria-modal="true"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-tv-light-dark border-gray">
+          <div class="modal-header border-bottom-gray">
+            <div class="d-flex justify-content-between w-100 flex-row">
+              <div>
+                <button
+                  class="btn btn-outline-secondary border-0"
+                  @click="
+                    showBookPracticalAssessment = !showBookPracticalAssessment
+                  "
+                >
+                  <Icon name="ph:x" />
+                </button>
+              </div>
+              <div>
+                <span class="h4">
+                  <strong>Book Practical Assessment</strong>
+                </span>
+              </div>
+              <div></div>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex flex-column">
+              <div class="form-group w-100 my-2">
+                <label for="venue" class="form-labelform-label-light">
+                  Venue
+                </label>
+                <select
+                  id="venue"
+                  class="form-control form-control-lg"
+                  v-model="coachPracticalAssessment.Venue"
+                >
+                  <option>Select Option</option>
+                </select>
+              </div>
+              <div class="form-group w-100 my-2">
+                <label for="class" class="form-labelform-label-light">
+                  Class
+                </label>
+                <select
+                  id="class"
+                  class="form-control form-control-lg"
+                  v-model="coachPracticalAssessment.Class"
+                >
+                  <option>Select Option</option>
+                </select>
+              </div>
+              <div class="form-group w-100 my-2">
+                <label for="Date" class="form-labelform-label-light">
+                  Date
+                </label>
+                <select
+                  id="date"
+                  class="form-control form-control-lg"
+                  v-model="coachPracticalAssessment.Date"
+                >
+                  <option>Select Option</option>
+                </select>
+              </div>
+              <div class="form-group w-100 my-2">
+                <label for="regionalManager" class="form-labelform-label-light">
+                  Assign to Regional Manager
+                </label>
+                <select
+                  id="regionalManager"
+                  class="form-control form-control-lg"
+                  v-model="coachPracticalAssessment.RegionalManager"
+                >
+                  <option>Select Option</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row w-100">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100"
+                  @click="
+                    showBookPracticalAssessment = !showBookPracticalAssessment
+                  "
+                >
+                  Cancel
+                </button>
+              </div>
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-primary text-light w-100"
+                  @click="hasPracticalAssessment = !hasPracticalAssessment"
+                >
+                  Send Confirmation
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template v-if="showResultsCard">
+    <div class="modal-backdrop fade show"></div>
+    <div
+      class="modal fade show centered d-block"
+      aria-modal="true"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-tv-light-dark border-gray">
+          <div class="modal-header border-bottom-gray">
+            <div class="d-flex justify-content-between w-100 flex-row">
+              <div>
+                <button
+                  class="btn btn-outline-secondary border-0"
+                  @click="showResultsCard = !showResultsCard"
+                >
+                  <Icon name="ph:x" />
+                </button>
+              </div>
+              <div>
+                <span class="h4">
+                  <strong>Book Practical Assessment</strong>
+                </span>
+              </div>
+              <div></div>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex flex-column">
+              <div class="form-group w-100 my-2">
+                <label for="venue" class="form-labelform-label-light">
+                  Venue
+                </label>
+                <select
+                  id="venue"
+                  class="form-control form-control-lg"
+                  v-model="coachPracticalAssessment.Venue"
+                >
+                  <option>Select Option</option>
+                </select>
+              </div>
+              <div class="form-group w-100 my-2">
+                <label for="class" class="form-labelform-label-light">
+                  Class
+                </label>
+                <select
+                  id="class"
+                  class="form-control form-control-lg"
+                  v-model="coachPracticalAssessment.Class"
+                >
+                  <option>Select Option</option>
+                </select>
+              </div>
+              <div class="form-group w-100 my-2">
+                <label for="date" class="form-labelform-label-light">
+                  Date
+                </label>
+                <select
+                  id="date"
+                  class="form-control form-control-lg"
+                  v-model="coachPracticalAssessment.Date"
+                >
+                  <option>Select Option</option>
+                </select>
+              </div>
+              <div class="form-group w-100 my-2">
+                <label for="regionalManager" class="form-labelform-label-light">
+                  Assign to Regional Manager
+                </label>
+                <select
+                  id="regionalManager"
+                  class="form-control form-control-lg"
+                  v-model="coachPracticalAssessment.RegionalManager"
+                >
+                  <option>Select Option</option>
+                </select>
+              </div>
+
+              <template v-for="scorecard in coachPracticalAssessment.Scores">
+                <label :for="scorecard.Key" class="mt-2"
+                  ><strong>{{ scorecard.Key }}</strong></label
+                >
+                <div class="d-flex justify-content-between mb-2 flex-row">
+                  <template v-for="key in 5">
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        :name="scorecard.Key"
+                        :id="`${scorecard.Key}-${key}`"
+                        :value="key"
+                        v-model="scorecard.Value"
+                      />
+                      <label
+                        class="form-check-label"
+                        :for="`${scorecard.Key}-${key}`"
+                      >
+                        {{ key }}
+                      </label>
+                    </div>
+                  </template>
+                </div>
+              </template>
+            </div>
+          </div>
+          <div class="modal-footer border-0">
+            <div class="row w-100">
+              <div class="col-6">
+                <button type="button" class="btn btn-primary text-light w-100">
+                  Play Audio Summary
+                </button>
+              </div>
+              <div class="col-6">
+                <button type="button" class="btn btn-primary text-light w-100">
+                  Watch Video
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  <template v-if="showSendOffer && !isRegionManager">
+    <div class="modal-backdrop fade show"></div>
+    <div
+      class="modal fade show centered d-block"
+      aria-modal="true"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-tv-light-dark border-gray">
+          <div class="modal-header border-bottom-gray">
+            <div class="d-flex justify-content-between w-100 flex-row">
+              <div>
+                <button
+                  class="btn btn-outline-secondary border-0"
+                  @click="showSendOffer = !showSendOffer"
+                >
+                  <Icon name="ph:x" />
+                </button>
+              </div>
+              <div>
+                <span class="h4">
+                  <strong>Send Offer of Employement</strong>
+                </span>
+              </div>
+              <div></div>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex flex-column">
+              <div class="form-group w-100 my-2">
+                <label for="offerVenue" class="form-labelform-label-light">
+                  Venue
+                </label>
+                <select id="offerVenue" class="form-control form-control-lg">
+                  <option>Select Option</option>
+                </select>
+              </div>
+              <div class="form-group w-100 my-2">
+                <label for="payRate" class="form-labelform-label-light">
+                  Pay rate per hour
+                </label>
+                <select id="payRate" class="form-control form-control-lg">
+                  <option>Select Option</option>
+                </select>
+              </div>
+              <div class="my-2">
+                <button type="button" class="btn btn-success text-light">
+                  + Add venue
+                </button>
+              </div>
+              <div class="form-group w-100 my-2">
+                <label for="startDate" class="form-labelform-label-light">
+                  Start Date
+                </label>
+                <select id="startDate" class="form-control form-control-lg">
+                  <option>Select Option</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer border-0">
+            <div class="row w-100">
+              <div class="col-12">
+                <button type="button" class="btn btn-primary text-light w-100">
+                  Send Email Offer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  <template v-if="showSendOffer && isRegionManager">
+    <div class="modal-backdrop fade show"></div>
+    <div
+      class="modal fade show centered d-block"
+      aria-modal="true"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-tv-light-dark border-gray">
+          <div class="modal-header border-bottom-gray">
+            <div class="d-flex justify-content-between w-100 flex-row">
+              <div>
+                <button
+                  class="btn btn-outline-secondary border-0"
+                  @click="showSendOffer = !showSendOffer"
+                >
+                  <Icon name="ph:x" />
+                </button>
+              </div>
+              <div>
+                <span class="h4">
+                  <strong>Send Offer of Employement</strong>
+                </span>
+              </div>
+              <div></div>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex flex-column">
+              <div class="form-group w-100 my-2">
+                <label for="offerRegion" class="form-labelform-label-light">
+                  Region
+                </label>
+                <select id="offerRegion" class="form-control form-control-lg">
+                  <option>Select Option</option>
+                </select>
+              </div>
+              <div class="form-group w-100 my-2">
+                <label for="dailyPayRate" class="form-labelform-label-light">
+                  Daily Pay rate
+                </label>
+                <select id="dailyPayRate" class="form-control form-control-lg">
+                  <option>Select Option</option>
+                </select>
+              </div>
+              <div class="form-group w-100 my-2">
+                <label for="startDate" class="form-labelform-label-light">
+                  Start Date
+                </label>
+                <select id="startDate" class="form-control form-control-lg">
+                  <option>Select Option</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer border-0">
+            <div class="row w-100">
+              <div class="col-12">
+                <button type="button" class="btn btn-primary text-light w-100">
+                  Send Email Offer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
 </template>

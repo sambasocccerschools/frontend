@@ -77,11 +77,11 @@
                   >Weekly Classes</NuxtLink
                 >
               </li>
-              <li>
+              <!-- <li>
                 <NuxtLink to="/services/holiday-camps" class="dropdown-item"
                   >Holiday Camps</NuxtLink
                 >
-              </li>
+              </li> -->
               <li>
                 <NuxtLink
                   to="/services/one-to-one-training"
@@ -89,11 +89,11 @@
                   >One-to-one training</NuxtLink
                 >
               </li>
-              <li>
+              <!-- <li>
                 <NuxtLink to="/services/birthday-parties" class="dropdown-item"
                   >Birthday Parties</NuxtLink
                 >
-              </li>
+              </li> -->
               <li>
                 <NuxtLink to="/services/club" class="dropdown-item"
                   >Club</NuxtLink
@@ -158,7 +158,7 @@
                   >Franchise</NuxtLink
                 >
               </li>
-              <li>
+              <!-- <li>
                 <NuxtLink to="/services/weekly-classes" class="dropdown-item"
                   >Investment</NuxtLink
                 >
@@ -177,7 +177,7 @@
                 <NuxtLink to="/services/birthday-parties" class="dropdown-item"
                   >Case Study</NuxtLink
                 >
-              </li>
+              </li> -->
             </ul>
           </div>
 

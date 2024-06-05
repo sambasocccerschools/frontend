@@ -401,3 +401,21 @@ export type ICandidateEventItem = {
   EventType: string
   ExtraInformation?: IKeyValuePair[] | null | undefined
 }
+
+export type IFranchiseQuestion = {
+  Number: number
+  Question: string
+  Answer?: boolean | null
+}
+export type IFranchiseTopicQuestions = {
+  Title: string
+  Questions: IFranchiseQuestion[]
+}
+
+export type ICoachPracticalAssessment = {
+  Venue: string
+  Class: string
+  Date: string
+  RegionalManager: string
+  Scores?: IKeyValuePair[] | null | undefined
+}

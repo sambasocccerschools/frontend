@@ -207,7 +207,7 @@ const layout = 'weblayout'
             </p>
           </div>
           <div class="col offset-sm-1">
-            <WebsiteFormFAQOneToOne />
+            <WebsiteFormFAQClub />
           </div>
         </div>
       </div>

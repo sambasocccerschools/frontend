@@ -156,7 +156,7 @@ const layout = 'weblayout'
               </div>
             </div>
             <NuxtLink
-              to="services/book-a-free-trial"
+              to="/book/free-trial"
               class="btn btn-info btn-lg rounded-5 text-light px-4"
               ><span class="text-semibold"
                 >Book a FREE Trial Now</span
