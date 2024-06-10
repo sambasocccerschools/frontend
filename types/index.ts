@@ -419,3 +419,43 @@ export type ICoachPracticalAssessment = {
   RegionalManager: string
   Scores?: IKeyValuePair[] | null | undefined
 }
+
+export type IFeedback = {
+  SubmittedDate: string
+  FeedbackType: string
+  Venue: string
+  Category: string
+  Notes: string
+  User: string
+  Status: string
+}
+
+export type ISkillTrackerCard = {
+  Title: string
+  Duration: string
+  Skills: ISkillItem[]
+  Difficulty: string
+  Status: string
+  Progress: number
+}
+
+export type IParentBookingListItem = {
+  Date: string
+  Venue: string
+  Time: string
+  Address: string
+  Class: string
+  Coach: string
+  Status: string
+}
+
+export type ISkillItem = {
+  Title: string
+  Brief: string
+  Progress: number
+  Duration: string
+  Type: string
+  Difficulty: string
+  Abilities: string[]
+  Status: string
+}
