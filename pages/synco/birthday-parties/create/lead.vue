@@ -26,30 +26,61 @@
             </button>
           </div>
         </template>
-        <template v-slot:footer>
-          <div class="row mt-4 px-3">
-            <div class="col-12 d-flex justify-content-end my-4 flex-row">
-              <div class="">
-                <button
-                  class="btn btn-outline-secondary btn-lg"
-                  @click="cancel"
-                >
-                  Cancel
-                </button>
-              </div>
-              <div class="px-4">
-                <button
-                  class="btn btn-danger text-light btn-lg"
-                  @click="removeLead"
-                >
-                  Remove Lead
-                </button>
-              </div>
-            </div>
-          </div>
-        </template>
       </SyncoWeeklyClassesFormsParentForm>
 
+      <div class="card rounded-4 mt-4 border-0 p-3">
+        <label for="package" class="form-label">Selected package</label>
+        <div class="d-flex gap-3">
+          <div class="form-check">
+            <input
+              id="package-gold"
+              class="form-check-input"
+              type="radio"
+              name="package"
+            />
+            <label class="form-check-label" for="package-gold"> Gold </label>
+          </div>
+          <div class="form-check">
+            <input
+              id="package-silver"
+              class="form-check-input"
+              type="radio"
+              name="package"
+            />
+            <label class="form-check-label" for="package-silver">
+              Silver
+            </label>
+          </div>
+        </div>
+        <div class="form-group mt-4">
+          <label for="message" class="form-label">Message</label>
+          <textarea
+            id="message"
+            type="text"
+            class="form-control"
+            rows="5"
+            placeholder="Message"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="row mt-4 px-3">
+        <div class="col-12 d-flex justify-content-end my-4 flex-row">
+          <div class="">
+            <button class="btn btn-outline-secondary btn-lg" @click="cancel">
+              Cancel
+            </button>
+          </div>
+          <div class="px-4">
+            <button
+              class="btn btn-danger text-light btn-lg"
+              @click="removeLead"
+            >
+              Remove Lead
+            </button>
+          </div>
+        </div>
+      </div>
       <SyncoWeeklyClassesFormsCommentFormList />
     </div>
   </NuxtLayout>
