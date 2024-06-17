@@ -459,3 +459,9 @@ export type ISkillItem = {
   Abilities: string[]
   Status: string
 }
+
+export type ISurveyQuestionList = {
+  Title: string
+  Type: string
+  Choices: IKeyValuePair[]
+}

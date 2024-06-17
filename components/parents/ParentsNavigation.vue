@@ -121,7 +121,7 @@ onMounted(async () => {
       </NuxtLink>
 
       <!-- Settings  -->
-      <button
+      <!-- <button
         class="btn btn-nav rounded-4 w-100 text-light"
         type="button"
         data-bs-toggle="collapse"
@@ -149,7 +149,7 @@ onMounted(async () => {
             Settings
           </NuxtLink>
         </li>
-      </ul>
+      </ul> -->
     </div>
     <div class="mt-5 py-5"></div>
 
