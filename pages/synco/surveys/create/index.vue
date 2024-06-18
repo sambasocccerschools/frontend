@@ -17,6 +17,10 @@ let blocksList = ref<string[]>([
 
 let questionTypes = ref<IKeyValuePair[]>([
   {
+    Key: 'rating',
+    Value: 'Rating',
+  },
+  {
     Key: 'multiple-choice',
     Value: 'Multiple choice',
   },
@@ -33,9 +37,28 @@ let questionTypes = ref<IKeyValuePair[]>([
 let questions = ref<ISurveyQuestionList[]>([])
 
 let previewSelection = ref<string>('template')
+
+const selectedQuestionType = (question: ISurveyQuestionList, selected: any) => {
+  let q_Type = questionTypes.value.find((x) => x.Key == selected)
+  let questionIndex = questions.value.indexOf(question)
+  let currentQuestion = questions.value[questionIndex]
+  if (!q_Type) return
+  currentQuestion.Type = q_Type.Key
+  if (q_Type.Key == 'rating') {
+    currentQuestion.Choices = [
+      { Key: '1', Value: '' },
+      { Key: '2', Value: '' },
+      { Key: '3', Value: '' },
+      { Key: '4', Value: '' },
+      { Key: '5', Value: '' },
+    ]
+  } else {
+    currentQuestion.Choices = [{ Key: '', Value: '' }]
+  }
+}
 </script>
 <template>
-  <NuxtLayout name="syncolayout">
+  <NuxtLayout name="syncolayout" page-title="">
     <div class="row">
       <div class="col-sm-8 mx-auto">
         <div class="card">
@@ -295,8 +318,11 @@ let previewSelection = ref<string>('template')
                             id="questionType"
                             class="form-control form-control-lg"
                             v-model="question.Type"
-                            @select="
-                              question.Choices = [{ Key: '', Value: '' }]
+                            @change="
+                              selectedQuestionType(
+                                question,
+                                $event?.target?.value,
+                              )
                             "
                           >
                             <option value="">Select type</option>
@@ -314,6 +340,7 @@ let previewSelection = ref<string>('template')
                         <template
                           v-if="
                             question.Type == 'multiple-choice' ||
+                            question.Type == 'rating' ||
                             question.Type == 'single-choice'
                           "
                         >
@@ -327,7 +354,8 @@ let previewSelection = ref<string>('template')
                                   :name="
                                     question.Type == 'multiple-choice'
                                       ? 'ph:square'
-                                      : question.Type == 'single-choice'
+                                      : question.Type == 'single-choice' ||
+                                          question.Type == 'rating'
                                         ? 'ph:circle'
                                         : 'ph:question'
                                   "
@@ -337,7 +365,7 @@ let previewSelection = ref<string>('template')
                                   :id="`question-${index}-${indexChoice}`"
                                   type="text"
                                   class="form-control form-control-lg"
-                                  v-model="choice.Value"
+                                  v-model="choice.Key"
                                 />
                               </div>
                               <div>
@@ -488,25 +516,27 @@ let previewSelection = ref<string>('template')
                             class="form-check form-check-inline"
                             v-if="
                               question.Type == 'multiple-choice' ||
+                              question.Type == 'rating' ||
                               question.Type == 'single-choice'
                             "
                           >
                             <input
                               class="form-check-input"
                               :type="
-                                question.Type == 'single-choice'
+                                question.Type == 'single-choice' ||
+                                question.Type == 'rating'
                                   ? 'radio'
                                   : 'checkbox'
                               "
-                              :name="option.Key"
-                              :id="`${option.Value}-${key}`"
-                              :value="key"
+                              :name="`${index}`"
+                              :id="`${option.Key}-${key}`"
+                              v-model="option.Value"
                             />
                             <label
                               class="form-check-label"
-                              :for="`question-preview-${index}-option-${key}`"
+                              :for="`${option.Key}-${key}`"
                             >
-                              {{ option.Value }}
+                              {{ option.Key }}
                             </label>
                           </div>
                           <div
@@ -514,9 +544,10 @@ let previewSelection = ref<string>('template')
                             v-else-if="question.Type == 'open'"
                           >
                             <input
-                              :id="`${option.Value}-${key}`"
+                              :id="`${index}`"
                               type="text"
                               class="form-control form-control-lg"
+                              v-model="option.Value"
                             />
                           </div>
                         </template>
