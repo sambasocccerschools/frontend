@@ -6,26 +6,37 @@ const layout = 'parentlayout'
 let questions = ref<ISurveyQuestionList[]>([
   {
     Title: 'What do you think about Synco?',
+    Type: 'rating',
+    Choices: [
+      { Key: '1', Value: '' },
+      { Key: '2', Value: '' },
+      { Key: '3', Value: '' },
+      { Key: '4', Value: '' },
+      { Key: '5', Value: '' },
+    ],
+  },
+  {
+    Title: 'What do you think about Synco?',
     Type: 'single-choice',
     Choices: [
-      { Key: 'bad', Value: 'Bad' },
-      { Key: 'good', Value: 'Good' },
-      { Key: 'excelent', Value: 'Excelent' },
+      { Key: 'bad', Value: '' },
+      { Key: 'good', Value: '' },
+      { Key: 'excelent', Value: '' },
     ],
   },
   {
     Title: 'What do you think about Synco?',
     Type: 'multiple-choice',
     Choices: [
-      { Key: 'bad', Value: 'Bad' },
-      { Key: 'good', Value: 'Good' },
-      { Key: 'excelent', Value: 'Excelent' },
+      { Key: 'bad', Value: '' },
+      { Key: 'good', Value: '' },
+      { Key: 'excelent', Value: '' },
     ],
   },
   {
     Title: 'What do you think about Synco?',
     Type: 'open',
-    Choices: [{ Key: 'bad', Value: 'Bad' }],
+    Choices: [{ Key: '', Value: '' }],
   },
 ])
 </script>
@@ -73,6 +84,7 @@ let questions = ref<ISurveyQuestionList[]>([
                   <template
                     v-if="
                       question.Type == 'multiple-choice' ||
+                      question.Type == 'rating' ||
                       question.Type == 'single-choice'
                     "
                   >
@@ -83,28 +95,30 @@ let questions = ref<ISurveyQuestionList[]>([
                       <input
                         class="form-check-input"
                         :type="
-                          question.Type == 'single-choice'
+                          question.Type == 'single-choice' ||
+                          question.Type == 'rating'
                             ? 'radio'
                             : 'checkbox'
                         "
-                        :name="question.Title"
-                        :id="`${option.Value}-${key}`"
-                        :value="key"
+                        :name="`${index}`"
+                        :id="`${option.Key}-${key}`"
+                        v-model="option.Value"
                       />
                       <label
                         class="form-check-label"
-                        :for="`question-preview-${index}-option-${key}`"
+                        :for="`${option.Key}-${key}`"
                       >
-                        {{ option.Value }}
+                        {{ option.Key }}
                       </label>
                     </div>
                   </template>
                   <template v-else-if="question.Type == 'open'">
                     <div class="form-group w-100 mb-3">
                       <input
-                        :id="`${question.Choices[0].Value}-${key}`"
+                        :id="`${index}`"
                         type="text"
                         class="form-control form-control-lg"
+                        v-model="question.Choices[0].Value"
                       />
                     </div>
                   </template>

@@ -465,3 +465,10 @@ export type ISurveyQuestionList = {
   Type: string
   Choices: IKeyValuePair[]
 }
+
+export type ITemplateItem = {
+  Mode: string
+  Title: string
+  Category: string
+  Tags: string[]
+}

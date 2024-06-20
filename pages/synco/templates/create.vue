@@ -1,10 +1,16 @@
-<script>
-export default {
-  data: () => ({
-    tab: 1, // 1 leads 2 sales 3 all,
-    // These will get replaces by arrays
-  }),
-}
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { ITemplateItem } from '~/types'
+
+let tab = ref<number>(1)
+let templateData = ref<ITemplateItem>({
+  Title: '',
+  Category: '',
+  Mode: '',
+  Tags: [],
+})
+
+let modeOfCommunication = ref<string[]>(['Email', 'Text'])
 </script>
 
 <template>
@@ -67,10 +73,11 @@ export default {
                   <select
                     class="form-select form-select-lg"
                     aria-label="Mode of communication"
+                    v-model="templateData.Mode"
                   >
-                    <option value="1" selected>Email</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option v-for="mode in modeOfCommunication" :value="mode">
+                      {{ mode }}
+                    </option>
                   </select>
                 </div>
                 <div class="form-group mb-3">
@@ -82,31 +89,39 @@ export default {
                     type="email"
                     class="form-control form-control-lg"
                     aria-describedby="emailHelp"
+                    v-model="templateData.Title"
                   />
                 </div>
                 <div class="form-group mb-3">
                   <label
                     class="form-label form-label-light"
                     for="email-template-category"
-                    >Email Template Category</label
+                    >{{ templateData.Mode }} Template Category</label
                   >
                   <select
                     class="form-select form-select-lg"
                     aria-label="email-template-category"
+                    v-model="templateData.Category"
                   >
                     <option disabled selected></option>
-                    <option value="1">Email</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option value="cancellations">Cancellations</option>
+                    <option value="sales">Sales</option>
+                    <option value="credits">Credits</option>
+                    <option value="price-increase">Price Increase</option>
                   </select>
                 </div>
                 <div class="form-group mb-3">
                   <label class="form-label form-label-light" for="tags"
                     >Tags</label
                   >
-                  <select class="form-select form-select-lg" aria-label="tags">
+                  <select
+                    class="form-select form-select-lg"
+                    aria-label="tags"
+                    multiple
+                    v-model="templateData.Tags"
+                  >
                     <option disabled selected></option>
-                    <option value="1">Email</option>
+                    <option value="1">One</option>
                     <option value="2">Two</option>
                     <option value="3">Three</option>
                   </select>
@@ -123,147 +138,160 @@ export default {
 
           <!-- Template Tab -->
           <div v-if="tab === 2" class="card-body py-0">
-            <div class="row">
-              <div class="col">
-                <div class="p-4">
-                  <div class="form-group mb-3">
-                    <label
-                      for="subject-line"
-                      class="form-label form-label-light"
-                      >Subject line</label
+            <template v-if="templateData.Mode == 'Email'">
+              <div class="row">
+                <div class="col">
+                  <SyncoSurveysTemplateDataCard :no-border="true">
+                  </SyncoSurveysTemplateDataCard>
+                </div>
+                <div class="col-3 border-start">
+                  <div class="d-flex flex-column h-100 p-3">
+                    <span class="h4 mb-4">Blocks</span>
+                    <button
+                      class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
                     >
-                    <input
-                      id="subject-line"
-                      type="email"
-                      class="form-control form-control-lg"
-                      aria-describedby="emailHelp"
-                    />
+                      Text field
+                      <Icon name="ph:text-t" />
+                    </button>
+                    <button
+                      class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
+                    >
+                      Image
+                      <Icon name="ph:text-t" />
+                    </button>
+                    <button
+                      class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
+                    >
+                      Image group
+                      <Icon name="ph:text-t" />
+                    </button>
+                    <button
+                      class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
+                    >
+                      Button
+                      <Icon name="ph:text-t" />
+                    </button>
+                    <button
+                      class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
+                    >
+                      Footer
+                      <Icon name="ph:text-t" />
+                    </button>
+                    <button
+                      class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
+                    >
+                      Logo
+                      <Icon name="ph:text-t" />
+                    </button>
+                    <button
+                      class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
+                    >
+                      Banner
+                      <Icon name="ph:text-t" />
+                    </button>
+
+                    <button
+                      class="btn btn-primary text-light w-100 btn-lg my-4 mt-auto"
+                      @click="tab = 3"
+                    >
+                      Next
+                    </button>
                   </div>
-                  <img
-                    src="@/src/assets/img-template-long.png"
-                    alt=""
-                    class="w-100"
-                  />
-
-                  <h4 class="my-4">Title</h4>
-                  <p class="lead">
-                    Lorem ipsum dolor sit amet consectetur. Aliquam nec iaculis
-                    massa etiam quam fames sit velit. Erat a convallis malesuada
-                    ante. Ultrices bibendum ut in venenatis. Id cras tellus eget
-                    facilisi cras diam in diam. In sodales turpis venenatis dis
-                    ornare. Aliquet placerat diam viverra morbi massa.
-                  </p>
-                  <img
-                    src="@/src/assets/img-template-long.png"
-                    alt=""
-                    class="w-100"
-                  />
-                  <p class="lead">
-                    Lorem ipsum dolor sit amet consectetur. Aliquam nec iaculis
-                    massa etiam quam fames sit velit. Erat a convallis malesuada
-                    ante. Ultrices bibendum ut in venenatis. Id cras tellus eget
-                    facilisi cras diam in diam. In sodales turpis venenatis dis
-                    ornare. Aliquet placerat diam viverra morbi massa.
-                  </p>
                 </div>
               </div>
-              <div class="col-3 border-start">
-                <div class="d-flex flex-column h-100 p-3">
-                  <span class="h4 mb-4">Blocks</span>
-                  <button
-                    class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
-                  >
-                    Text field
-                    <Icon name="ph:text-t" />
-                  </button>
-                  <button
-                    class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
-                  >
-                    Image
-                    <Icon name="ph:text-t" />
-                  </button>
-                  <button
-                    class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
-                  >
-                    Image group
-                    <Icon name="ph:text-t" />
-                  </button>
-                  <button
-                    class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
-                  >
-                    Button
-                    <Icon name="ph:text-t" />
-                  </button>
-                  <button
-                    class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
-                  >
-                    Footer
-                    <Icon name="ph:text-t" />
-                  </button>
-                  <button
-                    class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
-                  >
-                    Logo
-                    <Icon name="ph:text-t" />
-                  </button>
-                  <button
-                    class="btn btn-lg btn-light d-flex align-items-center justify-content-between mb-4"
-                  >
-                    Banner
-                    <Icon name="ph:text-t" />
-                  </button>
+            </template>
+            <template v-else-if="templateData.Mode == 'Text'">
+              <div class="row">
+                <div class="col-8 mx-auto">
+                  <div class="p-4">
+                    <div class="form-group mb-3">
+                      <label for="sender" class="form-label form-label-light"
+                        >Sender</label
+                      >
+                      <input
+                        id="sender"
+                        type="text"
+                        class="form-control form-control-lg"
+                      />
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="text" class="form-label form-label-light"
+                        >Text</label
+                      >
+                      <textarea
+                        id="text"
+                        class="form-control form-control-lg"
+                        rows="8"
+                      ></textarea>
+                    </div>
+                    <div
+                      class="d-flex justify-content-between text-muted flex-row"
+                    >
+                      <span>1 Credit</span>
+                      <span>0/160 Characters remaining</span>
+                    </div>
 
-                  <button
-                    class="btn btn-primary text-light w-100 btn-lg my-4 mt-auto"
-                    @click="tab = 3"
-                  >
-                    Next
-                  </button>
+                    <button
+                      class="btn btn-primary text-light w-100 btn-lg my-4"
+                      @click="tab = 3"
+                    >
+                      Next
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            </template>
           </div>
 
           <!-- Preview Tab -->
           <div v-if="tab === 3" class="card-body px-5 pb-5 pt-5">
-            <div>
-              <img
-                src="@/src/assets/img-template-long.png"
-                alt=""
-                class="w-100"
-              />
-
-              <h4 class="my-4">Title</h4>
-              <p class="lead">
-                Lorem ipsum dolor sit amet consectetur. Aliquam nec iaculis
-                massa etiam quam fames sit velit. Erat a convallis malesuada
-                ante. Ultrices bibendum ut in venenatis. Id cras tellus eget
-                facilisi cras diam in diam. In sodales turpis venenatis dis
-                ornare. Aliquet placerat diam viverra morbi massa.
-              </p>
-              <img
-                src="@/src/assets/img-template-long.png"
-                alt=""
-                class="w-100"
-              />
-              <p class="lead">
-                Lorem ipsum dolor sit amet consectetur. Aliquam nec iaculis
-                massa etiam quam fames sit velit. Erat a convallis malesuada
-                ante. Ultrices bibendum ut in venenatis. Id cras tellus eget
-                facilisi cras diam in diam. In sodales turpis venenatis dis
-                ornare. Aliquet placerat diam viverra morbi massa.
-              </p>
-            </div>
-            <div class="d-flex justify-content-end">
-              <NuxtLink
-                href="/synco/templates"
-                class="btn btn-outline-dark btn-lg me-3 px-5"
-                >Cancel</NuxtLink
-              >
-              <button class="btn btn-primary btn-lg text-light px-5">
-                Send Email
-              </button>
-            </div>
+            <template v-if="templateData.Mode == 'Email'">
+              <SyncoSurveysTemplateDataCard :no-border="true">
+              </SyncoSurveysTemplateDataCard>
+              <div class="d-flex justify-content-end">
+                <NuxtLink
+                  href="/synco/templates"
+                  class="btn btn-outline-dark btn-lg me-3 px-5"
+                  >Cancel</NuxtLink
+                >
+                <button class="btn btn-primary btn-lg text-light px-5">
+                  Send Email
+                </button>
+              </div>
+            </template>
+            <template v-if="templateData.Mode == 'Text'">
+              <div class="row">
+                <div class="col-6 mx-auto" style="max-width: 375px">
+                  <img src="@/src/assets/img-template-1.png" class="w-100" />
+                  <div class="d-flex flex-column">
+                    <div class="card rounded-4 bg-gray m-4 p-2">
+                      <span class="mx-2"
+                        >Lorem ipsum dolor sit amet consectetur. Aliquam nec
+                        iaculis massa etiam quam sit velit.
+                        <a href="#"
+                          >Erat a convallis malesuada ante. Ultrices bibendum ut
+                          in venenatis.</a
+                        ></span
+                      >
+                      <img
+                        src="@/src/assets/img-tail.png"
+                        class="message-tail"
+                      />
+                    </div>
+                  </div>
+                  <img src="@/src/assets/img-template-2.png" class="w-100" />
+                  <img
+                    src="@/src/assets/img-template-3.png"
+                    class="w-100 mb-4"
+                  />
+                  <div class="d-flex justify-content-end mt-4">
+                    <button class="btn btn-primary text-light w-100">
+                      Save Template
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </template>
           </div>
         </div>
       </div>
@@ -274,5 +302,15 @@ export default {
 <style lang="scss" scoped>
 .form-label-light {
   font-weight: 300;
+}
+.bg-gray {
+  background-color: #e9e9eb;
+}
+.message-tail {
+  width: 16px;
+  position: absolute;
+  bottom: 0px;
+  left: -5px;
+  height: 21px;
 }
 </style>
