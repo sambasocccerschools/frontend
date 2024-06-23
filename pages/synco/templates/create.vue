@@ -260,30 +260,10 @@ let modeOfCommunication = ref<string[]>(['Email', 'Text'])
               </div>
             </template>
             <template v-if="templateData.Mode == 'Text'">
+              <SyncoSurveysTemplateTextCard :no-border="true">
+              </SyncoSurveysTemplateTextCard>
               <div class="row">
                 <div class="col-6 mx-auto" style="max-width: 375px">
-                  <img src="@/src/assets/img-template-1.png" class="w-100" />
-                  <div class="d-flex flex-column">
-                    <div class="card rounded-4 bg-gray m-4 p-2">
-                      <span class="mx-2"
-                        >Lorem ipsum dolor sit amet consectetur. Aliquam nec
-                        iaculis massa etiam quam sit velit.
-                        <a href="#"
-                          >Erat a convallis malesuada ante. Ultrices bibendum ut
-                          in venenatis.</a
-                        ></span
-                      >
-                      <img
-                        src="@/src/assets/img-tail.png"
-                        class="message-tail"
-                      />
-                    </div>
-                  </div>
-                  <img src="@/src/assets/img-template-2.png" class="w-100" />
-                  <img
-                    src="@/src/assets/img-template-3.png"
-                    class="w-100 mb-4"
-                  />
                   <div class="d-flex justify-content-end mt-4">
                     <button class="btn btn-primary text-light w-100">
                       Save Template

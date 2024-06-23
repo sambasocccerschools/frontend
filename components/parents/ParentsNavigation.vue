@@ -84,7 +84,7 @@ onMounted(async () => {
         My Bookings
       </NuxtLink>
 
-      <NuxtLink
+      <!-- <NuxtLink
         to="/parents/refer-a-friend"
         exact-active-class="btn-success text-light"
         class="btn-nav rounded-4 text-light"
@@ -94,7 +94,7 @@ onMounted(async () => {
           :class="show('refer-a-friend', 2) ? '' : 'text-success'"
         />
         Refer a friend
-      </NuxtLink>
+      </NuxtLink> -->
 
       <NuxtLink
         to="/parents/rewards"
