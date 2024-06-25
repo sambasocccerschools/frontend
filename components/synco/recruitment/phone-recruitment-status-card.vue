@@ -188,7 +188,7 @@ let callScore = computed<number>(() => {
           />
         </span>
       </div>
-      <div class="py-2" v-if="!hasPracticalAssessment">
+      <!-- <div class="py-2" v-if="!hasPracticalAssessment">
         <button
           type="button"
           class="btn btn-primary text-light"
@@ -196,10 +196,28 @@ let callScore = computed<number>(() => {
         >
           Scorecard
         </button>
-      </div>
-      <template v-if="hasPracticalAssessment">
+      </div> -->
+      <template v-if="!hasPracticalAssessment">
         <div class="d-flex justify-content-between flex-row">
-          <button
+          <div class="form-group w-50">
+            <label for="date" class="form-labelform-label-light">Date</label>
+            <input
+              id="date"
+              type="date"
+              class="form-control form-control-sm"
+              @change="showResults = !showResults"
+            />
+          </div>
+          <div class="form-group w-50">
+            <label for="time" class="form-labelform-label-light">Time</label>
+            <input
+              id="time"
+              type="time"
+              class="form-control form-control-sm"
+              @change="showResults = !showResults"
+            />
+          </div>
+          <!-- <button
             class="btn btn-primary text-light"
             @click="showResults = !showResults"
           >
@@ -207,7 +225,7 @@ let callScore = computed<number>(() => {
           </button>
           <span class="badgge text-secondary rounded-3 bg-white px-3 py-2">
             Michael Smith
-          </span>
+          </span> -->
         </div>
       </template>
 
@@ -270,6 +288,16 @@ let callScore = computed<number>(() => {
           >
             <Icon name="ph:check" /> Send offer
           </button>
+        </div>
+        <div class="d-flex flex-column mt-3">
+          <span :class="currentStep == 4 ? '' : 'text-muted'">
+            <strong>Recruited?</strong></span
+          >
+          <div>
+            <button type="button" class="btn btn-outline-success">
+              Recruited
+            </button>
+          </div>
         </div>
       </template>
     </div>

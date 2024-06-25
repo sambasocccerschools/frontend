@@ -15,14 +15,24 @@
 
       <form class="px-4 py-3">
         <div class="form-check d-flex align-items-center mb-3">
-          <input id="agent-1" type="checkbox" class="form-check-input me-2" />
+          <input
+            id="agent-1"
+            type="radio"
+            name="agent"
+            class="form-check-input me-2"
+          />
           <label class="form-check-label" for="agent-1">
             <img src="@/src/assets/img-avatar-jaffar.png" alt="jaffar" />
             Jaffar
           </label>
         </div>
         <div class="form-check d-flex align-items-center mb-3">
-          <input id="agent-2" type="checkbox" class="form-check-input me-2" />
+          <input
+            id="agent-2"
+            type="radio"
+            name="agent"
+            class="form-check-input me-2"
+          />
           <label class="form-check-label" for="agent-2">
             <img src="@/src/assets/img-avatar-jaffar.png" alt="jaffar" />
 

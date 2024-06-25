@@ -5,10 +5,8 @@ export default {
       {
         id: 1,
         text: 'Have you worked in a franchise before?',
-        answers: [
-          { id: 1, text: 'Yes', score: 100 },
-          { id: 2, text: 'No', score: 0 },
-        ],
+        answers: '',
+        // [{ id: 1, text: 'Yes', score: 100 },{ id: 2, text: 'No', score: 0 },],
       },
     ],
   }),
@@ -40,13 +38,20 @@ export default {
       </div>
 
       <div class="card-body px-4 pb-5">
-        <div v-for="question in questions" class="card border" draggable="true">
+        <div
+          v-for="(question, index) in questions"
+          class="card border"
+          draggable="true"
+        >
           <div class="card-header py-0 text-center">
             <button class="btn btn-white py-1">
               <Icon name="teenyicons:drag-horizontal-outline" />
             </button>
           </div>
           <div class="card-body px-4 pt-0">
+            <p class="text-muted mb-2">
+              <small>Question {{ index + 1 }}</small>
+            </p>
             <div class="d-flex align-items-center justify-content-between">
               <label :for="question.id">{{ question.text }}</label>
               <button
@@ -58,15 +63,23 @@ export default {
                 <Icon name="humbleicons:dots-vertical" class="text-muted" />
               </button>
             </div>
-            <p class="text-muted">
+            <!-- <p class="text-muted">
               <small>Answers ({{ question.answers.length }})</small>
-            </p>
+            </p> -->
 
-            <span class="text-danger"
+            <!-- <span class="text-danger"
               >How to remove an answer and a question? Why would a user be able
               to choose here? Do we add choices here or in the modal?</span
-            >
-            <div
+            > -->
+            <div class="form-group w-100">
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                v-model="question.Answer"
+                disabled
+              />
+            </div>
+            <!-- <div
               v-for="answer in question.answers"
               class="form-check d-flex align-items-center mb-2"
             >
@@ -82,13 +95,13 @@ export default {
               >
                 {{ answer.text }}
               </label>
-            </div>
-            <button
+            </div> -->
+            <!-- <button
               class="btn btn-primary btn-sm text-light ms-5 mt-3"
               @click="addAnswer()"
             >
               + Add Choice
-            </button>
+            </button> -->
           </div>
         </div>
       </div>
@@ -148,11 +161,11 @@ export default {
                   />
                 </div>
               </div>
-              <div class="mt-3">
+              <!-- <div class="mt-3">
                 <button class="btn btn-primary text-light" @click="addAnswer()">
                   Add new answer
                 </button>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="modal-footer border-0 p-4">

@@ -58,13 +58,13 @@ export default {
       <div class="col-sm-8">
         <div class="row row-cols-sm-4">
           <SyncoDashboardMetricsItem
-            name="Total Leads"
+            name="Monthly Leads"
             value="945"
             change="+12"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
-            name="New Leads"
+            name="New Monthly Leads"
             value="945"
             change="+12"
             icon="ph:users-three"
@@ -76,7 +76,7 @@ export default {
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
-            name="Source of recruitment"
+            name="Leads to recruitment"
             value="343"
             change=""
             icon="ph:users-three"
@@ -97,6 +97,9 @@ export default {
         <table class="table-hover rounded-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
+              <th scope="col">
+                <input class="form-check-input" type="checkbox" disabled />
+              </th>
               <th scope="col">Name</th>
               <th class="text-muted" scope="col">Age</th>
               <th class="text-muted" scope="col">Postcode</th>
@@ -109,7 +112,10 @@ export default {
             </tr>
           </thead>
           <tbody>
-            <LazySyncoRecruitmentLeadsTableItem v-for="item in coachLeads" />
+            <LazySyncoRecruitmentLeadsTableItem
+              v-for="item in coachLeads"
+              item="coach"
+            />
           </tbody>
         </table>
       </div>
@@ -123,13 +129,13 @@ export default {
       <div class="col-sm-8">
         <div class="row row-cols-sm-4">
           <SyncoDashboardMetricsItem
-            name="Total Leads"
+            name="Monthly Leads"
             value="945"
             change="+12"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
-            name="New Leads"
+            name="New Monthly Leads"
             value="945"
             change="+12"
             icon="ph:users-three"
@@ -161,6 +167,9 @@ export default {
         <table class="table-hover rounded-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
+              <th scope="col">
+                <input class="form-check-input" type="checkbox" disabled />
+              </th>
               <th scope="col">Name</th>
               <th class="text-muted" scope="col">Age</th>
               <th class="text-muted" scope="col">Postcode</th>
@@ -173,7 +182,10 @@ export default {
             </tr>
           </thead>
           <tbody>
-            <LazySyncoRecruitmentLeadsTableItem v-for="item in pathwayLeads" />
+            <LazySyncoRecruitmentLeadsTableItem
+              v-for="item in pathwayLeads"
+              item="pathway"
+            />
           </tbody>
         </table>
       </div>
@@ -187,13 +199,13 @@ export default {
       <div class="col-sm-8">
         <div class="row row-cols-sm-4">
           <SyncoDashboardMetricsItem
-            name="Total Leads"
+            name="Monthly Leads"
             value="945"
             change="+12"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
-            name="New Leads"
+            name="New Monthly Leads"
             value="945"
             change="+12"
             icon="ph:users-three"
@@ -225,6 +237,9 @@ export default {
         <table class="table-hover rounded-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
+              <th scope="col">
+                <input class="form-check-input" type="checkbox" disabled />
+              </th>
               <th scope="col">Name</th>
               <th class="text-muted" scope="col">Age</th>
               <th class="text-muted" scope="col">Postcode</th>
@@ -239,6 +254,7 @@ export default {
           <tbody>
             <LazySyncoRecruitmentLeadsTableItem
               v-for="item in regionalManagerLeads"
+              item="regional-manager"
             />
           </tbody>
         </table>

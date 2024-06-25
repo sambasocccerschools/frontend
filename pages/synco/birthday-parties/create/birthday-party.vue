@@ -145,7 +145,7 @@
           </template>
         </SyncoWeeklyClassesFormsEmergencyContactForm>
 
-        <div class="card rounded-4 mt-4 px-3">
+        <!-- <div class="card rounded-4 mt-4 px-3">
           <div
             class="d-flex justify-content-between align-items-center flex-row"
           >
@@ -153,7 +153,7 @@
               <strong>Key information</strong>
             </h5>
           </div>
-        </div>
+        </div> -->
 
         <div class="row mt-4">
           <div class="col-12 d-flex justify-content-end my-4 flex-row">
