@@ -206,6 +206,16 @@ let callScore = computed<number>(() => {
             <Icon name="ph:check" /> Send offer
           </button>
         </div>
+        <div class="d-flex flex-column mt-3">
+          <span :class="currentStep == 4 ? '' : 'text-muted'">
+            <strong>Recruited?</strong></span
+          >
+          <div>
+            <button type="button" class="btn btn-outline-success">
+              Recruited
+            </button>
+          </div>
+        </div>
       </template>
     </div>
   </div>

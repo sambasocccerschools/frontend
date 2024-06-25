@@ -10,7 +10,7 @@ let eventList = ref<ICandidateEventItem[]>(props.eventList)
 
 <template>
   <div class="row">
-    <div class="col-8">
+    <div class="col-8 mx-auto">
       <div class="card rounded-4">
         <div class="card-body">
           <div class="row" v-for="(event, index) in eventList">
@@ -32,14 +32,19 @@ let eventList = ref<ICandidateEventItem[]>(props.eventList)
                 <div class="d-flex justify-content-between flex-row">
                   <span class="text-muted">{{ event.Description }}</span>
                   <div>
-                    <template v-if="event.EventType == 'general'">
+                    <template
+                      v-if="
+                        event.EventType == 'general' ||
+                        event.EventType == 'phone-call'
+                      "
+                    >
                       <span class="badge bg-warning mx-2">General</span>
                     </template>
-                    <template v-else-if="event.EventType == 'phone-call'">
+                    <!-- <template v-else-if="event.EventType == 'phone-call'">
                       <span class="badge bg-primary mx-2">Hear Call</span>
                       <span class="badge bg-primary mx-2">Download Call</span>
                       <span class="badge bg-danger mx-2">Call</span>
-                    </template>
+                    </template> -->
                   </div>
                 </div>
               </div>
@@ -49,8 +54,7 @@ let eventList = ref<ICandidateEventItem[]>(props.eventList)
         </div>
       </div>
     </div>
-    <div class="col-4">
-      <!-- Filter By Date  -->
+    <!-- <div class="col-4">
       <div class="card p-3">
         <div class="card-header d-flex justify-content-between">
           <h5 class="h4"><strong>Filter Event</strong></h5>
@@ -59,7 +63,6 @@ let eventList = ref<ICandidateEventItem[]>(props.eventList)
           </button>
         </div>
         <div class="card-body">
-          <!-- Choose Type -->
           <div class="bg-light rounded-4 mb-5 px-3 py-2">
             <label for="" class="form-label">Choose type</label>
             <div class="container">
@@ -95,10 +98,9 @@ let eventList = ref<ICandidateEventItem[]>(props.eventList)
             </div>
           </div>
 
-          <!-- Calendar Selector  -->
           <SyncoFilterByCalendar />
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>

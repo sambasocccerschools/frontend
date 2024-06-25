@@ -32,6 +32,9 @@
         <table class="table-hover rounded-4 mt-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
+              <th scope="col">
+                <input class="form-check-input" type="checkbox" disabled />
+              </th>
               <!-- <th scope="col">Checkbox</th> -->
               <th scope="col">
                 <label class="form-check-label text-muted" for="all-table">

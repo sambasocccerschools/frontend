@@ -32,14 +32,14 @@ let yearsExperience = ref<IKeyValuePair[]>([
   { Key: 'None', Value: 'none' },
 ])
 let venues = ref<IKeyValuePair[]>([
-  { Key: 'London Bridge / SAT 5-8 AM', Value: 'London Bridge / SAT 5-8 AM' },
-  { Key: 'London Bridge / SAT 9-12 PM', Value: 'London Bridge / SAT 9-12 PM' },
-  { Key: 'London Bridge / SAT 1-4 PM', Value: 'London Bridge / SAT 1-4 PM' },
-  { Key: 'London Bridge / SAT 5-8 PM', Value: 'London Bridge / SAT 5-8 PM' },
-  { Key: 'London Bridge / SUN 5-8 AM', Value: 'London Bridge / SUN 5-8 AM' },
-  { Key: 'London Bridge / SUN 9-12 PM', Value: 'London Bridge / SUN 9-12 PM' },
-  { Key: 'London Bridge / SUN 1-4 PM', Value: 'London Bridge / SUN 1-4 PM' },
-  { Key: 'London Bridge / SUN 5-8 PM', Value: 'London Bridge / SUN 5-8 PM' },
+  { Key: 'London Bridge', Value: 'London Bridge' },
+  { Key: 'London Bridge', Value: 'London Bridge' },
+  { Key: 'London Bridge', Value: 'London Bridge' },
+  { Key: 'London Bridge', Value: 'London Bridge' },
+  { Key: 'London Bridge', Value: 'London Bridge' },
+  { Key: 'London Bridge', Value: 'London Bridge' },
+  { Key: 'London Bridge', Value: 'London Bridge' },
+  { Key: 'London Bridge', Value: 'London Bridge' },
 ])
 </script>
 <template>
@@ -171,7 +171,15 @@ let venues = ref<IKeyValuePair[]>([
             <strong>Which venues you are available for work?</strong>
           </label>
 
-          <div class="d-flex flex-column">
+          <div class="form-group">
+            <select class="form-select" aria-label="choose-venue" multiple>
+              <!-- <option selected value="" disabled>Select venue</option> -->
+              <option v-for="venue in venues" :value="venue.Value">
+                {{ venue.Value }}
+              </option>
+            </select>
+          </div>
+          <!-- <div class="d-flex flex-column">
             <div class="form-check form-check-inline" v-for="venue in venues">
               <input
                 class="form-check-input"
@@ -184,7 +192,7 @@ let venues = ref<IKeyValuePair[]>([
                 {{ venue.Key }}
               </label>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

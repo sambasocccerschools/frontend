@@ -17,7 +17,7 @@ const changeAnswer = (question: IFranchiseQuestion) => {}
       <div class="d-flex flex-row">
         <span class="text-muted number-row p-2">No</span>
         <span class="text-muted question-row p-2">Question</span>
-        <span class="text-muted answer-row p-2 text-end">Answer</span>
+        <span class="text-muted answer-row p-2">Answer</span>
       </div>
       <div class="d-flex flex-row" v-for="question in questions">
         <span class="number-row p-2">{{ question.Number }}</span>
@@ -26,7 +26,15 @@ const changeAnswer = (question: IFranchiseQuestion) => {}
         }}</span>
         <div class="answer-row border-bottom p-2 text-end">
           <span @click="question.Answer = !question.Answer">
-            <span
+            <div class="form-group w-100">
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                v-model="question.Answer"
+                disabled
+              />
+            </div>
+            <!-- <span
               class="me-2"
               :class="question.Answer == null ? 'text-muted' : ''"
               >{{
@@ -53,7 +61,7 @@ const changeAnswer = (question: IFranchiseQuestion) => {}
                       ? 'text-primary'
                       : 'text-danger'
                 "
-            /></span>
+            /></span> -->
           </span>
         </div>
       </div>
@@ -65,10 +73,12 @@ const changeAnswer = (question: IFranchiseQuestion) => {}
   width: 50px;
 }
 .question-row {
-  width: calc(100% - 300px);
+  width: calc(50% - 50px);
+  /* width: calc(100% - 300px); */
 }
 .answer-row {
-  width: 200px;
+  width: calc(50% - 50px);
+  /* width: 200px; */
 }
 .border-bottom {
   border-bottom: 1px solid lightgray;
