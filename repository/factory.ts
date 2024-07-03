@@ -21,11 +21,14 @@ class FetchFactory {
     data?: object,
     fetchOptions?: FetchOptions<'json'>,
   ): Promise<T> {
-    return this.$fetch<T>(url, {
-      method,
-      body: data,
-      ...fetchOptions,
-    })
+    return this.$fetch<T>(
+      'http://api.synco.staging.sambasoccerschools.co.uk' + url,
+      {
+        method,
+        body: data,
+        ...fetchOptions,
+      },
+    )
   }
 }
 

@@ -48,7 +48,7 @@
         </div>
       </template>
       <template v-slot:body>
-        <div
+        <!-- <div
           v-if="formStep == 1"
           class="d-flex align-items-center flex-column m-4"
         >
@@ -64,11 +64,14 @@
               :min-date="today"
             />
           </div>
-        </div>
+        </div> -->
         <div
-          v-else-if="formStep == 2"
+          v-if="formStep == 2"
           class="d-flex align-items-center flex-column m-4"
         >
+          <span class="mb-4 text-center"
+            ><strong>Class 2</strong><br />8-12 years10:30am-11:30am</span
+          >
           <span class="h5">
             <strong>How many children would you like to book?</strong>
           </span>
@@ -807,7 +810,7 @@
           </button>
           <button
             class="btn btn-outline-primary mx-2"
-            :disabled="formStep == 1"
+            :disabled="formStep == 2"
             @click="moveStep('back')"
             v-if="formStep <= 7"
           >
@@ -851,7 +854,7 @@ import type {
 const layout = 'weblayout'
 
 let step = ref<number>(1)
-let formStep = ref<number>(1)
+let formStep = ref<number>(2)
 let classDate = ref<Date>(new Date())
 let childrenQuantity = ref<number>(1)
 let membershipPlan = ref<string>('')

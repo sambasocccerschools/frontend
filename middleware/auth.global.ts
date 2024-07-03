@@ -1,9 +1,9 @@
 // middleware/auth.ts
 
-import { useStore } from '~/stores'
+import { generalStore } from '~/stores'
 
 export default defineNuxtRouteMiddleware((to) => {
-  const store = useStore()
+  const store = generalStore()
   const token = useCookie('token')
 
   const authenticated = !!token.value || store.authenticated

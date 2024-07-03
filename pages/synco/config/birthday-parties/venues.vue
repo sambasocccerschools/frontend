@@ -22,7 +22,7 @@ const emptyVenue = ref<IVenueCreateItem>({
   name: '',
   parking_note: '',
   region: 0,
-  service: 'holiday-camps',
+  service: 'birthday-parties',
   subscriptionPlans: [1],
 })
 
@@ -38,13 +38,13 @@ const selectedVenue = ref<IVenueCreateItem>({
   name: '',
   parking_note: '',
   region: 0,
-  service: 'holiday-camps',
+  service: 'birthday-parties',
   subscriptionPlans: [1],
 })
 
 const getVenues = async (limit: number = 25) => {
   try {
-    const venuesResponse = await $api.venues.getAll('holiday-camps', limit)
+    const venuesResponse = await $api.venues.getAll('birthday-parties', limit)
     venues.value = venuesResponse?.data
   } catch (error: any) {
     console.log(error)
@@ -76,7 +76,7 @@ const openPanel = (item: IVenueItem | null) => {
       name: item.name,
       parking_note: item.parking_note,
       region: item.region,
-      service: 'holiday-camps',
+      service: 'birthday-parties',
       subscriptionPlans: [1],
     }
     selectedVenueId.value = item.id
@@ -135,11 +135,11 @@ const restoreVenue = async (id: string) => {
 </script>
 
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Holiday Camps Venues">
+  <NuxtLayout name="syncolayout" pageTitle="Birthday Parties Venues">
     <div class="row">
       <div class="col">
         <div class="d-flex justify-content-between mb-4">
-          <h4>Holiday Camps Venues</h4>
+          <h4>Birthday Parties Venues</h4>
           <button class="btn btn-primary text-light" @click="openPanel(null)">
             + Add New Venue
           </button>

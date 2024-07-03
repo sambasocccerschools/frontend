@@ -83,12 +83,12 @@
 
 <script lang="ts" setup>
 import { useToast } from 'vue-toast-notification'
-import { useStore } from '~/stores'
+import { generalStore } from '~/stores'
 import type { ILoginInput } from '~/types'
 
 const { $api } = useNuxtApp()
 const toast = useToast()
-const store = useStore()
+const store = generalStore()
 const token = useCookie('token')
 const email = ref('')
 const password = ref('')
@@ -99,25 +99,26 @@ const login = async () => {
   try {
     isLogging.value = true
 
-    // const credentials: ILoginInput = {
-    //   email: email.value,
-    //   password: password.value,
-    //   remember: remember.value,
-    // }
-    // const loginResponse = await $api.auth.login(credentials)
+    const credentials: ILoginInput = {
+      email: email.value,
+      password: password.value,
+      remember: remember.value,
+    }
+    const loginResponse = await $api.auth.login(credentials)
 
-    // token.value = loginResponse.access_token
-    store.updateAuthenticated(true)
+    token.value = loginResponse.access_token
+    // store.updateAuthenticated(true)
 
-    // $api.profile
-    //   .getProfile({
-    //     headers: {
-    //       Authorization: `Bearer ${token.value}`,
-    //     },
-    //   })
-    //   .then((response) => {
-    //     store.setUser(response?.data)
-    //   })
+    $api.profile
+      .getProfile({
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      })
+      .then((response) => {
+        console.log('response', response)
+        store.setUser(response?.data)
+      })
 
     await navigateTo({
       path: '/synco/dashboard',
