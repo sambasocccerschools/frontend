@@ -472,3 +472,9 @@ export type ITemplateItem = {
   Category: string
   Tags: string[]
 }
+
+export type IResetPassword = {
+  email: string
+  password: string
+  password_confirmation: string
+}

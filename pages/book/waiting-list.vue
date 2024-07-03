@@ -187,6 +187,17 @@
               </div>
             </template>
           </SyncoWeeklyClassesFormsParentForm>
+
+          <SyncoWeeklyClassesFormsEmergencyContactForm
+            :emergencyContact="emergencyContact"
+          >
+            <template v-slot:internal_title>
+              <h5 class="py-4">
+                <strong>Emergency contact details</strong>
+                <Icon name="ph:pencil-simple-line" />
+              </h5>
+            </template>
+          </SyncoWeeklyClassesFormsEmergencyContactForm>
         </div>
         <div v-else-if="formStep == 4">
           <span>Login</span>
@@ -400,7 +411,7 @@
 </template>
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import type { IStudent, IParent } from '~/types/index'
+import type { IStudent, IParent, IEmergencyContact } from '~/types/index'
 
 const layout = 'weblayout'
 
@@ -430,6 +441,13 @@ let parent = ref<IParent>({
   phoneNumber: '',
   relationToChild: '',
 }).value
+
+let emergencyContact = ref<IEmergencyContact>({
+  firstName: '',
+  lastName: '',
+  phoneNumber: '',
+  relationToChild: '',
+})
 
 const classes = ref([
   { label: 'Select from drop down', value: '' },

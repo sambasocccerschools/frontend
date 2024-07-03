@@ -6,6 +6,7 @@ import ProfileModule from '~/repository/modules/profile'
 import UsersModule from '~/repository/modules/users'
 
 import WeeklyClassesModule from '~/repository/modules/weekly-classes'
+import VenuesModule from '~/repository/modules/synco/venues'
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
@@ -14,6 +15,7 @@ interface IApiInstance {
   datasets: DatasetsModule
   profile: ProfileModule
   users: UsersModule
+  venues: VenuesModule
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -38,6 +40,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     datasets: new DatasetsModule(apiFetcher),
     profile: new ProfileModule(apiFetcher),
     users: new UsersModule(apiFetcher),
+    venues: new VenuesModule(apiFetcher),
   }
   return {
     provide: {

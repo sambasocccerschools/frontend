@@ -37,7 +37,7 @@ const toggleAssignSessionCard = (selected: string) => {
 </script>
 
 <template>
-  <NuxtLayout name="syncolayout">
+  <NuxtLayout name="syncolayout" pageTitle="Terms">
     <div class="d-flex flex-column">
       <span class="h3 my-4">Term Dates & Mapping Session Plans</span>
       <div class="d-flex justify-content-between my-4 flex-row">

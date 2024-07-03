@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { nextTick, onMounted, ref } from 'vue'
-import { useStore } from '~/stores'
+import { generalStore } from '~/stores'
 
 const token = useCookie('token')
 const router = useRouter()
-const store = useStore()
+const store = generalStore()
 const { $api } = useNuxtApp()
 const logout = async () => {
   const { data, error } = await $api.auth.logout()
@@ -906,6 +906,15 @@ onMounted(async () => {
           >
             <li>
               <NuxtLink
+                to="/synco/config/birthday-parties/venues"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Add a Venue
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
                 to="/synco/config/birthday-parties/session-plans"
                 class="btn-nav-link"
                 exact-active-class="text-primary"
@@ -918,18 +927,71 @@ onMounted(async () => {
 
         <!-- Config > Club  -->
         <li>
-          <!-- <button class="btn btn-nav-link" type="button" data-bs-toggle="collapse"
-          data-bs-target="#collapseConfBirthdayParties" aria-expanded="false" aria-controls="collapseConfBirthdayParties">
-          Birthday Parties
-          <Icon name="pajamas:chevron-down" />
-        </button> -->
-          <NuxtLink
-            to="/synco/config/club"
-            class="btn-nav-link"
-            exact-active-class="text-primary"
+          <button
+            class="btn btn-nav-link"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseConfClub"
+            aria-expanded="false"
+            aria-controls="collapseConfClub"
           >
             Club
-          </NuxtLink>
+            <Icon name="pajamas:chevron-down" />
+          </button>
+          <ul
+            id="collapseConfClub"
+            class="collapse ps-4"
+            :class="show('club', 3) ? 'show' : ''"
+          >
+            <li>
+              <NuxtLink
+                to="/synco/config/club/venues"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Add a Venue
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/synco/config/club"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Club
+              </NuxtLink>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Config > One to One  -->
+        <li>
+          <button
+            class="btn btn-nav-link"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseConfOneToOne"
+            aria-expanded="false"
+            aria-controls="collapseConfOneToOne"
+          >
+            One to One
+            <Icon name="pajamas:chevron-down" />
+          </button>
+          <ul
+            id="collapseConfOneToOne"
+            class="collapse ps-4"
+            :class="show('one-to-one', 3) ? 'show' : ''"
+          >
+            <li>
+              <NuxtLink
+                to="/synco/config/one-to-one/venues"
+                class="btn-nav-link"
+                exact-active-class="text-primary"
+              >
+                Add a Venue
+              </NuxtLink>
+            </li>
+          </ul>
         </li>
 
         <!-- Config > Coach Pro  -->

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { nextTick, onMounted, ref } from 'vue'
-import { useStore } from '~/stores'
+import { generalStore } from '~/stores'
 
 const token = useCookie('token')
 const router = useRouter()
-const store = useStore()
+const store = generalStore()
 const { $api } = useNuxtApp()
 const logout = async () => {
   const { data, error } = await $api.auth.logout()

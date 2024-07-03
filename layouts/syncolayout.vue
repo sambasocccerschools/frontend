@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const store = useStore()
+const store = generalStore()
 
 defineProps<{
   pageTitle: string
