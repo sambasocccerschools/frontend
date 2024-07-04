@@ -22,7 +22,7 @@ class FetchFactory {
     fetchOptions?: FetchOptions<'json'>,
   ): Promise<T> {
     return this.$fetch<T>(
-      'http://api.synco.staging.sambasoccerschools.co.uk' + url,
+      'https://api.synco.staging.sambasoccerschools.co.uk' + url,
       {
         method,
         body: data,
