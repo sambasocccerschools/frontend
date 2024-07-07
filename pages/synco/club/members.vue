@@ -38,6 +38,9 @@ export default {
           />
         </div>
 
+        <div>
+          <SyncoDataOptions />
+        </div>
         <table class="table-hover rounded-4 mt-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">

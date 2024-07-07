@@ -74,6 +74,4 @@
       <SyncoFilterByCalendar />
     </div>
   </div>
-
-  <SyncoDataOptions />
 </template>

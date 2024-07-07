@@ -68,8 +68,10 @@ export default {
             </NuxtLink>
           </div>
         </div>
-
-        <table class="table-hover rounded-4 table border">
+        <div>
+          <SyncoDataOptions />
+        </div>
+        <table class="table-hover rounded-4 mt-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
