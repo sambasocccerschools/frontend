@@ -18,6 +18,9 @@
       <span class="badge bg-danger-subtle text-danger px-1">
         Not attended
       </span>
+      <button class="btn btn-light btn-sm" @click="show = !show">
+        <Icon name="mdi:chevron-down" />
+      </button>
     </td>
     <!-- Active, Waiting List, Frozen, Cancelled -->
   </tr>

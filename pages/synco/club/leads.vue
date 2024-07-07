@@ -76,6 +76,9 @@ export default {
             <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
               <th scope="col">
+                <input class="form-check-input" type="checkbox" disabled />
+              </th>
+              <th scope="col" class="text-muted">
                 Date
                 <!-- <label class="form-check-label text-muted" for="all-table">
                   Date

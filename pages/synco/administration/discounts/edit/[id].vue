@@ -8,8 +8,8 @@ export default {
     showLimitInput: false,
   }),
   methods: {
-    goBack() {
-      router.back()
+    async goBack() {
+      await router.push({ path: `/synco/administration/discounts` })
     },
   },
 }
@@ -20,7 +20,7 @@ export default {
     <div class="container-fluid">
       <button class="btn btn-transparent px-0" @click="() => goBack()">
         <Icon name="material-symbols:arrow-left-alt" class="h4 me-2 p-0" />
-        <span class="h4">Create Discount</span>
+        <span class="h4">Edit Discount</span>
       </button>
       <div class="row">
         <div class="col-sm-8">
@@ -222,6 +222,7 @@ export default {
                     total</label
                   >
                 </div>
+
                 <div class="form-check mb-3" v-if="showLimitInput">
                   <label for="limit-number"
                     >Total number of times this discount can be used</label

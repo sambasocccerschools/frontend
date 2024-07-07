@@ -118,6 +118,9 @@ export default {
           <thead class="rounded-top-4">
             <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
+              <th scope="col">
+                <input class="form-check-input" type="checkbox" disabled />
+              </th>
               <th scope="col" class="text-muted align-middle">Name</th>
               <th class="text-muted align-middle" scope="col">Age</th>
               <th class="text-muted align-middle" scope="col">Experience</th>
@@ -144,6 +147,14 @@ export default {
           </thead>
           <tbody class="">
             <tr v-for="student in students" class="align-middle">
+              <td>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="tomjones"
+                />
+              </td>
               <td scope="row">
                 {{ student.name }}
               </td>

@@ -93,6 +93,9 @@ export default {
             <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
               <th scope="col">
+                <input class="form-check-input" type="checkbox" disabled />
+              </th>
+              <th scope="col" class="text-muted">
                 Parent Name
                 <!-- <label class="form-check-label text-muted" for="all-table">
                   Date
@@ -168,6 +171,9 @@ export default {
                   Date
                 </label>
               </th> -->
+              <th scope="col">
+                <input class="form-check-input" type="checkbox" disabled />
+              </th>
               <th scope="col" class="text-muted">Parent Name</th>
               <th class="text-muted" scope="col">Child Age</th>
               <th class="text-muted" scope="col">Venue</th>

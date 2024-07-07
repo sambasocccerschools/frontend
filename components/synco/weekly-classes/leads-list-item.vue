@@ -36,7 +36,7 @@ export default {
     <td @click="navigateToUser(1)" style="cursor: pointer">ER 7YJ</td>
     <td @click="navigateToUser(1)" style="cursor: pointer">4 to 7</td>
     <td @click="navigateToUser(1)" style="cursor: pointer">Jaffar King</td>
-    <td @click="navigateToUser(1)" style="cursor: pointer">
+    <td style="cursor: pointer">
       <span class="badge bg-warning-subtle text-warning px-1">
         Call Pending
       </span>

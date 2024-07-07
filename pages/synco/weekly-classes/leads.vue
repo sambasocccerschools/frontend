@@ -35,6 +35,7 @@
             value="945"
             change="+12"
             icon="ph:users-three"
+            :removePercentage="true"
           />
           <SyncoDashboardMetricsItem
             name="Leads to trials"
