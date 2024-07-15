@@ -29,11 +29,26 @@ export default {
         <div class="form-group border-bottom border-light py-4">
           <div class="row">
             <div class="col-3">
+              <label for="cover-image" class="form-label">Cover image</label>
+            </div>
+            <div class="col-4">
+              <input
+                id="myFile"
+                type="file"
+                name="filename"
+                class="btn btn-light border bg-transparent"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="form-group border-bottom border-light py-4">
+          <div class="row">
+            <div class="col-3">
               <label for="course-name" class="form-label"
                 >Name of the course</label
               >
             </div>
-            <div class="col-5">
+            <div class="col-4">
               <input id="course-name" type="text" class="form-control" />
             </div>
           </div>
@@ -41,7 +56,7 @@ export default {
         <div class="form-group border-bottom border-light py-4">
           <div class="row">
             <div class="col-3">
-              <label for="duration" class="form-label">Duration</label>
+              <label for="duration" class="form-label">Total Duration</label>
             </div>
             <div class="col-4">
               <input id="duration" type="text" class="form-control" />
@@ -68,21 +83,6 @@ export default {
             </div>
           </div>
         </div>
-        <div class="form-group border-bottom border-light py-4">
-          <div class="row">
-            <div class="col-3">
-              <label for="cover-image" class="form-label">Cover image</label>
-            </div>
-            <div class="col-4">
-              <input
-                id="myFile"
-                type="file"
-                name="filename"
-                class="btn btn-light border bg-transparent"
-              />
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -91,18 +91,6 @@ export default {
         <h3 class="card-title ms-4 mt-3">Courses videos</h3>
       </div>
       <div class="card-body px-5">
-        <div class="form-group border-bottom border-light py-4">
-          <div class="row">
-            <div class="col-3">
-              <label for="video-name" class="form-label"
-                >Name of the video</label
-              >
-            </div>
-            <div class="col-4">
-              <input id="video-name" type="text" class="form-control" />
-            </div>
-          </div>
-        </div>
         <div class="form-group border-bottom border-light py-4">
           <div class="row">
             <div class="col-3">
@@ -123,20 +111,82 @@ export default {
         <div class="form-group border-bottom border-light py-4">
           <div class="row">
             <div class="col-3">
+              <label for="video-name" class="form-label"
+                >Name of the video</label
+              >
+            </div>
+            <div class="col-4">
+              <input id="video-name" type="text" class="form-control" />
+            </div>
+          </div>
+        </div>
+        <div class="form-group border-bottom border-light py-4">
+          <div class="row">
+            <div class="col-3">
+              <label for="brief" class="form-label">Brief</label>
+            </div>
+            <div class="col-4">
+              <textarea
+                id="brief"
+                class="form-control form-control-lg"
+                rows="4"
+                placeholder=""
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="form-group border-bottom border-light py-4">
+          <div class="row">
+            <div class="col-3">
               <label for="childs-features" class="form-label"
                 >Childs features</label
               >
             </div>
             <div class="col-4">
-              <input id="childs-features" type="text" class="form-control" />
+              <textarea
+                id="childs-features"
+                class="form-control form-control-lg"
+                rows="4"
+                placeholder=""
+              ></textarea>
+              <!-- <input id="childs-features" type="text" class="form-control" />
               <div class="form-text text-danger">
                 What would go on these two fields ?
-              </div>
+              </div> -->
             </div>
-            <div class="col-auto">
+            <!-- <div class="col-auto">
               <button class="btn btn-transparent border">
                 Add more descriptions
               </button>
+            </div> -->
+          </div>
+        </div>
+        <div class="form-group border-bottom border-light py-4">
+          <div class="row">
+            <div class="col-3">
+              <label for="duration-video" class="form-label"
+                >Video Duration</label
+              >
+            </div>
+            <div class="col-4">
+              <input id="duration-video" type="text" class="form-control" />
+              <div class="form-text">The duration of the video.</div>
+            </div>
+            <div class="col-auto">
+              <select class="form-select" aria-label="duration-unit">
+                <option selected value="min">Minutes</option>
+                <option value="hours">Hours</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group border-bottom border-light py-4">
+          <div class="row">
+            <div class="col-3">
+              <label for="ability" class="form-label">Ability</label>
+            </div>
+            <div class="col-4">
+              <input id="ability" type="text" class="form-control" />
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@
       <template v-slot:title>
         <Icon name="ph:crown" class="h5 m-0" />
         <span class="h5 m-0 mx-2">Weekly Classes Membership</span>
+        <span class="mx-2"><strong>01/06/2023</strong></span>
       </template>
       <template v-slot:status>
         <button
@@ -41,6 +42,7 @@
       <template v-slot:title>
         <Icon name="ph:cake" class="h5 m-0" />
         <span class="h5 m-0 mx-2">Birthday Party Booking</span>
+        <span class="mx-2"><strong>01/06/2023</strong></span>
       </template>
       <template v-slot:status>
         <button
@@ -72,6 +74,7 @@
       <template v-slot:title>
         <Icon name="ph:receipt" class="h5 m-0" />
         <span class="h5 m-0 mx-2">One to One Booking</span>
+        <span class="mx-2"><strong>01/06/2023</strong></span>
       </template>
       <template v-slot:status>
         <button
@@ -106,6 +109,7 @@
       <template v-slot:title>
         <Icon name="ph:campfire" class="h5 m-0" />
         <span class="h5 m-0 mx-2">Holiday Camp</span>
+        <span class="mx-2"><strong>01/06/2023</strong></span>
       </template>
       <template v-slot:status>
         <button
@@ -140,6 +144,7 @@
       <template v-slot:title>
         <Icon name="ph:soccer-ball" class="h5 m-0" />
         <span class="h5 m-0 mx-2">Club</span>
+        <span class="mx-2"><strong>01/06/2023</strong></span>
       </template>
       <template v-slot:status>
         <button
@@ -174,6 +179,7 @@
       <template v-slot:title>
         <Icon name="ph:package" class="h5 m-0" />
         <span class="h5 m-0 mx-2">Merchandise</span>
+        <span class="mx-2"><strong>01/06/2023</strong></span>
       </template>
       <template v-slot:status>
         <button

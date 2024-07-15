@@ -122,7 +122,7 @@ let collectPoints = [
                 Lorem ipsum dolor sit amet consectetur. Pellentesque bibendum id
                 duis sit mi lobortis dictum consectetur venenatis.
               </span>
-              <div class="mt-3">
+              <!-- <div class="mt-3">
                 <button class="btn text-light bg-transparent">Copy Link</button>
               </div>
               <div class="input-group mb-2">
@@ -130,7 +130,7 @@ let collectPoints = [
                   class="bg-primary form-control text-light"
                   value="sharelink.com"
                 />
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="col-8 p-3">
@@ -236,6 +236,22 @@ let collectPoints = [
                       class="form-control form-control-lg"
                       placeholder="+44"
                     />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group w-100 mb-3">
+                    <label for="service" class="form-labelform-label-light"
+                      >Service</label
+                    >
+                    <select class="form-select" aria-label="level" id="service">
+                      <option selected value="weekly-classes">
+                        Weekly Classes
+                      </option>
+                      <option value="one-to-one">One to One</option>
+                      <option value="holiday-camps">Holiday Camps</option>
+                      <option value="birthday-parties">Birthday Parties</option>
+                      <option value="club">Club</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -352,9 +368,9 @@ let collectPoints = [
                 <img src="@/src/assets/img-parents-bag.png" class="w-100" />
                 <span class="h5 mt-3">Kids Winter Hat</span>
                 <span class="mb-3"><strong>100 Points</strong></span>
-                <button type="button" class="btn btn-success">
+                <!-- <button type="button" class="btn btn-success">
                   Redeem Award
-                </button>
+                </button> -->
               </div>
               <div
                 class="col-2 d-flex flex-column align-items-center mx-2 my-4"
@@ -362,12 +378,12 @@ let collectPoints = [
                 <img src="@/src/assets/img-parents-tshirt.png" class="w-100" />
                 <span class="h5 mt-3">Kids Winter Hat</span>
                 <span class="mb-3"><strong>120 Points</strong></span>
-                <button type="button" class="btn btn-locked">
+                <!-- <button type="button" class="btn btn-locked">
                   <Icon name="ph:lock" class="h5 m-0" />
                 </button>
                 <span class="text-orange mt-3 text-center"
                   >You need 20 more points to reach this reward</span
-                >
+                > -->
               </div>
               <div
                 class="col-2 d-flex flex-column align-items-center mx-2 my-4"
@@ -375,12 +391,12 @@ let collectPoints = [
                 <img src="@/src/assets/img-parents-uniform.png" class="w-100" />
                 <span class="h5 mt-3">Kids Winter Hat</span>
                 <span class="mb-3"><strong>120 Points</strong></span>
-                <button type="button" class="btn btn-locked">
+                <!-- <button type="button" class="btn btn-locked">
                   <Icon name="ph:lock" class="h5 m-0" />
                 </button>
                 <span class="text-orange mt-3 text-center"
                   >You need 20 more points to reach this reward</span
-                >
+                > -->
               </div>
               <div
                 class="col-2 d-flex flex-column align-items-center mx-2 my-4"
@@ -388,12 +404,12 @@ let collectPoints = [
                 <img src="@/src/assets/img-parents-hat.png" class="w-100" />
                 <span class="h5 mt-3">Kids Winter Hat</span>
                 <span class="mb-3"><strong>120 Points</strong></span>
-                <button type="button" class="btn btn-locked">
+                <!-- <button type="button" class="btn btn-locked">
                   <Icon name="ph:lock" class="h5 m-0" />
                 </button>
                 <span class="text-orange mt-3 text-center"
                   >You need 20 more points to reach this reward</span
-                >
+                > -->
               </div>
               <div
                 class="col-2 d-flex flex-column align-items-center mx-2 my-4"
@@ -401,12 +417,12 @@ let collectPoints = [
                 <img src="@/src/assets/img-parents-ball.png" class="w-100" />
                 <span class="h5 mt-3">Kids Winter Hat</span>
                 <span class="mb-3"><strong>120 Points</strong></span>
-                <button type="button" class="btn btn-locked">
+                <!-- <button type="button" class="btn btn-locked">
                   <Icon name="ph:lock" class="h5 m-0" />
                 </button>
                 <span class="text-orange mt-3 text-center"
                   >You need 20 more points to reach this reward</span
-                >
+                > -->
               </div>
               <div
                 class="col-2 d-flex flex-column align-items-center mx-2 my-4"
@@ -414,12 +430,12 @@ let collectPoints = [
                 <img src="@/src/assets/img-parents-bag.png" class="w-100" />
                 <span class="h5 mt-3">Kids Winter Hat</span>
                 <span class="mb-3"><strong>200 Points</strong></span>
-                <button type="button" class="btn btn-locked">
+                <!-- <button type="button" class="btn btn-locked">
                   <Icon name="ph:lock" class="h5 m-0" />
                 </button>
                 <span class="text-orange mt-3 text-center"
                   >You need 20 more points to reach this reward</span
-                >
+                > -->
               </div>
               <div
                 class="col-2 d-flex flex-column align-items-center mx-2 my-4"
@@ -427,12 +443,12 @@ let collectPoints = [
                 <img src="@/src/assets/img-parents-tshirt.png" class="w-100" />
                 <span class="h5 mt-3">Kids Winter Hat</span>
                 <span class="mb-3"><strong>200 Points</strong></span>
-                <button type="button" class="btn btn-locked">
+                <!-- <button type="button" class="btn btn-locked">
                   <Icon name="ph:lock" class="h5 m-0" />
                 </button>
                 <span class="text-orange mt-3 text-center"
                   >You need 20 more points to reach this reward</span
-                >
+                > -->
               </div>
               <div
                 class="col-2 d-flex flex-column align-items-center mx-2 my-4"
@@ -440,12 +456,12 @@ let collectPoints = [
                 <img src="@/src/assets/img-parents-uniform.png" class="w-100" />
                 <span class="h5 mt-3">Kids Winter Hat</span>
                 <span class="mb-3"><strong>200 Points</strong></span>
-                <button type="button" class="btn btn-locked">
+                <!-- <button type="button" class="btn btn-locked">
                   <Icon name="ph:lock" class="h5 m-0" />
                 </button>
                 <span class="text-orange mt-3 text-center"
                   >You need 20 more points to reach this reward</span
-                >
+                > -->
               </div>
               <div
                 class="col-2 d-flex flex-column align-items-center mx-2 my-4"
@@ -453,12 +469,12 @@ let collectPoints = [
                 <img src="@/src/assets/img-parents-hat.png" class="w-100" />
                 <span class="h5 mt-3">Kids Winter Hat</span>
                 <span class="mb-3"><strong>200 Points</strong></span>
-                <button type="button" class="btn btn-locked">
+                <!-- <button type="button" class="btn btn-locked">
                   <Icon name="ph:lock" class="h5 m-0" />
                 </button>
                 <span class="text-orange mt-3 text-center"
                   >You need 20 more points to reach this reward</span
-                >
+                > -->
               </div>
               <div
                 class="col-2 d-flex flex-column align-items-center mx-2 my-4"
@@ -466,12 +482,12 @@ let collectPoints = [
                 <img src="@/src/assets/img-parents-ball.png" class="w-100" />
                 <span class="h5 mt-3">Kids Winter Hat</span>
                 <span class="mb-3"><strong>200 Points</strong></span>
-                <button type="button" class="btn btn-locked">
+                <!-- <button type="button" class="btn btn-locked">
                   <Icon name="ph:lock" class="h5 m-0" />
                 </button>
                 <span class="text-orange mt-3 text-center"
                   >You need 20 more points to reach this reward</span
-                >
+                > -->
               </div>
             </div>
           </div>
