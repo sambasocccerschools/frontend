@@ -214,7 +214,9 @@
           </SyncoWeeklyClassesFormsEmergencyContactForm>
         </div>
         <div v-else-if="formStep == 5">
-          <span>Login</span>
+          <div class="col-6 mx-auto">
+            <ParentsComponentsLoginRegister></ParentsComponentsLoginRegister>
+          </div>
         </div>
         <div
           v-else-if="formStep == 6"

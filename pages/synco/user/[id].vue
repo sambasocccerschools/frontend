@@ -40,6 +40,33 @@ export default {
         },
       ],
       showBookings: false,
+      feedbackList: [
+        {
+          SubmittedDate: '01/06/2023',
+          FeedbackType: 'Negative',
+          Venue: 'Acton',
+          Category: 'Time',
+          Notes: 'I think is too much time for my kid',
+          User: 'Jaffar',
+          Status: 'In process',
+        },
+      ],
+      eventList: [
+        {
+          ImageUrl: '',
+          Title: 'Lead Generated',
+          Date: 'Monday 23rd June, 8:54am',
+          Description: 'Lead has been generated through website',
+          EventType: 'general',
+        },
+        {
+          ImageUrl: '',
+          Title: 'Nilio Bagga',
+          Date: 'Monday 23rd June, 8:54am',
+          Description: 'Ethan phoned the candidate',
+          EventType: 'general',
+        },
+      ],
     }
   },
   methods: {
@@ -265,7 +292,7 @@ export default {
                 </div>
 
                 <!-- Calendar Selector  -->
-                <SyncoFilterByCalendar />
+                <!-- <SyncoFilterByCalendar /> -->
               </div>
             </div>
           </div>
@@ -301,7 +328,7 @@ export default {
                 class="dropdown-item my-2"
                 @click="addBooking('membership')"
               >
-                Book Memebership
+                Book Membership
               </button>
             </div>
           </div>
@@ -338,6 +365,58 @@ export default {
         <SyncoWeeklyClassesComponentsAccountInformationServiceHistory
           :header="ServiceHistoryAccountCardHeaders[1]"
         />
+      </template>
+
+      <template v-else-if="selection == 'Feedback'">
+        <div class="rounded-4 mt-4">
+          <table class="table">
+            <thead>
+              <tr class="">
+                <th></th>
+                <th>Date submitted</th>
+                <th>Type of feedback</th>
+                <th>Venue</th>
+                <th>Category</th>
+                <th>Notes</th>
+                <th>User</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in feedbackList" style="vertical-align: middle">
+                <td><input type="checkbox" /></td>
+                <td>{{ item.SubmittedDate }}</td>
+                <td>{{ item.FeedbackType }}</td>
+                <td>{{ item.Venue }}</td>
+                <td>{{ item.Category }}</td>
+                <td>{{ item.Notes }}</td>
+                <td>
+                  <img
+                    src="@/src/assets/img-avatar-jaffar.png"
+                    class="me-2"
+                  /><span>{{ item.User }}</span>
+                </td>
+                <td>
+                  <span class="badge-warning rounded-4 px-3 py-1">{{
+                    item.Status
+                  }}</span>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-primary">Resolve</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
+      <template v-else-if="selection == 'Rewards'">
+        <SyncoUserRewards></SyncoUserRewards>
+      </template>
+      <template v-else-if="selection == 'Events'">
+        <div class="mt-4">
+          <SyncoRecruitmentEvents :event-list="eventList" />
+        </div>
       </template>
     </div>
   </NuxtLayout>

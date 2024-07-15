@@ -20,6 +20,7 @@
             value="£35.00"
             change="+100"
             icon="ph:users-three"
+            :removePercentage="true"
           />
           <SyncoDashboardMetricsItem
             name="Av. Life Cycle"

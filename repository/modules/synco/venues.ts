@@ -68,6 +68,15 @@ class VenuesModule extends FetchFactory {
       undefined,
     )
   }
+
+  async availableVenues() {
+    return this.call<IVenuesResponse>(
+      'GET',
+      `/v1/datasets/venue`,
+      undefined,
+      undefined,
+    )
+  }
 }
 
 export default VenuesModule

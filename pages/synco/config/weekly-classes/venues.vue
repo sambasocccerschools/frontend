@@ -4,6 +4,7 @@ import { useToast } from 'vue-toast-notification'
 import type { IVenueItem, IVenueCreateItem } from '~/types/synco/index'
 // import { generalStore } from '~/stores'
 
+const updateKey = ref<number>(0)
 const blockButtons = ref(false)
 const panel = ref(false)
 const panelType = ref<string>('')
@@ -11,6 +12,7 @@ const panelType = ref<string>('')
 const { $api } = useNuxtApp()
 const toast = useToast()
 const venues = ref<IVenueItem[]>([])
+const availableVenues = ref<IVenueItem[]>([])
 const emptyVenue = ref<IVenueCreateItem>({
   area: '',
   address: '',
@@ -55,6 +57,7 @@ const getVenues = async (limit: number = 25) => {
 
 onMounted(async () => {
   await getVenues()
+  await getAvailableVenues()
 })
 
 const openPanel = (item: IVenueItem | null) => {
@@ -130,6 +133,19 @@ const restoreVenue = async (id: string) => {
   } finally {
     await getVenues()
     blockButtons.value = false
+  }
+}
+
+const getAvailableVenues = async () => {
+  try {
+    const venuesResponse = await $api.venues.availableVenues()
+    availableVenues.value = venuesResponse?.data
+    console.log(availableVenues)
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    updateKey.value++
   }
 }
 </script>
@@ -243,16 +259,6 @@ const restoreVenue = async (id: string) => {
           </div>
           <div class="card-body">
             <div class="mb-3">
-              <label for="area" class="form-label">Area</label>
-              <input
-                id="area"
-                type="text"
-                class="form-control"
-                placeholder="Chelsea"
-                v-model="selectedVenue.area"
-              />
-            </div>
-            <div class="mb-3">
               <label for="name" class="form-label">Name of Venue</label>
               <input
                 id="name"
@@ -260,6 +266,28 @@ const restoreVenue = async (id: string) => {
                 class="form-control"
                 placeholder="Chelsea Academy"
                 v-model="selectedVenue.name"
+              />
+              <!-- <UInputMenu
+                class="form-control"
+                v-model="selectedVenue.name"
+                :options="availableVenues?.map((x) => x.name)"
+                :key="updateKey"
+                :popper="{ placement: 'bottom' }"
+                :leading="true"
+              >
+                <template #option="{ option: name }">
+                  <span>{{ name }}</span>
+                </template>
+              </UInputMenu> -->
+            </div>
+            <div class="mb-3">
+              <label for="area" class="form-label">Area</label>
+              <input
+                id="area"
+                type="text"
+                class="form-control"
+                placeholder="Chelsea"
+                v-model="selectedVenue.area"
               />
             </div>
             <div class="mb-3">

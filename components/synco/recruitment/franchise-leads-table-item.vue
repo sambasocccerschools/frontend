@@ -33,8 +33,11 @@ export default {
     </td>
     <td @click="navigateToUser(1)" style="cursor: pointer">2 years</td>
     <td @click="navigateToUser(1)" style="cursor: pointer">£123,123</td>
-    <td @click="navigateToUser(1)" style="cursor: pointer">
+    <td style="cursor: pointer">
       <span class="badge bg-warning-subtle text-warning px-1"> Pending </span>
+      <button class="btn btn-light btn-sm" @click="show = !show">
+        <Icon name="mdi:chevron-down" />
+      </button>
     </td>
     <!-- pending , Rejected, recruited-->
   </tr>

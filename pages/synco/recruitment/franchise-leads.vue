@@ -30,18 +30,21 @@ export default {
             value="945"
             change="+12"
             icon="ph:users-three"
+            :removePercentage="true"
           />
           <SyncoDashboardMetricsItem
             name="Leads to assessment"
-            value="15%"
+            value="15"
             change="+100"
             icon="ph:users-three"
+            :removePercentage="true"
           />
           <SyncoDashboardMetricsItem
             name="Leads to recruitment"
             value="343"
             change=""
             icon="ph:users-three"
+            :removePercentage="true"
           />
         </div>
         <div class="d-flex justify-content-between pb-3 pt-4">
@@ -55,8 +58,10 @@ export default {
             </NuxtLink>
           </div>
         </div>
-
-        <table class="table-hover rounded-4 table border">
+        <div>
+          <SyncoDataOptions />
+        </div>
+        <table class="table-hover rounded-4 mt-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
               <th scope="col">

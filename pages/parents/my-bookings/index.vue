@@ -12,7 +12,7 @@ let bookingList = ref<IParentBookingListItem[]>([
     Address: 'The King Fahad Academy, East Acton Lane, London W3 7HD',
     Class: '4-7 years',
     Coach: 'Ethan',
-    Status: 'Complete',
+    Status: 'Pending',
   },
   {
     Date: '2024/06/15',
@@ -21,7 +21,7 @@ let bookingList = ref<IParentBookingListItem[]>([
     Address: 'The King Fahad Academy, East Acton Lane, London W3 7HD',
     Class: '4-7 years',
     Coach: 'Ethan',
-    Status: 'Complete',
+    Status: 'Success',
   },
   {
     Date: '2024/06/20',
@@ -30,7 +30,7 @@ let bookingList = ref<IParentBookingListItem[]>([
     Address: 'The King Fahad Academy, East Acton Lane, London W3 7HD',
     Class: '4-7 years',
     Coach: 'Ethan',
-    Status: 'Pending',
+    Status: 'Success',
   },
   {
     Date: '2024/07/01',
@@ -39,7 +39,7 @@ let bookingList = ref<IParentBookingListItem[]>([
     Address: 'The King Fahad Academy, East Acton Lane, London W3 7HD',
     Class: '4-7 years',
     Coach: 'Ethan',
-    Status: 'Pending',
+    Status: 'Success',
   },
   {
     Date: '2024/07/05',
@@ -48,7 +48,7 @@ let bookingList = ref<IParentBookingListItem[]>([
     Address: 'The King Fahad Academy, East Acton Lane, London W3 7HD',
     Class: '4-7 years',
     Coach: 'Ethan',
-    Status: 'Pending',
+    Status: 'Success',
   },
   {
     Date: '2024/07/10',
@@ -57,7 +57,7 @@ let bookingList = ref<IParentBookingListItem[]>([
     Address: 'The King Fahad Academy, East Acton Lane, London W3 7HD',
     Class: '4-7 years',
     Coach: 'Ethan',
-    Status: 'Pending',
+    Status: 'Success',
   },
 ])
 
@@ -180,12 +180,12 @@ const getNextMonth = (date: string): string => {
                   <span>{{ item.Address }}</span>
                 </div>
               </div>
-              <div class="col-1 p-2">
+              <!-- <div class="col-1 p-2">
                 <div class="d-flex flex-column">
                   <span class="text-muted mb-2">Class</span>
                   <span>{{ item.Class }}</span>
                 </div>
-              </div>
+              </div> -->
               <div class="col-2 p-2">
                 <div class="d-flex flex-column">
                   <span class="text-muted mb-2">Coach</span>
@@ -198,8 +198,8 @@ const getNextMonth = (date: string): string => {
                   >
                 </div>
               </div>
-              <div class="col-2 p-2">
-                <template v-if="item.Status == 'Complete'">
+              <div class="col-2 p-2" v-if="selectedBooking == 'Past'">
+                <template v-if="item.Status == 'Pending'">
                   <button
                     type="button"
                     class="btn btn-primary text-light w-100 my-4"
@@ -207,12 +207,12 @@ const getNextMonth = (date: string): string => {
                     Give Feedback
                   </button>
                 </template>
-                <template v-else-if="item.Status == 'Pending'">
+                <template v-else-if="item.Status == 'Success'">
                   <button
                     type="button"
-                    class="btn btn-warning text-light w-100 my-4"
+                    class="btn btn-success text-light w-100 my-4"
                   >
-                    Pending
+                    <Icon name="ph:check" />
                   </button>
                 </template>
               </div>

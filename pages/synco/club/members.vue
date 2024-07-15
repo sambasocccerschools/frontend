@@ -38,11 +38,17 @@ export default {
           />
         </div>
 
+        <div>
+          <SyncoDataOptions />
+        </div>
         <table class="table-hover rounded-4 mt-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
               <th scope="col">
+                <input class="form-check-input" type="checkbox" disabled />
+              </th>
+              <th scope="col" class="text-muted">
                 <label class="form-check-label text-muted" for="all-table">
                   Name
                 </label>

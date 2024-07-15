@@ -5,6 +5,7 @@ export default {
   data: () => ({
     // These will get replaces by arrays
     // coachLeads: 10,
+    showLimitInput: false,
   }),
   methods: {
     goBack() {
@@ -152,20 +153,6 @@ export default {
                       Pro Rate Lessons
                     </label>
                   </div>
-                  <div class="form-check">
-                    <input
-                      id="weekly-class-uniform-fee"
-                      class="form-check-input"
-                      type="radio"
-                      name="weekly-class-apply"
-                    />
-                    <label
-                      class="form-check-label"
-                      for="weekly-class-uniform-fee"
-                    >
-                      Uniform Fee
-                    </label>
-                  </div>
                 </div>
                 <div class="form-check mb-3">
                   <input
@@ -228,11 +215,23 @@ export default {
                     id="limit-number-of-times"
                     type="checkbox"
                     class="form-check-input"
+                    v-model="showLimitInput"
                   />
                   <label class="form-check-label" for="limit-number-of-times"
                     >Limit number of times this discount can be used in
                     total</label
                   >
+                </div>
+                <div class="form-check mb-3" v-if="showLimitInput">
+                  <label for="limit-number"
+                    >Total number of times this discount can be used</label
+                  >
+                  <input
+                    id="limit-number"
+                    type="number"
+                    min="0"
+                    class="form-control"
+                  />
                 </div>
                 <div class="form-check mb-3">
                   <input

@@ -391,7 +391,7 @@ const selectStudent = (selected: string) => {
                   </div>
 
                   <!-- Calendar Selector  -->
-                  <SyncoFilterByCalendar />
+                  <!-- <SyncoFilterByCalendar /> -->
                 </div>
               </div>
             </div>
@@ -427,7 +427,7 @@ const selectStudent = (selected: string) => {
                   class="dropdown-item my-2"
                   @click="addBooking('membership')"
                 >
-                  Book Memebership
+                  Book Membership
                 </button>
               </div>
             </div>
@@ -443,9 +443,9 @@ const selectStudent = (selected: string) => {
       </template>
       <template v-else-if="selection == 'Parent Profile'">
         <div class="d-flex flex-row p-1" style="margin-left: auto">
-          <button type="button" class="btn btn-success text-light mx-2">
+          <!-- <button type="button" class="btn btn-success text-light mx-2">
             + Add new Parent
-          </button>
+          </button> -->
         </div>
       </template>
       <template v-else-if="selection == 'Feedback'">
@@ -537,7 +537,7 @@ const selectStudent = (selected: string) => {
                 <th>Notes</th>
                 <th>User</th>
                 <th>Status</th>
-                <th>Actions</th>
+                <!-- <th>Actions</th> -->
               </tr>
             </thead>
             <tbody>
@@ -559,9 +559,9 @@ const selectStudent = (selected: string) => {
                     item.Status
                   }}</span>
                 </td>
-                <td>
+                <!-- <td>
                   <button type="button" class="btn btn-primary">Resolve</button>
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>

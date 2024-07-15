@@ -32,7 +32,7 @@ export default {
       12 months, 47.99 per months
     </td>
     <td @click="navigateToUser(1)" style="cursor: pointer">6 months</td>
-    <td @click="navigateToUser(1)" style="cursor: pointer">
+    <td style="cursor: pointer">
       <span
         v-if="status === 'waiting'"
         class="badge bg-light-subtle text-dark px-1"
@@ -42,6 +42,10 @@ export default {
       <span v-else class="badge bg-success-subtle text-success px-1">
         Active
       </span>
+
+      <button class="btn btn-light btn-sm" @click="show = !show">
+        <Icon name="mdi:chevron-down" />
+      </button>
     </td>
     <!-- Active, Waiting List, Frozen, Cancelled -->
   </tr>

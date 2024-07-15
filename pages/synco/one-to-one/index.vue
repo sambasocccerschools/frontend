@@ -78,12 +78,17 @@ export default {
             </NuxtLink>
           </div>
         </div>
-
-        <table class="table-hover rounded-4 table border">
+        <div>
+          <SyncoDataOptions />
+        </div>
+        <table class="table-hover rounded-4 mt-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
               <th scope="col">
+                <input class="form-check-input" type="checkbox" disabled />
+              </th>
+              <th scope="col" class="text-muted">
                 Parent Name
                 <!-- <label class="form-check-label text-muted" for="all-table">
                   Date
@@ -150,7 +155,10 @@ export default {
             </NuxtLink>
           </div>
         </div>
-        <table class="table-hover rounded-4 table border">
+        <div>
+          <SyncoDataOptions />
+        </div>
+        <table class="table-hover rounded-4 mt-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
               <!-- <th scope="col">
@@ -158,6 +166,9 @@ export default {
                   Date
                 </label>
               </th> -->
+              <th scope="col">
+                <input class="form-check-input" type="checkbox" disabled />
+              </th>
               <th scope="col" class="text-muted">Parent name</th>
               <th class="text-muted" scope="col">Child Age</th>
               <th class="text-muted" scope="col">Location</th>

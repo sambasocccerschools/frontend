@@ -35,6 +35,9 @@ export default {
             <tr class="table-light">
               <!-- <th scope="col">Checkbox</th> -->
               <th scope="col">
+                <input class="form-check-input" type="checkbox" disabled />
+              </th>
+              <th scope="col" class="text-muted">
                 <!-- <input class="form-check-input" type="checkbox" value="" id="all-table"> -->
                 <label class="form-check-label text-muted ms-3" for="all-table">
                   League
@@ -49,6 +52,14 @@ export default {
           </thead>
           <tbody class="">
             <tr v-for="club in clubs" class="align-middle">
+              <td>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="tomjones"
+                />
+              </td>
               <th scope="row">
                 <!-- <input class="form-check-input" type="checkbox" value="" id="chelsea"> -->
                 <label class="form-check-label text-muted ms-3">

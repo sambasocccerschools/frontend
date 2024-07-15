@@ -1,4 +1,5 @@
 <script>
+const router = useRouter()
 export default {
   data: () => ({
     // These will get replaces by arrays
@@ -15,6 +16,11 @@ export default {
       },
     ],
   }),
+  methods: {
+    async navigateToUser(id) {
+      await router.push({ path: `/synco/administration/discounts/edit/${id}` })
+    },
+  },
 }
 </script>
 
@@ -45,8 +51,10 @@ export default {
         <table class="table-hover rounded-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
-              <th scope="col">Title</th>
-              <th class="text-muted" scope="col">Method</th>
+              <th scope="col">
+                <input class="form-check-input" type="checkbox" disabled />
+              </th>
+              <th scope="col" class="text-muted">Title</th>
               <th class="text-muted" scope="col">Type</th>
               <th class="text-muted" scope="col">Used</th>
               <th class="text-muted" scope="col">Status</th>
@@ -54,19 +62,29 @@ export default {
           </thead>
           <tbody>
             <tr v-for="discount in discounts" class="align-middle">
-              <th scope="row">
+              <td>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="tomjones"
+                />
+              </td>
+              <th scope="row" @click="navigateToUser(1)">
                 {{ discount.title }} <br />
                 <small class="text-muted"
                   >{{ discount.amount }} in {{ discount.activity }}</small
                 >
               </th>
-              <td>{{ discount.method }}</td>
-              <td>{{ discount.type }}</td>
-              <td>{{ discount.used }}</td>
+              <td @click="navigateToUser(1)">{{ discount.type }}</td>
+              <td @click="navigateToUser(1)">{{ discount.used }}</td>
               <td>
                 <span class="badge bg-success-subtle text-success">{{
                   discount.status
                 }}</span>
+                <button class="btn btn-light btn-sm" @click="show = !show">
+                  <Icon name="mdi:chevron-down" />
+                </button>
               </td>
             </tr>
           </tbody>

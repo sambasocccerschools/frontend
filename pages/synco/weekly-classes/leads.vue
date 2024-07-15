@@ -35,6 +35,7 @@
             value="945"
             change="+12"
             icon="ph:users-three"
+            :removePercentage="true"
           />
           <SyncoDashboardMetricsItem
             name="Leads to trials"
@@ -61,8 +62,11 @@
             </NuxtLink>
           </div>
         </div>
+        <div>
+          <SyncoDataOptions />
+        </div>
 
-        <table class="table-hover rounded-4 table border">
+        <table class="table-hover rounded-4 mt-4 table border">
           <thead class="rounded-top-4">
             <tr class="table-light">
               <th scope="col">
