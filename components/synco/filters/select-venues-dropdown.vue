@@ -1,3 +1,15 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const regions = ref([
+  { label: 'Select from drop down', value: '' },
+  { label: 'North London', value: 1 },
+  { label: 'East London', value: 2 },
+  { label: 'South London', value: 3 },
+  { label: 'West London', value: 4 },
+])
+</script>
+
 <template>
   <div class="btn-group w-100">
     <button
@@ -15,7 +27,19 @@
       </li>
 
       <form class="px-4 py-3">
-        <div class="form-check d-flex align-items-center mb-2">
+        <div class="form-group w-100 mb-3">
+          <label for="Region" class="form-labelform-label-light">Region</label>
+          <select id="Region" class="form-control form-control-lg">
+            <option
+              v-for="(channel, index) in regions"
+              :value="channel.value"
+              :key="index"
+            >
+              {{ channel.label }}
+            </option>
+          </select>
+        </div>
+        <!-- <div class="form-check d-flex align-items-center mb-2">
           <input id="region-1" type="checkbox" class="form-check-input me-2" />
           <label class="form-check-label" for="region-1"> Region One </label>
         </div>
@@ -26,7 +50,7 @@
         <div class="form-check d-flex align-items-center mb-2">
           <input id="region-3" type="checkbox" class="form-check-input me-2" />
           <label class="form-check-label" for="region-3"> Region Three </label>
-        </div>
+        </div> -->
         <div class="form-check d-flex align-items-center mb-2">
           <input
             id="marylebone"

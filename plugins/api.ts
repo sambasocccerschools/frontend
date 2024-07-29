@@ -7,6 +7,10 @@ import UsersModule from '~/repository/modules/users'
 
 import WeeklyClassesModule from '~/repository/modules/weekly-classes'
 import VenuesModule from '~/repository/modules/synco/venues'
+import ClassesModule from '~/repository/modules/synco/classes'
+import TermsModule from '~/repository/modules/synco/terms'
+import SessionPlansModule from '~/repository/modules/synco/session-plans'
+import AbilityGroupsModule from '~/repository/modules/synco/ability-groups'
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
@@ -16,6 +20,10 @@ interface IApiInstance {
   profile: ProfileModule
   users: UsersModule
   venues: VenuesModule
+  classes: ClassesModule
+  terms: TermsModule
+  sessionPlans: SessionPlansModule
+  abilityGroups: AbilityGroupsModule
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -41,6 +49,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     profile: new ProfileModule(apiFetcher),
     users: new UsersModule(apiFetcher),
     venues: new VenuesModule(apiFetcher),
+    classes: new ClassesModule(apiFetcher),
+    terms: new TermsModule(apiFetcher),
+    sessionPlans: new SessionPlansModule(apiFetcher),
+    abilityGroups: new AbilityGroupsModule(apiFetcher),
   }
   return {
     provide: {

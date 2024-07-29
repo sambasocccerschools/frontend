@@ -68,12 +68,12 @@ export default {
   <NuxtLayout name="syncolayout">
     <div class="d-flex align-items-center mb-4">
       <h4 class="me-5">Create Session Plans</h4>
-      <button class="btn text-light btn-sm btn-primary me-3">4 Days</button>
+      <!-- <button class="btn text-light btn-sm btn-primary me-3">4 Days</button>
       <button class="btn btn-sm btn-light border">5 Days</button>
       <span class="text-danger"
         >Where do you set these options?, you can filter by list AND days
         ?</span
-      >
+      > -->
     </div>
 
     <div class="row">

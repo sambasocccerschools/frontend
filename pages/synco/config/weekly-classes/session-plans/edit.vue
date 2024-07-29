@@ -82,6 +82,9 @@ const selectInformation = (selected: string) => {
 const selectNotification = (selected: string) => {
   notificationSelection.value = selected
 }
+onMounted(() => {
+  console.log('pages/synco/config/weekly-classes/session-plans/edit.vue')
+})
 </script>
 
 <template>

@@ -1,35 +1,164 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { ITermCard, ITermItem, ITermHeader } from '~/types/index'
+import { useToast } from 'vue-toast-notification'
+import type {
+  ITermItem,
+  ITermCreateItem,
+  ISessionCreateItem,
+  IPlanCreateItem,
+} from '~/types/synco/index'
 
-let header = ref<ITermHeader>({
-  Name: '',
-  Seasson: '',
-  StartDate: '',
-  EndDate: '',
-  ExclusionDates: [''],
-})
-let item = ref<ITermItem>({
-  SessionNumber: 1,
-  Beginner: '',
-  Intermediate: '',
-  Advanced: '',
-  Pro: '',
-})
-let term = ref<ITermCard>({
-  Header: header.value,
-  Items: [],
-}).value
+const router = useRouter()
+const { $api } = useNuxtApp()
+const blockButtons = ref(false)
+const toast = useToast()
 
 let showAssignSessionCard = ref<boolean>(false)
+let term = ref<ITermItem>({
+  id: 0,
+  created_at: null,
+  deleted_at: null,
+  end_date: '',
+  half_term_date: '',
+  name: '',
+  season: {
+    created_at: null,
+    deleted_at: null,
+    id: 0,
+    title: '',
+  },
+  start_date: '',
+  sessions: [],
+})
+let emptyTermItem = ref<ITermCreateItem>({
+  name: '',
+  season_id: 0,
+  start_date: '',
+  end_date: '',
+  half_term_date: '',
+  sessions: [],
+})
 
-const toggleAssignSessionCard = (selected: string) => {
+let selectedSessionId = ref<number>(-1)
+let selectedPlanId = ref<number>(-1)
+let selectedSessionPlanId = ref<number>(-1)
+let selectedAbilityId = ref<number>(-1)
+
+const assignSelectedSession = (selected: any) => {
+  if (selected != '') {
+    // getTerms()
+    selectedPlanId.value = selected?.planId
+    selectedAbilityId.value = selected?.abilityId
+    selectedSessionPlanId.value = selected?.sessionPlanId
+    selectedSessionId.value = selected?.sessionId
+  }
+  toggleAssignSessionCard()
+}
+
+const assignPlan = (selected: any) => {
+  if (!term.value) return
+  let inUseSession = term.value.sessions.find(
+    (x) => x.id == selectedSessionId.value,
+  )
+  let sessions = term.value.sessions.filter(
+    (x) => x.id != selectedSessionId.value,
+  )
+  let inUsePlan = inUseSession?.plans.find(
+    (x) => x.ability_group.id == selectedAbilityId.value,
+  )
+  let plans = inUseSession?.plans.filter(
+    (x) => x.ability_group.id != selectedAbilityId.value,
+  )
+  if (!!inUsePlan && !!inUseSession) {
+    inUsePlan.session_plan.id = selected.id
+    inUsePlan.session_plan.title = selected.title
+    plans?.push(inUsePlan)
+    sessions.push(inUseSession)
+    term.value.sessions = sessions
+  }
+  toggleAssignSessionCard()
+}
+// const assignPlan = (selected: any) => {
+//   let inUseSession = term.value.sessions.find(
+//     (x) => x.id == selectedSessionPlanId.value,
+//   )
+//   let sessions = term.value.sessions.filter(
+//     (x) => x.id != selectedSessionPlanId.value,
+//   )
+//   let inUsePlan = inUseSession?.plans.find(
+//     (x) => x.ability_group.id == selectedAbilityId.value,
+//   )
+//   let plans = inUseSession?.plans.filter(
+//     (x) => x.ability_group.id != selectedAbilityId.value,
+//   )
+//   if (!!inUsePlan && !!inUseSession) {
+//     inUsePlan.session_plan.id = selected.id
+//     inUsePlan.session_plan.title = selected.title
+//     plans?.push(inUsePlan)
+//     sessions.push(inUseSession)
+//     term.value.sessions = sessions
+//   }
+//   toggleAssignSessionCard()
+// }
+const toggleAssignSessionCard = async () => {
   showAssignSessionCard.value = !showAssignSessionCard.value
+}
+
+onMounted(() => {
+  console.log('pages/synco/config/weekly-classes/terms/create/index.vue')
+})
+
+let createTerm = ref<ITermCreateItem | null>(null)
+const postTerm = async () => {
+  if (term.value == null || createTerm.value == null) return
+  try {
+    const termResponse = await $api.terms.create(createTerm.value)
+    await router.push({ path: `/synco/config/weekly-classes/terms` })
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+  }
+}
+const save = () => {
+  let currentTerm = term.value
+  if (currentTerm != null) {
+    let sessions = currentTerm.sessions
+    let newSessionObject: ISessionCreateItem[] = []
+    sessions.forEach((session) => {
+      return session
+    })
+    sessions.forEach((x) => {
+      let plans: IPlanCreateItem[] = []
+      x.plans.forEach((plan) => {
+        plans.push({
+          ability_group_id: plan.ability_group.id,
+          session_plan_id: plan.session_plan.id,
+        })
+      })
+      let session: ISessionCreateItem = {
+        plans: plans,
+      }
+      newSessionObject.push(session)
+    })
+    createTerm.value = {
+      name: currentTerm.name,
+      end_date: currentTerm.end_date,
+      half_term_date: currentTerm.half_term_date,
+      season_id: currentTerm.season.id,
+      start_date: currentTerm.start_date,
+      sessions: newSessionObject,
+    }
+    postTerm()
+  } else close()
+}
+const restartTerm = () => {
+  createTerm.value = JSON.parse(JSON.stringify(emptyTermItem.value))
 }
 </script>
 
 <template>
-  <NuxtLayout name="syncolayout">
+  <NuxtLayout name="syncolayout" pageTitle="Create Term">
     <div class="card rounded-4">
       <div class="row">
         <div class="col-1"></div>
@@ -73,7 +202,8 @@ const toggleAssignSessionCard = (selected: string) => {
         <div class="col-6">
           <SyncoConfigTermsTermCard
             :term="term"
-            @toggle-assign-session-card="toggleAssignSessionCard"
+            :sessions="emptyTermItem"
+            @assign-selected-session="assignSelectedSession"
           ></SyncoConfigTermsTermCard>
         </div>
         <div class="col-3"></div>
@@ -81,10 +211,22 @@ const toggleAssignSessionCard = (selected: string) => {
       <div class="row mb-4 pb-4">
         <div class="col-3"></div>
         <div class="col-3">
-          <button class="btn btn-outline-secondary w-100">Cancel</button>
+          <button
+            class="btn btn-outline-secondary w-100"
+            :disabled="blockButtons"
+            @click="restartTerm"
+          >
+            Cancel
+          </button>
         </div>
         <div class="col-3">
-          <button class="btn btn-primary text-light w-100">Add term</button>
+          <button
+            class="btn btn-primary text-light w-100"
+            :disabled="blockButtons"
+            @click="save"
+          >
+            Add term
+          </button>
         </div>
         <div class="col-3"></div>
       </div>
@@ -101,7 +243,12 @@ const toggleAssignSessionCard = (selected: string) => {
           <div class="modal-content">
             <SyncoConfigTermsSessionPlanCard
               :term="term"
-              @toggle-assign-session-card="toggleAssignSessionCard"
+              :plan-id="selectedPlanId"
+              :session-plan-id="selectedSessionPlanId"
+              :session-id="selectedSessionId"
+              :ability-id="selectedAbilityId"
+              @toggle-assign-session-card="assignSelectedSession"
+              @assign-plan="assignPlan"
             ></SyncoConfigTermsSessionPlanCard>
           </div>
         </div>

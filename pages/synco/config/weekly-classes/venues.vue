@@ -44,6 +44,14 @@ const selectedVenue = ref<IVenueCreateItem>({
   subscriptionPlans: [1],
 })
 
+const regions = ref([
+  { label: 'Select from drop down', value: '' },
+  { label: 'North London', value: 1 },
+  { label: 'East London', value: 2 },
+  { label: 'South London', value: 3 },
+  { label: 'West London', value: 4 },
+])
+
 const getVenues = async (limit: number = 25) => {
   try {
     const venuesResponse = await $api.venues.getAll('weekly-classes', limit)
@@ -56,6 +64,7 @@ const getVenues = async (limit: number = 25) => {
 }
 
 onMounted(async () => {
+  console.log('pages/synco/config/weekly-classes/venues.vue')
   await getVenues()
   await getAvailableVenues()
 })
@@ -386,7 +395,25 @@ const getAvailableVenues = async () => {
             </div>
 
             <div class="mb-3">
-              <label for="region" class="form-label">Region</label>
+              <div class="form-group w-100 mb-3">
+                <label for="Region" class="form-labelform-label-light"
+                  >Region</label
+                >
+                <select
+                  id="Region"
+                  class="form-control form-control-lg"
+                  v-model="selectedVenue.region"
+                >
+                  <option
+                    v-for="(channel, index) in regions"
+                    :value="channel.value"
+                    :key="index"
+                  >
+                    {{ channel.label }}
+                  </option>
+                </select>
+              </div>
+              <!-- <label for="region" class="form-label">Region</label>
               <select
                 id="region"
                 class="form-select"
@@ -397,7 +424,7 @@ const getAvailableVenues = async () => {
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
-              </select>
+              </select> -->
             </div>
 
             <div class="d-flex gap-4">

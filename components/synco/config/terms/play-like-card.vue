@@ -4,11 +4,11 @@
       <div class="d-flex flex-column">
         <div class="d-flex flex-column">
           <span class="text-muted"> Title </span>
-          <span>BVPELE1</span>
+          <span>{{ sessionPlan.title }}</span>
         </div>
         <div class="d-flex flex-column mt-2">
           <span class="text-muted"> Player </span>
-          <span>PELE</span>
+          <span>{{ sessionPlan.player }}</span>
         </div>
       </div>
       <div>
@@ -19,7 +19,7 @@
                 class="d-flex flex-column align-items-center justify-content-center h-100 text-light font-custom"
               >
                 <span> PLAY LIKE </span>
-                <span class="h3"> Pele </span>
+                <span class="h3"> {{ sessionPlan.player }} </span>
               </div>
             </div>
             <div class="col-7">
@@ -45,6 +45,20 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { ISessionPlanObject } from '~/types/synco/index'
+
+const props = defineProps<{
+  sessionPlan: ISessionPlanObject
+}>()
+
+let sessionPlan = ref<ISessionPlanObject>(props.sessionPlan).value
+onMounted(() => {
+  console.log('components/synco/config/terms/play-like-card.vue')
+})
+</script>
 
 <style scoped lang="scss">
 .badge.badge-blue {

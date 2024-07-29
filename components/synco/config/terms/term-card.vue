@@ -1,10 +1,10 @@
 <template>
-  <div class="card">
+  <div class="card" :key="updateKey">
     <div class="card-header">
       <slot name="header"></slot>
     </div>
     <div class="card-body">
-      <div class="row">
+      <div class="row" v-if="term != null">
         <div class="col-12 my-1">
           <label for="term-name">Term name</label>
           <input
@@ -13,19 +13,38 @@
             class="form-control mt-2"
             placeholder="Autumn 23 Saturdays"
             name="term-name"
-            v-model="term.Header.Name"
+            v-model="term.name"
           />
         </div>
         <div class="col-12 my-1">
-          <label for="term">Term</label>
+          <div class="form-group w-100 mb-3">
+            <label for="seasons" class="form-labelform-label-light"
+              >Season</label
+            >
+            <select
+              id="seasons"
+              class="form-control form-control-lg"
+              v-model="term.season.id"
+              @change="seasonChange"
+            >
+              <option
+                v-for="(season, index) in seasons"
+                :value="season.id"
+                :key="index"
+              >
+                {{ season.title }}
+              </option>
+            </select>
+          </div>
+          <!-- <label for="term">Term</label>
           <input
             id="term"
             type="text"
             class="form-control mt-2"
             placeholder="Autumn"
             name="term"
-            v-model="term.Header.Seasson"
-          />
+            v-model="term.season.title"
+          /> -->
         </div>
         <div class="col-6 my-1">
           <label for="start-date">Start date</label>
@@ -34,7 +53,8 @@
             type="text"
             class="form-control mt-2"
             name="start-date"
-            v-model="term.Header.StartDate"
+            placeholder="yyyy-mm-dd"
+            v-model="term.start_date"
           />
         </div>
         <div class="col-6 my-1">
@@ -44,7 +64,8 @@
             type="text"
             class="form-control mt-2"
             name="end-date"
-            v-model="term.Header.EndDate"
+            placeholder="yyyy-mm-dd"
+            v-model="term.end_date"
           />
         </div>
         <div class="col-6 my-1">
@@ -56,7 +77,8 @@
             type="text"
             class="form-control mt-2"
             name="half-term-exclusion-date"
-            v-model="term.Header.ExclusionDates"
+            placeholder="yyyy-mm-dd"
+            v-model="term.half_term_date"
           />
         </div>
         <div class="col-6 my-1"></div>
@@ -70,13 +92,17 @@
             <div class="card-header bg-gray border-0">
               <span>
                 <strong>
-                  {{ term.Header.Name ? term.Header.Name : '{Term name}' }} |
-                  {{ term.Header.Seasson ? term.Header.Seasson : '{Seasson}' }}
+                  {{ term?.name ? term?.name : '{Term name}' }} |
+                  {{ term?.season.title ? term?.season.title : '{Seasson}' }}
                   Term |
                   {{
-                    term.Items.length > 1
-                      ? `${term.Items.length + 1} Sessions`
-                      : `${term.Items.length + 1} Session`
+                    sessions != null
+                      ? 'Session'
+                      : term != null
+                        ? term.sessions.length > 1
+                          ? `${term.sessions.length + 1} Sessions`
+                          : `${term.sessions.length + 1} Session`
+                        : ''
                   }}
                 </strong>
               </span>
@@ -85,20 +111,22 @@
               class="card-body bg-gray border-0"
               style="overflow: scroll; max-height: 35vh"
             >
-              <template v-for="item in term.Items">
+              <template v-for="item in term?.sessions">
                 <SyncoConfigTermsMapSessionCard
-                  :item="item"
-                  @toggle-assign-session-card="toggleAssignSessionCard"
+                  :item="null"
+                  :session-item="item"
+                  :session-id="item.id"
+                  @toggle-assign-session-card="assignSelectedSession"
+                  @remove-session="removeSession"
                 ></SyncoConfigTermsMapSessionCard>
               </template>
-
-              <SyncoConfigTermsMapSessionCard
-                :item="termItem"
-                @toggle-assign-session-card="toggleAssignSessionCard"
-              ></SyncoConfigTermsMapSessionCard>
             </div>
             <div class="card-footer bg-gray border-0">
-              <a type="button" class="btn btn-sm btn-outline-primary border-0">
+              <a
+                type="button"
+                class="btn btn-sm btn-outline-primary border-0"
+                @click="addNewSession"
+              >
                 Add new session
               </a>
             </div>
@@ -113,26 +141,150 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { ITermCard, ITermItem } from '~/types/index'
+// import type { ITermCard, ITermItem } from '~/types/index'
+import { useToast } from 'vue-toast-notification'
+import type {
+  ITermItem,
+  ITermCreateItem,
+  // ISessionCreateItem,
+  ITermEditItem,
+  ISeasonItem,
+  IAbilityGroupObject,
+  IAbilityGroupItem,
+  IPlanItem,
+} from '~/types/synco/index'
 
 const props = defineProps<{
-  term: ITermCard
+  term: ITermItem | null
+  sessions: ITermCreateItem | ITermEditItem | null
 }>()
 
-let term = ref<ITermCard>(props.term).value
+const { $api } = useNuxtApp()
+const toast = useToast()
+let updateKey = ref<number>(0)
 
-let termItem = ref<ITermItem>({
-  SessionNumber: 2,
-  Beginner: '',
-  Intermediate: '',
-  Advanced: '',
-  Pro: '',
-}).value
+let term = ref<ITermItem | null>(props.term).value
+let sessions = ref<ITermCreateItem | ITermEditItem | null>(props.sessions).value
 
-const emit = defineEmits(['toggleAssignSessionCard'])
+let seasons = ref<ISeasonItem[]>([])
 
-const toggleAssignSessionCard = (selected: string) => {
-  emit('toggleAssignSessionCard', selected)
+// let termItem = ref<ISessionCreateItem>({
+//   plans: [],
+// }).value
+
+const emit = defineEmits([
+  'toggleAssignSessionCard',
+  'assignSelectedSession',
+  'assignPlan',
+])
+
+const assignSelectedSession = (selected: any) => {
+  emit('assignSelectedSession', selected)
+  // emit('toggleAssignSessionCard')
+}
+// const toggleAssignSessionCard = (selected: any) => {
+//   emit('toggleAssignSessionCard', selected)
+// }
+
+const assignPlan = (selected: any) => {
+  emit('assignPlan', selected)
+}
+onMounted(async () => {
+  console.log('components/synco/config/terms/term-card.vue')
+  getSeasons()
+  if (!!term) {
+    term.start_date = cleanDate(term?.start_date)
+    term.end_date = cleanDate(term?.end_date)
+    term.half_term_date = cleanDate(term?.half_term_date)
+  }
+  getAbilityGroups()
+})
+const cleanDate = (date: string) => {
+  let cleanedDate = date
+  if (date.includes('T')) {
+    cleanedDate = date.split('T')[0]
+  }
+  return cleanedDate
+}
+
+const getSeasons = async () => {
+  try {
+    const seasonsResponse = await $api.datasets.getSeasons()
+    seasons.value = seasonsResponse?.data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+  }
+}
+
+const addNewSession = () => {
+  let groups: IAbilityGroupItem[] = []
+  abilityGroups.value.forEach((x) => {
+    groups.push({
+      id: x.id,
+      name: x.name,
+    })
+  })
+  let plans: IPlanItem[] = []
+  groups?.forEach((x) => {
+    plans.push({
+      id: 0,
+      session_plan: {
+        id: 0,
+        title: '',
+      },
+      ability_group: x,
+    })
+  })
+  term?.sessions?.push({
+    created_at: null,
+    deleted_at: null,
+    id: updateKey.value,
+    plans: plans,
+  })
+  updateKey.value--
+}
+
+let abilityGroups = ref<IAbilityGroupObject[]>([])
+const getAbilityGroups = async () => {
+  try {
+    const abilityGroupsResponse = await $api.abilityGroups.getAll(
+      'weekly-classes',
+      null,
+    )
+    abilityGroups.value = abilityGroupsResponse?.data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+  }
+}
+
+const removeSession = (sessionId: number) => {
+  let sessionToRemove = term?.sessions.find((x) => x.id == sessionId)
+  if (!!sessionToRemove && !!term) {
+    let session = term?.sessions?.filter(
+      (x) => JSON.stringify(x) != JSON.stringify(sessionToRemove),
+    )
+    term.sessions = session
+    updateKey.value--
+  }
+}
+
+const seasonChange = (event: any) => {
+  let id = event?.target.value
+  if (!!id && !!term) {
+    let season = seasons.value.find((x) => x.id == id)
+    if (!!season) {
+      term.season = {
+        created_at: season.created_at,
+        deleted_at: season.deleted_at,
+        id: season.id,
+        title: season.title,
+      }
+    }
+  }
 }
 </script>
 

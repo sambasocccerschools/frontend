@@ -1,15 +1,67 @@
-<script>
-export default {
-  data: () => ({
-    abilityGroups: [
-      { name: 'Beginners', ages: '4-5 years' },
-      { name: 'Intermediate', ages: '6-7 years' },
-      { name: 'Advanced', ages: '8-9 years' },
-      { name: 'Pro', ages: '10-12 years' },
-    ],
-    sessions: 7,
-  }),
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useToast } from 'vue-toast-notification'
+import type {
+  IAbilityGroupObject,
+  ISessionPlanObject,
+} from '~/types/synco/index'
+
+const { $api } = useNuxtApp()
+const toast = useToast()
+
+let isLoading = ref<boolean>(false)
+let blockButtons = ref<boolean>(false)
+
+let abilityGroups = ref<IAbilityGroupObject[]>([])
+const getAbilityGroups = async () => {
+  try {
+    isLoading.value = true
+    blockButtons.value = true
+    const abilityGroupsResponse = await $api.abilityGroups.getAll(
+      'weekly-classes',
+      null,
+    )
+    abilityGroups.value = abilityGroupsResponse?.data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    isLoading.value = false
+    blockButtons.value = false
+  }
 }
+
+let sessionPlans = ref<ISessionPlanObject[]>([])
+const getSessionPlans = async (abilityId: number) => {
+  try {
+    isLoading.value = true
+    blockButtons.value = true
+    const sessionPlansResponse =
+      await $api.sessionPlans.getByAbilityGroup(abilityId)
+    sessionPlans.value = sessionPlansResponse?.data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    isLoading.value = false
+    blockButtons.value = false
+  }
+}
+
+let selectedAbilityGroupId = ref<number>(-1)
+const selectAbilityGroup = (id: number) => {
+  if (blockButtons.value) return
+  sessionPlans.value = []
+  selectedAbilityGroupId.value = id
+  getSessionPlans(id)
+}
+
+onMounted(async () => {
+  console.log('pages/synco/config/weekly-classes/session-plans/index.vue')
+  await getAbilityGroups()
+  console.log(abilityGroups.value)
+  selectAbilityGroup(abilityGroups.value[0].id)
+})
 </script>
 
 <template>
@@ -25,12 +77,21 @@ export default {
             <li
               v-for="group in abilityGroups"
               class="list-group-item list-group-item-action border-top d-flex w-100 rounded-0 border-bottom-0 border-end-0 border-start-0 border py-3"
+              @click="selectAbilityGroup(group.id)"
+              :class="selectedAbilityGroupId == group.id ? 'text-primary' : ''"
             >
               <span class="w-100 d-flex">
-                <img src="@/src/assets/img-avatar-ability-group.png" />
+                <!-- <img src="@/src/assets/img-avatar-ability-group.png"/> -->
+                <img
+                  :src="group.icon.url"
+                  :alt="group.icon.name"
+                  height="38px"
+                />
                 <span class="d-flex flex-column ms-3">
                   <strong>{{ group.name }}</strong>
-                  <span class="text-muted">{{ group.ages }}</span>
+                  <span class="text-muted">
+                    {{ `${group?.min_age} to ${group?.max_age}` }}
+                  </span>
                 </span>
               </span>
             </li>
@@ -44,17 +105,17 @@ export default {
               <span class="h3 my-3">
                 <strong>BEGINNER SESSION PLANS</strong>
               </span>
-              <div v-for="session in sessions" class="col-auto my-2" @click="">
+              <div v-for="session in sessionPlans" class="col-auto my-2">
                 <NuxtLink
                   class=""
-                  to="/synco/config/weekly-classes/session-plans/edit"
+                  :to="`/synco/config/weekly-classes/session-plans/edit?sessionPlanId=${session.id}`"
                 >
                   <div class="card plan-item border">
                     <div
                       class="card-body d-flex align-items-center flex-column justify-content-center"
                     >
                       <Icon name="ph:pencil-simple-line" />
-                      <span>BCPELE</span>
+                      <span>{{ session.title }}</span>
                     </div>
                   </div>
                 </NuxtLink>
@@ -62,7 +123,7 @@ export default {
               <div class="col-auto my-2">
                 <NuxtLink
                   class=""
-                  to="/synco/config/weekly-classes/session-plans/create"
+                  :to="`/synco/config/weekly-classes/session-plans/create?abilityId=${selectedAbilityGroupId}`"
                 >
                   <div class="card plan-item border-dashed">
                     <div

@@ -2,65 +2,27 @@
   <div class="card my-2 border">
     <div class="card-header px-3 py-1">
       <div class="d-flex justify-content-between flex-row">
-        <span>Session {{ item.SessionNumber }}</span>
-        <a type="button" class="btn btn-sm btn-outline-danger border-0">
+        <span>Session {{ sessionId }}</span>
+        <a
+          type="button"
+          class="btn btn-sm btn-outline-danger border-0"
+          @click="removeSession"
+        >
           Remove
         </a>
       </div>
     </div>
     <div class="card-body px-3 py-1 text-sm">
-      <div class="row">
-        <div class="col-3 text-muted">Beginners</div>
+      <div class="row" v-for="plan in sessionItem?.plans">
+        <div class="col-3 text-muted">{{ plan.ability_group.name }}</div>
         <div class="col-9">
-          {{ item.Beginner }}
+          {{ plan.session_plan.title }}
           <a
             type="button"
             class="btn btn-sm btn-outline-primary border-0"
-            @click="toggleAssignSessionCard(item.SessionNumber.toString())"
+            @click="toggleAssignSessionCard(plan)"
           >
-            <span v-if="item.Beginner">Change Session</span>
-            <span v-else>Assign Session Plan</span>
-          </a>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3 text-muted">Intermediate</div>
-        <div class="col-9">
-          {{ item.Intermediate }}
-          <a
-            type="button"
-            class="btn btn-sm btn-outline-primary border-0"
-            @click="toggleAssignSessionCard(item.SessionNumber.toString())"
-          >
-            <span v-if="item.Intermediate">Change Session</span>
-            <span v-else>Assign Session Plan</span>
-          </a>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3 text-muted">Advanced</div>
-        <div class="col-9">
-          {{ item.Advanced }}
-          <a
-            type="button"
-            class="btn btn-sm btn-outline-primary border-0"
-            @click="toggleAssignSessionCard(item.SessionNumber.toString())"
-          >
-            <span v-if="item.Advanced">Change Session</span>
-            <span v-else>Assign Session Plan</span>
-          </a>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3 text-muted">Pro</div>
-        <div class="col-9">
-          {{ item.Pro }}
-          <a
-            type="button"
-            class="btn btn-sm btn-outline-primary border-0"
-            @click="toggleAssignSessionCard(item.SessionNumber.toString())"
-          >
-            <span v-if="item.Pro">Change Session</span>
+            <span v-if="plan.session_plan.id != 0">Change Session</span>
             <span v-else>Assign Session Plan</span>
           </a>
         </div>
@@ -71,18 +33,40 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { ITermItem } from '~/types/index'
+import type {
+  ISessionEditItem,
+  ISessionCreateItem,
+  ISessionItem,
+  IPlanItem,
+} from '~/types/synco/index'
 
 const props = defineProps<{
-  item: ITermItem
+  item: ISessionCreateItem | ISessionEditItem | null
+  sessionItem: ISessionItem | null
+  sessionId: number
 }>()
 
-let item = ref<ITermItem>(props.item).value
+let item = ref<ISessionCreateItem | ISessionEditItem | null>(props.item).value
+let sessionItem = ref<ISessionItem | null>(props.sessionItem).value
+let sessionId = ref<number>(props.sessionId).value
 
-const emit = defineEmits(['toggleAssignSessionCard'])
+const emit = defineEmits(['toggleAssignSessionCard', 'removeSession'])
 
-const toggleAssignSessionCard = (selected: string) => {
-  emit('toggleAssignSessionCard', selected)
+const toggleAssignSessionCard = (plan: IPlanItem) => {
+  emit('toggleAssignSessionCard', {
+    selected: '+',
+    sessionId,
+    planId: plan.id,
+    abilityId: plan.ability_group.id,
+    sessionPlanId: plan.session_plan.id,
+  })
+}
+onMounted(() => {
+  console.log('components/synco/config/terms/map-session-card.vue')
+})
+
+const removeSession = () => {
+  emit('removeSession', sessionId)
 }
 </script>
 

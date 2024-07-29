@@ -118,11 +118,13 @@ const login = async () => {
       .then((response) => {
         console.log('response', response)
         store.setUser(response?.data)
+        store.updateAuthenticated(true)
       })
 
-    await navigateTo({
-      path: '/synco/dashboard',
-    })
+    window.location.href = '/synco/dashboard'
+    // await navigateTo({
+    //   path: '/synco/dashboard',
+    // })
   } catch (error: any) {
     toast.error(error?.data?.messages)
   } finally {
