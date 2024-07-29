@@ -1,24 +1,27 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { ITermCard } from '~/types/index'
+import type { ITermItem } from '~/types/synco/index'
 
 const props = defineProps<{
-  term: ITermCard
+  term: ITermItem
 }>()
 
 let showSessionPlans = ref<boolean>(false)
-let term = ref<ITermCard>(props.term).value
+let term = ref<ITermItem>(props.term).value
 
 const toggleSessionPlans = () => {
   showSessionPlans.value = !showSessionPlans.value
 }
+onMounted(() => {
+  console.log('components/synco/config/schedule-classes/term-card.vue')
+})
 </script>
 <template>
   <div class="card rounded-4 m-2 border">
     <div class="card-header">
       <div class="row align-items-center">
         <div class="col-auto">
-          <strong>{{ term.Header.Name }}</strong>
+          <strong>{{ term.name }}</strong>
         </div>
         <div class="d-flex col-auto flex-row">
           <div class="me-2">
@@ -26,56 +29,35 @@ const toggleSessionPlans = () => {
           </div>
           <div class="d-flex flex-column">
             <span>Term seasons</span>
-            <span class="text-muted">{{ term.Header.Seasson }}</span>
+            <span class="text-muted">{{ term.season.title }}</span>
           </div>
         </div>
         <div class="d-flex flex-column col-auto">
           <span>Start and end date</span>
           <span class="text-muted"
-            >{{ term.Header.StartDate }} - {{ term.Header.EndDate }}</span
+            >{{ term.start_date }} - {{ term.end_date }}</span
           >
         </div>
         <div class="d-flex flex-column col-auto">
           <span>Half-Term Exclusion Date(s)</span>
           <span>
-            <span
-              class="text-muted"
-              v-for="(exclusionDate, index) in term.Header.ExclusionDates"
-            >
-              {{ exclusionDate
-              }}{{ index + 1 == term.Header.ExclusionDates.length ? '' : ', ' }}
+            <span class="text-muted">
+              {{ term.half_term_date }}
             </span>
           </span>
         </div>
       </div>
     </div>
     <div class="card-body bg-gray border-0" v-if="showSessionPlans">
-      <template v-for="item in term.Items">
+      <template v-for="item in term.sessions">
         <div class="row align-items-center">
           <div class="col-auto">
-            <span class="text-sm">Session {{ item.SessionNumber }}</span>
+            <span class="text-sm">Session {{ item.id }}</span>
           </div>
-          <div class="col-auto">
+          <div class="col-auto" v-for="plan in item.plans">
             <span class="text-sm"
-              ><span class="text-muted">Beginners</span>
-              {{ item.Beginner }}</span
-            >
-          </div>
-          <div class="col-auto">
-            <span class="text-sm"
-              ><span class="text-muted">Intermediate</span>
-              {{ item.Intermediate }}</span
-            >
-          </div>
-          <div class="col-auto">
-            <span class="text-sm"
-              ><span class="text-muted">Advanced</span>
-              {{ item.Advanced }}</span
-            >
-          </div>
-          <div class="col-auto">
-            <span class="text-sm"
-              ><span class="text-muted">Pro</span> {{ item.Pro }}</span
+              ><span class="text-muted">{{ plan.ability_group.name }}</span>
+              {{ plan.session_plan.title }}</span
             >
           </div>
         </div>

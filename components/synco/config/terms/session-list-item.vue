@@ -1,51 +1,16 @@
 <template>
   <div class="d-flex justify-content-between flex-row">
     <div class="">
-      <span class="text-sm">Session {{ term.SessionNumber }}</span>
+      <span class="text-sm">Session {{ session?.id }}</span>
     </div>
-    <div class="">
-      <span class="text-sm"
-        ><span class="text-muted">Beginners</span> {{ term.Beginner }}
+    <div class="" v-for="plan in session?.plans">
+      <span class="text-sm">
+        <span class="text-muted">{{ plan.ability_group.name }}: </span>
+        <span>{{ plan.session_plan.title }}</span>
         <a
           type="button"
           class="btn btn-outline-primary border-0"
-          @click="toggleAssignSessionCard('Beginners')"
-        >
-          Change
-        </a></span
-      >
-    </div>
-    <div class="">
-      <span class="text-sm"
-        ><span class="text-muted">Intermediate</span> {{ term.Intermediate }}
-        <a
-          type="button"
-          class="btn btn-outline-primary border-0"
-          @click="toggleAssignSessionCard('Intermediate')"
-        >
-          Change
-        </a></span
-      >
-    </div>
-    <div class="">
-      <span class="text-sm"
-        ><span class="text-muted">Advanced</span> {{ term.Advanced }}
-        <a
-          type="button"
-          class="btn btn-outline-primary border-0"
-          @click="toggleAssignSessionCard('Advanced')"
-        >
-          Change
-        </a></span
-      >
-    </div>
-    <div class="">
-      <span class="text-sm"
-        ><span class="text-muted">Pro</span> {{ term.Pro }}
-        <a
-          type="button"
-          class="btn btn-outline-primary border-0"
-          @click="toggleAssignSessionCard('Pro')"
+          @click="toggleAssignSessionCard(plan)"
         >
           Change
         </a></span
@@ -55,19 +20,30 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { ITermItem } from '~/types/index'
+import type { ISessionItem, IPlanItem } from '~/types/synco/index'
 
 const props = defineProps<{
-  item: ITermItem
+  session: ISessionItem | null
+  sessionId: number
 }>()
 
-let term = ref<ITermItem>(props.item).value
+let session = ref<ISessionItem | null>(props.session).value
+let sessionId = ref<number>(props.sessionId).value
 
 const emit = defineEmits(['toggleAssignSessionCard'])
 
-const toggleAssignSessionCard = (selected: string) => {
-  emit('toggleAssignSessionCard', selected)
+const toggleAssignSessionCard = (plan: IPlanItem) => {
+  emit('toggleAssignSessionCard', {
+    selected: '+',
+    sessionId,
+    planId: plan.id,
+    abilityId: plan.ability_group.id,
+    sessionPlanId: plan.session_plan.id,
+  })
 }
+onMounted(() => {
+  console.log('components/synco/config/terms/session-list-item.vue')
+})
 </script>
 <style scoped>
 .text-sm,

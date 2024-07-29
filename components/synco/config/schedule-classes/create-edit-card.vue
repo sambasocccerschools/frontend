@@ -1,19 +1,23 @@
 <script setup lang="ts">
-import { ref, getCurrentInstance } from 'vue'
+import { ref } from 'vue'
+import { useToast } from 'vue-toast-notification'
 import type {
-  IClassItem,
-  ITermCard,
+  IWeeklyClassesCreateItem,
   ITermItem,
-  ITermHeader,
-} from '~/types/index'
+  ISeasonItem,
+} from '~/types/synco/index'
 
 const props = defineProps<{
-  classItem: IClassItem
+  classItem: IWeeklyClassesCreateItem
   title: string
+  classId: number | null
 }>()
 
-let classItem = ref<IClassItem>(props.classItem).value
+const { $api } = useNuxtApp()
+const toast = useToast()
+let classItem = ref<IWeeklyClassesCreateItem>(props.classItem).value
 let title = ref<string>(props.title).value
+let classId = ref<number | null>(props.classId).value
 let showModalTerm = ref<boolean>(false)
 
 let days = ref<string[]>([
@@ -26,44 +30,90 @@ let days = ref<string[]>([
   'Sunday',
 ]).value
 
-let header = ref<ITermHeader>({
-  Name: 'Term 1',
-  Seasson: 'Spring',
-  StartDate: 'Saturday, 9/9/2023',
-  EndDate: 'Saturday, 9/9/2023',
-  ExclusionDates: ['Saturday 15th October', 'Saturday 15th October'],
-})
-let item = ref<ITermItem>({
-  SessionNumber: 1,
-  Beginner: 'Session Plan BCPELE3 Saturday, 9/9/2023',
-  Intermediate: 'Session Plan BCPELE3 Saturday, 9/9/2023',
-  Advanced: 'Session Plan BCPELE3 Saturday, 9/9/2023',
-  Pro: 'Session Plan BCPELE3 Saturday, 9/9/2023',
-})
-let term = ref<ITermCard>({
-  Header: header.value,
-  Items: [item.value, item.value, item.value],
-}).value
+let terms = ref<ITermItem[]>([])
+let seasons = ref<ISeasonItem[]>([])
 
-let terms = ref<ITermCard[]>([term, term, term, term, term]).value
 let selectedTerm = ref<number>(-1)
+let selectedSeasonId = ref<number>(-1)
+let selectedSeason = ref<string>('')
 
 const emit = defineEmits(['toggleEdit'])
 
 const close = () => {
-  emit('toggleEdit', '')
+  emit('toggleEdit', null)
 }
 const changeSelectedTerm = (index: number) => {
   selectedTerm.value = index
 }
 
-const toggleModalTerm = () => {
+const assignTerm = () => {
+  if (selectedSeason.value == 'Autumn')
+    classItem.autumn_term_id = selectedTerm.value
+  else if (selectedSeason.value == 'Spring')
+    classItem.spring_term_id = selectedTerm.value
+  else if (selectedSeason.value == 'Summer')
+    classItem.summer_term_id = selectedTerm.value
+  else selectedSeason.value = ''
+
   showModalTerm.value = !showModalTerm.value
 }
 
-const save = () => {
-  console.log('Save')
-  close()
+const toggleModalTerm = (id: number, season: string) => {
+  showModalTerm.value = !showModalTerm.value
+  selectedTerm.value = id
+  selectedSeason.value = season
+  let seasonObj = seasons.value.find((x) => x.title == season)
+  selectedSeasonId.value = seasonObj != null ? seasonObj.id : -1
+}
+
+const save = async () => {
+  if (!classId) {
+    classItem.start_time = `${classItem.start_time}:00`
+    classItem.end_time = `${classItem.end_time}:00`
+    const addResponse = await $api.classes.create(classItem).finally(() => {
+      emit('toggleEdit', true)
+    })
+    toast.success(addResponse?.message)
+  } else {
+    const updateResponse = await $api.classes
+      .update(classId, classItem)
+      .finally(() => {
+        emit('toggleEdit', true)
+      })
+    toast.success(updateResponse?.message)
+  }
+}
+
+onMounted(async () => {
+  console.log('components/synco/config/schedule-classes/create-edit-card.vue')
+  await getTerms()
+  await getSeasons()
+})
+const getTerms = async (limit: number = 25) => {
+  try {
+    const termResponse = await $api.terms.getAll(limit)
+    console.log(termResponse)
+    terms.value = termResponse?.data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    // blockButtons.value = false
+    // updateKey.value++
+  }
+}
+const getSeasons = async (limit: number = 25) => {
+  try {
+    const seasonsResponse = await $api.datasets.getSeasons()
+    console.log(seasonsResponse)
+    seasons.value = seasonsResponse?.data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    // blockButtons.value = false
+    // updateKey.value++
+  }
 }
 </script>
 <template>
@@ -90,7 +140,7 @@ const save = () => {
               type="text"
               class="form-control form-control-lg"
               placeholder="Enter class name"
-              v-model="classItem.Name"
+              v-model="classItem.name"
             />
           </div>
         </div>
@@ -105,7 +155,7 @@ const save = () => {
               min="1"
               class="form-control form-control-lg"
               placeholder="Enter capacity"
-              v-model="classItem.Capacity"
+              v-model="classItem.capacity"
             />
           </div>
         </div>
@@ -117,7 +167,7 @@ const save = () => {
             <select
               id="day"
               class="form-control form-control-lg"
-              v-model="classItem.Day"
+              v-model="classItem.days"
             >
               <option v-for="(day, index) in days" :value="day" :key="index">
                 {{ day }}
@@ -135,7 +185,7 @@ const save = () => {
               type="time"
               class="form-control form-control-lg"
               placeholder="Enter capacity"
-              v-model="classItem.StartTime"
+              v-model="classItem.start_time"
             />
           </div>
         </div>
@@ -147,7 +197,7 @@ const save = () => {
               type="time"
               class="form-control form-control-lg"
               placeholder="Enter capacity"
-              v-model="classItem.EndTime"
+              v-model="classItem.end_time"
             />
           </div>
         </div>
@@ -159,9 +209,12 @@ const save = () => {
               Autumn Term Dates
             </label>
             <span>
-              {{ classItem.AutumnTerm }}
-              <span class="btn text-primary mx-1 p-0" @click="toggleModalTerm">
-                {{ classItem.AutumnTerm ? 'Change ' : 'Assign ' }}term
+              {{ classItem.autumn_term_id }}
+              <span
+                class="btn text-primary mx-1 p-0"
+                @click="toggleModalTerm(classItem.autumn_term_id, 'Autumn')"
+              >
+                {{ classItem.autumn_term_id ? 'Change ' : 'Assign ' }}term
               </span></span
             >
           </div>
@@ -179,8 +232,8 @@ const save = () => {
                   type="radio"
                   name="autumn"
                   id="autumn-indoor"
-                  value="indoor"
-                  v-model="classItem.AutumnFacility"
+                  :value="true"
+                  v-model="classItem.is_autumn_indoor"
                 />
                 <label class="form-check-label" for="autumn-indoor">
                   Indoor
@@ -192,8 +245,8 @@ const save = () => {
                   type="radio"
                   name="autumn"
                   id="autumn-outdoor"
-                  value="outdoor"
-                  v-model="classItem.AutumnFacility"
+                  :value="false"
+                  v-model="classItem.is_autumn_indoor"
                 />
                 <label class="form-check-label" for="autumn-outdoor">
                   Outdoor
@@ -210,9 +263,12 @@ const save = () => {
               Spring Term Dates
             </label>
             <span>
-              {{ classItem.SpringTerm }}
-              <span class="btn text-primary mx-1 p-0" @click="toggleModalTerm">
-                {{ classItem.SpringTerm ? 'Change ' : 'Assign ' }}term
+              {{ classItem.spring_term_id }}
+              <span
+                class="btn text-primary mx-1 p-0"
+                @click="toggleModalTerm(classItem.spring_term_id, 'Spring')"
+              >
+                {{ classItem.spring_term_id ? 'Change ' : 'Assign ' }}term
               </span></span
             >
           </div>
@@ -230,8 +286,8 @@ const save = () => {
                   type="radio"
                   name="spring"
                   id="spring-indoor"
-                  value="indoor"
-                  v-model="classItem.SpringFacility"
+                  :value="true"
+                  v-model="classItem.is_spring_indoor"
                 />
                 <label class="form-check-label" for="spring-indoor">
                   Indoor
@@ -243,8 +299,8 @@ const save = () => {
                   type="radio"
                   name="spring"
                   id="spring-outdoor"
-                  value="outdoor"
-                  v-model="classItem.SpringFacility"
+                  :value="false"
+                  v-model="classItem.is_spring_indoor"
                 />
                 <label class="form-check-label" for="spring-outdoor">
                   Outdoor
@@ -261,9 +317,12 @@ const save = () => {
               Summer Term Dates
             </label>
             <span>
-              {{ classItem.SummerTerm }}
-              <span class="btn text-primary mx-1 p-0" @click="toggleModalTerm">
-                {{ classItem.SummerTerm ? 'Change ' : 'Assign ' }}term
+              {{ classItem.summer_term_id }}
+              <span
+                class="btn text-primary mx-1 p-0"
+                @click="toggleModalTerm(classItem.summer_term_id, 'Summer')"
+              >
+                {{ classItem.summer_term_id ? 'Change ' : 'Assign ' }}term
               </span></span
             >
           </div>
@@ -281,8 +340,8 @@ const save = () => {
                   type="radio"
                   name="summer"
                   id="summer-indoor"
-                  value="indoor"
-                  v-model="classItem.SummerFacility"
+                  :value="true"
+                  v-model="classItem.is_summer_indoor"
                 />
                 <label class="form-check-label" for="summer-indoor">
                   Indoor
@@ -294,8 +353,8 @@ const save = () => {
                   type="radio"
                   name="summer"
                   id="summer-outdoor"
-                  value="outdoor"
-                  v-model="classItem.SummerFacility"
+                  :value="false"
+                  v-model="classItem.is_summer_indoor"
                 />
                 <label class="form-check-label" for="summer-outdoor">
                   Outdoor
@@ -319,8 +378,8 @@ const save = () => {
                   type="radio"
                   name="free-trial"
                   id="free-trial-on"
-                  value="on"
-                  v-model="classItem.FreeTrialDates"
+                  :value="true"
+                  v-model="classItem.is_free_trail_dates"
                 />
                 <label class="form-check-label" for="free-trial-on"> On </label>
               </div>
@@ -330,8 +389,8 @@ const save = () => {
                   type="radio"
                   name="free-trial"
                   id="free-trial-off"
-                  value="off"
-                  v-model="classItem.FreeTrialDates"
+                  :value="false"
+                  v-model="classItem.is_free_trail_dates"
                 />
                 <label class="form-check-label" for="free-trial-off">
                   Off
@@ -373,7 +432,7 @@ const save = () => {
           >
             <button
               class="btn btn-outline-secondary border-0"
-              @click="toggleModalTerm"
+              @click="toggleModalTerm(-1, '')"
             >
               <Icon name="ph:x" />
             </button>
@@ -390,9 +449,10 @@ const save = () => {
           <div class="p-2">
             <template v-for="(term, index) in terms" :key="index">
               <div
+                v-if="term.season.id == selectedSeasonId"
                 class="rounded-4"
-                @click="changeSelectedTerm(index)"
-                :style="selectedTerm == index ? 'border:1px solid red' : ''"
+                @click="changeSelectedTerm(term.id)"
+                :style="selectedTerm == term.id ? 'border:1px solid red' : ''"
               >
                 <SyncoConfigScheduleClassesTermCard
                   :term="term"
@@ -404,7 +464,7 @@ const save = () => {
             <div class="col-6">
               <button
                 class="btn btn-outline-secondary w-100"
-                @click="toggleModalTerm"
+                @click="toggleModalTerm(-1, '')"
               >
                 Cancel
               </button>
@@ -412,7 +472,7 @@ const save = () => {
             <div class="col-6">
               <button
                 class="btn btn-primary text-light w-100"
-                @click="toggleModalTerm"
+                @click="assignTerm"
               >
                 Assign term
               </button>
