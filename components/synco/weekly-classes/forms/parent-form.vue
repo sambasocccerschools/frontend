@@ -1,34 +1,63 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useToast } from 'vue-toast-notification'
 
-import type { IParent } from '~/types/index'
+import type { IRelationship, IReferralSource } from '~/types/index'
+import type { IGuardianCreate } from '~/types/synco/index'
 const props = defineProps<{
-  parent: IParent
+  parent: IGuardianCreate
   noBorder?: boolean | null
 }>()
 
-let parent = ref<IParent>(props.parent).value
-let noBorder = ref<boolean>(props.noBorder ?? false).value
+const { $api } = useNuxtApp()
+const toast = useToast()
+let isLoading = ref<boolean>(false)
+let blockButtons = ref<boolean>(false)
+const changeLoadingState = (state: boolean) => {
+  isLoading.value = state
+  blockButtons.value = state
+}
 
-const parentChildRelation = ref([
-  { label: 'Select from drop down', value: '' },
-  { label: 'Mother', value: 'Mother' },
-  { label: 'Father', value: 'Father' },
-  { label: 'Brother', value: 'Brother' },
-  { label: 'Sister', value: 'Sister' },
-  { label: 'Grandmother', value: 'Grandmother' },
-  { label: 'Grandfather', value: 'Grandfather' },
-  { label: 'Uncle', value: 'Uncle' },
-  { label: 'Aunt', value: 'Aunt' },
-  { label: 'Cousin', value: 'Cousin' },
-])
+let parent = ref<IGuardianCreate>(props.parent)
+let noBorder = ref<boolean>(props.noBorder ?? false)
 
-const marketingChannels = ref([
-  { label: 'Select from drop down', value: '' },
-  { label: 'Social Media', value: 'Social Media' },
-  { label: 'TV', value: 'TV' },
-  { label: 'Newspaper', value: 'Newspaper' },
-])
+const relationships = ref<IRelationship[]>()
+
+const referralSources = ref<IReferralSource[]>()
+
+onMounted(async () => {
+  console.log('components/synco/weekly-classes/forms/parent-form.vue')
+  await getRelationships()
+  await getReferralSource()
+})
+const getRelationships = async () => {
+  try {
+    changeLoadingState(true)
+    const response = await $api.datasets.getRelationship()
+    console.log(response)
+    relationships.value = response?.data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+    relationships.value = []
+  } finally {
+    changeLoadingState(false)
+  }
+}
+const getReferralSource = async () => {
+  try {
+    changeLoadingState(true)
+    const response = await $api.datasets.getReferralSource()
+    console.log(response)
+    referralSources.value = response?.data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+    referralSources.value = []
+  } finally {
+    changeLoadingState(false)
+  }
+}
 </script>
 
 <template>
@@ -46,7 +75,7 @@ const marketingChannels = ref([
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter first name"
-            v-model="parent.firstName"
+            v-model="parent.first_name"
           />
         </div>
       </div>
@@ -60,7 +89,7 @@ const marketingChannels = ref([
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter last name"
-            v-model="parent.lastName"
+            v-model="parent.last_name"
           />
         </div>
       </div>
@@ -90,7 +119,7 @@ const marketingChannels = ref([
             type="phone"
             class="form-control form-control-lg"
             placeholder="+44"
-            v-model="parent.phoneNumber"
+            v-model="parent.phone_number"
           />
         </div>
       </div>
@@ -104,14 +133,15 @@ const marketingChannels = ref([
           <select
             id="parentRelation"
             class="form-control form-control-lg"
-            v-model="parent.relationToChild"
+            v-model="parent.relationship_id"
           >
+            <option :value="0">Select option</option>
             <option
-              v-for="(relation, index) in parentChildRelation"
-              :value="relation.value"
+              v-for="(relation, index) in relationships"
+              :value="relation.id"
               :key="index"
             >
-              {{ relation.label }}
+              {{ relation.title }}
             </option>
           </select>
         </div>
@@ -124,14 +154,15 @@ const marketingChannels = ref([
           <select
             id="parentMarketingChannel"
             class="form-control form-control-lg"
-            v-model="parent.marketingChannel"
+            v-model="parent.referral_source_id"
           >
+            <option :value="0">Select option</option>
             <option
-              v-for="(channel, index) in marketingChannels"
-              :value="channel.value"
+              v-for="(channel, index) in referralSources"
+              :value="channel.id"
               :key="index"
             >
-              {{ channel.label }}
+              {{ channel.title }}
             </option>
           </select>
         </div>

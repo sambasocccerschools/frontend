@@ -19,6 +19,7 @@ let newExcercise = ref<ISessionPlanExcerciseCreateItem>({
   description: '',
   banner: null,
   video: null,
+  title_duration: '',
 })
 let newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
   title: '',
@@ -32,70 +33,136 @@ let newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/session-plans/create.vue')
   let queryAbilityId = router.currentRoute.value.query?.abilityId
-  abilityId.value = queryAbilityId
-  newSessionPlan.value.ability_group_id = queryAbilityId
-  addNewExcercise()
+  abilityId.value = !!queryAbilityId ? +queryAbilityId : -1
+  newSessionPlan.value.ability_group_id = abilityId.value
+  addNewExercise()
 })
-const addNewExcercise = () => {
+const addNewExercise = () => {
   newSessionPlan.value.exercises.push(
     JSON.parse(JSON.stringify(newExcercise.value)),
   )
+  video2Input.value.push(null)
+  video2Input.value.push(null)
+  // let index = newSessionPlan.value.exercises.length - 1
 }
 
-const bannerInput = ref<HTMLInputElement | null>(null)
-const banner = ref<File>()
-const bannerPreview = ref<string | null>(null)
+let bannerInput = ref<HTMLInputElement | null>(null)
+let banner = ref<File>()
+let bannerPreview = ref<string | null>(null)
 
-const handleBannerChange = () => {
-  const files = bannerInput.value?.files
+const handleBannerChange = async () => {
+  const files = bannerInput.value?.files!
   const file = files?.[0]
   banner.value = file
-  newSessionPlan.value.banner = file
+  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
+    type: file.type,
+  })
+  newSessionPlan.value.banner = fileBlob
   bannerPreview.value = file ? URL.createObjectURL(file) : null
-  console.log(newSessionPlan.value)
 }
 
-const videoInput = ref<HTMLInputElement | null>(null)
-const video = ref<File>()
-const videoPreview = ref<string | null>(null)
+let videoInput = ref<HTMLInputElement | null>(null)
+let video = ref<File>()
+let videoPreview = ref<string | null>(null)
 
-const handleVideoChange = () => {
-  const files = videoInput.value?.files
+const handleVideoChange = async () => {
+  const files = videoInput.value?.files!
   const file = files?.[0]
   video.value = file
-  newSessionPlan.value.video = file
+  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
+    type: file.type,
+  })
+  newSessionPlan.value.video = fileBlob
   videoPreview.value = file ? URL.createObjectURL(file) : null
-  console.log(newSessionPlan.value)
 }
 
-const imageInput = ref<HTMLInputElement | null>(null)
-const image = ref<File>()
-const imagePreview = ref<string | null>(null)
+let imageInput = ref<Array<HTMLInputElement | null>>([])
+let image = ref<Array<File>>([])
+let imagePreview = ref<Array<string | null>>([])
 
-const handleImageChange = (event: Event, index: number) => {
-  console.log(event)
-  const files = imageInput.value?.files
-  const file = files?.[0]
-  image.value = file
-  console.log(index, file)
-  newSessionPlan.value.exercises[index].banner = file
-  imagePreview.value = file ? URL.createObjectURL(file) : null
-  console.log(newSessionPlan.value)
+const handleImageInput = (event: Event, index: number) => {
+  if (event.target instanceof HTMLInputElement) {
+    const inputElement = event.target
+    imageInput.value[index] = inputElement
+  }
 }
 
-const video2Input = ref<HTMLInputElement | null>(null)
-const video2 = ref<File>()
-const video2Preview = ref<string | null>(null)
-
-const handleVideo2Change = (event: Event, index: number) => {
-  console.log(event)
-  const files = video2Input.value?.files
+const handleImageChange = async (index: number) => {
+  const files = imageInput.value[index]?.files!
+  console.log(index, imageInput.value[index])
   const file = files?.[0]
-  video2.value = file
-  console.log(index, file)
-  newSessionPlan.value.exercises[index].video = file
-  video2Preview.value = file ? URL.createObjectURL(file) : null
-  console.log(newSessionPlan.value)
+  if (image.value[index] != null) {
+    image.value[index] = file
+  }
+  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
+    type: file.type,
+  })
+  newSessionPlan.value.exercises[index].banner = fileBlob
+  imagePreview.value[index] = file ? URL.createObjectURL(file) : null
+}
+
+let video2Input = ref<Array<HTMLInputElement | null>>([])
+let video2 = ref<Array<File>>([])
+let video2Preview = ref<Array<string | null>>([])
+
+const handleVideo2Input = (event: Event, index: number) => {
+  if (event.target instanceof HTMLInputElement) {
+    const inputElement = event.target
+    video2Input.value[index] = inputElement
+  }
+}
+const handleVideo2Change = async (index: number) => {
+  const files = video2Input.value[index]?.files!
+  console.log(index, video2Input.value[index])
+  const file = files?.[0]
+  if (video2.value[index] != null) {
+    video2.value[index] = file
+  }
+  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
+    type: file.type,
+  })
+  newSessionPlan.value.exercises[index].video = fileBlob
+  video2Preview.value[index] = file ? URL.createObjectURL(file) : null
+}
+
+const updateDescription = (index: number, description: string) => {
+  newSessionPlan.value.exercises[index].description = description
+}
+
+// const save = async () => {
+//   console.log(newSessionPlan.value)
+//   try {
+//     isLoading.value = true
+//     blockButtons.value = true
+//     const sessionPlansResponse = await $api.sessionPlans.create(
+//       newSessionPlan.value,
+//     )
+//     console.log(sessionPlansResponse)
+//     router.push('/synco/config/weekly-classes/session-plans')
+//   } catch (error: any) {
+//     console.log(error)
+//     toast.error(error?.data?.messages ?? 'Error')
+//   } finally {
+//     isLoading.value = false
+//     blockButtons.value = false
+//   }
+// }
+
+const onSubmit = async () => {
+  try {
+    isLoading.value = true
+    blockButtons.value = true
+    const sessionPlansResponse = await $api.sessionPlans.create(
+      newSessionPlan.value,
+    )
+    router.push('/synco/config/weekly-classes/session-plans')
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    isLoading.value = false
+    blockButtons.value = false
+  }
 }
 </script>
 
@@ -176,16 +243,15 @@ const handleVideo2Change = (event: Event, index: number) => {
                 </div>
               </div>
               <div class="col-12 d-flex flex-column mb-3">
-                <label for="banner-picture" class="form-label">
+                <label for="banner" class="form-label">
                   Add player banner
                 </label>
                 <input
-                  id="banner-picture"
+                  id="banner"
                   ref="bannerInput"
                   type="file"
-                  name="banner-picture"
+                  name="banner"
                   accept="image/*"
-                  required
                   @change="handleBannerChange"
                 />
                 <img
@@ -193,24 +259,15 @@ const handleVideo2Change = (event: Event, index: number) => {
                   :src="bannerPreview"
                   style="max-width: 200px"
                 />
-                <!-- <div>
-                  <button type="button" class="btn btn-outline-primary mb-2">
-                    Add player banner
-                  </button>
-                </div>
-                <div>
-                  <img src="@/src/assets/bg-stadium.png" style="width: 100%" />
-                </div> -->
               </div>
               <div class="col-12 d-flex flex-column mb-3">
-                <label for="video-file" class="form-label"> Add video </label>
+                <label for="video" class="form-label"> Add video </label>
                 <input
                   id="video-file"
                   ref="videoInput"
                   type="file"
-                  name="video-file"
+                  name="video"
                   accept="video/*"
-                  required
                   @change="handleVideoChange"
                 />
                 <video
@@ -238,11 +295,14 @@ const handleVideo2Change = (event: Event, index: number) => {
             >
               <div class="col-12">
                 <div class="form-group w-100 mb-3">
-                  <label for="exerciseTitle" class="form-labelform-label-light">
+                  <label
+                    :for="`exercise[${index}][title]`"
+                    class="form-labelform-label-light"
+                  >
                     Title
                   </label>
                   <input
-                    id="exerciseTitle"
+                    :id="`exercise[${index}][title]`"
                     type="text"
                     class="form-control form-control-lg"
                     placeholder=""
@@ -251,13 +311,13 @@ const handleVideo2Change = (event: Event, index: number) => {
                 </div>
                 <div class="form-group w-100 mb-3">
                   <label
-                    for="exerciseSubtitle"
+                    :for="`exercise[${index}][subtitle]`"
                     class="form-labelform-label-light"
                   >
                     Subtitle
                   </label>
                   <input
-                    id="exerciseSubtitle"
+                    :id="`exercise[${index}][subtitle]`"
                     type="text"
                     class="form-control form-control-lg"
                     placeholder=""
@@ -266,13 +326,13 @@ const handleVideo2Change = (event: Event, index: number) => {
                 </div>
                 <div class="form-group w-100 mb-3">
                   <label
-                    for="exerciseDuration"
+                    :for="`exercise[${index}][duration]`"
                     class="form-labelform-label-light"
                   >
                     Title Duration
                   </label>
                   <input
-                    id="exerciseDuration"
+                    :id="`exercise[${index}][duration]`"
                     type="text"
                     class="form-control form-control-lg"
                     placeholder=""
@@ -280,91 +340,63 @@ const handleVideo2Change = (event: Event, index: number) => {
                   />
                 </div>
               </div>
-              <div class="col-12">
-                <label :for="`image-file-${index}`" class="form-label">
+              <div class="col-12 d-flex flex-column">
+                <label :for="`exercise[${index}][banner]`" class="form-label">
                   Add one or more images
                 </label>
                 <input
-                  :id="`image-file-${index}`"
-                  ref="imageInput"
+                  :id="`exercise[${index}][banner]`"
+                  @input="handleImageInput($event, index)"
                   type="file"
-                  :name="`image-file-${index}`"
+                  :name="`exercise[${index}][banner]`"
                   accept="image/*"
-                  required
-                  @change="handleImageChange($event, index)"
+                  @change="handleImageChange(index)"
                 />
                 <img
-                  v-if="imagePreview"
-                  :src="imagePreview"
+                  v-if="imagePreview[index]"
+                  :src="imagePreview[index]"
                   style="max-width: 200px"
                 />
               </div>
-              <!-- <div class="col-12">
-                <span class="my-3"> Add one or more images </span>
-              </div>
               <div class="col-12">
-                <div class="d-flex flex-column">
-                  <div>
-                    <button type="button" class="btn btn-outline-primary mb-2">
-                      Add images
-                    </button>
-                  </div>
-                  <div>
-                    <img
-                      src="/src/assets/field-positions.png"
-                      class="rounded-4 w-100"
+                <div class="form-group w-100 my-3">
+                  <label
+                    :for="`exercise[${index}][description]`"
+                    class="form-labelform-label-light"
+                  >
+                    Description
+                  </label>
+                  <div class="content">
+                    <SyncoTipTapEditor
+                      :id="`exercise[${index}][description]`"
+                      :data="excercise.description"
+                      @update-description="
+                        (value) => updateDescription(index, value)
+                      "
                     />
                   </div>
                 </div>
-              </div> -->
-              <div class="col-12">
-                <div class="form-group w-100 my-3">
-                  <label for="description" class="form-labelform-label-light">
-                    Description
-                  </label>
-                  <textarea
-                    id="description"
-                    class="form-control form-control-lg"
-                    rows="4"
-                    placeholder=""
-                    v-model="excercise.description"
-                  ></textarea>
-                </div>
               </div>
-              <div class="col-12">
-                <label :for="`video2-file-${index}`" class="form-label">
+              <div class="col-12 d-flex flex-column">
+                <label :for="`exercise[${index}][video]`" class="form-label">
                   Add one or more videos
                 </label>
                 <input
-                  :id="`video2-file-${index}`"
-                  ref="video2Input"
+                  :id="`exercise[${index}][video]`"
+                  @input="handleVideo2Input($event, index)"
                   type="file"
-                  name="`video2-file-${index}`"
+                  :name="`exercise[${index}][video]`"
                   accept="video/*"
-                  required
-                  @change="handleVideo2Change($event, index)"
+                  @change="handleVideo2Change(index)"
                 />
                 <video
-                  v-if="video2Preview"
-                  :src="video2Preview"
+                  v-if="video2Preview[index]"
+                  :src="video2Preview[index]"
                   style="max-height: 200px"
                   class="rounded-4"
                   controls
                 ></video>
               </div>
-              <!-- <div class="col-12">
-                <span class="my-3"> Add one video </span>
-              </div>
-              <div class="col-12 d-flex flex-column">
-                <div>
-                  <button type="button" class="btn btn-outline-primary mb-2">
-                    Add video
-                  </button>
-                </div>
-                <div>
-                  <video class="rounded-4" controls></video>
-                </div>
-              </div> -->
             </div>
           </div>
         </div>
@@ -372,16 +404,28 @@ const handleVideo2Change = (event: Event, index: number) => {
       </div>
       <div class="row mb-4 pb-4">
         <div class="col-2"></div>
-        <div class="col-4">
+        <div class="col-3">
           <button
             class="btn btn-outline-primary w-100"
-            @click="addNewExcercise"
+            @click="addNewExercise"
+            :disabled="blockButtons"
           >
             Add new exercise
           </button>
         </div>
+        <div class="col-1"></div>
         <div class="col-4">
-          <button class="btn btn-primary text-light w-100">
+          <!-- <button
+              class="btn btn-primary text-light w-100"
+              @click="save"
+              :disabled="blockButtons"
+            > -->
+          <button
+            class="btn btn-primary text-light w-100"
+            type="submit"
+            :disabled="blockButtons"
+            @click="onSubmit"
+          >
             Create Session
           </button>
         </div>

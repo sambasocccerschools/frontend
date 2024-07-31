@@ -43,7 +43,11 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
+    "@tiptap/extension-image": "^2.5.7",
+    "@tiptap/extension-text-align": "^2.5.7",
+    "@tiptap/extension-underline": "^2.5.7",
     "@vee-validate/yup": "^4.12.6",
+    "nuxt-tiptap-editor": "^1.1.2",
     "pinia": "^2.1.7",
     "sass": "~1.64.2",
     "vee-validate": "^4.12.6",
