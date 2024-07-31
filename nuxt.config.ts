@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@samk-dev/nuxt-vcalendar',
     '@nuxt/image',
     '@pinia-plugin-persistedstate/nuxt',
+    'nuxt-tiptap-editor',
   ],
   dayjs: {
     plugins: ['relativeTime', 'customParseFormat'],
@@ -29,5 +30,8 @@ export default defineNuxtConfig({
   },
   piniaPersistedstate: {
     storage: 'sessionStorage',
+  },
+  tiptap: {
+    prefix: 'Tiptap',
   },
 })

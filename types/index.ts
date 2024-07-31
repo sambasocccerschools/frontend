@@ -478,3 +478,71 @@ export type IResetPassword = {
   password: string
   password_confirmation: string
 }
+
+export type IBaseResponse<T> = {
+  data: T[]
+}
+
+export type IBaseDatasetItem = {
+  id: number
+  title: string
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type IGender = IBaseDatasetItem & {}
+export type IGenderResponse = IBaseResponse<IGender> & {}
+
+export type IMedicalInformation = IBaseDatasetItem & {}
+export type IMedicalInformationResponse =
+  IBaseResponse<IMedicalInformation> & {}
+
+export type IRelationship = IBaseDatasetItem & {}
+export type IRelationshipResponse = IBaseResponse<IRelationship> & {}
+
+export type IReferralSource = IBaseDatasetItem & {}
+export type IReferralSourceResponse = IBaseResponse<IReferralSource> & {}
+
+export type ILeadStatus = IBaseDatasetItem & {}
+export type ILeadStatusResponse = IBaseResponse<ILeadStatus> & {}
+
+export type IStudentByName = {
+  id: string
+  first_name: string
+  last_name: string
+  dob: Date
+  age: number
+  gender: IGender
+  medical_information: IMedicalInformation
+  created_at: Date | null
+  deleted_at: Date | null
+}
+export type IStudentByNameResponse = IBaseResponse<IStudentByName> & {}
+
+export type IGuardianByName = {
+  id: string
+  first_name: string
+  last_name: string
+  email: string
+  phone_number: string
+  relationship: IRelationship
+  referral_source: IReferralSource
+  created_at: Date | null
+  deleted_at: Date | null
+}
+export type IGuardianByNameResponse = IBaseResponse<IGuardianByName> & {}
+
+export type IEmregencyContactByName = {
+  id: string
+  first_name: string
+  last_name: string
+  phone_number: string
+  relationship: IRelationship
+  created_at: Date | null
+  deleted_at: Date | null
+}
+export type IEmregencyContactByNameResponse =
+  IBaseResponse<IEmregencyContactByName> & {}
+
+export type IService = IBaseDatasetItem & {}
+export type IServiceResponse = IBaseResponse<IService> & {}

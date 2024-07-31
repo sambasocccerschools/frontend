@@ -11,6 +11,8 @@ import ClassesModule from '~/repository/modules/synco/classes'
 import TermsModule from '~/repository/modules/synco/terms'
 import SessionPlansModule from '~/repository/modules/synco/session-plans'
 import AbilityGroupsModule from '~/repository/modules/synco/ability-groups'
+import WeekltClassesLeadsModule from '~/repository/modules/synco/weekly-classes-leads'
+import WeekltClassesWaitingListModule from '~/repository/modules/synco/weekly-classes-waiting-list'
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
@@ -24,6 +26,8 @@ interface IApiInstance {
   terms: TermsModule
   sessionPlans: SessionPlansModule
   abilityGroups: AbilityGroupsModule
+  wcLeads: WeekltClassesLeadsModule
+  wcWaitingList: WeekltClassesWaitingListModule
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -53,6 +57,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     terms: new TermsModule(apiFetcher),
     sessionPlans: new SessionPlansModule(apiFetcher),
     abilityGroups: new AbilityGroupsModule(apiFetcher),
+    wcLeads: new WeekltClassesLeadsModule(apiFetcher),
+    wcWaitingList: new WeekltClassesWaitingListModule(apiFetcher),
   }
   return {
     provide: {

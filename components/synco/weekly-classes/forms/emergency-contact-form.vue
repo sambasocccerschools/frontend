@@ -1,48 +1,55 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useToast } from 'vue-toast-notification'
 
-import type { IEmergencyContact } from '~/types/index'
+import type { IRelationship } from '~/types/index'
+import type { IEmregencyContactCreate } from '~/types/synco/index'
+
 const props = defineProps<{
-  emergencyContact: IEmergencyContact
+  emergencyContact: IEmregencyContactCreate
   noBorder?: boolean | null
 }>()
 
-let emergencyContact = ref<IEmergencyContact>(props.emergencyContact).value
-let noBorder = ref<boolean>(props.noBorder ?? false).value
+const { $api } = useNuxtApp()
+const toast = useToast()
+let isLoading = ref<boolean>(false)
+let blockButtons = ref<boolean>(false)
+const changeLoadingState = (state: boolean) => {
+  isLoading.value = state
+  blockButtons.value = state
+}
 
-const emergencyContactChildRelation = ref([
-  { label: 'Select from drop down', value: '' },
-  { label: 'Mother', value: 'Mother' },
-  { label: 'Father', value: 'Father' },
-  { label: 'Brother', value: 'Brother' },
-  { label: 'Sister', value: 'Sister' },
-  { label: 'Grandmother', value: 'Grandmother' },
-  { label: 'Grandfather', value: 'Grandfather' },
-  { label: 'Uncle', value: 'Uncle' },
-  { label: 'Aunt', value: 'Aunt' },
-  { label: 'Cousin', value: 'Cousin' },
-])
+let emergencyContact = ref<IEmregencyContactCreate>(props.emergencyContact)
+let noBorder = ref<boolean>(props.noBorder ?? false)
+
+const relationships = ref<IRelationship[]>()
+
+onMounted(async () => {
+  console.log(
+    'components/synco/weekly-classes/forms/emergency-contact-form.vue',
+  )
+  await getRelationships()
+})
+const getRelationships = async () => {
+  try {
+    changeLoadingState(true)
+    const response = await $api.datasets.getRelationship()
+    console.log(response)
+    relationships.value = response?.data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+    relationships.value = []
+  } finally {
+    changeLoadingState(false)
+  }
+}
 </script>
 
 <template>
   <slot name="external_title"></slot>
   <div class="card rounded-4 mt-4 px-3" :class="noBorder ? 'border-0' : ''">
     <slot name="internal_title"></slot>
-    <div class="row mb-4">
-      <div class="col-12">
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="sameAsAbove"
-          />
-          <label class="form-check-label" for="sameAsAbove">
-            Fill same as above
-          </label>
-        </div>
-      </div>
-    </div>
     <div class="row">
       <div class="col-6">
         <div class="form-group w-100 mb-3">
@@ -56,7 +63,7 @@ const emergencyContactChildRelation = ref([
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter first name"
-            v-model="emergencyContact.firstName"
+            v-model="emergencyContact.first_name"
           />
         </div>
       </div>
@@ -72,7 +79,7 @@ const emergencyContactChildRelation = ref([
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter last name"
-            v-model="emergencyContact.lastName"
+            v-model="emergencyContact.last_name"
           />
         </div>
       </div>
@@ -90,7 +97,7 @@ const emergencyContactChildRelation = ref([
             type="phone"
             class="form-control form-control-lg"
             placeholder="+44"
-            v-model="emergencyContact.phoneNumber"
+            v-model="emergencyContact.phone_number"
           />
         </div>
       </div>
@@ -104,14 +111,14 @@ const emergencyContactChildRelation = ref([
           <select
             id="emergencyContactRelation"
             class="form-control form-control-lg"
-            v-model="emergencyContact.relationToChild"
+            v-model="emergencyContact.relationship_id"
           >
             <option
-              v-for="(relation, index) in emergencyContactChildRelation"
-              :value="relation.value"
+              v-for="(relation, index) in relationships"
+              :value="relation.id"
               :key="index"
             >
-              {{ relation.label }}
+              {{ relation.title }}
             </option>
           </select>
         </div>

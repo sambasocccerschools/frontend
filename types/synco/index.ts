@@ -1,3 +1,5 @@
+import type { IBaseResponse } from '..'
+
 export type ILinks = {
   first: string
   last: string
@@ -279,8 +281,8 @@ export type ISessionPlanCreateUpdateItem = {
   title: string
   description: string
   ability_group_id: number
-  banner: File | null
-  video: File | null
+  banner: Blob | null
+  video: Blob | null
   exercises: ISessionPlanExcerciseCreateItem[]
 }
 
@@ -289,6 +291,45 @@ export type ISessionPlanExcerciseCreateItem = {
   subtitle: string
   description: string
   title_duration: string
-  banner: File | null
-  video: File | null
+  banner: Blob | null
+  video: Blob | null
 }
+
+/* WEEKLY CLASSES LEADS */
+
+export type IStudentCreate = {
+  id: string
+  first_name: string
+  last_name: string
+  dob: string
+  age: number
+  gender_id: number
+  medical_information_id: number
+}
+
+export type IGuardianCreate = {
+  id: string
+  first_name: string
+  last_name: string
+  email: string
+  phone_number: string
+  relationship_id: number
+  referral_source_id: number
+}
+
+export type IEmregencyContactCreate = {
+  id: number
+  first_name: string
+  last_name: string
+  phone_number: string
+  relationship_id: number
+}
+
+export type IWeeklyClassesLeadCreate = {
+  student: IStudentCreate
+  guardians: IGuardianCreate[]
+  emergency_contact: IEmregencyContactCreate
+  comments: string[]
+}
+export type IWeeklyClassesLeadCreateResponse =
+  IBaseResponse<IWeeklyClassesLeadCreate> & {}

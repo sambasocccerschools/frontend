@@ -15,6 +15,13 @@ const toggleSessionPlans = () => {
 onMounted(() => {
   console.log('components/synco/config/schedule-classes/term-card.vue')
 })
+const cleanDate = (date: string) => {
+  let cleanedDate = date
+  if (date.includes('T')) {
+    cleanedDate = date.split('T')[0]
+  }
+  return cleanedDate
+}
 </script>
 <template>
   <div class="card rounded-4 m-2 border">
@@ -35,14 +42,15 @@ onMounted(() => {
         <div class="d-flex flex-column col-auto">
           <span>Start and end date</span>
           <span class="text-muted"
-            >{{ term.start_date }} - {{ term.end_date }}</span
+            >{{ cleanDate(term.start_date) }} to
+            {{ cleanDate(term.end_date) }}</span
           >
         </div>
         <div class="d-flex flex-column col-auto">
           <span>Half-Term Exclusion Date(s)</span>
           <span>
             <span class="text-muted">
-              {{ term.half_term_date }}
+              {{ cleanDate(term.half_term_date) }}
             </span>
           </span>
         </div>

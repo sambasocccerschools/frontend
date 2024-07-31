@@ -1,14 +1,74 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useToast } from 'vue-toast-notification'
 
-import type { IStudent } from '~/types/index'
+import type { IGender, IMedicalInformation } from '~/types/index'
+import type { IStudentCreate } from '~/types/synco/index'
 const props = defineProps<{
-  student: IStudent
+  student: IStudentCreate
   noBorder?: boolean | null
 }>()
 
-let student = ref<IStudent>(props.student).value
-let noBorder = ref<boolean>(props.noBorder ?? false).value
+const { $api } = useNuxtApp()
+const toast = useToast()
+let isLoading = ref<boolean>(false)
+let blockButtons = ref<boolean>(false)
+const changeLoadingState = (state: boolean) => {
+  isLoading.value = state
+  blockButtons.value = state
+}
+
+let student = ref<IStudentCreate>(props.student)
+let noBorder = ref<boolean>(props.noBorder ?? false)
+
+let gender = ref<IGender[]>([])
+let medicalInformation = ref<IMedicalInformation[]>([])
+
+watch(
+  () => student.value.dob,
+  (newValue: string, oldValue: string) => {
+    let dob = new Date(newValue)
+    let today = new Date()
+    let ageDifference = today.getTime() - dob.getTime()
+    var ageDate = new Date(ageDifference)
+    let age = Math.abs(ageDate.getUTCFullYear() - 1970)
+    student.value.age = age
+  },
+)
+
+onMounted(async () => {
+  console.log('components/synco/weekly-classes/forms/student-form.vue')
+  await getGender()
+  await getMedicalInformation()
+})
+const getGender = async () => {
+  try {
+    changeLoadingState(true)
+    const response = await $api.datasets.getGender()
+    console.log(response)
+    gender.value = response?.data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+    gender.value = []
+  } finally {
+    changeLoadingState(false)
+  }
+}
+const getMedicalInformation = async () => {
+  try {
+    changeLoadingState(true)
+    const response = await $api.datasets.getMedicalInformation()
+    console.log(response)
+    medicalInformation.value = response?.data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+    medicalInformation.value = []
+  } finally {
+    changeLoadingState(false)
+  }
+}
 </script>
 
 <template>
@@ -26,7 +86,7 @@ let noBorder = ref<boolean>(props.noBorder ?? false).value
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter first name"
-            v-model="student.firstName"
+            v-model="student.first_name"
           />
         </div>
       </div>
@@ -40,7 +100,7 @@ let noBorder = ref<boolean>(props.noBorder ?? false).value
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter last name"
-            v-model="student.lastName"
+            v-model="student.last_name"
           />
         </div>
       </div>
@@ -56,7 +116,7 @@ let noBorder = ref<boolean>(props.noBorder ?? false).value
             type="date"
             class="form-control form-control-lg"
             placeholder="Enter date of birth"
-            v-model="student.dateOfBirth"
+            v-model="student.dob"
           />
         </div>
       </div>
@@ -80,13 +140,20 @@ let noBorder = ref<boolean>(props.noBorder ?? false).value
           <label for="studentGender" class="form-labelform-label-light"
             >Gender</label
           >
-          <input
+          <select
             id="studentGender"
-            type="text"
             class="form-control form-control-lg"
-            placeholder="Enter gender"
-            v-model="student.gender"
-          />
+            v-model="student.gender_id"
+          >
+            <option :value="0">Select option</option>
+            <option
+              v-for="(item, index) in gender"
+              :value="item.id"
+              :key="index"
+            >
+              {{ item.title }}
+            </option>
+          </select>
         </div>
       </div>
       <div class="col-6">
@@ -96,13 +163,20 @@ let noBorder = ref<boolean>(props.noBorder ?? false).value
             class="form-labelform-label-light"
             >Medical information</label
           >
-          <input
+          <select
             id="studentMedicalInformation"
-            type="text"
             class="form-control form-control-lg"
-            placeholder="Enter medical information"
-            v-model="student.medicalInformation"
-          />
+            v-model="student.medical_information_id"
+          >
+            <option :value="0">Select option</option>
+            <option
+              v-for="(item, index) in medicalInformation"
+              :value="item.id"
+              :key="index"
+            >
+              {{ item.title }}
+            </option>
+          </select>
         </div>
       </div>
     </div>
