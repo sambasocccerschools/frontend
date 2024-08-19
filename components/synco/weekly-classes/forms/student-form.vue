@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useToast } from 'vue-toast-notification'
-
-import type { IGender, IMedicalInformation } from '~/types/index'
 import type { IStudentCreate } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
+
 const props = defineProps<{
   student: IStudentCreate
   noBorder?: boolean | null
 }>()
 
-const { $api } = useNuxtApp()
-const toast = useToast()
 let isLoading = ref<boolean>(false)
 let blockButtons = ref<boolean>(false)
 const changeLoadingState = (state: boolean) => {
@@ -21,8 +19,8 @@ const changeLoadingState = (state: boolean) => {
 let student = ref<IStudentCreate>(props.student)
 let noBorder = ref<boolean>(props.noBorder ?? false)
 
-let gender = ref<IGender[]>([])
-let medicalInformation = ref<IMedicalInformation[]>([])
+let gender = store.gender
+let medicalInformation = store.medicalInformation
 
 watch(
   () => student.value.dob,
@@ -38,37 +36,10 @@ watch(
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/forms/student-form.vue')
-  await getGender()
-  await getMedicalInformation()
+
+  if (store.gender.length == 0) await store.getGender()
+  if (store.medicalInformation.length == 0) await store.getMedicalInformation()
 })
-const getGender = async () => {
-  try {
-    changeLoadingState(true)
-    const response = await $api.datasets.getGender()
-    console.log(response)
-    gender.value = response?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-    gender.value = []
-  } finally {
-    changeLoadingState(false)
-  }
-}
-const getMedicalInformation = async () => {
-  try {
-    changeLoadingState(true)
-    const response = await $api.datasets.getMedicalInformation()
-    console.log(response)
-    medicalInformation.value = response?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-    medicalInformation.value = []
-  } finally {
-    changeLoadingState(false)
-  }
-}
 </script>
 
 <template>

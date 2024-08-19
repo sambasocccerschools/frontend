@@ -210,7 +210,8 @@ const onSubmit = async () => {
         </div>
         <div class="col-1"></div>
       </div>
-      <div class="row my-4">
+      <SyncoConfigSessionPlansCreateForm></SyncoConfigSessionPlansCreateForm>
+      <!-- <div class="row my-4">
         <div class="col-2"></div>
         <div class="col-8">
           <div class="d-flex flex-column">
@@ -415,11 +416,6 @@ const onSubmit = async () => {
         </div>
         <div class="col-1"></div>
         <div class="col-4">
-          <!-- <button
-              class="btn btn-primary text-light w-100"
-              @click="save"
-              :disabled="blockButtons"
-            > -->
           <button
             class="btn btn-primary text-light w-100"
             type="submit"
@@ -430,7 +426,7 @@ const onSubmit = async () => {
           </button>
         </div>
         <div class="col-2"></div>
-      </div>
+      </div> -->
     </div>
   </NuxtLayout>
 </template>

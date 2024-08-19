@@ -1,31 +1,37 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toast-notification'
-import type { IVenueItem, IVenueCreateItem } from '~/types/synco/index'
-// import { generalStore } from '~/stores'
+import type {
+  IVenueItem,
+  IVenueCreateItem,
+  IAutoCompleteObject,
+} from '~/types/synco/index'
+// import type { IRegionItem } from '~/types/index'
+import { generalStore } from '~/stores'
 
 const updateKey = ref<number>(0)
 const blockButtons = ref(false)
 const panel = ref(false)
 const panelType = ref<string>('')
+const store = generalStore()
 
 const { $api } = useNuxtApp()
 const toast = useToast()
 const venues = ref<IVenueItem[]>([])
 const availableVenues = ref<IVenueItem[]>([])
+const autoCompleteVenues = ref<IAutoCompleteObject[]>([])
 const emptyVenue = ref<IVenueCreateItem>({
   area: '',
   address: '',
   facility_enter_guide: '',
   has_congestion: false,
   has_parking: false,
-  lat: 0,
-  lng: 0,
+  lat: '0',
+  lng: '0',
   name: '',
   parking_note: '',
-  region: 0,
+  region_id: 0,
   service: 'weekly-classes',
-  subscriptionPlans: [1],
 })
 
 const selectedVenueId = ref<string>('')
@@ -35,38 +41,53 @@ const selectedVenue = ref<IVenueCreateItem>({
   facility_enter_guide: '',
   has_congestion: false,
   has_parking: false,
-  lat: 0,
-  lng: 0,
+  lat: '0',
+  lng: '0',
   name: '',
   parking_note: '',
-  region: 0,
+  region_id: 0,
   service: 'weekly-classes',
-  subscriptionPlans: [1],
 })
 
-const regions = ref([
-  { label: 'Select from drop down', value: '' },
-  { label: 'North London', value: 1 },
-  { label: 'East London', value: 2 },
-  { label: 'South London', value: 3 },
-  { label: 'West London', value: 4 },
-])
+const regions = store.regions
+
+let blockFields = ref<boolean>(false)
 
 const getVenues = async (limit: number = 25) => {
   try {
     const venuesResponse = await $api.venues.getAll('weekly-classes', limit)
     venues.value = venuesResponse?.data
   } catch (error: any) {
+    venues.value = []
     console.log(error)
     toast.error(error?.data?.messages ?? 'Error')
   } finally {
   }
 }
 
+const getAllVenues = async () => {
+  try {
+    const response = await $api.datasets.getAllVenue()
+    availableVenues.value = response?.data
+    autoCompleteVenues.value = response?.data?.map((x) => {
+      return {
+        value: x.name,
+        label: x.name,
+      }
+    })
+  } catch (error: any) {
+    autoCompleteVenues.value = []
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+  }
+}
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/venues.vue')
   await getVenues()
-  await getAvailableVenues()
+  await getAllVenues()
+  if (store.regions.length == 0) await store.getRegions()
+  if (store.availableVenues.length == 0) await store.getAvailableVenues()
 })
 
 const openPanel = (item: IVenueItem | null) => {
@@ -83,13 +104,12 @@ const openPanel = (item: IVenueItem | null) => {
       facility_enter_guide: item.facility_enter_guide,
       has_congestion: item.has_congestion,
       has_parking: item.has_parking,
-      lat: item.lat,
-      lng: item.lng,
+      lat: `${item.lat}`,
+      lng: `${item.lng}`,
       name: item.name,
       parking_note: item.parking_note,
-      region: item.region,
+      region_id: item.region.id,
       service: 'weekly-classes',
-      subscriptionPlans: [1],
     }
     selectedVenueId.value = item.id
   }
@@ -99,6 +119,10 @@ const actionButton = async () => {
   try {
     blockButtons.value = true
     if (panelType.value == 'Add') {
+      const addResponse = await $api.venues.create(selectedVenue.value)
+      toast.success(addResponse?.message)
+    } else if (panelType.value == 'Add to service') {
+      selectedVenue.value.id = selectedVenueId.value
       const addResponse = await $api.venues.create(selectedVenue.value)
       toast.success(addResponse?.message)
     } else if (panelType.value == 'Update') {
@@ -145,16 +169,28 @@ const restoreVenue = async (id: string) => {
   }
 }
 
-const getAvailableVenues = async () => {
-  try {
-    const venuesResponse = await $api.venues.availableVenues()
-    availableVenues.value = venuesResponse?.data
-    console.log(availableVenues)
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-  } finally {
-    updateKey.value++
+const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
+  selectedVenue.value.name = value
+  let venue = availableVenues.value.find((x) => x.name == value)
+  if (!!venue) {
+    panelType.value = 'Add to service'
+    selectedVenue.value = {
+      address: venue.address,
+      area: venue.area,
+      facility_enter_guide: venue.facility_enter_guide,
+      has_congestion: venue.has_congestion,
+      has_parking: venue.has_parking,
+      lat: `${venue.lat}`,
+      lng: `${venue.lng}`,
+      name: venue.name,
+      parking_note: venue.parking_note,
+      region_id: venue.region.id,
+      service: 'weekly-classes',
+    }
+    selectedVenueId.value = venue.id
+    blockFields.value = true
+  } else {
+    blockFields.value = false
   }
 }
 </script>
@@ -207,7 +243,7 @@ const getAvailableVenues = async () => {
               </th>
               <td>{{ venue.name }}</td>
               <td>{{ venue.address }}</td>
-              <td>{{ venue.region }}</td>
+              <td>{{ venue.region.name }}</td>
               <td>
                 <button class="btn btn-link px-1" v-if="venue.has_congestion">
                   <Icon name="emojione-monotone:letter-c" class="text-danger" />
@@ -269,25 +305,19 @@ const getAvailableVenues = async () => {
           <div class="card-body">
             <div class="mb-3">
               <label for="name" class="form-label">Name of Venue</label>
-              <input
+              <!-- <input
                 id="name"
                 type="text"
                 class="form-control"
                 placeholder="Chelsea Academy"
                 v-model="selectedVenue.name"
+              /> -->
+              <a-auto-complete
+                class="w-100"
+                v-model:value="selectedVenue.name"
+                :options="autoCompleteVenues"
+                @select="selectExistingVenue"
               />
-              <!-- <UInputMenu
-                class="form-control"
-                v-model="selectedVenue.name"
-                :options="availableVenues?.map((x) => x.name)"
-                :key="updateKey"
-                :popper="{ placement: 'bottom' }"
-                :leading="true"
-              >
-                <template #option="{ option: name }">
-                  <span>{{ name }}</span>
-                </template>
-              </UInputMenu> -->
             </div>
             <div class="mb-3">
               <label for="area" class="form-label">Area</label>
@@ -297,6 +327,7 @@ const getAvailableVenues = async () => {
                 class="form-control"
                 placeholder="Chelsea"
                 v-model="selectedVenue.area"
+                :disabled="blockFields"
               />
             </div>
             <div class="mb-3">
@@ -307,6 +338,7 @@ const getAvailableVenues = async () => {
                 class="form-control"
                 placeholder="Lots road, London, SW10 0AB"
                 v-model="selectedVenue.address"
+                :disabled="blockFields"
               />
             </div>
             <!-- Parking COngestion  -->
@@ -322,6 +354,7 @@ const getAvailableVenues = async () => {
                       name="parking"
                       :value="true"
                       v-model="selectedVenue.has_parking"
+                      :disabled="blockFields"
                     />
                     <label class="form-check-label" for="parkingyes">
                       Yes
@@ -335,6 +368,7 @@ const getAvailableVenues = async () => {
                       name="parking"
                       :value="false"
                       v-model="selectedVenue.has_parking"
+                      :disabled="blockFields"
                     />
                     <label class="form-check-label" for="parkingno"> No </label>
                   </div>
@@ -352,6 +386,7 @@ const getAvailableVenues = async () => {
                       name="congestion"
                       :value="true"
                       v-model="selectedVenue.has_congestion"
+                      :disabled="blockFields"
                     />
                     <label class="form-check-label" for="congestionyes">
                       Yes
@@ -365,6 +400,7 @@ const getAvailableVenues = async () => {
                       name="congestion"
                       :value="false"
                       v-model="selectedVenue.has_congestion"
+                      :disabled="blockFields"
                     />
                     <label class="form-check-label" for="congestionno">
                       No
@@ -379,6 +415,7 @@ const getAvailableVenues = async () => {
                 class="form-control"
                 placeholder="Add a parking note"
                 v-model="selectedVenue.parking_note"
+                :disabled="blockFields"
               ></textarea>
               <label for="parking-note">Add a parking note</label>
             </div>
@@ -391,40 +428,28 @@ const getAvailableVenues = async () => {
                 class="form-control"
                 placeholder="Add notes"
                 v-model="selectedVenue.facility_enter_guide"
+                :disabled="blockFields"
               ></textarea>
             </div>
 
             <div class="mb-3">
               <div class="form-group w-100 mb-3">
-                <label for="Region" class="form-labelform-label-light"
-                  >Region</label
-                >
+                <label for="Region" class="form-label">Region</label>
                 <select
                   id="Region"
                   class="form-control form-control-lg"
-                  v-model="selectedVenue.region"
+                  v-model="selectedVenue.region_id"
+                  :disabled="blockFields"
                 >
                   <option
-                    v-for="(channel, index) in regions"
-                    :value="channel.value"
+                    v-for="(region, index) in regions"
+                    :value="region.id"
                     :key="index"
                   >
-                    {{ channel.label }}
+                    {{ region.name }}
                   </option>
                 </select>
               </div>
-              <!-- <label for="region" class="form-label">Region</label>
-              <select
-                id="region"
-                class="form-select"
-                aria-label="Default select example"
-                v-model="selectedVenue.region"
-              >
-                <option selected>--</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-              </select> -->
             </div>
 
             <div class="d-flex gap-4">

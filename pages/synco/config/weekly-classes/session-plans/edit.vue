@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useToast } from 'vue-toast-notification'
 import type { ISessionPlan, IExerciseSessionPlan } from '~/types/index'
+import type { ISessionPlanObject } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
+
+const { $api } = useNuxtApp()
+const toast = useToast()
 
 const smallSideGames = ref<IExerciseSessionPlan>({
   Title: 'Small-side games',
@@ -48,21 +55,21 @@ const lesson = ref<IExerciseSessionPlan>({
   Description: '',
 })
 
-const sessionPlan = ref<ISessionPlan>({
-  TotalDuration: '4 Hours',
-  PlayerImageUrl: '',
-  SubTitle: 'In todays lesson, students will learn to perform the Pinguim',
-  Title: 'The Pinguim',
-  BannerUrl: 'bg-stadium.png',
-  VideosUrls: [''],
-  Exercises: [
-    smallSideGames.value,
-    introduction.value,
-    warmup.value,
-    technical.value,
-    lesson.value,
-  ],
-})
+// const sessionPlan = ref<ISessionPlan>({
+//   TotalDuration: '4 Hours',
+//   PlayerImageUrl: '',
+//   SubTitle: 'In todays lesson, students will learn to perform the Pinguim',
+//   Title: 'The Pinguim',
+//   BannerUrl: 'bg-stadium.png',
+//   VideosUrls: [''],
+//   Exercises: [
+//     smallSideGames.value,
+//     introduction.value,
+//     warmup.value,
+//     technical.value,
+//     lesson.value,
+//   ],
+// })
 
 let selectedExercise = ref<number>(-1)
 
@@ -148,22 +155,8 @@ onMounted(() => {
           <template v-if="selection == 'Session Plans'">
             <div class="row">
               <div class="col-12" style="border-right: 1px solid lightgray">
-                <!-- <div class="card rounded-3 bg-stadium border-0">
-                  <div class="row h-100 w-100">
-                    <div class="col-5">
-                      <div
-                        class="d-flex flex-column align-items-center justify-content-center h-100 text-light font-custom"
-                      >
-                        <span> PLAY LIKE </span>
-                        <span class="h3"> Pele </span>
-                      </div>
-                    </div>
-                    <div class="col-7 d-flex align-items-end flex-row">
-                      <img src="@/src/assets/img-pele.png" height="100px" />
-                    </div>
-                  </div>
-                </div> -->
-                <div class="d-flex flex-column">
+                <SyncoConfigSessionPlansEditForm></SyncoConfigSessionPlansEditForm>
+                <!-- <div class="d-flex flex-column">
                   <div
                     class="d-flex justify-content-between align-items-center flex-row"
                   >
@@ -253,82 +246,6 @@ onMounted(() => {
                           </span>
                           <div class="d-flex flex-column">
                             {{ exercise.Description }}
-                            <!--                             
-                              <span class="h5 my-2">
-                                <strong>Organization</strong>
-                              </span>
-                              <span>
-                                Set up two small-sided games. You will need the
-                                following:
-                              </span>
-                              <ul>
-                                <li>4 pop-up goals</li>
-                                <li>Bibs to clearly divide teams</li>
-                                <li>4 blue cones to divide the two pitches</li>
-                                <li>5 footballs</li>
-                              </ul>
-                              <span class="h5 my-2"
-                                ><strong>Description</strong></span
-                              >
-                              <span>
-                                Begin the lesson with two small-sided games.
-                                Organise players based on ability into four teams.
-                                If you do not have many students, use one pitch
-                                only. Keep an eye on both games, unless you have a
-                                support coach working with you.
-                              </span>
-                              <span class="h5 my-2"><strong>Rules</strong></span>
-                              <span>
-                                Before you start the game, quickly reiterate the
-                                rules of the game:
-                              </span>
-                              <ol>
-                                <li>No slide tackles</li>
-                                <li>
-                                  If the ball rolls out of play, students should
-                                  all freeze and wait for a new ball to be rolled
-                                  in (have 5 football nearby ready)
-                                </li>
-                              </ol>
-                              <span class="h5 my-2"
-                                ><strong>Conditions</strong></span
-                              >
-                              <span>
-                                You can select a condition from below to stop
-                                students from all chasing the ball and/or playing
-                                as solo players. Keep classes fun by variating the
-                                conditions each week.
-                              </span>
-                              <ol>
-                                <li>
-                                  Players can only shoot once every member of the
-                                  team has touched the ball.
-                                </li>
-                                <li>
-                                  Only can only shoot once they have built 3-5
-                                  passes.
-                                </li>
-                                <li>
-                                  Only one member of each team is selected as the
-                                  goalscorer.
-                                </li>
-                              </ol>
-                              <span class="h5 my-2">
-                                <strong
-                                  >How to maintain the tone & intensity</strong
-                                >
-                              </span>
-                              <span>
-                                Set up two small-sided games. You will need the
-                                following:
-                              </span>
-                              <ul>
-                                <li>4 pop-up goals</li>
-                                <li>Bibs to clearly divide teams</li>
-                                <li>4 blue cones to divide the two pitches</li>
-                                <li>5 footballs</li>
-                              </ul> 
-                            -->
                             <div v-if="!!exercise.VideoUrl">
                               <video
                                 class="rounded-4"
@@ -341,7 +258,7 @@ onMounted(() => {
                       </div>
                     </div>
                   </template>
-                </div>
+                </div> -->
               </div>
             </div>
           </template>

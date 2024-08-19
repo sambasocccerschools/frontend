@@ -3,7 +3,7 @@ import FetchFactory from '../../factory'
 import type {
   ISessionPlanResponse,
   ISessionPlanCreateUpdateItem,
-  ITermEditItem,
+  ISingleSessionPlanResponse,
   ITermsSuccessfulResponse,
 } from '~/types/synco'
 
@@ -24,11 +24,19 @@ class SessionPlansModule extends FetchFactory {
     )
   }
 
+  async getById(id: number) {
+    return this.call<ISingleSessionPlanResponse>(
+      'GET',
+      `${this.RESOURCE}/${id}`,
+      undefined,
+      undefined,
+    )
+  }
+
   private createFormData = (data: ISessionPlanCreateUpdateItem) => {
     let formData = new FormData()
     formData.append('title', data.title)
     formData.append('description', data.description)
-    formData.append('ability_group_id', data.ability_group_id.toString())
     formData.append('player', data.description)
     if (data.banner) {
       formData.append('banner', data.banner)
@@ -45,10 +53,10 @@ class SessionPlansModule extends FetchFactory {
         exercise.title_duration,
       )
       if (exercise.banner) {
-        formData.append(`exercises[${index}][banner]`, exercise.banner)
+        formData.append(`exercises[${index}][banner][]`, exercise.banner)
       }
       if (exercise.video) {
-        formData.append(`exercises[${index}][video]`, exercise.video)
+        formData.append(`exercises[${index}][video][]`, exercise.video)
       }
     })
 
@@ -57,6 +65,7 @@ class SessionPlansModule extends FetchFactory {
 
   async create(data: ISessionPlanCreateUpdateItem) {
     const formData = this.createFormData(data)
+    formData.append('ability_group_id', data.ability_group_id.toString())
     const fetchOptions: FetchOptions<'json'> = {
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
@@ -101,6 +110,10 @@ class SessionPlansModule extends FetchFactory {
   //     undefined,
   //   )
   // }
+
+  async getBlobs(url: string) {
+    return this.callBlobs<Blob>('GET', `${url}`, undefined, undefined)
+  }
 }
 
 export default SessionPlansModule

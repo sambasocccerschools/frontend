@@ -46,35 +46,35 @@
             v-model="term.season.title"
           /> -->
         </div>
-        <div class="col-6 my-1">
+        <div class="col-6 my-1" v-if="!Number.isInteger(term.start_date)">
           <label for="start-date">Start date</label>
           <input
             id="start-date"
-            type="text"
+            type="date"
             class="form-control mt-2"
             name="start-date"
             placeholder="yyyy-mm-dd"
             v-model="term.start_date"
           />
         </div>
-        <div class="col-6 my-1">
+        <div class="col-6 my-1" v-if="!Number.isInteger(term.end_date)">
           <label for="end-date">End date</label>
           <input
             id="end-date"
-            type="text"
+            type="date"
             class="form-control mt-2"
             name="end-date"
             placeholder="yyyy-mm-dd"
             v-model="term.end_date"
           />
         </div>
-        <div class="col-6 my-1">
+        <div class="col-6 my-1" v-if="!Number.isInteger(term.half_term_date)">
           <label for="half-term-exclusion-date">
             Half-Term Exclusion Date(s)
           </label>
           <input
             id="half-term-exclusion-date"
-            type="text"
+            type="date"
             class="form-control mt-2"
             name="half-term-exclusion-date"
             placeholder="yyyy-mm-dd"
@@ -141,36 +141,28 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-// import type { ITermCard, ITermItem } from '~/types/index'
-import { useToast } from 'vue-toast-notification'
 import type {
   ITermItem,
   ITermCreateItem,
-  // ISessionCreateItem,
   ITermEditItem,
-  ISeasonItem,
-  IAbilityGroupObject,
   IAbilityGroupItem,
   IPlanItem,
 } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
 
 const props = defineProps<{
   term: ITermItem | null
   sessions: ITermCreateItem | ITermEditItem | null
 }>()
 
-const { $api } = useNuxtApp()
-const toast = useToast()
 let updateKey = ref<number>(0)
 
 let term = ref<ITermItem | null>(props.term).value
 let sessions = ref<ITermCreateItem | ITermEditItem | null>(props.sessions).value
 
-let seasons = ref<ISeasonItem[]>([])
-
-// let termItem = ref<ISessionCreateItem>({
-//   plans: [],
-// }).value
+let seasons = store.seasons
+let abilityGroups = store.abilityGroups
 
 const emit = defineEmits([
   'toggleAssignSessionCard',
@@ -191,36 +183,24 @@ const assignPlan = (selected: any) => {
 }
 onMounted(async () => {
   console.log('components/synco/config/terms/term-card.vue')
-  getSeasons()
+  if (store.seasons.length == 0) await store.getSeasons()
   if (!!term) {
     term.start_date = cleanDate(term?.start_date)
     term.end_date = cleanDate(term?.end_date)
     term.half_term_date = cleanDate(term?.half_term_date)
   }
-  getAbilityGroups()
-})
-const cleanDate = (date: string) => {
-  let cleanedDate = date
-  if (date.includes('T')) {
-    cleanedDate = date.split('T')[0]
-  }
-  return cleanedDate
-}
 
-const getSeasons = async () => {
-  try {
-    const seasonsResponse = await $api.datasets.getSeasons()
-    seasons.value = seasonsResponse?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-  } finally {
-  }
+  await store.getAbilityGroups('weekly-classes')
+})
+const cleanDate = (date: any) => {
+  if (!Number.isInteger(date)) return date
+  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+  return cleanedDate
 }
 
 const addNewSession = () => {
   let groups: IAbilityGroupItem[] = []
-  abilityGroups.value.forEach((x) => {
+  abilityGroups.forEach((x) => {
     groups.push({
       id: x.id,
       name: x.name,
@@ -246,21 +226,6 @@ const addNewSession = () => {
   updateKey.value--
 }
 
-let abilityGroups = ref<IAbilityGroupObject[]>([])
-const getAbilityGroups = async () => {
-  try {
-    const abilityGroupsResponse = await $api.abilityGroups.getAll(
-      'weekly-classes',
-      null,
-    )
-    abilityGroups.value = abilityGroupsResponse?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-  } finally {
-  }
-}
-
 const removeSession = (sessionId: number) => {
   let sessionToRemove = term?.sessions.find((x) => x.id == sessionId)
   if (!!sessionToRemove && !!term) {
@@ -275,7 +240,7 @@ const removeSession = (sessionId: number) => {
 const seasonChange = (event: any) => {
   let id = event?.target.value
   if (!!id && !!term) {
-    let season = seasons.value.find((x) => x.id == id)
+    let season = seasons.find((x) => x.id == id)
     if (!!season) {
       term.season = {
         created_at: season.created_at,

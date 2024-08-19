@@ -6,6 +6,8 @@ import type {
   ITermItem,
   ISeasonItem,
 } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
 
 const props = defineProps<{
   classItem: IWeeklyClassesCreateItem
@@ -31,7 +33,7 @@ let days = ref<string[]>([
 ]).value
 
 let terms = ref<ITermItem[]>([])
-let seasons = ref<ISeasonItem[]>([])
+let seasons = store.seasons
 
 let selectedTerm = ref<number>(-1)
 let selectedSeasonId = ref<number>(-1)
@@ -62,7 +64,7 @@ const toggleModalTerm = (id: number, season: string) => {
   showModalTerm.value = !showModalTerm.value
   selectedTerm.value = id
   selectedSeason.value = season
-  let seasonObj = seasons.value.find((x) => x.title == season)
+  let seasonObj = seasons.find((x) => x.title == season)
   selectedSeasonId.value = seasonObj != null ? seasonObj.id : -1
 }
 
@@ -87,7 +89,7 @@ const save = async () => {
 onMounted(async () => {
   console.log('components/synco/config/schedule-classes/create-edit-card.vue')
   await getTerms()
-  await getSeasons()
+  if (store.seasons.length == 0) await store.getSeasons()
 })
 const getTerms = async (limit: number = 25) => {
   try {
@@ -102,18 +104,10 @@ const getTerms = async (limit: number = 25) => {
     // updateKey.value++
   }
 }
-const getSeasons = async (limit: number = 25) => {
-  try {
-    const seasonsResponse = await $api.datasets.getSeasons()
-    console.log(seasonsResponse)
-    seasons.value = seasonsResponse?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-  } finally {
-    // blockButtons.value = false
-    // updateKey.value++
-  }
+
+const getTermName = (seasonId: number) => {
+  let term = terms.value.find((x) => x.id == seasonId)
+  return !!term ? term.name : seasonId
 }
 </script>
 <template>
@@ -209,7 +203,7 @@ const getSeasons = async (limit: number = 25) => {
               Autumn Term Dates
             </label>
             <span>
-              {{ classItem.autumn_term_id }}
+              {{ getTermName(classItem.autumn_term_id) }}
               <span
                 class="btn text-primary mx-1 p-0"
                 @click="toggleModalTerm(classItem.autumn_term_id, 'Autumn')"
@@ -263,7 +257,7 @@ const getSeasons = async (limit: number = 25) => {
               Spring Term Dates
             </label>
             <span>
-              {{ classItem.spring_term_id }}
+              {{ getTermName(classItem.spring_term_id) }}
               <span
                 class="btn text-primary mx-1 p-0"
                 @click="toggleModalTerm(classItem.spring_term_id, 'Spring')"
@@ -317,7 +311,7 @@ const getSeasons = async (limit: number = 25) => {
               Summer Term Dates
             </label>
             <span>
-              {{ classItem.summer_term_id }}
+              {{ getTermName(classItem.summer_term_id) }}
               <span
                 class="btn text-primary mx-1 p-0"
                 @click="toggleModalTerm(classItem.summer_term_id, 'Summer')"
