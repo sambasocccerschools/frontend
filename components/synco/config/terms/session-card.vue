@@ -34,11 +34,14 @@ onMounted(() => {
   console.log('components/synco/config/terms/session-card.vue')
 })
 const cleanDate = (date: string) => {
-  let cleanedDate = date
-  if (date.includes('T')) {
-    cleanedDate = date.split('T')[0]
-  }
+  if (!Number.isInteger(date)) return date
+  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
   return cleanedDate
+  // let cleanedDate = date
+  // if (date?.includes('T')) {
+  //   cleanedDate = date.split('T')[0]
+  // }
+  // return cleanedDate
 }
 </script>
 <template>

@@ -7,8 +7,8 @@
           <span>{{ sessionPlan.title }}</span>
         </div>
         <div class="d-flex flex-column mt-2">
-          <span class="text-muted"> Player </span>
-          <span>{{ sessionPlan.player }}</span>
+          <span class="text-muted"> Description </span>
+          <span>{{ sessionPlan.description }}</span>
         </div>
       </div>
       <div>
@@ -19,7 +19,7 @@
                 class="d-flex flex-column align-items-center justify-content-center h-100 text-light font-custom"
               >
                 <span> PLAY LIKE </span>
-                <span class="h3"> {{ sessionPlan.player }} </span>
+                <span class="h3"> {{ sessionPlan.description }} </span>
               </div>
             </div>
             <div class="col-7">

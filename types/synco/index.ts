@@ -1,4 +1,4 @@
-import type { IBaseResponse } from '..'
+import type { IBaseResponse, ILeadStatus, IRegionItem } from '..'
 
 export type ILinks = {
   first: string
@@ -36,9 +36,10 @@ export type IVenueItem = {
   has_congestion: boolean
   parking_note: string
   facility_enter_guide: string
-  region: number
+  region: IRegionItem
   created_at: Date | null
   deleted_at: Date | null
+  price: number | null
 }
 
 export type IVenuesResponse = {
@@ -50,16 +51,16 @@ export type IVenuesResponse = {
 export type IVenueCreateItem = {
   area: string
   name: string
-  lat: number
-  lng: number
+  lat: string
+  lng: string
   address: string
   has_parking: boolean
   has_congestion: boolean
   parking_note: string
   facility_enter_guide: string
-  region: number
-  subscriptionPlans: number[]
+  region_id: number
   service: string
+  price: number | null
 }
 
 export type IVenueSuccessfulResponse = {
@@ -223,7 +224,7 @@ export type ISeasonResponse = {
 export type ISessionPlanObject = {
   id: number
   title: string
-  player: string
+  description: string
   created_at: Date | null
   deleted_at: Date | null
 }
@@ -295,6 +296,33 @@ export type ISessionPlanExcerciseCreateItem = {
   video: Blob | null
 }
 
+export type ISessionPlanUpdateItem = {
+  id: number
+  title: string
+  subtitle: string
+  banner: IIconItem | null
+  video: IIconItem | null
+  exercises: ISessionPlanExcerciseUpdateItem[]
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type ISessionPlanExcerciseUpdateItem = {
+  id: number
+  title: string
+  subtitle: string
+  description: string
+  title_duration: string
+  banner: IIconItem | null
+  video: IIconItem | null
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type ISingleSessionPlanResponse = {
+  data: ISessionPlanUpdateItem
+}
+
 /* WEEKLY CLASSES LEADS */
 
 export type IStudentCreate = {
@@ -333,3 +361,133 @@ export type IWeeklyClassesLeadCreate = {
 }
 export type IWeeklyClassesLeadCreateResponse =
   IBaseResponse<IWeeklyClassesLeadCreate> & {}
+
+export type IGuardian = {
+  id: string
+  first_name: string
+  last_name: string
+  email: string
+  phone_number: string
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type IWeeklyClassesLead = {
+  id: number
+  status: ILeadStatus
+  guardian: IGuardian
+  kid_range: string
+  venues: IWeeklyClassesVenueObject[]
+  created_at: number | null
+  deleted_at: number | null
+}
+export type IWeeklyClassesLeadResponse = IBaseResponse<IWeeklyClassesLead> & {}
+
+export type IAutoCompleteObject = {
+  value: string
+  label: string
+}
+
+/* AbilityGroup Dataset */
+
+export type IAbilityGroupDatasetResponse = {
+  data: IAbilityGroupDataset[]
+}
+
+export type IAbilityGroupDataset = {
+  id: number
+  name: string
+  min_age: number
+  max_age: number
+  sessionPlans: ISessionPlanDataset[]
+}
+export type ISessionPlanDataset = {
+  id: number
+  title: string
+  description: string | null
+  banner: IIconItem
+  exercises: ISessionPlanItem[]
+}
+
+export type ITermDataset = {
+  id: number
+  name: string
+  start_date: string
+  end_date: string
+  half_term_date: string
+  created_at: Date | null
+  deleted_at: Date | null
+}
+export type ITermDatasetResponse = {
+  data: ITermDataset[]
+}
+
+export type ISendMessageObject = {
+  guardian_id: string[]
+  message: string
+}
+
+export type IMessageResponseObject = {
+  message: string
+}
+
+export type IWeeklyClassesVenueObject = {
+  id: string
+  area: string
+  name: string
+  lat: number
+  lng: number
+  distance: string | null
+  address: string
+  has_parking: boolean
+  has_congestion: boolean
+  parking_note: string
+  facility_enter_guide: string
+  region: IRegionItem
+  created_at: Date | null
+  deleted_at: Date | null
+  price: number | null
+  subscriptionPlans: any[]
+  classesByYear: IBaseWeeklyClassesClassesByYear[]
+  termsByYear: IBaseWeeklyClassesTermsByYear[]
+}
+
+export type IBaseWeeklyClassesClassesByYear = {
+  year: number
+  classes: IWeeklyClassesClassesByYear[]
+}
+
+export type IBaseWeeklyClassesTermsByYear = {
+  year: number
+  classes: IWeeklyClassesTermsByYear[]
+}
+
+export type IWeeklyClassesClassesByYear = {
+  id: number
+  name: string
+  capacity: number
+  days: string
+  start_time: string
+  end_time: string
+  is_autumn_indoor: boolean
+  is_spring_indoor: boolean
+  is_summer_indoor: boolean
+  indoor_outdoor_options: string
+  is_free_trail_dates: boolean
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type IWeeklyClassesTermsByYear = {
+  id: number
+  name: string
+  start_date: string | null
+  end_date: string | null
+  half_term_date: string | null
+  created_at: string | null
+  deleted_at: string | null
+}
+
+export type IExcelResponse = {
+  data: IIconItem
+}

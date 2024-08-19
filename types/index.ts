@@ -485,25 +485,34 @@ export type IBaseResponse<T> = {
 
 export type IBaseDatasetItem = {
   id: number
-  title: string
   created_at: Date | null
   deleted_at: Date | null
 }
 
-export type IGender = IBaseDatasetItem & {}
+export type IGender = IBaseDatasetItem & {
+  title: string
+}
 export type IGenderResponse = IBaseResponse<IGender> & {}
 
-export type IMedicalInformation = IBaseDatasetItem & {}
+export type IMedicalInformation = IBaseDatasetItem & {
+  title: string
+}
 export type IMedicalInformationResponse =
   IBaseResponse<IMedicalInformation> & {}
 
-export type IRelationship = IBaseDatasetItem & {}
+export type IRelationship = IBaseDatasetItem & {
+  title: string
+}
 export type IRelationshipResponse = IBaseResponse<IRelationship> & {}
 
-export type IReferralSource = IBaseDatasetItem & {}
+export type IReferralSource = IBaseDatasetItem & {
+  title: string
+}
 export type IReferralSourceResponse = IBaseResponse<IReferralSource> & {}
 
-export type ILeadStatus = IBaseDatasetItem & {}
+export type ILeadStatus = IBaseDatasetItem & {
+  title: string
+}
 export type ILeadStatusResponse = IBaseResponse<ILeadStatus> & {}
 
 export type IStudentByName = {
@@ -544,5 +553,91 @@ export type IEmregencyContactByName = {
 export type IEmregencyContactByNameResponse =
   IBaseResponse<IEmregencyContactByName> & {}
 
-export type IService = IBaseDatasetItem & {}
+export type IService = IBaseDatasetItem & {
+  title: string
+}
 export type IServiceResponse = IBaseResponse<IService> & {}
+
+export type IRegionItem = IBaseDatasetItem & {
+  name: string
+}
+export type IRegionResponse = IBaseResponse<IRegionItem> & {}
+
+export type IServicePackage = IBaseDatasetItem & {
+  name: string
+}
+export type IServicePackageResponse = IBaseResponse<IServicePackage> & {}
+
+export type ICountryResponse = IBaseResponse<ICountry> & {}
+
+export type ICities = IBaseDatasetItem & {
+  name: string
+  acsii: string
+  lat: number
+  lng: number
+}
+export type ICitiesResponse = IBaseResponse<ICities> & {}
+
+export type IPaymenType = IBaseDatasetItem & {
+  name: string
+}
+export type IPaymenTypeResponse = IBaseResponse<IPaymenType> & {}
+
+export type IStudentCoverage = IBaseDatasetItem & {
+  name: string
+}
+export type IStudentCoverageResponse = IBaseResponse<IStudentCoverage> & {}
+
+export type ISubscriptionPlans = IBaseDatasetItem & {
+  name: string
+  venue: any
+}
+export type ISubscriptionPlanResponse = IBaseResponse<ISubscriptionPlans> & {}
+
+export type ICampType = IBaseDatasetItem & {
+  title: string
+}
+export type ICampTypeResponse = IBaseResponse<ICampType> & {}
+
+export type IHolidayCampDate = IBaseDatasetItem & {
+  name: string
+  start_date: string
+  end_date: string
+}
+export type IHolidayCampDateResponse = IBaseResponse<IHolidayCampDate> & {}
+
+export type IUniqueWeeklyClassResponse = IBaseResponse<string> & {}
+
+export type IReason = IBaseDatasetItem & {
+  name: string
+}
+export type IMembershipCancelReason = IBaseDatasetItem & {
+  name: string
+  reasons: IReason[]
+}
+export type IMembershipCancelReasonResponse =
+  IBaseResponse<IMembershipCancelReason> & {}
+
+export type IRole = IBaseDatasetItem & {
+  name: string
+}
+export type IRoleResponse = IBaseResponse<IRole> & {}
+
+export type IWaitingListStatus = IBaseDatasetItem & {
+  title: string
+}
+export type IWaitingListStatusResponse = IBaseResponse<IWaitingListStatus> & {}
+
+export type IAgentObject = {
+  id: string
+  first_name: string
+  last_name: string
+  position: string
+  bio: string
+  phone_number: string
+  email: string
+  postal_code: string
+  created_at: Date | null
+  deleted_at: Date | null
+}
+export type IAgentObjectResponse = IBaseResponse<IAgentObject> & {}

@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useToast } from 'vue-toast-notification'
-
-import type { IRelationship } from '~/types/index'
 import type { IEmregencyContactCreate } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
 
 const props = defineProps<{
   emergencyContact: IEmregencyContactCreate
   noBorder?: boolean | null
 }>()
 
-const { $api } = useNuxtApp()
-const toast = useToast()
 let isLoading = ref<boolean>(false)
 let blockButtons = ref<boolean>(false)
 const changeLoadingState = (state: boolean) => {
@@ -22,28 +19,15 @@ const changeLoadingState = (state: boolean) => {
 let emergencyContact = ref<IEmregencyContactCreate>(props.emergencyContact)
 let noBorder = ref<boolean>(props.noBorder ?? false)
 
-const relationships = ref<IRelationship[]>()
+const relationships = store.relationships
 
 onMounted(async () => {
   console.log(
     'components/synco/weekly-classes/forms/emergency-contact-form.vue',
   )
-  await getRelationships()
+
+  if (store.relationships.length == 0) await store.getRelationships()
 })
-const getRelationships = async () => {
-  try {
-    changeLoadingState(true)
-    const response = await $api.datasets.getRelationship()
-    console.log(response)
-    relationships.value = response?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-    relationships.value = []
-  } finally {
-    changeLoadingState(false)
-  }
-}
 </script>
 
 <template>
@@ -113,6 +97,7 @@ const getRelationships = async () => {
             class="form-control form-control-lg"
             v-model="emergencyContact.relationship_id"
           >
+            <option :value="0">Select option</option>
             <option
               v-for="(relation, index) in relationships"
               :value="relation.id"

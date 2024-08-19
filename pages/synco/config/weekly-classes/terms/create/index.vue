@@ -78,28 +78,7 @@ const assignPlan = (selected: any) => {
   }
   toggleAssignSessionCard()
 }
-// const assignPlan = (selected: any) => {
-//   let inUseSession = term.value.sessions.find(
-//     (x) => x.id == selectedSessionPlanId.value,
-//   )
-//   let sessions = term.value.sessions.filter(
-//     (x) => x.id != selectedSessionPlanId.value,
-//   )
-//   let inUsePlan = inUseSession?.plans.find(
-//     (x) => x.ability_group.id == selectedAbilityId.value,
-//   )
-//   let plans = inUseSession?.plans.filter(
-//     (x) => x.ability_group.id != selectedAbilityId.value,
-//   )
-//   if (!!inUsePlan && !!inUseSession) {
-//     inUsePlan.session_plan.id = selected.id
-//     inUsePlan.session_plan.title = selected.title
-//     plans?.push(inUsePlan)
-//     sessions.push(inUseSession)
-//     term.value.sessions = sessions
-//   }
-//   toggleAssignSessionCard()
-// }
+
 const toggleAssignSessionCard = async () => {
   showAssignSessionCard.value = !showAssignSessionCard.value
 }

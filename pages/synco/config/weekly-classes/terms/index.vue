@@ -9,10 +9,10 @@ import type {
   ISessionEditItem,
   ISessionItem,
   IPlanItem,
-  ISeasonItem,
-  IAbilityGroupObject,
   IPlanEditItem,
 } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
 
 const updateKey = ref<number>(0)
 const { $api } = useNuxtApp()
@@ -21,7 +21,7 @@ const toast = useToast()
 let terms = ref<ITermItem[]>([])
 let selectedTerm = ref<ITermItem | null>(null)
 let selectedTermId = ref<number | null>(null)
-let seasons = ref<ISeasonItem[]>([])
+let seasons = store.seasons
 let emptyTermItem = ref<ITermCreateItem>({
   name: '',
   season_id: 0,
@@ -86,8 +86,8 @@ const toggleCreateEdit = async (item: ITermItem | null) => {
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/terms/index.vue')
   await getTerms()
-  await getSeasons()
-  // await getAbilityGroups()
+  if (store.seasons.length == 0) await store.getSeasons()
+  // await store.getAbilityGroups('weekly-classes')
 })
 
 const getTerms = async (limit: number = 25) => {
@@ -159,10 +159,10 @@ const toggleShowTermCard = (data: any) => {
     })
     newEditTermItem.value = {
       name: term.name,
-      end_date: term.end_date,
-      half_term_date: term.half_term_date,
+      end_date: cleanDate(term.end_date),
+      half_term_date: cleanDate(term.half_term_date),
       season_id: term.season.id,
-      start_date: term.start_date,
+      start_date: cleanDate(term.start_date),
       sessions: sessions,
     }
     selectedTerm.value = term
@@ -223,20 +223,6 @@ const toggleAssignSessionCard = async () => {
   showAssignSessionCard.value = !showAssignSessionCard.value
 }
 
-const getSeasons = async () => {
-  try {
-    const seasonsResponse = await $api.datasets.getSeasons()
-    console.log(seasonsResponse)
-    seasons.value = seasonsResponse?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-  } finally {
-    blockButtons.value = false
-    updateKey.value++
-  }
-}
-
 let updateTerm = ref<ITermEditItem | null>(null)
 const putTerm = async () => {
   if (selectedTerm.value == null || updateTerm.value == null) return
@@ -288,11 +274,9 @@ const save = () => {
     putTerm()
   } else close()
 }
-const cleanDate = (date: string) => {
-  let cleanedDate = date
-  if (date.includes('T')) {
-    cleanedDate = date.split('T')[0]
-  }
+const cleanDate = (date: any) => {
+  if (!Number.isInteger(date)) return date
+  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
   return cleanedDate
 }
 </script>

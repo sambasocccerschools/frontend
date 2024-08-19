@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useToast } from 'vue-toast-notification'
-
-import type { IRelationship, IReferralSource } from '~/types/index'
 import type { IGuardianCreate } from '~/types/synco/index'
 const props = defineProps<{
   parent: IGuardianCreate
   noBorder?: boolean | null
 }>()
+import { generalStore } from '~/stores'
+const store = generalStore()
 
-const { $api } = useNuxtApp()
-const toast = useToast()
 let isLoading = ref<boolean>(false)
 let blockButtons = ref<boolean>(false)
 const changeLoadingState = (state: boolean) => {
@@ -21,43 +18,15 @@ const changeLoadingState = (state: boolean) => {
 let parent = ref<IGuardianCreate>(props.parent)
 let noBorder = ref<boolean>(props.noBorder ?? false)
 
-const relationships = ref<IRelationship[]>()
-
-const referralSources = ref<IReferralSource[]>()
+const relationships = store.relationships
+const referralSources = store.referralSources
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/forms/parent-form.vue')
-  await getRelationships()
-  await getReferralSource()
+
+  if (store.relationships.length == 0) await store.getRelationships()
+  if (store.referralSources.length == 0) await store.getReferralSource()
 })
-const getRelationships = async () => {
-  try {
-    changeLoadingState(true)
-    const response = await $api.datasets.getRelationship()
-    console.log(response)
-    relationships.value = response?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-    relationships.value = []
-  } finally {
-    changeLoadingState(false)
-  }
-}
-const getReferralSource = async () => {
-  try {
-    changeLoadingState(true)
-    const response = await $api.datasets.getReferralSource()
-    console.log(response)
-    referralSources.value = response?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-    referralSources.value = []
-  } finally {
-    changeLoadingState(false)
-  }
-}
 </script>
 
 <template>

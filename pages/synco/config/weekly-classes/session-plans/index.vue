@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useToast } from 'vue-toast-notification'
-import type {
-  IAbilityGroupObject,
-  ISessionPlanObject,
-} from '~/types/synco/index'
+import type { ISessionPlanObject } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
 
 const { $api } = useNuxtApp()
 const toast = useToast()
@@ -12,24 +11,7 @@ const toast = useToast()
 let isLoading = ref<boolean>(false)
 let blockButtons = ref<boolean>(false)
 
-let abilityGroups = ref<IAbilityGroupObject[]>([])
-const getAbilityGroups = async () => {
-  try {
-    isLoading.value = true
-    blockButtons.value = true
-    const abilityGroupsResponse = await $api.abilityGroups.getAll(
-      'weekly-classes',
-      null,
-    )
-    abilityGroups.value = abilityGroupsResponse?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-  } finally {
-    isLoading.value = false
-    blockButtons.value = false
-  }
-}
+let abilityGroups = store.abilityGroups
 
 let sessionPlans = ref<ISessionPlanObject[]>([])
 const getSessionPlans = async (abilityId: number) => {
@@ -58,9 +40,9 @@ const selectAbilityGroup = (id: number) => {
 
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/session-plans/index.vue')
-  await getAbilityGroups()
-  console.log(abilityGroups.value)
-  selectAbilityGroup(abilityGroups.value[0].id)
+
+  await store.getAbilityGroups('weekly-classes')
+  selectAbilityGroup(abilityGroups[0]?.id)
 })
 </script>
 

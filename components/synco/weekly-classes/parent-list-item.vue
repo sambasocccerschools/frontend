@@ -5,12 +5,17 @@ const props = defineProps<{
   parent: IGuardianByName
 }>()
 
+const router = useRouter()
 const parent = ref<IGuardianByName>(props.parent)
 
 const emit = defineEmits(['selectParent'])
 
 const selectParent = () => {
   emit('selectParent', parent.value)
+}
+
+const navigateToUser = async (id: string) => {
+  await router.push({ path: `/synco/user/${id}` })
 }
 </script>
 
@@ -57,7 +62,10 @@ const selectParent = () => {
         {{ parent.email }}
       </div>
     </div>
-    <button @click="selectParent()" class="btn btn-primary text-light ms-auto">
+    <button
+      @click="navigateToUser(parent.id)"
+      class="btn btn-primary text-light ms-auto"
+    >
       Select parent
     </button>
   </div>

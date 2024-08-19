@@ -6,6 +6,8 @@ import type {
   IWeeklyClassesCreateItem,
   ISeasonItem,
 } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
 
 const updateKey = ref<number>(0)
 const { $api } = useNuxtApp()
@@ -15,7 +17,7 @@ const toast = useToast()
 let classes = ref<IWeeklyClassesItem[]>([])
 let selectedClassId = ref<number | null>(null)
 
-let seasons = ref<ISeasonItem[]>([])
+let seasons = store.seasons
 let emptyClassItem = ref<IWeeklyClassesCreateItem>({
   venue_id: '',
   name: '',
@@ -95,7 +97,7 @@ onMounted(async () => {
   emptyClassItem.value.venue_id = id
   newEditClassItem.value.venue_id = id
   await getWeeklyClasses()
-  await getSeasons()
+  if (store.seasons.length == 0) await store.getSeasons()
 })
 
 const getWeeklyClasses = async (limit: number = 25) => {
@@ -138,19 +140,6 @@ const restoreClass = async (id: number) => {
   } finally {
     await getWeeklyClasses()
     blockButtons.value = false
-  }
-}
-const getSeasons = async () => {
-  try {
-    const seasonsResponse = await $api.datasets.getSeasons()
-    console.log(seasonsResponse)
-    seasons.value = seasonsResponse?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-  } finally {
-    blockButtons.value = false
-    updateKey.value++
   }
 }
 </script>
