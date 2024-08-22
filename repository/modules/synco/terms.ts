@@ -34,10 +34,35 @@ class TermsModule extends FetchFactory {
   }
 
   async update(id: number, term: ITermEditItem) {
+    let sessions = []
+    term.sessions?.forEach((session) => {
+      if (session.id <= 0) {
+        let plans = []
+        session.plans?.forEach((plan) => {
+          plans.push({
+            ability_group_id: plan.ability_group_id,
+            session_plan_id: plan.session_plan_id,
+          })
+        })
+        sessions.push({
+          plans: plans,
+        })
+      } else {
+        sessions.push(session)
+      }
+    })
+    let body = {
+      season_id: term.season_id,
+      name: term.name,
+      end_date: term.end_date,
+      start_date: term.start_date,
+      half_term_date: term.half_term_date,
+      sessions: sessions,
+    }
     return this.call<ITermsSuccessfulResponse>(
       'PUT',
       `${this.RESOURCE}/${id}`,
-      term,
+      body,
       undefined,
     )
   }

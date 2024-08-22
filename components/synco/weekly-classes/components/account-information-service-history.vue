@@ -25,7 +25,7 @@
           >
             See details
           </button>
-          <button class="btn btn-light mx-1 border bg-transparent">
+          <!-- <button class="btn btn-light mx-1 border bg-transparent">
             Credits
           </button>
           <button class="btn btn-light mx-1 border bg-transparent">
@@ -33,7 +33,7 @@
           </button>
           <button class="btn btn-light mx-1 border bg-transparent">
             See payments
-          </button>
+          </button> -->
         </div>
       </template>
     </SyncoWeeklyClassesServiceHistoryItem>
@@ -63,9 +63,9 @@
           >
             See details
           </button>
-          <button class="btn btn-light mx-1 border bg-transparent">
+          <!-- <button class="btn btn-light mx-1 border bg-transparent">
             See payments
-          </button>
+          </button> -->
         </div>
       </template>
     </SyncoWeeklyClassesServiceHistoryItem>
@@ -95,12 +95,12 @@
           >
             See details
           </button>
-          <button class="btn btn-light mx-1 border bg-transparent">
+          <!-- <button class="btn btn-light mx-1 border bg-transparent">
             Attendance
           </button>
           <button class="btn btn-light mx-1 border bg-transparent">
             See payments
-          </button>
+          </button> -->
         </div>
       </template>
     </SyncoWeeklyClassesServiceHistoryItem>
@@ -130,12 +130,12 @@
           >
             See details
           </button>
-          <button class="btn btn-light mx-1 border bg-transparent">
+          <!-- <button class="btn btn-light mx-1 border bg-transparent">
             Attendance
           </button>
           <button class="btn btn-light mx-1 border bg-transparent">
             See payments
-          </button>
+          </button> -->
         </div>
       </template>
     </SyncoWeeklyClassesServiceHistoryItem>
@@ -165,12 +165,12 @@
           >
             See details
           </button>
-          <button class="btn btn-light mx-1 border bg-transparent">
+          <!-- <button class="btn btn-light mx-1 border bg-transparent">
             Attendance
           </button>
           <button class="btn btn-light mx-1 border bg-transparent">
             See payments
-          </button>
+          </button> -->
         </div>
       </template>
     </SyncoWeeklyClassesServiceHistoryItem>

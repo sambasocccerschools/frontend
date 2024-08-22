@@ -86,7 +86,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="col-6">
-        <div class="form-group w-100 mb-3">
+        <div class="form-group w-100 mb-3" v-if="relationships.length > 0">
           <label
             for="emergencyContactRelation"
             class="form-labelform-label-light"

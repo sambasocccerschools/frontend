@@ -1,4 +1,12 @@
-import type { IBaseResponse, ILeadStatus, IRegionItem } from '..'
+import type {
+  IBaseResponse,
+  IGender,
+  ILeadStatus,
+  IMedicalInformation,
+  IReferralSource,
+  IRegionItem,
+  IRelationship,
+} from '..'
 
 export type ILinks = {
   first: string
@@ -299,7 +307,7 @@ export type ISessionPlanExcerciseCreateItem = {
 export type ISessionPlanUpdateItem = {
   id: number
   title: string
-  subtitle: string
+  description: string
   banner: IIconItem | null
   video: IIconItem | null
   exercises: ISessionPlanExcerciseUpdateItem[]
@@ -354,9 +362,10 @@ export type IEmregencyContactCreate = {
 }
 
 export type IWeeklyClassesLeadCreate = {
-  student: IStudentCreate
+  weekly_class_id: number | null
+  students: IStudentCreate[]
   guardians: IGuardianCreate[]
-  emergency_contact: IEmregencyContactCreate
+  emergency_contacts: IEmregencyContactCreate[]
   comments: string[]
 }
 export type IWeeklyClassesLeadCreateResponse =
@@ -378,6 +387,7 @@ export type IWeeklyClassesLead = {
   guardian: IGuardian
   kid_range: string
   venues: IWeeklyClassesVenueObject[]
+  agent: IUserCommentsObject
   created_at: number | null
   deleted_at: number | null
 }
@@ -423,7 +433,7 @@ export type ITermDatasetResponse = {
 }
 
 export type ISendMessageObject = {
-  guardian_id: string[]
+  weekly_classes_lead_id: string[]
   message: string
 }
 
@@ -490,4 +500,137 @@ export type IWeeklyClassesTermsByYear = {
 
 export type IExcelResponse = {
   data: IIconItem
+}
+
+export type IStudentObject = {
+  id: string
+  first_name: string
+  last_name: string
+  dob: string
+  age: number
+  gender: IGender
+  medical_information: IMedicalInformation
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type IGuardianObject = {
+  id: string
+  first_name: string
+  last_name: string
+  email: string
+  phone_number: string
+  relationship: IRelationship
+  referral_source: IReferralSource
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type IEmregencyContactObject = {
+  id: number
+  first_name: string
+  last_name: string
+  phone_number: string
+  relationship: IRelationship
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type ICommentsObject = {
+  id: number
+  message: string
+  user: IUserCommentsObject
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type IUserCommentsObject = {
+  id: string
+  first_name: string
+  last_name: string
+  avatar_image: IIconItem
+}
+export type IWeeklyClassesShowLeadObject = {
+  id: number
+  status: ILeadStatus
+  students: IStudentObject[]
+  guardian: IGuardianObject
+  emergencyContacts: IEmregencyContactObject[]
+  comments: ICommentsObject[]
+  created_at: Date | null
+  deleted_at: Date | null
+}
+export type IWeeklyClassesShowLeadResponse = {
+  data: IWeeklyClassesShowLeadObject
+}
+
+export type IAvailableClassesByYear = {
+  year: number
+  classes: IAvailableClassesObject[]
+}
+
+export type IAvailableClassesObject = {
+  id: number
+  name: string
+  capacity: number
+  days: string
+  start_time: string
+  end_time: string
+  is_autumn_indoor: boolean
+  autumn_term: any
+  is_spring_indoor: boolean
+  spring_term: any
+  is_summer_indoor: boolean
+  summer_term: any
+  indoor_outdoor_options: string
+  is_free_trail_dates: boolean
+  created_at: Date | null
+  deleted_at: Date | null
+}
+export type IAvailableVenueObject = {
+  id: string
+  area: string
+  name: string
+  lat: number
+  lng: number
+  address: string
+  has_parking: boolean
+  has_congestion: boolean
+  parking_note: string
+  facility_enter_guide: string
+  region: IRegionItem
+  subscriptionPlans: any[]
+  classesByYear: IAvailableClassesByYear[]
+  created_at: Date | null
+  deleted_at: Date | null
+  price: number | null
+}
+
+export type IAvailableVenueResponse = {
+  data: IAvailableVenueObject[]
+}
+
+export type IReportingObject = {
+  amount: number
+  percentage: string
+}
+
+export type IWeeklyClassesLeadsReportingObject = {
+  total_leads: IReportingObject
+  new_leads: IReportingObject
+  leads_to_trials: IReportingObject
+  leads_to_sales: IReportingObject
+}
+
+export type IWeeklyClassesLeadsReportingResponse = {
+  data: IWeeklyClassesLeadsReportingObject
+}
+
+export type IWeekltClassesLeadFilterObject = {
+  venue_id: string
+  referral_source_id: string
+  student: string
+  lead_status_id: string
+  start_date: string
+  end_date: string
 }

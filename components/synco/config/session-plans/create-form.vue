@@ -30,6 +30,9 @@ let newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
   exercises: [],
 })
 
+let imageSizeLimit = ref<number>(5120000).value
+let videoSizeLimit = ref<number>(51200000).value
+
 onMounted(async () => {
   console.log('components/synco/config/session-plans/create-form.vue')
   let queryAbilityId = router.currentRoute.value.query?.abilityId
@@ -53,6 +56,10 @@ let bannerPreview = ref<string | null>(null)
 const handleBannerChange = async () => {
   const files = bannerInput.value?.files!
   const file = files?.[0]
+  if (file.size >= imageSizeLimit) {
+    alert('Image to big!')
+    return
+  }
   banner.value = file
   let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
     type: file.type,
@@ -68,6 +75,10 @@ let videoPreview = ref<string | null>(null)
 const handleVideoChange = async () => {
   const files = videoInput.value?.files!
   const file = files?.[0]
+  if (file.size >= videoSizeLimit) {
+    alert('Video to big!')
+    return
+  }
   video.value = file
   let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
     type: file.type,
@@ -89,8 +100,11 @@ const handleImageInput = (event: Event, index: number) => {
 
 const handleImageChange = async (index: number) => {
   const files = imageInput.value[index]?.files!
-  console.log(index, imageInput.value[index])
   const file = files?.[0]
+  if (file.size >= imageSizeLimit) {
+    alert('Image to big!')
+    return
+  }
   if (image.value[index] != null) {
     image.value[index] = file
   }
@@ -113,8 +127,11 @@ const handleVideo2Input = (event: Event, index: number) => {
 }
 const handleVideo2Change = async (index: number) => {
   const files = video2Input.value[index]?.files!
-  console.log(index, video2Input.value[index])
   const file = files?.[0]
+  if (file.size >= videoSizeLimit) {
+    alert('Video to big!')
+    return
+  }
   if (video2.value[index] != null) {
     video2.value[index] = file
   }

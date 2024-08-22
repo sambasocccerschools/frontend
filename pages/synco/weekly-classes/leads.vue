@@ -39,30 +39,30 @@
           </div>
         </div>
 
-        <div class="row row-cols-sm-4" v-if="!tempDisabled">
+        <div class="row row-cols-sm-4">
           <SyncoDashboardMetricsItem
             name="Total Leads"
-            value="945"
-            change="+12"
+            :value="reporting?.total_leads.amount"
+            :change="reporting?.total_leads.percentage"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="New Leads"
-            value="945"
-            change="+12"
+            :value="reporting?.new_leads.amount"
+            :change="reporting?.new_leads.percentage"
             icon="ph:users-three"
             :removePercentage="true"
           />
           <SyncoDashboardMetricsItem
             name="Leads to trials"
-            value="945"
-            change="+100"
+            :value="reporting?.leads_to_trials.amount"
+            :change="reporting?.leads_to_trials.percentage"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Leads to sales"
-            value="945"
-            change="+12"
+            :value="reporting?.leads_to_sales.amount"
+            :change="reporting?.leads_to_sales.percentage"
             icon="ph:users-three"
           />
         </div>
@@ -118,9 +118,7 @@
         </table>
       </div>
       <div class="col">
-        <template v-if="!tempDisabled">
-          <SyncoWeeklyClassesFormsFindLead />
-        </template>
+        <SyncoWeeklyClassesFormsFindLead @apply-filter="applyFilter" />
       </div>
     </div>
   </NuxtLayout>
@@ -128,9 +126,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toast-notification'
-import type { IWeeklyClassesLead } from '~/types/synco/index'
+import type {
+  IWeeklyClassesLead,
+  IWeeklyClassesLeadsReportingObject,
+  IWeekltClassesLeadFilterObject,
+} from '~/types/synco/index'
 import { generalStore } from '~/stores'
-const tempDisabled = ref(true)
 
 const updateKey = ref<number>(0)
 const blockButtons = ref(false)
@@ -142,8 +143,9 @@ const { $api } = useNuxtApp()
 const toast = useToast()
 const leads = ref<IWeeklyClassesLead[]>([])
 const selectedReferralSource = ref<string>('All')
+const selectedReferralSourceId = ref<number>(0)
 const selectedGuardians = ref<string[]>([])
-
+const reporting = ref<IWeeklyClassesLeadsReportingObject | null>(null)
 const getLeads = async (source: number | null = null, limit: number = 25) => {
   try {
     blockButtons.value = true
@@ -151,6 +153,19 @@ const getLeads = async (source: number | null = null, limit: number = 25) => {
       ? await $api.wcLeads.getAll(limit)
       : await $api.wcLeads.getByReferralSource(source, limit)
     leads.value = response?.data
+  } catch (error: any) {
+    leads.value = []
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    blockButtons.value = false
+  }
+}
+const getReporting = async () => {
+  try {
+    blockButtons.value = true
+    const response = await $api.wcLeads.getReporting()
+    reporting.value = response?.data
   } catch (error: any) {
     leads.value = []
     console.log(error)
@@ -167,7 +182,10 @@ onMounted(async () => {
   if (store.referralSources.length == 0) await store.getReferralSource()
   if (store.agents.length == 0) await store.getAgents()
   if (store.leadStatus.length == 0) await store.getLeadStatus()
+  if (store.availableVenues.length == 0)
+    await store.getAvailableVenues('weekly-classes')
   await getLeads()
+  await getReporting()
 })
 
 const selectReferralSource = async (source: string) => {
@@ -175,9 +193,12 @@ const selectReferralSource = async (source: string) => {
   selectedGuardians.value = []
   selectedReferralSource.value = source
   if (source == 'All') {
+    selectedReferralSourceId.value = 0
     await getLeads()
   } else if (referralSources.some((x) => x.title == source)) {
     let referralSource = referralSources.find((x) => x.title == source)
+    if (!referralSource) return
+    selectedReferralSourceId.value = referralSource.id
     await getLeads(referralSource?.id)
   } else {
     await getLeads()
@@ -214,7 +235,7 @@ const sendText = async () => {
     blockButtons.value = true
     const response = await $api.wcLeads.sendText({
       message: message,
-      guardian_id: guardianIds,
+      weekly_classes_lead_id: guardianIds,
     })
     toast.success(response?.message ?? 'Error')
   } catch (error: any) {
@@ -239,7 +260,7 @@ const sendEmail = async () => {
     blockButtons.value = true
     const response = await $api.wcLeads.sendEmail({
       message: message,
-      guardian_id: guardianIds,
+      weekly_classes_lead_id: guardianIds,
     })
     toast.success(response?.message ?? 'Error')
   } catch (error: any) {
@@ -259,6 +280,21 @@ const selectedGuardian = (data: any) => {
     }
   } else {
     selectedGuardians.value.push(data.id)
+  }
+}
+
+const applyFilter = async (data: IWeekltClassesLeadFilterObject) => {
+  try {
+    data.referral_source_id = `${selectedReferralSourceId.value}`
+    blockButtons.value = true
+    const response = await $api.wcLeads.getByFilter(data, 25)
+    leads.value = response?.data
+  } catch (error: any) {
+    leads.value = []
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    blockButtons.value = false
   }
 }
 </script>

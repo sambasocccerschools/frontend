@@ -251,7 +251,7 @@ export type IComment = {
   text: string
   avatar: string
   name: string
-  created: string
+  created: string | null
 }
 
 export type IStudentListItem = {
