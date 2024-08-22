@@ -271,9 +271,15 @@ const save = () => {
       start_date: cleanDate(currentTerm.start_date),
       sessions: newSessionObject,
     }
-    putTerm()
+    if (!showTermCard.value) putTerm()
   } else close()
 }
+
+const buttonSave = () => {
+  showTermCard.value = !showTermCard.value
+  save()
+}
+
 const cleanDate = (date: any) => {
   if (!Number.isInteger(date)) return date
   let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
@@ -341,7 +347,10 @@ const cleanDate = (date: any) => {
                   >
                     Cancel
                   </button>
-                  <button class="btn btn-primary text-light" @click="save">
+                  <button
+                    class="btn btn-primary text-light"
+                    @click="buttonSave"
+                  >
                     Save
                   </button>
                 </div>

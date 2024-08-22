@@ -5,7 +5,6 @@
       :attributes="attrs"
       expanded
       color="green"
-      :min-date="today"
     />
   </div>
 </template>

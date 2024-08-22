@@ -119,6 +119,18 @@ const login = async () => {
         console.log('response', response)
         store.setUser(response?.data)
         store.updateAuthenticated(true)
+        if (store.regions.length == 0) store.getRegions()
+        if (store.availableVenues.length == 0)
+          store.getAvailableVenues('weekly-classes')
+        if (store.abilityGroups.length == 0)
+          store.getAbilityGroups('weekly-classes')
+        if (store.seasons.length == 0) store.getSeasons()
+        if (store.relationships.length == 0) store.getRelationships()
+        if (store.referralSources.length == 0) store.getReferralSource()
+        if (store.leadStatus.length == 0) store.getLeadStatus()
+        if (store.gender.length == 0) store.getGender()
+        if (store.medicalInformation.length == 0) store.getMedicalInformation()
+        if (store.agents.length == 0) store.getAgents()
       })
 
     window.location.href = '/synco/dashboard'

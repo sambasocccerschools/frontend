@@ -107,7 +107,7 @@ onMounted(async () => {
     </div>
     <div class="row">
       <div class="col-6">
-        <div class="form-group w-100 mb-3">
+        <div class="form-group w-100 mb-3" v-if="gender.length > 0">
           <label for="studentGender" class="form-labelform-label-light"
             >Gender</label
           >
@@ -128,7 +128,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="col-6">
-        <div class="form-group w-100 mb-3">
+        <div class="form-group w-100 mb-3" v-if="medicalInformation.length > 0">
           <label
             for="studentMedicalInformation"
             class="form-labelform-label-light"

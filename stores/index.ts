@@ -14,7 +14,7 @@ import type {
   IAgentObject,
 } from '~/types/index'
 import type {
-  IVenueItem,
+  IAvailableVenueObject,
   ISeasonItem,
   IAbilityGroupObject,
 } from '~/types/synco/index'
@@ -24,7 +24,7 @@ export const generalStore = defineStore('store', {
     authenticated: false,
     user: undefined as IUser | undefined,
     regions: [] as IRegionItem[],
-    availableVenues: [] as IVenueItem[],
+    availableVenues: [] as IAvailableVenueObject[],
     seasons: [] as ISeasonItem[],
     abilityGroups: [] as IAbilityGroupObject[],
     services: [] as IService[],
@@ -54,9 +54,17 @@ export const generalStore = defineStore('store', {
       } finally {
       }
     },
-    async getAvailableVenues() {
+    async getAvailableVenues(
+      service:
+        | 'weekly-classes'
+        | 'one-to-one'
+        | 'holiday-camps'
+        | 'birthday-parties'
+        | 'club'
+        | 'pathway',
+    ) {
       try {
-        const response = await useNuxtApp().$api.venues.availableVenues()
+        const response = await useNuxtApp().$api.venues.availableVenues(service)
         this.availableVenues = response?.data
       } catch (error: any) {
         this.availableVenues = []

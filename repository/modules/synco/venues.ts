@@ -4,6 +4,7 @@ import type {
   IVenuesResponse,
   IVenueCreateItem,
   IVenueSuccessfulResponse,
+  IAvailableVenueResponse,
 } from '~/types/synco'
 
 class VenuesModule extends FetchFactory {
@@ -69,12 +70,26 @@ class VenuesModule extends FetchFactory {
     )
   }
 
-  async availableVenues() {
-    return this.call<IVenuesResponse>(
+  async availableVenues(
+    service:
+      | 'weekly-classes'
+      | 'one-to-one'
+      | 'holiday-camps'
+      | 'birthday-parties'
+      | 'club'
+      | 'pathway',
+  ) {
+    const fetchOptions: FetchOptions<'json'> = {
+      params: {
+        service,
+        include_classes: true,
+      },
+    }
+    return this.call<IAvailableVenueResponse>(
       'GET',
       `/v1/datasets/venue`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 }

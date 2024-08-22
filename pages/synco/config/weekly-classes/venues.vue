@@ -87,7 +87,8 @@ onMounted(async () => {
   await getVenues()
   await getAllVenues()
   if (store.regions.length == 0) await store.getRegions()
-  if (store.availableVenues.length == 0) await store.getAvailableVenues()
+  if (store.availableVenues.length == 0)
+    await store.getAvailableVenues('weekly-classes')
 })
 
 const openPanel = (item: IVenueItem | null) => {

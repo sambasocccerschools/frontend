@@ -155,3 +155,25 @@
     </div>
   </NuxtLayout>
 </template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { generalStore } from '~/stores'
+const store = generalStore()
+
+onMounted(async () => {
+  console.log('pages/synco/dashboard/index.vue')
+  if (store.regions.length == 0) await store.getRegions()
+  if (store.availableVenues.length == 0)
+    await store.getAvailableVenues('weekly-classes')
+  if (store.abilityGroups.length == 0)
+    await store.getAbilityGroups('weekly-classes')
+  if (store.seasons.length == 0) await store.getSeasons()
+  if (store.relationships.length == 0) await store.getRelationships()
+  if (store.referralSources.length == 0) await store.getReferralSource()
+  if (store.leadStatus.length == 0) await store.getLeadStatus()
+  if (store.gender.length == 0) await store.getGender()
+  if (store.medicalInformation.length == 0) await store.getMedicalInformation()
+  if (store.agents.length == 0) await store.getAgents()
+})
+</script>

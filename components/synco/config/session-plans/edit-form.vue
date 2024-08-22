@@ -30,6 +30,8 @@ let newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
   video: null,
   exercises: [],
 })
+let imageSizeLimit = ref<number>(5120000).value
+let videoSizeLimit = ref<number>(51200000).value
 
 // let sessionPlan = ref<ISessionPlanUpdateItem | null>(null)
 
@@ -72,7 +74,7 @@ const getSessionPlan = async () => {
     videoPreview.value = !!sessionPlan.video ? sessionPlan.video.url : null
     newSessionPlan.value = {
       title: sessionPlan.title,
-      description: sessionPlan.subtitle,
+      description: sessionPlan.description,
       ability_group_id: -1,
       // banner: !!sessionPlan.banner
       //   ? await loadBlobFromUrl(sessionPlan.banner.url)
@@ -117,6 +119,10 @@ let bannerPreview = ref<string | null>(null)
 const handleBannerChange = async () => {
   const files = bannerInput.value?.files!
   const file = files?.[0]
+  if (file.size >= imageSizeLimit) {
+    alert('Image to big!')
+    return
+  }
   banner.value = file
   let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
     type: file.type,
@@ -132,6 +138,10 @@ let videoPreview = ref<string | null>(null)
 const handleVideoChange = async () => {
   const files = videoInput.value?.files!
   const file = files?.[0]
+  if (file.size >= videoSizeLimit) {
+    alert('Video to big!')
+    return
+  }
   video.value = file
   let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
     type: file.type,
@@ -155,6 +165,10 @@ const handleImageChange = async (index: number) => {
   const files = imageInput.value[index]?.files!
   console.log(index, imageInput.value[index])
   const file = files?.[0]
+  if (file.size >= imageSizeLimit) {
+    alert('Image to big!')
+    return
+  }
   if (image.value[index] != null) {
     image.value[index] = file
   }
@@ -179,6 +193,10 @@ const handleVideo2Change = async (index: number) => {
   const files = video2Input.value[index]?.files!
   console.log(index, video2Input.value[index])
   const file = files?.[0]
+  if (file.size >= videoSizeLimit) {
+    alert('Video to big!')
+    return
+  }
   if (video2.value[index] != null) {
     video2.value[index] = file
   }

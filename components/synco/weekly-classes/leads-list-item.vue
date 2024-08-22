@@ -20,14 +20,26 @@ const agents = store.agents
 const leadStatus = store.leadStatus
 
 let selectedAgent = ref<string>('')
+let selectedStatus = ref<number>(0)
 const blockButtons = ref(false)
 
-onMounted(() => {
+onMounted(async () => {
   console.log('components/synco/config/schedule-classes/term-card.vue')
+  if (!!lead.agent) {
+    selectedAgent.value = lead.agent.id
+  }
+  if (!!lead.status) {
+    selectedStatus.value = lead.status.id
+  }
+  console.log('status', lead.status)
+  console.log('agent', lead.agent)
+  // if (store.leadStatus.length == 0) await store.getLeadStatus()
 })
 
 const navigateToUser = async (id: number) => {
+  console.log(id)
   await router.push({ path: `/synco/weekly-classes/edit/lead/${id}` })
+  // await router.push({ path: `/synco/user/${id}` })
 }
 const cleanDate = (date: any) => {
   if (!Number.isInteger(date)) return date
@@ -87,7 +99,7 @@ const selectStatus = async (event: Event) => {
         class="form-check-input"
         type="checkbox"
         value=""
-        :id="`${lead.guardian.id}`"
+        :id="`${lead.id}`"
         @change="selectGuardian"
       />
     </td>
@@ -99,7 +111,7 @@ const selectStatus = async (event: Event) => {
         {{ lead.guardian.first_name }} {{ lead.guardian.last_name }}
       </label>
     </td>
-    <td @click="navigateToUser(1)" style="cursor: pointer">
+    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
       {{ lead.guardian.email }}
     </td>
     <td @click="navigateToUser(lead.id)" style="cursor: pointer">
@@ -127,11 +139,11 @@ const selectStatus = async (event: Event) => {
       <select
         id="seasons"
         class="form-control form-control-lg"
-        v-model="lead.status.id"
+        v-model="selectedStatus"
         @change="selectStatus"
         :disabled="blockButtons"
       >
-        <option value="">Assign status</option>
+        <option value="0">Assign status</option>
         <option
           v-for="(lStatus, index) in leadStatus"
           :value="lStatus.id"

@@ -1,8 +1,17 @@
 <script setup lang="ts">
 import type { IWeeklyClassesVenueObject } from '~/types/synco'
-defineProps<{
+
+const props = defineProps<{
   item: IWeeklyClassesVenueObject
 }>()
+
+let item = ref<IWeeklyClassesVenueObject>(props.item)
+
+onMounted(async () => {
+  console.log('components/synco/weekly-classes/BookingListItem.vue')
+  console.log(item.value)
+  // if (store.leadStatus.length == 0) await store.getLeadStatus()
+})
 </script>
 
 <template>
@@ -56,52 +65,56 @@ defineProps<{
           <div class="order-end border-muted border-1 d-flex flex-column px-4">
             <span class="h5">{{ c.year }}</span>
           </div>
-          <template v-for="classes in c.classes">
-            <div class="d-flex align-items-center justify-content-center gap-3">
-              <span class="h6 text-semibold m-0">{{ classes.name }}</span>
-              <!-- <span class="">{{ classes.indoor_outdoor_options }}</span> -->
-              <span>
-                <Icon name="ph:clock-fill" />
-                {{ $dayjs(classes.start_time, 'HH:mm:ss').format('hh:mm a') }}
-                -
-                {{ $dayjs(classes.end_time, 'HH:mm:ss').format('hh:mm a') }}
-              </span>
-              <span
-                class="d-flex align-items-center rounded-3 px-2"
-                :class="{
-                  'bg-danger-subtle text-danger': classes.capacity === 0,
-                  'bg-success-subtitle text-success': classes.capacity !== 0,
-                }"
-                >{{
-                  classes.capacity === 0
-                    ? 'Fully Booked'
-                    : `+${classes.capacity} ${classes.capacity > 2 ? 'spaces' : 'space'}`
-                }}</span
+          <div class="d-flex flex-column">
+            <template v-for="classes in c.classes">
+              <div
+                class="d-flex align-items-center justify-content-center gap-3"
               >
-            </div>
-            <div class="">
-              <template v-if="classes.capacity === 0">
-                <NuxtLink
-                  to="/synco/weekly-classes/create/waiting-list"
-                  class="btn btn-primary btn-sm text-light me-3"
-                  ><strong>Add to Waiting List</strong></NuxtLink
+                <span class="h6 text-semibold m-0">{{ classes.name }}</span>
+                <!-- <span class="">{{ classes.indoor_outdoor_options }}</span> -->
+                <span>
+                  <Icon name="ph:clock-fill" />
+                  {{ $dayjs(classes.start_time, 'HH:mm:ss').format('hh:mm a') }}
+                  -
+                  {{ $dayjs(classes.end_time, 'HH:mm:ss').format('hh:mm a') }}
+                </span>
+                <span
+                  class="d-flex align-items-center rounded-3 px-2"
+                  :class="{
+                    'bg-danger-subtle text-danger': classes.capacity === 0,
+                    'bg-success-subtitle text-success': classes.capacity !== 0,
+                  }"
+                  >{{
+                    classes.capacity === 0
+                      ? 'Fully Booked'
+                      : `+${classes.capacity} ${classes.capacity > 2 ? 'spaces' : 'space'}`
+                  }}</span
                 >
-              </template>
-              <template v-if="classes.capacity > 0">
-                <NuxtLink
-                  to="/synco/weekly-classes/create/membership"
-                  class="btn btn-outline-primary btn-sm me-3"
-                >
-                  <strong>Book a Membership</strong>
-                </NuxtLink>
-                <NuxtLink
-                  to="/synco/weekly-classes/create/free-trial"
-                  class="btn btn-primary btn-sm text-light"
-                  ><strong>Book a Free Trial</strong></NuxtLink
-                >
-              </template>
-            </div>
-          </template>
+              </div>
+              <div class="">
+                <template v-if="classes.capacity === 0">
+                  <NuxtLink
+                    to="/synco/weekly-classes/create/waiting-list"
+                    class="btn btn-primary btn-sm text-light me-3"
+                    ><strong>Add to Waiting List</strong></NuxtLink
+                  >
+                </template>
+                <template v-if="classes.capacity > 0">
+                  <NuxtLink
+                    to="/synco/weekly-classes/create/membership"
+                    class="btn btn-outline-primary btn-sm me-3"
+                  >
+                    <strong>Book a Membership</strong>
+                  </NuxtLink>
+                  <NuxtLink
+                    to="/synco/weekly-classes/create/free-trial"
+                    class="btn btn-primary btn-sm text-light"
+                    ><strong>Book a Free Trial</strong></NuxtLink
+                  >
+                </template>
+              </div>
+            </template>
+          </div>
         </div>
       </div>
     </div>

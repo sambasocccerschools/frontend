@@ -27,9 +27,9 @@
     <label>Booking Source</label>
     <span>Ben Marcus</span>
   </div>
-  <div class="d-flex flex-column justify-content-center px-3">
+  <!-- <div class="d-flex flex-column justify-content-center px-3">
     <button type="button" class="btn rounded-circle">
       <Icon class="h3" name="ph:dots-three-vertical" />
     </button>
-  </div>
+  </div> -->
 </template>
