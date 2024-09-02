@@ -641,3 +641,45 @@ export type IAgentObject = {
   deleted_at: Date | null
 }
 export type IAgentObjectResponse = IBaseResponse<IAgentObject> & {}
+
+export type IFreeTrialStatus = IBaseDatasetItem & {
+  title: string
+}
+export type IFreeTrialStatusResponse = IBaseResponse<IFreeTrialStatus> & {}
+
+export type IGuardianAndStudent = {
+  id: string
+  name: string
+  family_id: number
+}
+export type IGuardianAndStudentResponse =
+  IBaseResponse<IGuardianAndStudent> & {}
+
+export type IMemberCancelStatus = IBaseDatasetItem & {
+  title: string
+}
+export type IMemberCancelStatusResponse =
+  IBaseResponse<IMemberCancelStatus> & {}
+
+export type IMemberCancelType = IBaseDatasetItem & {
+  title: string
+  subtitle: string
+}
+export type IMemberCancelTypeResponse = IBaseResponse<IMemberCancelType> & {}
+
+export type IMemberStatus = IBaseDatasetItem & {
+  title: string
+}
+export type IMemberStatusResponse = IBaseResponse<IMemberStatus> & {}
+
+export type IReferralSourceFilter = {
+  id: number
+  title: string
+}
+export type IReferralSourceFilterResponse =
+  IBaseResponse<IReferralSourceFilter> & {}
+
+export type ISaleStatus = IBaseDatasetItem & {
+  title: string
+}
+export type ISaleStatusResponse = IBaseResponse<ISaleStatus> & {}

@@ -9,10 +9,10 @@ import type {
   IExcelResponse,
   IWeeklyClassesShowLeadResponse,
   IWeeklyClassesLeadsReportingResponse,
-  IWeekltClassesLeadFilterObject,
+  IWeeklyClassesLeadFilterObject,
 } from '~/types/synco'
 
-class WeekltClassesLeadsModule extends FetchFactory {
+class WeeklyClassesLeadsModule extends FetchFactory {
   private RESOURCE = '/v1/weeklyClassesLeads'
 
   async getAll(limit: number = 25) {
@@ -45,7 +45,7 @@ class WeekltClassesLeadsModule extends FetchFactory {
   }
 
   async getByFilter(
-    filter: IWeekltClassesLeadFilterObject,
+    filter: IWeeklyClassesLeadFilterObject,
     limit: number = 25,
   ) {
     const fetchOptions: FetchOptions<'json'> = {
@@ -224,4 +224,4 @@ class WeekltClassesLeadsModule extends FetchFactory {
   }
 }
 
-export default WeekltClassesLeadsModule
+export default WeeklyClassesLeadsModule

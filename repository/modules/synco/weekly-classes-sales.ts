@@ -1,19 +1,19 @@
 import type { FetchOptions } from 'ofetch'
 import FetchFactory from '../../factory'
 import type {
-  IWeeklyClassesLeadResponse,
+  IWeeklyClassesSalesResponse,
   IWeeklyClassesLeadCreateResponse,
   IWeeklyClassesLeadCreate,
   ISendMessageObject,
   IMessageResponseObject,
   IExcelResponse,
   IWeeklyClassesShowLeadResponse,
-  IWeeklyClassesWaitingListReportingResponse,
-  IWeeklyClassesWaitingListFilterObject,
+  IWeeklyClassesSalesReportingResponse,
+  IWeeklyClassesSalesFilterObject,
 } from '~/types/synco'
 
 class WeeklyClassesSalesModule extends FetchFactory {
-  private RESOURCE = '/v1/weeklyClassesWaitingLists'
+  private RESOURCE = '/v1/WeeklyClassesSales'
 
   async getAll(limit: number = 25) {
     const fetchOptions: FetchOptions<'json'> = {
@@ -21,7 +21,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
         limit,
       },
     }
-    return this.call<IWeeklyClassesLeadResponse>(
+    return this.call<IWeeklyClassesSalesResponse>(
       'GET',
       `${this.RESOURCE}`,
       undefined,
@@ -30,7 +30,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
   }
 
   async getByFilter(
-    filter: IWeeklyClassesWaitingListFilterObject,
+    filter: IWeeklyClassesSalesFilterObject,
     limit: number = 25,
   ) {
     const fetchOptions: FetchOptions<'json'> = {
@@ -42,18 +42,14 @@ class WeeklyClassesSalesModule extends FetchFactory {
       if (!!filter.student) fetchOptions.params.student = filter.student
       if (!!filter.venue_id && filter.venue_id != '0')
         fetchOptions.params.venue_id = filter.venue_id
-      if (
-        !!filter.waiting_list_status_id &&
-        filter.waiting_list_status_id != '0'
-      )
-        fetchOptions.params.waiting_list_status_id =
-          filter.waiting_list_status_id
+      if (!!filter.sale_status_id && filter.sale_status_id != '0')
+        fetchOptions.params.sale_status_id = filter.sale_status_id
       if (!!filter.end_date) fetchOptions.params.end_date = filter.end_date
       if (!!filter.start_date)
         fetchOptions.params.start_date = filter.start_date
     }
 
-    return this.call<IWeeklyClassesLeadResponse>(
+    return this.call<IWeeklyClassesSalesResponse>(
       'GET',
       `${this.RESOURCE}`,
       undefined,
@@ -141,7 +137,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
   }
 
   async getReporting() {
-    return this.call<IWeeklyClassesWaitingListReportingResponse>(
+    return this.call<IWeeklyClassesSalesReportingResponse>(
       'GET',
       `${this.RESOURCE}/reporting`,
       undefined,

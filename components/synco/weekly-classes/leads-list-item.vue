@@ -24,7 +24,7 @@ let selectedStatus = ref<number>(0)
 const blockButtons = ref(false)
 
 onMounted(async () => {
-  console.log('components/synco/config/schedule-classes/term-card.vue')
+  console.log('components/synco/weekly-classes/leads-list-item.vue')
   if (!!lead.agent) {
     selectedAgent.value = lead.agent.id
   }

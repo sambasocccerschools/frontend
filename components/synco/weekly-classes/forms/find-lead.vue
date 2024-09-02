@@ -82,7 +82,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { IWeekltClassesLeadFilterObject } from '~/types/synco/index'
+import type { IWeeklyClassesLeadFilterObject } from '~/types/synco/index'
 import { generalStore } from '~/stores'
 const store = generalStore()
 

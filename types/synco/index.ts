@@ -3,6 +3,9 @@ import type {
   IGender,
   ILeadStatus,
   IMedicalInformation,
+  IMemberCancelStatus,
+  IMemberStatus,
+  IReason,
   IReferralSource,
   IRegionItem,
   IRelationship,
@@ -615,6 +618,11 @@ export type IReportingObject = {
   percentage: string
 }
 
+export type IReportingObject2 = {
+  count: number
+  name: string
+}
+
 export type IWeeklyClassesLeadsReportingObject = {
   total_leads: IReportingObject
   new_leads: IReportingObject
@@ -626,11 +634,147 @@ export type IWeeklyClassesLeadsReportingResponse = {
   data: IWeeklyClassesLeadsReportingObject
 }
 
-export type IWeekltClassesLeadFilterObject = {
+export type IBaseWeeklyClassesFilterObject = {
+  limit: number
   venue_id: string
-  referral_source_id: string
   student: string
-  lead_status_id: string
   start_date: string
   end_date: string
 }
+
+export type IWeeklyClassesMembersFilterObject =
+  IBaseWeeklyClassesFilterObject & {
+    member_status_id: string
+  }
+export type IWeeklyClassesCancellationFilterObject =
+  IBaseWeeklyClassesFilterObject & {
+    member_cancel_status_id: string
+  }
+export type IWeeklyClassesSalesFilterObject = IBaseWeeklyClassesFilterObject & {
+  sale_status_id: string
+}
+export type IWeeklyClassesFreeTrialsFilterObject =
+  IBaseWeeklyClassesFilterObject & {
+    free_trial_status_id: string
+  }
+export type IWeeklyClassesLeadFilterObject = IBaseWeeklyClassesFilterObject & {
+  referral_source_id: string
+  lead_status_id: string
+}
+export type IWeeklyClassesWaitingListFilterObject =
+  IBaseWeeklyClassesFilterObject & {
+    waiting_list_status_id: string
+  }
+
+export type IWeeklyClassesMembersReportingObject = {
+  total_students: IReportingObject
+  monthly_revenue: IReportingObject
+  average_monthly_fee: IReportingObject
+  average_life_cycle: IReportingObject
+}
+
+export type IWeeklyClassesMembersReportingResponse = {
+  data: IWeeklyClassesMembersReportingObject
+}
+
+export type IWeeklyClassesCancellationReportingObject = {
+  total_requests: IReportingObject
+  top_cancel_reason: IReportingObject2
+  most_requested_venue: IReportingObject2
+  membership_tenture: IReportingObject
+}
+
+export type IWeeklyClassesCancellationReportingResponse = {
+  data: IWeeklyClassesCancellationReportingObject
+}
+
+export type IWeeklyClassesSalesReportingObject = {
+  top_performer: IReportingObject2
+  total_students: IReportingObject
+  monthly_revenue: IReportingObject
+  average_monthly_fee: IReportingObject
+}
+
+export type IWeeklyClassesSalesReportingResponse = {
+  data: IWeeklyClassesSalesReportingObject
+}
+
+export type IWeeklyClassesFreeTrialReportingObject = {
+  top_performer: IReportingObject2
+  total_free_trials: IReportingObject
+  trials_to_member: IReportingObject
+}
+
+export type IWeeklyClassesFreeTrialReportingResponse = {
+  data: IWeeklyClassesFreeTrialReportingObject
+}
+
+export type IWeeklyClassesWaitingListReportingObject = {
+  top_sales_agent: IReportingObject2
+  total_members: IReportingObject
+  total_new_members: IReportingObject
+  average_monthly_fee: IReportingObject
+}
+
+export type IWeeklyClassesWaitingListReportingResponse = {
+  data: IWeeklyClassesWaitingListReportingObject
+}
+
+export type IWeeklyClassesCancellation = {
+  id: number
+  status: IMemberCancelStatus
+  cancel_reason: IReason
+  venue: IWeeklyClassesVenueObject
+  guardian: IGuardian
+  total_student: number
+  termination_date: number | null
+  created_at: number | null
+  deleted_at: number | null
+}
+export type IWeeklyClassesCancellationResponse =
+  IBaseResponse<IWeeklyClassesCancellation> & {}
+
+export type IWeeklyClassesMembers = {
+  id: number
+  venue: IWeeklyClassesVenueObject
+  status: IMemberStatus
+  student: IStudentObject
+  family_id: number
+  membership_plan: any
+  life_cycle_membership: string
+  booked_by: any
+  created_at: number | null
+  deleted_at: number | null
+}
+export type IWeeklyClassesMembersResponse =
+  IBaseResponse<IWeeklyClassesMembers> & {}
+
+export type IWeeklyClassesSales = {
+  id: number
+  venue: IWeeklyClassesVenueObject
+  status: IMemberStatus
+  student: IStudentObject
+  family_id: number
+  membership_plan: any
+  booked_by: any
+  created_at: number | null
+  deleted_at: number | null
+}
+export type IWeeklyClassesSalesResponse =
+  IBaseResponse<IWeeklyClassesSales> & {}
+
+export type IWeeklyClassesFreeTrials = {
+  id: number
+  venue: IWeeklyClassesVenueObject
+  status: IMemberStatus
+  student: IStudentObject
+  family_id: number
+  agent: any
+  booked_by: string
+  trial_date: number | null
+  attempt: number
+  created_at: number | null
+  deleted_at: number | null
+}
+export type IWeeklyClassesFreeTrialsResponse =
+  IBaseResponse<IWeeklyClassesFreeTrials> & {}
