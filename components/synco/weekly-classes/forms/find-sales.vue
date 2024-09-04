@@ -50,7 +50,7 @@
               v-model="status_id"
             >
               <option value="0">All</option>
-              <option v-for="status in freeTrialStatus" :value="status.id">
+              <option v-for="status in saleStatus" :value="status.id">
                 {{ status.title }}
               </option>
             </select>
@@ -93,7 +93,7 @@ const changeLoadingState = (state: boolean) => {
   blockButtons.value = state
 }
 
-const freeTrialStatus = store.freeTrialStatus
+const saleStatus = store.saleStatus
 const availableVenues = store.availableVenues
 
 let student = ref<string>('')
@@ -104,7 +104,7 @@ let endDate = ref<string>('')
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/forms/parent-form.vue')
-  if (store.freeTrialStatus.length == 0) await store.getFreeTrialStatus()
+  if (store.saleStatus.length == 0) await store.getSaleStatus()
   if (store.availableVenues.length == 0)
     await store.getAvailableVenues('weekly-classes')
 })
@@ -115,7 +115,7 @@ const applyFilter = () => {
   emit('applyFilter', {
     student: student.value,
     venue_id: venue_id.value,
-    free_trial_status_id: status_id.value,
+    member_status_id: status_id.value,
     start_date: startDate.value,
     end_date: endDate.value,
   })

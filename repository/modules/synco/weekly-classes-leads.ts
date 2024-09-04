@@ -4,15 +4,15 @@ import type {
   IWeeklyClassesLeadResponse,
   IWeeklyClassesLeadCreateResponse,
   IWeeklyClassesLeadCreate,
-  ISendMessageObject,
+  ISendMessageLeadObject,
   IMessageResponseObject,
   IExcelResponse,
   IWeeklyClassesShowLeadResponse,
   IWeeklyClassesLeadsReportingResponse,
-  IWeekltClassesLeadFilterObject,
+  IWeeklyClassesLeadFilterObject,
 } from '~/types/synco'
 
-class WeekltClassesLeadsModule extends FetchFactory {
+class WeeklyClassesLeadsModule extends FetchFactory {
   private RESOURCE = '/v1/weeklyClassesLeads'
 
   async getAll(limit: number = 25) {
@@ -45,7 +45,7 @@ class WeekltClassesLeadsModule extends FetchFactory {
   }
 
   async getByFilter(
-    filter: IWeekltClassesLeadFilterObject,
+    filter: IWeeklyClassesLeadFilterObject,
     limit: number = 25,
   ) {
     const fetchOptions: FetchOptions<'json'> = {
@@ -171,7 +171,7 @@ class WeekltClassesLeadsModule extends FetchFactory {
     )
   }
 
-  async sendText(body: ISendMessageObject) {
+  async sendText(body: ISendMessageLeadObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendText`,
@@ -179,7 +179,7 @@ class WeekltClassesLeadsModule extends FetchFactory {
       undefined,
     )
   }
-  async sendEmail(body: ISendMessageObject) {
+  async sendEmail(body: ISendMessageLeadObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendEmail`,
@@ -224,4 +224,4 @@ class WeekltClassesLeadsModule extends FetchFactory {
   }
 }
 
-export default WeekltClassesLeadsModule
+export default WeeklyClassesLeadsModule

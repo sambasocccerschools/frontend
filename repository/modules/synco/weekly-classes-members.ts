@@ -4,16 +4,16 @@ import type {
   IWeeklyClassesMembersResponse,
   IWeeklyClassesLeadCreateResponse,
   IWeeklyClassesLeadCreate,
-  ISendMessageWaitingListObject,
+  ISendMessageMemberObject,
   IMessageResponseObject,
   IExcelResponse,
   IWeeklyClassesShowLeadResponse,
-  IWeeklyClassesWaitingListReportingResponse,
-  IWeeklyClassesWaitingListFilterObject,
+  IWeeklyClassesMembersReportingResponse,
+  IWeeklyClassesMembersFilterObject,
 } from '~/types/synco'
 
-class WeeklyClassesSalesModule extends FetchFactory {
-  private RESOURCE = '/v1/weeklyClassesWaitingLists'
+class WeeklyClassesMembersModule extends FetchFactory {
+  private RESOURCE = '/v1/WeeklyClassesMembers'
 
   async getAll(limit: number = 25) {
     const fetchOptions: FetchOptions<'json'> = {
@@ -30,7 +30,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
   }
 
   async getByFilter(
-    filter: IWeeklyClassesWaitingListFilterObject,
+    filter: IWeeklyClassesMembersFilterObject,
     limit: number = 25,
   ) {
     const fetchOptions: FetchOptions<'json'> = {
@@ -42,12 +42,8 @@ class WeeklyClassesSalesModule extends FetchFactory {
       if (!!filter.student) fetchOptions.params.student = filter.student
       if (!!filter.venue_id && filter.venue_id != '0')
         fetchOptions.params.venue_id = filter.venue_id
-      if (
-        !!filter.waiting_list_status_id &&
-        filter.waiting_list_status_id != '0'
-      )
-        fetchOptions.params.waiting_list_status_id =
-          filter.waiting_list_status_id
+      if (!!filter.member_status_id && filter.member_status_id != '0')
+        fetchOptions.params.member_status_id = filter.member_status_id
       if (!!filter.end_date) fetchOptions.params.end_date = filter.end_date
       if (!!filter.start_date)
         fetchOptions.params.start_date = filter.start_date
@@ -97,7 +93,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
     )
   }
 
-  async sendText(body: ISendMessageWaitingListObject) {
+  async sendText(body: ISendMessageMemberObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendText`,
@@ -105,7 +101,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
       undefined,
     )
   }
-  async sendEmail(body: ISendMessageWaitingListObject) {
+  async sendEmail(body: ISendMessageMemberObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendEmail`,
@@ -141,7 +137,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
   }
 
   async getReporting() {
-    return this.call<IWeeklyClassesWaitingListReportingResponse>(
+    return this.call<IWeeklyClassesMembersReportingResponse>(
       'GET',
       `${this.RESOURCE}/reporting`,
       undefined,
@@ -150,4 +146,4 @@ class WeeklyClassesSalesModule extends FetchFactory {
   }
 }
 
-export default WeeklyClassesSalesModule
+export default WeeklyClassesMembersModule

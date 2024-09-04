@@ -24,7 +24,7 @@ let selectedStatus = ref<number>(0)
 const blockButtons = ref(false)
 
 onMounted(async () => {
-  console.log('components/synco/config/schedule-classes/term-card.vue')
+  console.log('components/synco/weekly-classes/leads-list-item.vue')
   if (!!lead.agent) {
     selectedAgent.value = lead.agent.id
   }
@@ -38,7 +38,7 @@ onMounted(async () => {
 
 const navigateToUser = async (id: number) => {
   console.log(id)
-  await router.push({ path: `/synco/weekly-classes/edit/lead/${id}` })
+  await router.push({ path: `/synco/user/${id}` })
   // await router.push({ path: `/synco/user/${id}` })
 }
 const cleanDate = (date: any) => {

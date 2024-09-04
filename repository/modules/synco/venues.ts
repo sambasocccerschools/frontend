@@ -82,7 +82,7 @@ class VenuesModule extends FetchFactory {
     const fetchOptions: FetchOptions<'json'> = {
       params: {
         service,
-        include_classes: true,
+        include_classes: false,
       },
     }
     return this.call<IAvailableVenueResponse>(

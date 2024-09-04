@@ -129,7 +129,7 @@ import { useToast } from 'vue-toast-notification'
 import type {
   IWeeklyClassesLead,
   IWeeklyClassesLeadsReportingObject,
-  IWeekltClassesLeadFilterObject,
+  IWeeklyClassesLeadFilterObject,
 } from '~/types/synco/index'
 import { generalStore } from '~/stores'
 
@@ -179,11 +179,6 @@ const referralSources = store.referralSources
 
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/leads.vue')
-  if (store.referralSources.length == 0) await store.getReferralSource()
-  if (store.agents.length == 0) await store.getAgents()
-  if (store.leadStatus.length == 0) await store.getLeadStatus()
-  if (store.availableVenues.length == 0)
-    await store.getAvailableVenues('weekly-classes')
   await getLeads()
   await getReporting()
 })
@@ -283,7 +278,7 @@ const selectedGuardian = (data: any) => {
   }
 }
 
-const applyFilter = async (data: IWeekltClassesLeadFilterObject) => {
+const applyFilter = async (data: IWeeklyClassesLeadFilterObject) => {
   try {
     data.referral_source_id = `${selectedReferralSourceId.value}`
     blockButtons.value = true

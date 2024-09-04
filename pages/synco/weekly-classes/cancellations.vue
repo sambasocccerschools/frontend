@@ -23,26 +23,30 @@
         <div class="row row-cols-sm-4">
           <SyncoDashboardMetricsItem
             name="Total Requests"
-            value="22"
-            change="-P200 p/m"
+            :value="reporting?.total_requests.amount"
+            :change="reporting?.total_requests.percentage"
+            :removePercentage="true"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Membership Tenure"
-            value="9 Months"
-            change="100"
+            :value="reporting?.membership_tenture.amount"
+            :change="reporting?.membership_tenture.percentage"
+            :removePercentage="true"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Top Reasons for request to cancel"
-            value="Price"
-            change=""
+            :value="reporting?.top_cancel_reason.name"
+            :change="reporting?.top_cancel_reason.count"
+            :removePercentage="true"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Venue with most requests"
-            value="Acton"
-            change=""
+            :value="reporting?.most_requested_venue.name"
+            :change="reporting?.most_requested_venue.count"
+            :removePercentage="true"
             icon="ph:users-three"
           />
         </div>
@@ -84,7 +88,11 @@
         <h4 class="mt-4">Request to cancel</h4>
 
         <div>
-          <SyncoDataOptions />
+          <SyncoDataOptions
+            @exportExcel="exportExcel"
+            @send-email="sendEmail"
+            @send-text="sendText"
+          />
         </div>
         <table class="table-hover rounded-4 mt-4 table border">
           <thead class="rounded-top-4">
@@ -112,13 +120,166 @@
             </tr>
           </thead>
           <tbody>
-            <LazySyncoWeeklyClassesCancellationsTableItem />
+            <template v-for="lead in leads">
+              <LazySyncoWeeklyClassesCancellationsTableItem
+                :lead="lead"
+                @selectedGuardian="selectedGuardian"
+              />
+            </template>
           </tbody>
         </table>
       </div>
       <div class="col">
-        <SyncoWeeklyClassesFormsFindCancellation />
+        <SyncoWeeklyClassesFormsFindCancellation @apply-filter="applyFilter" />
       </div>
     </div>
   </NuxtLayout>
 </template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useToast } from 'vue-toast-notification'
+import type {
+  IWeeklyClassesCancellation,
+  IWeeklyClassesCancellationReportingObject,
+  IWeeklyClassesCancellationFilterObject,
+} from '~/types/synco/index'
+import { generalStore } from '~/stores'
+
+const updateKey = ref<number>(0)
+const blockButtons = ref(false)
+// const panel = ref(false)
+// const panelType = ref<string>('')
+const store = generalStore()
+
+const { $api } = useNuxtApp()
+const toast = useToast()
+const leads = ref<IWeeklyClassesCancellation[]>([])
+const selectedGuardians = ref<string[]>([])
+const reporting = ref<IWeeklyClassesCancellationReportingObject | null>(null)
+const getLeads = async (source: number | null = null, limit: number = 25) => {
+  try {
+    blockButtons.value = true
+    const response = await $api.wcCancellation.getAll(limit)
+    leads.value = response?.data
+  } catch (error: any) {
+    leads.value = []
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    blockButtons.value = false
+  }
+}
+const getReporting = async () => {
+  try {
+    blockButtons.value = true
+    const response = await $api.wcCancellation.getReporting()
+    reporting.value = response?.data
+  } catch (error: any) {
+    leads.value = []
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    blockButtons.value = false
+  }
+}
+
+onMounted(async () => {
+  console.log('pages/synco/weekly-classes/cancellations.vue')
+  await getLeads()
+  await getReporting()
+})
+
+const exportExcel = async () => {
+  if (blockButtons.value) return
+  try {
+    blockButtons.value = true
+    let excel = await $api.wcCancellation.exportExcel()
+    store.downloadExcelFile(excel.data.url, excel.data.name)
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    blockButtons.value = false
+  }
+}
+
+const sendText = async () => {
+  if (blockButtons.value) return
+
+  let guardianIds = selectedGuardians.value.filter(
+    (value, index, array) => array.indexOf(value) == index,
+  )
+  if (guardianIds.length == 0) {
+    alert('Select any row')
+    return
+  }
+  let message = prompt('Write text message.')
+  if (!message) return
+  try {
+    blockButtons.value = true
+    const response = await $api.wcCancellation.sendText({
+      message: message,
+      weekly_classes_cancellation_id: guardianIds,
+    })
+    toast.success(response?.message ?? 'Error')
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    blockButtons.value = false
+  }
+}
+const sendEmail = async () => {
+  if (blockButtons.value) return
+  let guardianIds = selectedGuardians.value.filter(
+    (value, index, array) => array.indexOf(value) == index,
+  )
+  if (guardianIds.length == 0) {
+    alert('Select any row')
+    return
+  }
+  let message = prompt('Write email message.')
+  if (!message) return
+  try {
+    blockButtons.value = true
+    const response = await $api.wcCancellation.sendEmail({
+      message: message,
+      weekly_classes_cancellation_id: guardianIds,
+    })
+    toast.success(response?.message ?? 'Error')
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    blockButtons.value = false
+  }
+}
+
+const selectedGuardian = (data: any) => {
+  console.log(data)
+  if (!data.value) {
+    let dataIndex = selectedGuardians.value.indexOf(data.id)
+    if (dataIndex >= 0) {
+      selectedGuardians.value.splice(dataIndex, 1)
+    }
+  } else {
+    selectedGuardians.value.push(data.id)
+  }
+}
+
+const applyFilter = async (data: IWeeklyClassesCancellationFilterObject) => {
+  try {
+    // data.referral_source_id = `${selectedReferralSourceId.value}`
+    blockButtons.value = true
+    const response = await $api.wcCancellation.getByFilter(data, 25)
+    leads.value = response?.data
+  } catch (error: any) {
+    leads.value = []
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    blockButtons.value = false
+  }
+}
+</script>

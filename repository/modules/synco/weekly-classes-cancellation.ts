@@ -1,19 +1,19 @@
 import type { FetchOptions } from 'ofetch'
 import FetchFactory from '../../factory'
 import type {
-  IWeeklyClassesMembersResponse,
+  IWeeklyClassesCancellationResponse,
   IWeeklyClassesLeadCreateResponse,
   IWeeklyClassesLeadCreate,
-  ISendMessageWaitingListObject,
+  ISendMessageCancellationObject,
   IMessageResponseObject,
   IExcelResponse,
   IWeeklyClassesShowLeadResponse,
-  IWeeklyClassesWaitingListReportingResponse,
-  IWeeklyClassesWaitingListFilterObject,
+  IWeeklyClassesCancellationReportingResponse,
+  IWeeklyClassesCancellationFilterObject,
 } from '~/types/synco'
 
-class WeeklyClassesSalesModule extends FetchFactory {
-  private RESOURCE = '/v1/weeklyClassesWaitingLists'
+class WeeklyClassesCancellationModule extends FetchFactory {
+  private RESOURCE = '/v1/weeklyClassesCancellations'
 
   async getAll(limit: number = 25) {
     const fetchOptions: FetchOptions<'json'> = {
@@ -21,7 +21,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
         limit,
       },
     }
-    return this.call<IWeeklyClassesMembersResponse>(
+    return this.call<IWeeklyClassesCancellationResponse>(
       'GET',
       `${this.RESOURCE}`,
       undefined,
@@ -30,7 +30,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
   }
 
   async getByFilter(
-    filter: IWeeklyClassesWaitingListFilterObject,
+    filter: IWeeklyClassesCancellationFilterObject,
     limit: number = 25,
   ) {
     const fetchOptions: FetchOptions<'json'> = {
@@ -43,17 +43,17 @@ class WeeklyClassesSalesModule extends FetchFactory {
       if (!!filter.venue_id && filter.venue_id != '0')
         fetchOptions.params.venue_id = filter.venue_id
       if (
-        !!filter.waiting_list_status_id &&
-        filter.waiting_list_status_id != '0'
+        !!filter.member_cancel_status_id &&
+        filter.member_cancel_status_id != '0'
       )
-        fetchOptions.params.waiting_list_status_id =
-          filter.waiting_list_status_id
+        fetchOptions.params.member_cancel_status_id =
+          filter.member_cancel_status_id
       if (!!filter.end_date) fetchOptions.params.end_date = filter.end_date
       if (!!filter.start_date)
         fetchOptions.params.start_date = filter.start_date
     }
 
-    return this.call<IWeeklyClassesMembersResponse>(
+    return this.call<IWeeklyClassesCancellationResponse>(
       'GET',
       `${this.RESOURCE}`,
       undefined,
@@ -97,7 +97,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
     )
   }
 
-  async sendText(body: ISendMessageWaitingListObject) {
+  async sendText(body: ISendMessageCancellationObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendText`,
@@ -105,7 +105,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
       undefined,
     )
   }
-  async sendEmail(body: ISendMessageWaitingListObject) {
+  async sendEmail(body: ISendMessageCancellationObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendEmail`,
@@ -141,7 +141,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
   }
 
   async getReporting() {
-    return this.call<IWeeklyClassesWaitingListReportingResponse>(
+    return this.call<IWeeklyClassesCancellationReportingResponse>(
       'GET',
       `${this.RESOURCE}/reporting`,
       undefined,
@@ -150,4 +150,4 @@ class WeeklyClassesSalesModule extends FetchFactory {
   }
 }
 
-export default WeeklyClassesSalesModule
+export default WeeklyClassesCancellationModule
