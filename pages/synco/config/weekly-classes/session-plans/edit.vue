@@ -75,10 +75,10 @@ let selectedExercise = ref<number>(-1)
 
 const selectionAreas = ref<string[]>([
   'Session Plans',
-  'Members',
-  'Trails',
-  'Coaches',
-  'Cancel Class',
+  // 'Members',
+  // 'Trails',
+  // 'Coaches',
+  // 'Cancel Class',
 ])
 let selection = ref<string>('Session Plans')
 let notificationSelection = ref<string>('Members')
@@ -103,7 +103,7 @@ onMounted(() => {
     </div>
     <div class="card rounded-4 px-4">
       <div class="row my-4">
-        <div class="col-3 px-4">
+        <!-- <div class="col-3 px-4">
           <div
             class="card rounded-4 border"
             style="background-color: #12121308; min-height: 600px"
@@ -133,9 +133,9 @@ onMounted(() => {
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-9">
-          <div class="d-flex flex-column align-items-center w-100 my-4">
+        </div> -->
+        <div class="col-12">
+          <!-- <div class="d-flex flex-column align-items-center w-100 my-4">
             <div
               class="rounded-3 d-flex flex-row border p-1"
               style="width: fit-content"
@@ -151,7 +151,7 @@ onMounted(() => {
                 </button>
               </template>
             </div>
-          </div>
+          </div> -->
           <template v-if="selection == 'Session Plans'">
             <div class="row">
               <div class="col-12" style="border-right: 1px solid lightgray">
@@ -262,7 +262,7 @@ onMounted(() => {
               </div>
             </div>
           </template>
-          <template v-else-if="selection == 'Members'">
+          <!-- <template v-else-if="selection == 'Members'">
             <div class="row border-y py-3">
               <div class="col-4">
                 <span>1. John Smith</span>
@@ -544,7 +544,7 @@ onMounted(() => {
                 </template>
               </div>
             </div>
-          </template>
+          </template> -->
         </div>
       </div>
     </div>
