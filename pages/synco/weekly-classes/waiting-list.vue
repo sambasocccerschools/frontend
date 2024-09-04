@@ -34,7 +34,11 @@
         </div>
 
         <div>
-          <SyncoDataOptions />
+          <SyncoDataOptions
+            @exportExcel="exportExcel"
+            @send-email="sendEmail"
+            @send-text="sendText"
+          />
         </div>
         <table class="table-hover rounded-4 mt-4 table border">
           <thead class="rounded-top-4">
@@ -68,7 +72,7 @@
         </table>
       </div>
       <div class="col">
-        <SyncoWeeklyClassesFormsFindMember />
+        <SyncoWeeklyClassesFormsFindMember @apply-filter="applyFilter" />
       </div>
     </div>
   </NuxtLayout>
@@ -78,7 +82,7 @@
 import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toast-notification'
 import type {
-  IWeeklyClassesLead,
+  IWeeklyClassesMembers,
   IWeeklyClassesWaitingListReportingObject,
   IWeeklyClassesWaitingListFilterObject,
 } from '~/types/synco/index'
@@ -92,7 +96,7 @@ const store = generalStore()
 
 const { $api } = useNuxtApp()
 const toast = useToast()
-const leads = ref<IWeeklyClassesLead[]>([])
+const leads = ref<IWeeklyClassesMembers[]>([])
 const selectedGuardians = ref<string[]>([])
 const reporting = ref<IWeeklyClassesWaitingListReportingObject | null>(null)
 const getLeads = async (source: number | null = null, limit: number = 25) => {
@@ -158,7 +162,7 @@ const sendText = async () => {
     blockButtons.value = true
     const response = await $api.wcWaitingList.sendText({
       message: message,
-      weekly_classes_lead_id: guardianIds,
+      weekly_classes_waiting_list_id: guardianIds,
     })
     toast.success(response?.message ?? 'Error')
   } catch (error: any) {
@@ -183,7 +187,7 @@ const sendEmail = async () => {
     blockButtons.value = true
     const response = await $api.wcWaitingList.sendEmail({
       message: message,
-      weekly_classes_lead_id: guardianIds,
+      weekly_classes_waiting_list_id: guardianIds,
     })
     toast.success(response?.message ?? 'Error')
   } catch (error: any) {

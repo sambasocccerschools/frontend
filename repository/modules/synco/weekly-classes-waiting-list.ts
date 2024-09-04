@@ -1,10 +1,10 @@
 import type { FetchOptions } from 'ofetch'
 import FetchFactory from '../../factory'
 import type {
-  IWeeklyClassesLeadResponse,
+  IWeeklyClassesMembersResponse,
   IWeeklyClassesLeadCreateResponse,
   IWeeklyClassesLeadCreate,
-  ISendMessageObject,
+  ISendMessageWaitingListObject,
   IMessageResponseObject,
   IExcelResponse,
   IWeeklyClassesShowLeadResponse,
@@ -21,7 +21,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
         limit,
       },
     }
-    return this.call<IWeeklyClassesLeadResponse>(
+    return this.call<IWeeklyClassesMembersResponse>(
       'GET',
       `${this.RESOURCE}`,
       undefined,
@@ -53,7 +53,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
         fetchOptions.params.start_date = filter.start_date
     }
 
-    return this.call<IWeeklyClassesLeadResponse>(
+    return this.call<IWeeklyClassesMembersResponse>(
       'GET',
       `${this.RESOURCE}`,
       undefined,
@@ -97,7 +97,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
     )
   }
 
-  async sendText(body: ISendMessageObject) {
+  async sendText(body: ISendMessageWaitingListObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendText`,
@@ -105,7 +105,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
       undefined,
     )
   }
-  async sendEmail(body: ISendMessageObject) {
+  async sendEmail(body: ISendMessageWaitingListObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendEmail`,

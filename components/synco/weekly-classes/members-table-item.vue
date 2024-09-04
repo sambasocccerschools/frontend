@@ -103,27 +103,27 @@ const selectStatus = async (event: Event) => {
         @change="selectGuardian"
       />
     </td>
-    <th scope="row" @click="navigateToUser(1)" style="cursor: pointer">
+    <th scope="row" @click="navigateToUser(lead.id)" style="cursor: pointer">
       <label class="form-check-label text-muted" for="tomjones">
         {{ lead.student.first_name }} {{ lead.student.last_name }}
       </label>
     </th>
-    <td @click="navigateToUser(1)" style="cursor: pointer">
+    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
       {{ lead.student.age }}
     </td>
-    <td @click="navigateToUser(1)" style="cursor: pointer">
+    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
       {{ lead.venue.name }}
     </td>
-    <td @click="navigateToUser(1)" style="cursor: pointer">
+    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
       {{ cleanDate(lead.created_at) }}
     </td>
-    <td @click="navigateToUser(1)" style="cursor: pointer">
+    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
       {{ lead.booked_by.first_name }} {{ lead.booked_by.last_name }}
     </td>
-    <td @click="navigateToUser(1)" style="cursor: pointer">
+    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
       {{ lead.membership_plan.name }}
     </td>
-    <td @click="navigateToUser(1)" style="cursor: pointer">
+    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
       {{ lead.life_cycle_membership }}
     </td>
     <td style="cursor: pointer">

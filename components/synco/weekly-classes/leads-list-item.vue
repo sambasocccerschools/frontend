@@ -38,7 +38,7 @@ onMounted(async () => {
 
 const navigateToUser = async (id: number) => {
   console.log(id)
-  await router.push({ path: `/synco/weekly-classes/edit/lead/${id}` })
+  await router.push({ path: `/synco/user/${id}` })
   // await router.push({ path: `/synco/user/${id}` })
 }
 const cleanDate = (date: any) => {

@@ -4,7 +4,7 @@ import type {
   IWeeklyClassesFreeTrialsResponse,
   IWeeklyClassesLeadCreateResponse,
   IWeeklyClassesLeadCreate,
-  ISendMessageObject,
+  ISendMessageFreeTrialObject,
   IMessageResponseObject,
   IExcelResponse,
   IWeeklyClassesShowLeadResponse,
@@ -93,7 +93,7 @@ class WeeklyClassesFreeTrialsModule extends FetchFactory {
     )
   }
 
-  async sendText(body: ISendMessageObject) {
+  async sendText(body: ISendMessageFreeTrialObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendText`,
@@ -101,7 +101,7 @@ class WeeklyClassesFreeTrialsModule extends FetchFactory {
       undefined,
     )
   }
-  async sendEmail(body: ISendMessageObject) {
+  async sendEmail(body: ISendMessageFreeTrialObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendEmail`,

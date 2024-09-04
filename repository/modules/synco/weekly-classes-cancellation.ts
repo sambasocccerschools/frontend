@@ -4,7 +4,7 @@ import type {
   IWeeklyClassesCancellationResponse,
   IWeeklyClassesLeadCreateResponse,
   IWeeklyClassesLeadCreate,
-  ISendMessageObject,
+  ISendMessageCancellationObject,
   IMessageResponseObject,
   IExcelResponse,
   IWeeklyClassesShowLeadResponse,
@@ -97,7 +97,7 @@ class WeeklyClassesCancellationModule extends FetchFactory {
     )
   }
 
-  async sendText(body: ISendMessageObject) {
+  async sendText(body: ISendMessageCancellationObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendText`,
@@ -105,7 +105,7 @@ class WeeklyClassesCancellationModule extends FetchFactory {
       undefined,
     )
   }
-  async sendEmail(body: ISendMessageObject) {
+  async sendEmail(body: ISendMessageCancellationObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendEmail`,

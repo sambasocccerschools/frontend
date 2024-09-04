@@ -38,7 +38,7 @@ onMounted(async () => {
 
 const navigateToUser = async (id: number) => {
   console.log(id)
-  await router.push({ path: `/synco/weekly-classes/edit/lead/${id}` })
+  await router.push({ path: `/synco/user/${id}` })
   // await router.push({ path: `/synco/user/${id}` })
 }
 const cleanDate = (date: any) => {
@@ -102,16 +102,18 @@ const selectStatus = async (event: Event) => {
         @change="selectGuardian"
       />
     </th>
-    <td>
+    <td @click="navigateToUser(lead.id)">
       <label class="form-check-label text-muted" for="tomjones">
         {{ lead.guardian.first_name }} {{ lead.guardian.last_name }}
       </label>
     </td>
-    <td>{{ lead.total_student }}</td>
-    <td>{{ lead.venue.name }}</td>
-    <td>{{ cleanDate(lead.created_at) }}</td>
-    <td>{{ cleanDate(lead.termination_date) }}</td>
-    <td>{{ lead.cancel_reason.name }}</td>
+    <td @click="navigateToUser(lead.id)">{{ lead.total_student }}</td>
+    <td @click="navigateToUser(lead.id)">{{ lead.venue.name }}</td>
+    <td @click="navigateToUser(lead.id)">{{ cleanDate(lead.created_at) }}</td>
+    <td @click="navigateToUser(lead.id)">
+      {{ cleanDate(lead.termination_date) }}
+    </td>
+    <td @click="navigateToUser(lead.id)">{{ lead.cancel_reason.name }}</td>
     <td>
       <select
         id="seasons"

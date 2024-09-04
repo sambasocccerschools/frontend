@@ -4,7 +4,7 @@ import type {
   IWeeklyClassesLeadResponse,
   IWeeklyClassesLeadCreateResponse,
   IWeeklyClassesLeadCreate,
-  ISendMessageObject,
+  ISendMessageLeadObject,
   IMessageResponseObject,
   IExcelResponse,
   IWeeklyClassesShowLeadResponse,
@@ -171,7 +171,7 @@ class WeeklyClassesLeadsModule extends FetchFactory {
     )
   }
 
-  async sendText(body: ISendMessageObject) {
+  async sendText(body: ISendMessageLeadObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendText`,
@@ -179,7 +179,7 @@ class WeeklyClassesLeadsModule extends FetchFactory {
       undefined,
     )
   }
-  async sendEmail(body: ISendMessageObject) {
+  async sendEmail(body: ISendMessageLeadObject) {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendEmail`,

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, watchEffect } from 'vue'
 
-import type { IVenue } from '~/types/index'
+import type { IAvailableVenueObject } from '~/types/synco/index'
 const props = defineProps<{
-  venues?: IVenue[]
+  venues?: IAvailableVenueObject[]
+  blockButtons?: boolean
 }>()
 const days = ref([
   { name: 'Monday', value: 'Monday' },
@@ -15,7 +16,7 @@ const days = ref([
   { name: 'Sunday', value: 'Sunday' },
 ])
 const searchVenue = ref('')
-const searchPostcode = ref('')
+const class_name = ref('')
 const selectedVenues = ref<string[]>([])
 const selectedDays = ref([])
 const selectedAges = ref([])
@@ -24,7 +25,7 @@ const emit = defineEmits(['filtered'])
 const filteredItems = computed(() => {
   return {
     venue: searchVenue.value,
-    postcode: searchPostcode.value,
+    class_name: class_name.value,
     venues: selectedVenues.value,
     days: selectedDays.value,
     ages: selectedAges.value,
@@ -65,16 +66,16 @@ watchEffect(() => {
         />
       </div>
       <div class="input-group mb-3">
-        <span id="postcode-addon" class="input-group-text">
+        <span id="class-addon" class="input-group-text">
           <Icon name="ic:baseline-search" />
         </span>
         <input
-          v-model="searchPostcode"
+          v-model="class_name"
           type="text"
           class="form-control"
-          placeholder="Search by postcode"
-          aria-label="Search by postcode"
-          aria-describedby="postcode-addon"
+          placeholder="Search by class"
+          aria-label="Search by class"
+          aria-describedby="class-addon"
         />
       </div>
     </div>
@@ -86,7 +87,7 @@ watchEffect(() => {
           class="form-label border-bottom border-1 d-flex border-secondary-subtle mb-3 pb-2"
           >Venues</label
         >
-        <div class="form-check mb-3">
+        <!-- <div class="form-check mb-3">
           <input
             id="all_venues"
             v-model="selectedVenues"
@@ -96,7 +97,7 @@ watchEffect(() => {
             @change="toggleAll($event.target?.checked)"
           />
           <label class="form-check-label" for="all_venues">All venues</label>
-        </div>
+        </div> -->
         <div v-for="venue in venues" :key="venue.id" class="form-check mb-3">
           <input
             :id="venue.id"
@@ -130,24 +131,6 @@ watchEffect(() => {
           <label class="form-check-label" :for="day.value">{{
             day.name
           }}</label>
-        </div>
-      </div>
-
-      <!-- Students Years -->
-      <div class="form-group mb-3">
-        <label
-          for="venue"
-          class="form-label border-bottom border-1 d-flex border-secondary-subtle mb-3 pb-2"
-          >Student Age</label
-        >
-        <div v-for="age in ['4-7', '8-12']" :key="age" class="form-check mb-3">
-          <input
-            :id="age"
-            v-model="selectedAges"
-            type="checkbox"
-            class="form-check-input"
-          />
-          <label class="form-check-label" :for="age">{{ age }}</label>
         </div>
       </div>
     </div>

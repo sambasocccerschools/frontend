@@ -17,6 +17,7 @@ import WeeklyClassesMembersModule from '~/repository/modules/synco/weekly-classe
 import WeeklyClassesSalesModule from '~/repository/modules/synco/weekly-classes-sales'
 import WeeklyClassesFreeTrialsModule from '~/repository/modules/synco/weekly-classes-free-trials'
 import WeeklyClassesCancellationModule from '~/repository/modules/synco/weekly-classes-cancellation'
+import WeeklyClassesFindAClassModule from '~/repository/modules/synco/weekly-classes-find-a-class'
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
@@ -36,6 +37,7 @@ interface IApiInstance {
   wcSales: WeeklyClassesSalesModule
   wcFreeTrials: WeeklyClassesFreeTrialsModule
   wcCancellation: WeeklyClassesCancellationModule
+  wcFindAClass: WeeklyClassesFindAClassModule
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -72,6 +74,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     wcSales: new WeeklyClassesSalesModule(apiFetcher),
     wcFreeTrials: new WeeklyClassesFreeTrialsModule(apiFetcher),
     wcCancellation: new WeeklyClassesCancellationModule(apiFetcher),
+    wcFindAClass: new WeeklyClassesFindAClassModule(apiFetcher),
   }
   return {
     provide: {

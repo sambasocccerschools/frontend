@@ -435,8 +435,28 @@ export type ITermDatasetResponse = {
   data: ITermDataset[]
 }
 
-export type ISendMessageObject = {
+export type ISendMessageLeadObject = {
   weekly_classes_lead_id: string[]
+  message: string
+}
+export type ISendMessageCancellationObject = {
+  weekly_classes_cancellation_id: string[]
+  message: string
+}
+export type ISendMessageMemberObject = {
+  weekly_class_member_id: string[]
+  message: string
+}
+export type ISendMessageSaleObject = {
+  weekly_classes_sale_id: string[]
+  message: string
+}
+export type ISendMessageFreeTrialObject = {
+  weekly_classes_free_trial_id: string[]
+  message: string
+}
+export type ISendMessageWaitingListObject = {
+  weekly_classes_waiting_list_id: string[]
   message: string
 }
 
@@ -778,3 +798,38 @@ export type IWeeklyClassesFreeTrials = {
 }
 export type IWeeklyClassesFreeTrialsResponse =
   IBaseResponse<IWeeklyClassesFreeTrials> & {}
+
+export type IWeeklyClassesFindAClassFilterObject = {
+  limit: number
+  venue: string | null
+  venue_id: string | null
+  postcode: string | null
+  days: string | null
+  class_name: string | null
+}
+
+export type IFindAClassItem = {
+  id: string
+  area: string
+  name: string
+  lat: number
+  lng: number
+  address: string
+  distance: string | null
+  has_parking: boolean
+  has_congestion: boolean
+  parking_note: string
+  facility_enter_guide: string
+  price: number | null
+  subscriptionPlans: any[]
+  classesByYear: any[]
+  termsByYear: any[]
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type IWeeklyClassesFindAClassResponse = {
+  data: IFindAClassItem[]
+  meta: IMetaItem
+  links: ILinks
+}

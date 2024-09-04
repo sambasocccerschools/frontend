@@ -38,7 +38,7 @@ onMounted(async () => {
 
 const navigateToUser = async (id: number) => {
   console.log(id)
-  await router.push({ path: `/synco/weekly-classes/edit/lead/${id}` })
+  await router.push({ path: `/synco/user/${id}` })
   // await router.push({ path: `/synco/user/${id}` })
 }
 const cleanDate = (date: any) => {
@@ -102,17 +102,17 @@ const selectStatus = async (event: Event) => {
         @change="selectGuardian"
       />
     </th>
-    <td>
+    <td @click="navigateToUser(lead.id)">
       <label class="form-check-label text-muted" for="tomjones">
         {{ lead.student.first_name }} {{ lead.student.last_name }}
       </label>
     </td>
-    <td>{{ lead.student.age }}</td>
-    <td>{{ lead.venue.name }}</td>
-    <td>{{ cleanDate(lead.created_at) }}</td>
-    <td>{{ cleanDate(lead.trial_date) }}</td>
-    <td>{{ lead.booked_by }}</td>
-    <td>{{ lead.attempt }}</td>
+    <td @click="navigateToUser(lead.id)">{{ lead.student.age }}</td>
+    <td @click="navigateToUser(lead.id)">{{ lead.venue.name }}</td>
+    <td @click="navigateToUser(lead.id)">{{ cleanDate(lead.created_at) }}</td>
+    <td @click="navigateToUser(lead.id)">{{ cleanDate(lead.trial_date) }}</td>
+    <td @click="navigateToUser(lead.id)">{{ lead.booked_by }}</td>
+    <td @click="navigateToUser(lead.id)">{{ lead.attempt }}</td>
     <td>
       <select
         id="seasons"
