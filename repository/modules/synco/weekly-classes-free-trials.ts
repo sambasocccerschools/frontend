@@ -3,7 +3,7 @@ import FetchFactory from '../../factory'
 import type {
   IWeeklyClassesFreeTrialsResponse,
   IWeeklyClassesLeadCreateResponse,
-  IWeeklyClassesLeadCreate,
+  IWeeklyClassesFreeTrialCreate,
   ISendMessageFreeTrialObject,
   IMessageResponseObject,
   IExcelResponse,
@@ -141,6 +141,15 @@ class WeeklyClassesFreeTrialsModule extends FetchFactory {
       'GET',
       `${this.RESOURCE}/reporting`,
       undefined,
+      undefined,
+    )
+  }
+
+  async create(data: IWeeklyClassesFreeTrialCreate) {
+    return this.call<IMessageResponseObject>(
+      'POST',
+      `${this.RESOURCE}`,
+      data,
       undefined,
     )
   }

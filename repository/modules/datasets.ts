@@ -19,7 +19,7 @@ import type {
   ICitiesResponse,
   IPaymenTypeResponse,
   IStudentCoverageResponse,
-  ISubscriptionPlanResponse,
+  // ISubscriptionPlanResponse,
   ICampTypeResponse,
   IHolidayCampDateResponse,
   IUniqueWeeklyClassResponse,
@@ -42,6 +42,7 @@ import type {
   ITermsResponse,
   ISessionPlanResponse,
   IVenuesResponse,
+  ISubscriptionPlanResponse,
 } from '~/types/synco'
 
 class DatasetsModule extends FetchFactory {

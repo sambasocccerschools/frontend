@@ -588,11 +588,11 @@ export type IStudentCoverage = IBaseDatasetItem & {
 }
 export type IStudentCoverageResponse = IBaseResponse<IStudentCoverage> & {}
 
-export type ISubscriptionPlans = IBaseDatasetItem & {
-  name: string
-  venue: any
-}
-export type ISubscriptionPlanResponse = IBaseResponse<ISubscriptionPlans> & {}
+// export type ISubscriptionPlans = IBaseDatasetItem & {
+//   name: string
+//   venue: any
+// }
+// export type ISubscriptionPlanResponse = IBaseResponse<ISubscriptionPlans> & {}
 
 export type ICampType = IBaseDatasetItem & {
   title: string

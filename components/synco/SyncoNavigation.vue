@@ -15,6 +15,10 @@ const logout = async () => {
     router.push('/synco')
   }
   if (error.value) {
+    store.updateAuthenticated(false)
+    store.setUser(undefined)
+    token.value = null
+    router.push('/synco')
     console.log(error.value, 'data')
   }
 }
@@ -44,6 +48,32 @@ onMounted(async () => {
     div?.scrollIntoView()
   }
 })
+
+const showDashboard = ref<boolean>(true)
+const showWeeklyClasses = ref<boolean>(true)
+const showOneToOne = ref<boolean>(false)
+const showHolidayCamps = ref<boolean>(false)
+const showBirthdayParties = ref<boolean>(false)
+const showClub = ref<boolean>(false)
+const showSurveys = ref<boolean>(false)
+const showEmailMarketing = ref<boolean>(false)
+const showRecruitment = ref<boolean>(false)
+const showReports = ref<boolean>(false)
+const showMarketingReports = ref<boolean>(false)
+const showRecruitmentReports = ref<boolean>(false)
+const showSyncoChat = ref<boolean>(false)
+const showTemplates = ref<boolean>(false)
+const showAdministration = ref<boolean>(false)
+const showConfiguration = ref<boolean>(true)
+const showConfigurationWeeklyClasses = ref<boolean>(true)
+const showConfigurationHolidayCamps = ref<boolean>(false)
+const showConfigurationBirthdayParties = ref<boolean>(false)
+const showConfigurationClub = ref<boolean>(false)
+const showConfigurationOneToOne = ref<boolean>(false)
+const showConfigurationCoachPro = ref<boolean>(false)
+const showConfigurationParentConnect = ref<boolean>(false)
+const showConfigurationRecruitment = ref<boolean>(false)
+const showConfigurationPathway = ref<boolean>(false)
 </script>
 
 <template>
@@ -64,6 +94,7 @@ onMounted(async () => {
         to="/synco/dashboard"
         exact-active-class="btn-nav-active"
         class="btn-nav"
+        v-if="showDashboard"
       >
         <Icon name="akar-icons:grid" /> Dashboard
       </NuxtLink>
@@ -76,6 +107,7 @@ onMounted(async () => {
         data-bs-target="#collapseWeeklyClasses"
         aria-expanded="false"
         aria-controls="collapseWeeklyClasses"
+        v-if="showWeeklyClasses"
       >
         <Icon name="ph:book-open-bold" />Weekly Classes
         <Icon name="pajamas:chevron-down" />
@@ -162,6 +194,7 @@ onMounted(async () => {
         to="/synco/one-to-one"
         exact-active-class="btn-nav-active"
         class="btn-nav"
+        v-if="showOneToOne"
       >
         <Icon name="ph:book-open-bold" /> One to One
       </NuxtLink>
@@ -174,6 +207,7 @@ onMounted(async () => {
         data-bs-target="#collapseHolidayCamps"
         aria-expanded="false"
         aria-controls="collapseHolidayCamps"
+        v-if="showHolidayCamps"
       >
         <Icon name="ph:book-open-bold" />Holiday Camps
         <Icon name="pajamas:chevron-down" />
@@ -208,6 +242,7 @@ onMounted(async () => {
         to="/synco/birthday-parties"
         exact-active-class="btn-nav-active"
         class="btn-nav"
+        v-if="showBirthdayParties"
       >
         <Icon name="ph:cake-bold" /> Birthday parties
       </NuxtLink>
@@ -220,6 +255,7 @@ onMounted(async () => {
         data-bs-target="#collapseClub"
         aria-expanded="false"
         aria-controls="collapseClub"
+        v-if="showClub"
       >
         <Icon name="clarity:users-line" />Club
         <Icon name="pajamas:chevron-down" />
@@ -280,6 +316,7 @@ onMounted(async () => {
         data-bs-target="#collapseSurveys"
         aria-expanded="false"
         aria-controls="collapseSurveys"
+        v-if="showSurveys"
       >
         <Icon name="ph:car-profile-bold" />Surveys
         <Icon name="pajamas:chevron-down" />
@@ -317,6 +354,7 @@ onMounted(async () => {
         data-bs-target="#collapseEmailMarketing"
         aria-expanded="false"
         aria-controls="collapseEmailMarketing"
+        v-if="showEmailMarketing"
       >
         <Icon name="ph:car-profile-bold" />Email Marketing
         <Icon name="pajamas:chevron-down" />
@@ -363,6 +401,7 @@ onMounted(async () => {
         data-bs-target="#collapseRecruitment"
         aria-expanded="false"
         aria-controls="collapseRecruitment"
+        v-if="showRecruitment"
       >
         <Icon name="ph:car-profile-bold" />Recruitment
         <Icon name="pajamas:chevron-down" />
@@ -409,6 +448,7 @@ onMounted(async () => {
         data-bs-target="#collapseReports"
         aria-expanded="false"
         aria-controls="collapseReports"
+        v-if="showReports"
       >
         <Icon name="ph:car-profile-bold" />Reports
         <Icon name="pajamas:chevron-down" />
@@ -599,6 +639,7 @@ onMounted(async () => {
         data-bs-target="#collapseMarketingReports"
         aria-expanded="false"
         aria-controls="collapseMarketingReports"
+        v-if="showMarketingReports"
       >
         <Icon name="ph:car-profile-bold" />Marketing reports
         <Icon name="pajamas:chevron-down" />
@@ -642,6 +683,7 @@ onMounted(async () => {
         to="/synco/recruitment/reports"
         exact-active-class="btn-nav-active"
         class="btn-nav"
+        v-if="showRecruitmentReports"
       >
         <Icon name="material-symbols:folder-managed-outline" /> Recruitment
         reports
@@ -652,6 +694,7 @@ onMounted(async () => {
         to="/synco/chat"
         exact-active-class="btn-nav-active"
         class="btn-nav"
+        v-if="showSyncoChat"
       >
         <Icon name="ph:chat-circle-dots" /> Synco Chat
       </NuxtLink>
@@ -664,6 +707,7 @@ onMounted(async () => {
         data-bs-target="#collapseTemplates"
         aria-expanded="false"
         aria-controls="collapseTemplates"
+        v-if="showTemplates"
       >
         <Icon name="ph:car-profile-bold" />Templates
         <Icon name="pajamas:chevron-down" />
@@ -701,6 +745,7 @@ onMounted(async () => {
         data-bs-target="#collapseAdministration"
         aria-expanded="false"
         aria-controls="collapseAdministration"
+        v-if="showAdministration"
       >
         <Icon name="material-symbols:manage-accounts-outline" />Administration
         <Icon name="pajamas:chevron-down" />
@@ -775,6 +820,7 @@ onMounted(async () => {
         data-bs-target="#collapseConfiguration"
         aria-expanded="false"
         aria-controls="collapseConfiguration"
+        v-if="showConfiguration"
       >
         <Icon name="solar:settings-outline" />Configuration
         <Icon name="pajamas:chevron-down" />
@@ -786,7 +832,7 @@ onMounted(async () => {
         ref="test"
       >
         <!-- Config > Weekly Classes  -->
-        <li>
+        <li v-if="showConfigurationWeeklyClasses">
           <button
             class="btn btn-nav-link"
             type="button"
@@ -837,7 +883,7 @@ onMounted(async () => {
           </ul>
         </li>
         <!-- Config > Holiday Camps  -->
-        <li>
+        <li v-if="showConfigurationHolidayCamps">
           <button
             class="btn btn-nav-link"
             type="button"
@@ -887,7 +933,7 @@ onMounted(async () => {
         </li>
 
         <!-- Config > Birthday Parties  -->
-        <li>
+        <li v-if="showConfigurationBirthdayParties">
           <button
             class="btn btn-nav-link"
             type="button"
@@ -926,7 +972,7 @@ onMounted(async () => {
         </li>
 
         <!-- Config > Club  -->
-        <li>
+        <li v-if="showConfigurationClub">
           <button
             class="btn btn-nav-link"
             type="button"
@@ -965,7 +1011,7 @@ onMounted(async () => {
         </li>
 
         <!-- Config > One to One  -->
-        <li>
+        <li v-if="showConfigurationOneToOne">
           <button
             class="btn btn-nav-link"
             type="button"
@@ -995,7 +1041,7 @@ onMounted(async () => {
         </li>
 
         <!-- Config > Coach Pro  -->
-        <li>
+        <li v-if="showConfigurationCoachPro">
           <button
             class="btn btn-nav-link"
             type="button"
@@ -1070,7 +1116,7 @@ onMounted(async () => {
         </li>
 
         <!-- Config > Parent Connect  -->
-        <li>
+        <li v-if="showConfigurationParentConnect">
           <button
             class="btn btn-nav-link"
             type="button"
@@ -1118,7 +1164,7 @@ onMounted(async () => {
         </li>
 
         <!-- Config > Recruitment  -->
-        <li>
+        <li v-if="showConfigurationRecruitment">
           <button
             class="btn btn-nav-link"
             type="button"
@@ -1157,7 +1203,7 @@ onMounted(async () => {
         </li>
 
         <!-- Config > Pathway  -->
-        <li>
+        <li v-if="showConfigurationPathway">
           <button
             class="btn btn-nav-link"
             type="button"

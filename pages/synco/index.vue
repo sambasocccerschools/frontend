@@ -109,31 +109,36 @@ const login = async () => {
     token.value = loginResponse.access_token
     // store.updateAuthenticated(true)
 
-    $api.profile
-      .getProfile({
-        headers: {
-          Authorization: `Bearer ${token.value}`,
-        },
-      })
-      .then((response) => {
+    await $api.profile
+      .getProfile(loginResponse.access_token)
+      .then(async (response) => {
         console.log('response', response)
         store.setUser(response?.data)
         store.updateAuthenticated(true)
-        if (store.regions.length == 0) store.getRegions()
-        if (store.availableVenues.length == 0)
-          store.getAvailableVenues('weekly-classes')
-        if (store.abilityGroups.length == 0)
-          store.getAbilityGroups('weekly-classes')
-        if (store.seasons.length == 0) store.getSeasons()
-        if (store.relationships.length == 0) store.getRelationships()
-        if (store.referralSources.length == 0) store.getReferralSource()
-        if (store.leadStatus.length == 0) store.getLeadStatus()
-        if (store.gender.length == 0) store.getGender()
-        if (store.medicalInformation.length == 0) store.getMedicalInformation()
-        if (store.agents.length == 0) store.getAgents()
       })
+    if (store.regions.length == 0) store.getRegions()
+    if (store.availableVenues.length == 0)
+      store.getAvailableVenues('weekly-classes')
+    if (store.abilityGroups.length == 0)
+      store.getAbilityGroups('weekly-classes')
+    if (store.seasons.length == 0) store.getSeasons()
+    if (store.relationships.length == 0) store.getRelationships()
+    if (store.referralSources.length == 0) store.getReferralSource()
+    if (store.leadStatus.length == 0) store.getLeadStatus()
+    if (store.gender.length == 0) store.getGender()
+    if (store.medicalInformation.length == 0) store.getMedicalInformation()
+    if (store.agents.length == 0) store.getAgents()
+    if (store.freeTrialStatus.length == 0) store.getFreeTrialStatus()
+    if (store.memberCancelStatus.length == 0) store.getMemberCancelStatus()
+    if (store.memberCancelType.length == 0) store.getMemberCancelType()
+    if (store.memberStatus.length == 0) store.getMemberStatus()
+    if (store.saleStatus.length == 0) store.getSaleStatus()
+    if (store.subscriptionPlans.length == 0) store.getSubscriptionPlan()
+    navigateTo({
+      path: '/synco/dashboard',
+    })
 
-    window.location.href = '/synco/dashboard'
+    // window.location.href = '/synco/dashboard'
     // await navigateTo({
     //   path: '/synco/dashboard',
     // })

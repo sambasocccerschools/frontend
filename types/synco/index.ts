@@ -833,3 +833,95 @@ export type IWeeklyClassesFindAClassResponse = {
   meta: IMetaItem
   links: ILinks
 }
+
+export type ICreateGuardian = {
+  first_name: string
+  last_name: string
+  email: string
+  phone_number: string
+  relationship_id: number
+  referral_source_id: number
+}
+
+export type ICreateStudent = {
+  first_name: string
+  last_name: string
+  dob: string
+  age: number
+  gender_id: number
+  medical_information_id: number
+}
+
+export type ICreateEmergencyContact = {
+  first_name: string
+  last_name: string
+  phone_number: string
+  relationship_id: number
+}
+
+export type IWeeklyClassesFreeTrialCreate = {
+  weekly_class_id: number
+  agent_id: string
+  guardians: ICreateGuardian[]
+  students: ICreateStudent[]
+  emergency_contact: ICreateEmergencyContact[]
+  comments: string[]
+}
+
+export type IWeeklyClassesWaitingListCreate = {
+  weekly_class_id: number
+  subscription_plan_price_id: number
+  guardians: ICreateGuardian[]
+  students: ICreateStudent[]
+  emergency_contact: ICreateEmergencyContact[]
+  comments: string[]
+}
+
+export type IWeeklyClassesMemberCreate = {
+  weekly_class_id: number
+  subscription_plan_price_id: number
+  start_date: string
+  agent_id: string
+  guardians: ICreateGuardian[]
+  students: ICreateStudent[]
+  emergency_contact: ICreateEmergencyContact[]
+  comments: string[]
+}
+
+export type IPaymentType = {
+  id: number
+  name: string
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type IStudentCoverage = {
+  id: number
+  name: string
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type IPrices = {
+  id: number
+  name: string
+  payment_type: IPaymentType
+  student_coverage: IStudentCoverage
+  monthly_subscription_fee: string
+  price_per_class_per_child: string
+  one_off_joining_fee: string
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type ISubscriptionPlan = {
+  id: number
+  name: string
+  prices: IPrices[]
+  created_at: Date | null
+  deleted_at: Date | null
+}
+
+export type ISubscriptionPlanResponse = {
+  data: ISubscriptionPlan[]
+}
