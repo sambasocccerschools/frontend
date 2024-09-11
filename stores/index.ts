@@ -263,8 +263,10 @@ export const generalStore = defineStore('store', {
     },
     async getSubscriptionPlan() {
       try {
-        const response =
-          await useNuxtApp().$api.datasets.getSubscriptionPlan('weekly-classes')
+        const response = await useNuxtApp().$api.datasets.getSubscriptionPlan(
+          'weekly-classes',
+          null,
+        )
         this.subscriptionPlans = response?.data
       } catch (error: any) {
         this.subscriptionPlans = []

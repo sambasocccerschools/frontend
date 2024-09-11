@@ -273,6 +273,7 @@ const changeLoadingState = (state: boolean) => {
 }
 
 let weekly_class_id = ref<number>(0)
+let venue_id = ref<string>('')
 let agent_id = ref<string>('')
 let showSubscriptionCard = ref<boolean>(false)
 let showCalculatorCard = ref<boolean>(false)
@@ -295,7 +296,7 @@ let student = ref<IStudentCreate>({
   dob: '',
   age: 0,
   gender_id: 0,
-  medical_information_id: 0,
+  medical_information: '',
 })
 let emergency_contact = ref<IEmregencyContactCreate>({
   id: 0,
@@ -316,9 +317,11 @@ let comments = ref<Array<IComment>>([
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/create/free-trial.vue')
   let queryClassId = router.currentRoute.value.query.class_id
-  weekly_class_id.value = queryClassId
+  if (!!queryClassId) weekly_class_id.value = +queryClassId
+  let queryVenueId = router.currentRoute.value.query.venue_id
+  if (!!queryVenueId) venue_id.value = queryVenueId.toString()
   let agentId = store.user?.id
-  agent_id.value = agentId
+  if (!!agentId) agent_id.value = agentId
 })
 
 const toggleSubscriptionCard = () => {
@@ -368,10 +371,10 @@ const createData = async () => {
         dob: student.value.dob,
         age: student.value.age,
         gender_id: student.value.gender_id,
-        medical_information_id: student.value.medical_information_id,
+        medical_information: student.value.medical_information,
       },
     ],
-    emergency_contact: [
+    emergency_contacts: [
       {
         first_name: emergency_contact.value.first_name,
         last_name: emergency_contact.value.last_name,

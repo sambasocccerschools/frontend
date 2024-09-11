@@ -106,7 +106,7 @@ class WeeklyClassesLeadsModule extends FetchFactory {
         dob: x.dob,
         age: x.age,
         gender_id: x.gender_id,
-        medical_information_id: x.medical_information_id,
+        medical_information: x.medical_information,
       })
     })
     let emergency_contacts: ICreateEmergencyContact[] = []

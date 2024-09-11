@@ -89,6 +89,23 @@
           <div class="row">
             <div class="col-12">
               <div class="form-group w-100 mb-3">
+                <label for="venueInfo" class="form-labelform-label-light"
+                  >Venue</label
+                >
+                <select
+                  id="venueInfo"
+                  class="form-control form-control-lg"
+                  v-model="venue_id"
+                >
+                  <option value="0">Choose venue</option>
+                  <option v-for="venue in venues" :value="venue.id">
+                    {{ venue.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group w-100 mb-3">
                 <label for="planInfo" class="form-labelform-label-light"
                   >Membership plan</label
                 >
@@ -98,9 +115,14 @@
                   v-model="selectedPlan"
                 >
                   <option value="0">Choose plan</option>
-                  <option v-for="plan in subscriptionPlans" :value="plan.id">
-                    {{ plan.name }}
-                  </option>
+                  <template v-if="getSubscriptionPlanFromVenue() != null">
+                    <option
+                      v-for="plan in getSubscriptionPlanFromVenue()"
+                      :value="plan.id"
+                    >
+                      {{ plan.name }}
+                    </option>
+                  </template>
                 </select>
               </div>
             </div>
@@ -340,6 +362,7 @@ import type {
   IEmregencyContactCreate,
   IWeeklyClassesWaitingListCreate,
   ISubscriptionPlan,
+  IAvailableVenueObject,
 } from '~/types/synco/index'
 
 const router = useRouter()
@@ -354,6 +377,7 @@ const changeLoadingState = (state: boolean) => {
 }
 
 let weekly_class_id = ref<number>(0)
+let venue_id = ref<string>('0')
 let agent_id = ref<string>('')
 let showPlanBreakdown = ref<boolean>(false)
 let showSubscriptionCard = ref<boolean>(false)
@@ -377,7 +401,7 @@ let student = ref<IStudentCreate>({
   dob: '',
   age: 0,
   gender_id: 0,
-  medical_information_id: 0,
+  medical_information: '',
 })
 let emergency_contact = ref<IEmregencyContactCreate>({
   id: 0,
@@ -397,18 +421,24 @@ let comments = ref<Array<IComment>>([
 let selectedPlan = ref<number>(0)
 
 let subscriptionPlans = ref<ISubscriptionPlan[]>(store.subscriptionPlans)
+let venues = ref<IAvailableVenueObject[]>(store.availableVenues)
 
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/create/waiting-list.vue')
   let queryClassId = router.currentRoute.value.query.class_id
-  weekly_class_id.value = queryClassId
+  if (!!queryClassId) weekly_class_id.value = +queryClassId
+  let queryVenueId = router.currentRoute.value.query.venue_id
+  if (!!queryVenueId) venue_id.value = queryVenueId.toString()
   let agentId = store.user?.id
-  agent_id.value = agentId
+  if (!!agentId) agent_id.value = agentId
   if (store.subscriptionPlans.length == 0) {
     store.getSubscriptionPlan().then(() => {
       subscriptionPlans.value = store.subscriptionPlans
     })
   }
+  store.getAvailableVenues('weekly-classes').then(() => {
+    venues.value = store.availableVenues
+  })
 })
 
 const toggleSubscriptionCard = () => {
@@ -462,10 +492,10 @@ const createData = async () => {
         dob: student.value.dob,
         age: student.value.age,
         gender_id: student.value.gender_id,
-        medical_information_id: student.value.medical_information_id,
+        medical_information: student.value.medical_information,
       },
     ],
-    emergency_contact: [
+    emergency_contacts: [
       {
         first_name: emergency_contact.value.first_name,
         last_name: emergency_contact.value.last_name,
@@ -491,6 +521,12 @@ const createData = async () => {
 const getSelectedPlan = (): ISubscriptionPlan | null => {
   let selected = subscriptionPlans.value.find((x) => x.id == selectedPlan.value)
   return !selected ? null : selected
+}
+const getSubscriptionPlanFromVenue = () => {
+  let venue = venues.value.find((x) => x.id == venue_id.value)
+  if (!venue) return null
+  let subscriptionPlans = venue.subscriptionPlans
+  return !subscriptionPlans ? null : subscriptionPlans
 }
 </script>
 <!-- <script>

@@ -90,18 +90,18 @@ defineProps<{
               <div class="d-flex flex-row">
                 <!-- v-if="c.capacity === 0" -->
                 <NuxtLink
-                  :to="`/synco/weekly-classes/create/waiting-list?class_id=${c.id}`"
+                  :to="`/synco/weekly-classes/create/waiting-list?class_id=${c.id}&venue_id=${item.id}`"
                   class="btn btn-primary btn-sm text-light me-3"
                   ><strong>Add to Waiting List</strong></NuxtLink
                 >
                 <NuxtLink
-                  :to="`/synco/weekly-classes/create/membership?class_id=${c.id}`"
+                  :to="`/synco/weekly-classes/create/membership?class_id=${c.id}&venue_id=${item.id}`"
                   class="btn btn-outline-primary btn-sm me-3"
                 >
                   <strong>Book a Membership</strong>
                 </NuxtLink>
                 <NuxtLink
-                  :to="`/synco/weekly-classes/create/free-trial?class_id=${c.id}`"
+                  :to="`/synco/weekly-classes/create/free-trial?class_id=${c.id}&venue_id=${item.id}`"
                   class="btn btn-primary btn-sm text-light"
                   ><strong>Book a Free Trial</strong></NuxtLink
                 >

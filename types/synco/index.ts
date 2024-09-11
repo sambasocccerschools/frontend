@@ -343,7 +343,7 @@ export type IStudentCreate = {
   dob: string
   age: number
   gender_id: number
-  medical_information_id: number
+  medical_information: string
 }
 
 export type IGuardianCreate = {
@@ -622,8 +622,9 @@ export type IAvailableVenueObject = {
   parking_note: string
   facility_enter_guide: string
   region: IRegionItem
-  subscriptionPlans: any[]
-  classesByYear: IAvailableClassesByYear[]
+  subscriptionPlans: any[] | null
+  classesByYear: IAvailableClassesByYear[] | null
+  termsByYear: any[] | null
   created_at: Date | null
   deleted_at: Date | null
   price: number | null
@@ -849,7 +850,7 @@ export type ICreateStudent = {
   dob: string
   age: number
   gender_id: number
-  medical_information_id: number
+  medical_information: string
 }
 
 export type ICreateEmergencyContact = {
@@ -864,7 +865,7 @@ export type IWeeklyClassesFreeTrialCreate = {
   agent_id: string
   guardians: ICreateGuardian[]
   students: ICreateStudent[]
-  emergency_contact: ICreateEmergencyContact[]
+  emergency_contacts: ICreateEmergencyContact[]
   comments: string[]
 }
 
@@ -873,7 +874,7 @@ export type IWeeklyClassesWaitingListCreate = {
   subscription_plan_price_id: number
   guardians: ICreateGuardian[]
   students: ICreateStudent[]
-  emergency_contact: ICreateEmergencyContact[]
+  emergency_contacts: ICreateEmergencyContact[]
   comments: string[]
 }
 
@@ -884,7 +885,7 @@ export type IWeeklyClassesMemberCreate = {
   agent_id: string
   guardians: ICreateGuardian[]
   students: ICreateStudent[]
-  emergency_contact: ICreateEmergencyContact[]
+  emergency_contacts: ICreateEmergencyContact[]
   comments: string[]
 }
 
