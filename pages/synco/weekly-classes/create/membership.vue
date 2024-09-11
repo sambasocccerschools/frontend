@@ -16,16 +16,33 @@
           <h5 class="py-4"><strong>Membership plan</strong></h5>
           <div class="row">
             <div class="col-12">
+              <div class="form-group w-100 mb-3">
+                <label for="venueInfo" class="form-labelform-label-light"
+                  >Venue</label
+                >
+                <select
+                  id="venueInfo"
+                  class="form-control form-control-lg"
+                  v-model="venue_id"
+                >
+                  <option value="0">Choose venue</option>
+                  <option v-for="venue in venues" :value="venue.id">
+                    {{ venue.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <!-- <div class="col-12">
               <div class="w-100 mb-3">
                 <label for="venueInfo" class="form-labelform-label-light"
                   >Venue</label
                 >
                 <div class="input-group input-group-lg">
-                  <!-- <div class="input-group-prepend">
+                  <div class="input-group-prepend">
                     <span class="input-group-text">
                       <Icon name="ph:magnifying-glass" class="indicator"
                     /></span>
-                  </div> -->
+                  </div>
                   <input
                     id="venueInfo"
                     type="text"
@@ -51,19 +68,31 @@
                   step="1"
                 />
               </div>
-            </div>
+            </div> -->
 
             <div class="col-12">
               <div class="form-group w-100 mb-3">
                 <label for="planInfo" class="form-labelform-label-light"
                   >Membership plan</label
                 >
-                <select id="planInfo" class="form-control form-control-lg">
-                  <option>Choose plan</option>
+                <select
+                  id="planInfo"
+                  class="form-control form-control-lg"
+                  v-model="selectedPlan"
+                >
+                  <option value="0">Choose plan</option>
+                  <template v-if="getSubscriptionPlanFromVenue() != null">
+                    <option
+                      v-for="plan in getSubscriptionPlanFromVenue()"
+                      :value="plan.id"
+                    >
+                      {{ plan.name }}
+                    </option>
+                  </template>
                 </select>
               </div>
             </div>
-            <div class="col-12">
+            <!-- <div class="col-12">
               <div class="form-group w-100 mb-3">
                 <label for="feeInfo" class="form-labelform-label-light"
                   >Joining fee</label
@@ -72,12 +101,19 @@
                   <option>Choose joining fee</option>
                 </select>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
-        <div class="card rounded-4 mt-4 px-3">
+        <div class="card rounded-4 mt-4 px-3 pb-3">
           <h5 class="py-4"><strong>Select start date</strong></h5>
-          <SyncoFilterByCalendar :classDate="classDate" />
+          <input
+            id="startDate"
+            type="date"
+            class="form-control form-control-lg"
+            placeholder=""
+            v-model="startDate"
+          />
+          <!-- <SyncoFilterByCalendar :classDate="classDate" /> -->
         </div>
         <div class="mt-4">
           <button
@@ -88,25 +124,41 @@
           </button>
         </div>
         <div class="card rounded-4 mt-4 p-3" v-if="showPlanBreakdown">
-          <div
-            class="d-flex justify-content-between mb-3 flex-row"
-            v-for="breakdown in planBreakdown"
-          >
-            <span>{{ breakdown?.label }}</span>
+          <div class="d-flex justify-content-between mb-3 flex-row">
+            <span>Name</span>
             <span
-              ><strong>{{ breakdown?.value }}</strong></span
+              ><strong>{{ getSelectedPlan()?.name }}</strong></span
             >
           </div>
           <hr />
         </div>
       </div>
       <div class="col-8">
+        <SyncoWeeklyClassesFormsParentForm :parent="parent">
+          <template v-slot:internal_title>
+            <div
+              class="d-flex justify-content-between align-items-center flex-row"
+            >
+              <h5 class="m-0 py-4">
+                <strong>Parent information</strong>
+              </h5>
+              <!-- <button
+                type="button"
+                class="btn btn-primary text-light"
+                @click="addParent"
+              >
+                Add Parent
+              </button> -->
+            </div>
+          </template>
+        </SyncoWeeklyClassesFormsParentForm>
+
         <SyncoWeeklyClassesFormsStudentForm :student="student">
           <template v-slot:internal_title>
             <h5 class="py-4"><strong>Student information</strong></h5>
           </template>
           <template v-slot:additional_rows>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-6">
                 <div class="form-group w-100 mb-3">
                   <label for="studentClass" class="form-labelform-label-light"
@@ -147,36 +199,17 @@
                   </select>
                 </div>
               </div>
-            </div>
+            </div> -->
           </template>
         </SyncoWeeklyClassesFormsStudentForm>
 
-        <SyncoWeeklyClassesFormsParentForm :parent="parent">
-          <template v-slot:internal_title>
-            <div
-              class="d-flex justify-content-between align-items-center flex-row"
-            >
-              <h5 class="m-0 py-4">
-                <strong>Parent information</strong>
-              </h5>
-              <button
-                type="button"
-                class="btn btn-primary text-light"
-                @click="addParent"
-              >
-                Add Parent
-              </button>
-            </div>
-          </template>
-        </SyncoWeeklyClassesFormsParentForm>
-
         <SyncoWeeklyClassesFormsEmergencyContactForm
-          :emergencyContact="emergencyContact"
+          :emergencyContact="emergency_contact"
         >
           <template v-slot:internal_title>
             <h5 class="py-4">
               <strong>Emergency contact details</strong>
-              <Icon name="ph:pencil-simple-line" />
+              <!-- <Icon name="ph:pencil-simple-line" /> -->
             </h5>
           </template>
         </SyncoWeeklyClassesFormsEmergencyContactForm>
@@ -198,15 +231,18 @@
               </button>
             </div>
             <div class="px-4">
-              <button
+              <button class="btn btn-primary text-light btn-lg" @click="book">
+                Book Member
+              </button>
+              <!-- <button
                 class="btn btn-primary text-light btn-lg"
                 @click="toggleDirectDebit"
                 data-bs-toggle="modal"
                 data-bs-target="#directDebit"
               >
                 Setup Direct Debit
-              </button>
-              <div
+              </button> -->
+              <!-- <div
                 id="directDebit"
                 class="modal fade centered"
                 tabindex="-1"
@@ -247,17 +283,202 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
-        <SyncoWeeklyClassesFormsCommentFormList />
+        <SyncoWeeklyClassesFormsCommentFormList
+          :comments="comments"
+          @add-comment="addComment"
+        />
       </div>
     </div>
   </NuxtLayout>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useToast } from 'vue-toast-notification'
+import { generalStore } from '~/stores'
+import type { IComment } from '~/types/index'
+import type {
+  IGuardianCreate,
+  IStudentCreate,
+  IEmregencyContactCreate,
+  IWeeklyClassesMemberCreate,
+  ISubscriptionPlan,
+  IAvailableVenueObject,
+} from '~/types/synco/index'
+
+const router = useRouter()
+const { $api } = useNuxtApp()
+const toast = useToast()
+const store = generalStore()
+let isLoading = ref<boolean>(false)
+let blockButtons = ref<boolean>(false)
+const changeLoadingState = (state: boolean) => {
+  isLoading.value = state
+  blockButtons.value = state
+}
+
+let weekly_class_id = ref<number>(0)
+let venue_id = ref<string>('0')
+let agent_id = ref<string>('')
+let showPlanBreakdown = ref<boolean>(false)
+let showSubscriptionCard = ref<boolean>(false)
+let showCalculatorCard = ref<boolean>(false)
+let showScriptCard = ref<boolean>(false)
+let newComment = ref<string>('')
+
+let parent = ref<IGuardianCreate>({
+  id: '',
+  first_name: '',
+  last_name: '',
+  email: '',
+  phone_number: '',
+  relationship_id: 0,
+  referral_source_id: 0,
+})
+let student = ref<IStudentCreate>({
+  id: '',
+  first_name: '',
+  last_name: '',
+  dob: '',
+  age: 0,
+  gender_id: 0,
+  medical_information: '',
+})
+let emergency_contact = ref<IEmregencyContactCreate>({
+  id: 0,
+  first_name: '',
+  last_name: '',
+  phone_number: '',
+  relationship_id: 0,
+})
+let comments = ref<Array<IComment>>([
+  // {
+  //   text: '',
+  //   avatar: '',
+  //   name: '',
+  //   created: '',
+  // },
+])
+let selectedPlan = ref<number>(0)
+let startDate = ref<string>('')
+
+let subscriptionPlans = ref<ISubscriptionPlan[]>(store.subscriptionPlans)
+let venues = ref<IAvailableVenueObject[]>(store.availableVenues)
+
+onMounted(async () => {
+  console.log('pages/synco/weekly-classes/create/membership.vue')
+  let queryClassId = router.currentRoute.value.query.class_id
+  if (!!queryClassId) weekly_class_id.value = +queryClassId
+  let queryVenueId = router.currentRoute.value.query.venue_id
+  if (!!queryVenueId) venue_id.value = queryVenueId.toString()
+  let agentId = store.user?.id
+  if (!!agentId) agent_id.value = agentId
+
+  if (store.subscriptionPlans.length == 0) {
+    store.getSubscriptionPlan().then(() => {
+      subscriptionPlans.value = store.subscriptionPlans
+    })
+  }
+  store.getAvailableVenues('weekly-classes').then(() => {
+    venues.value = store.availableVenues
+  })
+})
+
+const toggleSubscriptionCard = () => {
+  showSubscriptionCard.value = !showSubscriptionCard.value
+  showCalculatorCard.value = false
+  showScriptCard.value = false
+}
+const toggleCalculatorCard = () => {
+  showCalculatorCard.value = !showCalculatorCard.value
+  showSubscriptionCard.value = false
+  showScriptCard.value = false
+}
+const toggleScriptCard = () => {
+  showScriptCard.value = !showScriptCard.value
+  showSubscriptionCard.value = false
+  showCalculatorCard.value = false
+}
+const togglePlanBreakdown = () => {
+  showPlanBreakdown.value = !showPlanBreakdown.value
+}
+
+const cancel = () => {}
+
+const book = () => {
+  createData()
+}
+
+const addComment = (comment: string) => {
+  newComment.value = comment
+}
+
+const createData = async () => {
+  let data: IWeeklyClassesMemberCreate = {
+    weekly_class_id: weekly_class_id.value,
+    subscription_plan_price_id: selectedPlan.value,
+    start_date: startDate.value,
+    agent_id: agent_id.value,
+    guardians: [
+      {
+        first_name: parent.value.first_name,
+        last_name: parent.value.last_name,
+        email: parent.value.email,
+        phone_number: parent.value.phone_number,
+        relationship_id: parent.value.relationship_id,
+        referral_source_id: parent.value.referral_source_id,
+      },
+    ],
+    students: [
+      {
+        first_name: student.value.first_name,
+        last_name: student.value.last_name,
+        dob: student.value.dob,
+        age: student.value.age,
+        gender_id: student.value.gender_id,
+        medical_information: student.value.medical_information,
+      },
+    ],
+    emergency_contacts: [
+      {
+        first_name: emergency_contact.value.first_name,
+        last_name: emergency_contact.value.last_name,
+        phone_number: emergency_contact.value.phone_number,
+        relationship_id: emergency_contact.value.relationship_id,
+      },
+    ],
+    comments: [newComment.value],
+  }
+  console.log('data', data)
+  try {
+    changeLoadingState(true)
+    const response = await $api.wcMembers.create(data)
+    await router.push({ path: `/synco/weekly-classes/members` })
+    console.log(response)
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.messages ?? 'Error')
+  } finally {
+    changeLoadingState(false)
+  }
+}
+
+const getSelectedPlan = (): ISubscriptionPlan | null => {
+  let selected = subscriptionPlans.value.find((x) => x.id == selectedPlan.value)
+  return !selected ? null : selected
+}
+const getSubscriptionPlanFromVenue = () => {
+  let venue = venues.value.find((x) => x.id == venue_id.value)
+  if (!venue) return null
+  let subscriptionPlans = venue.subscriptionPlans
+  return !subscriptionPlans ? null : subscriptionPlans
+}
+</script>
+<!-- <script>
 const classes = ref([
   { label: 'Select from drop down', value: '' },
   { label: '4-7 years', value: 'Merchandise' },
@@ -353,7 +574,7 @@ export default {
     },
   },
 }
-</script>
+</script> -->
 <style lang="scss" scoped>
 .indicator {
   height: 2rem;

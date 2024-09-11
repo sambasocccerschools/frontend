@@ -3,7 +3,7 @@ import FetchFactory from '../../factory'
 import type {
   IWeeklyClassesMembersResponse,
   IWeeklyClassesLeadCreateResponse,
-  IWeeklyClassesLeadCreate,
+  IWeeklyClassesMemberCreate,
   ISendMessageMemberObject,
   IMessageResponseObject,
   IExcelResponse,
@@ -141,6 +141,15 @@ class WeeklyClassesMembersModule extends FetchFactory {
       'GET',
       `${this.RESOURCE}/reporting`,
       undefined,
+      undefined,
+    )
+  }
+
+  async create(data: IWeeklyClassesMemberCreate) {
+    return this.call<IMessageResponseObject>(
+      'POST',
+      `${this.RESOURCE}`,
+      data,
       undefined,
     )
   }

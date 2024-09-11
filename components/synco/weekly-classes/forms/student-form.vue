@@ -38,7 +38,7 @@ onMounted(async () => {
   console.log('components/synco/weekly-classes/forms/student-form.vue')
 
   if (store.gender.length == 0) await store.getGender()
-  if (store.medicalInformation.length == 0) await store.getMedicalInformation()
+  // if (store.medicalInformation.length == 0) await store.getMedicalInformation()
 })
 </script>
 
@@ -128,7 +128,19 @@ onMounted(async () => {
         </div>
       </div>
       <div class="col-6">
-        <div class="form-group w-100 mb-3" v-if="medicalInformation.length > 0">
+        <div class="form-studentMedicalInformation w-100 mb-3">
+          <label for="studentAge" class="form-labelform-label-light"
+            >Medical information</label
+          >
+          <input
+            id="studentMedicalInformation"
+            type="text"
+            class="form-control form-control-lg"
+            placeholder="Medical information"
+            v-model="student.medical_information"
+          />
+        </div>
+        <!-- <div class="form-group w-100 mb-3" v-if="medicalInformation.length > 0">
           <label
             for="studentMedicalInformation"
             class="form-labelform-label-light"
@@ -148,7 +160,7 @@ onMounted(async () => {
               {{ item.title }}
             </option>
           </select>
-        </div>
+        </div> -->
       </div>
     </div>
     <slot name="additional_rows"></slot>

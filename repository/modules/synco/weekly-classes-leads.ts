@@ -10,6 +10,9 @@ import type {
   IWeeklyClassesShowLeadResponse,
   IWeeklyClassesLeadsReportingResponse,
   IWeeklyClassesLeadFilterObject,
+  ICreateGuardian,
+  ICreateStudent,
+  ICreateEmergencyContact,
 } from '~/types/synco'
 
 class WeeklyClassesLeadsModule extends FetchFactory {
@@ -84,7 +87,7 @@ class WeeklyClassesLeadsModule extends FetchFactory {
   }
 
   async create(term: IWeeklyClassesLeadCreate) {
-    let guardians = []
+    let guardians: ICreateGuardian[] = []
     term.guardians.forEach((x) => {
       guardians.push({
         first_name: x.first_name,
@@ -95,7 +98,7 @@ class WeeklyClassesLeadsModule extends FetchFactory {
         referral_source_id: x.referral_source_id,
       })
     })
-    let students = []
+    let students: ICreateStudent[] = []
     term.students.forEach((x) => {
       students.push({
         first_name: x.first_name,
@@ -103,10 +106,10 @@ class WeeklyClassesLeadsModule extends FetchFactory {
         dob: x.dob,
         age: x.age,
         gender_id: x.gender_id,
-        medical_information_id: x.medical_information_id,
+        medical_information: x.medical_information,
       })
     })
-    let emergency_contacts = []
+    let emergency_contacts: ICreateEmergencyContact[] = []
     term.emergency_contacts.forEach((x) => {
       emergency_contacts.push({
         first_name: x.first_name,
@@ -115,7 +118,7 @@ class WeeklyClassesLeadsModule extends FetchFactory {
         relationship_id: x.relationship_id,
       })
     })
-    let comments = []
+    let comments: string[] = []
     term.comments.forEach((x) => {
       comments.push(x)
     })

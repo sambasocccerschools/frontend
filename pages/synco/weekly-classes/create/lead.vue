@@ -279,7 +279,7 @@ let student = ref<IStudentCreate>({
   dob: '',
   age: 0,
   gender_id: 0,
-  medical_information_id: 0,
+  medical_information: '',
 })
 let emergency_contact = ref<IEmregencyContactCreate>({
   id: 0,
@@ -377,9 +377,12 @@ const cancel = async () => {
 let venues = store.availableVenues
 
 const activities = computed(() => {
+  console.log(venues)
   let classes: IAutoCompleteObject[] = []
   venues.forEach((venue) => {
+    if (!venue.classesByYear) return
     venue.classesByYear.forEach((years) => {
+      if (!years.classes) return
       years.classes.forEach((yearClass) => {
         classes.push({
           label: `${years.year} - ${yearClass.name}`,
@@ -397,7 +400,7 @@ onMounted(async () => {
   // await getWeeklyClasses()
   // await getSeasons()
   if (store.gender.length == 0) await store.getGender()
-  if (store.medicalInformation.length == 0) await store.getMedicalInformation()
+  // if (store.medicalInformation.length == 0) await store.getMedicalInformation()
   if (store.relationships.length == 0) await store.getRelationships()
   if (store.referralSources.length == 0) await store.getReferralSource()
   if (store.availableVenues.length == 0)

@@ -24,6 +24,7 @@ import type {
   IAvailableVenueObject,
   ISeasonItem,
   IAbilityGroupObject,
+  ISubscriptionPlan,
 } from '~/types/synco/index'
 
 export const generalStore = defineStore('store', {
@@ -46,6 +47,7 @@ export const generalStore = defineStore('store', {
     memberCancelType: [] as IMemberCancelType[],
     memberStatus: [] as IMemberStatus[],
     saleStatus: [] as ISaleStatus[],
+    subscriptionPlans: [] as ISubscriptionPlan[],
   }),
   getters: {},
   actions: {
@@ -256,6 +258,20 @@ export const generalStore = defineStore('store', {
         this.saleStatus = []
         console.log(error)
         useToast().error(error?.messages ?? 'getSaleStatus Error')
+      } finally {
+      }
+    },
+    async getSubscriptionPlan() {
+      try {
+        const response = await useNuxtApp().$api.datasets.getSubscriptionPlan(
+          'weekly-classes',
+          null,
+        )
+        this.subscriptionPlans = response?.data
+      } catch (error: any) {
+        this.subscriptionPlans = []
+        console.log(error)
+        useToast().error(error?.messages ?? 'getSubscriptionPlan Error')
       } finally {
       }
     },

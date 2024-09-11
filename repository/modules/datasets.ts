@@ -19,7 +19,7 @@ import type {
   ICitiesResponse,
   IPaymenTypeResponse,
   IStudentCoverageResponse,
-  ISubscriptionPlanResponse,
+  // ISubscriptionPlanResponse,
   ICampTypeResponse,
   IHolidayCampDateResponse,
   IUniqueWeeklyClassResponse,
@@ -42,6 +42,7 @@ import type {
   ITermsResponse,
   ISessionPlanResponse,
   IVenuesResponse,
+  ISubscriptionPlanResponse,
 } from '~/types/synco'
 
 class DatasetsModule extends FetchFactory {
@@ -373,11 +374,15 @@ class DatasetsModule extends FetchFactory {
       | 'holiday-camps'
       | 'birthday-parties'
       | 'club',
+    venue_id: string | null,
   ) {
     const fetchOptions: FetchOptions<'json'> = {
       params: {
         service,
       },
+    }
+    if (!!venue_id && !!fetchOptions.params) {
+      fetchOptions.params.venue_id = venue_id
     }
     return this.call<ISubscriptionPlanResponse>(
       'GET',
@@ -465,7 +470,7 @@ class DatasetsModule extends FetchFactory {
       const fetchOptions: FetchOptions<'json'> = {
         params: {
           service,
-          include_classes: false,
+          include_classes: true,
         },
       }
       return this.call<IGetVenueResponse>(
