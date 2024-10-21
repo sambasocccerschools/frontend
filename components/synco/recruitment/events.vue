@@ -6,6 +6,11 @@ const props = defineProps<{
   eventList: ICandidateEventItem[]
 }>()
 let eventList = ref<ICandidateEventItem[]>(props.eventList)
+const cleanDate = (date: any) => {
+  if (!Number.isInteger(date)) return date
+  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+  return cleanedDate
+}
 </script>
 
 <template>
@@ -15,11 +20,7 @@ let eventList = ref<ICandidateEventItem[]>(props.eventList)
         <div class="card-body">
           <div class="row" v-for="(event, index) in eventList">
             <div class="col-1 p-3 pb-5">
-              <img
-                src="@/src/assets/img-avatar-small.png"
-                alt="Avatar"
-                class="me-3"
-              />
+              <img :src="event.ImageUrl" alt="Avatar" class="me-3" />
             </div>
             <div class="col-11 p-3">
               <div class="d-flex flex-column">
@@ -27,7 +28,7 @@ let eventList = ref<ICandidateEventItem[]>(props.eventList)
                   <span class="h4"
                     ><strong>{{ event.Title }}</strong></span
                   >
-                  <span class="text-muted">{{ event.Date }}</span>
+                  <span class="text-muted">{{ cleanDate(event.Date) }}</span>
                 </div>
                 <div class="d-flex justify-content-between flex-row">
                   <span class="text-muted">{{ event.Description }}</span>

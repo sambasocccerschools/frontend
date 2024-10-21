@@ -135,6 +135,9 @@ const login = async () => {
           if (store.memberStatus.length == 0) store.getMemberStatus()
           // if (store.saleStatus.length == 0) store.getSaleStatus()
           if (store.subscriptionPlans.length == 0) store.getSubscriptionPlan()
+          if (store.feedbackStatus.length == 0) store.getFeedbackStatus()
+          if (store.feedbackCategory.length == 0) store.getFeedbackCategory()
+          if (store.feedbackType.length == 0) store.getFeedbackType()
           navigateTo({
             path: '/synco/dashboard',
           })

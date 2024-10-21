@@ -121,7 +121,7 @@ const selectStatus = async (event: Event) => {
       {{ lead.booked_by.first_name }} {{ lead.booked_by.last_name }}
     </td>
     <td @click="navigateToUser(lead.id)" style="cursor: pointer">
-      {{ lead.membership_plan.name }}
+      {{ lead?.membership_plan?.name }}
     </td>
     <td @click="navigateToUser(lead.id)" style="cursor: pointer">
       {{ lead.life_cycle_membership }}

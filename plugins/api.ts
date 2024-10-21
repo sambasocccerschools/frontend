@@ -18,6 +18,8 @@ import WeeklyClassesSalesModule from '~/repository/modules/synco/weekly-classes-
 import WeeklyClassesFreeTrialsModule from '~/repository/modules/synco/weekly-classes-free-trials'
 import WeeklyClassesCancellationModule from '~/repository/modules/synco/weekly-classes-cancellation'
 import WeeklyClassesFindAClassModule from '~/repository/modules/synco/weekly-classes-find-a-class'
+import AccountInformationModule from '~/repository/modules/synco/account-information'
+import FeedbackModule from '~/repository/modules/synco/feedback'
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
@@ -38,6 +40,8 @@ interface IApiInstance {
   wcFreeTrials: WeeklyClassesFreeTrialsModule
   wcCancellation: WeeklyClassesCancellationModule
   wcFindAClass: WeeklyClassesFindAClassModule
+  accountInformation: AccountInformationModule
+  feedback: FeedbackModule
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -75,6 +79,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     wcFreeTrials: new WeeklyClassesFreeTrialsModule(apiFetcher),
     wcCancellation: new WeeklyClassesCancellationModule(apiFetcher),
     wcFindAClass: new WeeklyClassesFindAClassModule(apiFetcher),
+    accountInformation: new AccountInformationModule(apiFetcher),
+    feedback: new FeedbackModule(apiFetcher),
   }
   return {
     provide: {

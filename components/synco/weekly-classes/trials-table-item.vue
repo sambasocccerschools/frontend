@@ -111,7 +111,7 @@ const selectStatus = async (event: Event) => {
     <td @click="navigateToUser(lead.id)">{{ lead.venue.name }}</td>
     <td @click="navigateToUser(lead.id)">{{ cleanDate(lead.created_at) }}</td>
     <td @click="navigateToUser(lead.id)">{{ cleanDate(lead.trial_date) }}</td>
-    <td @click="navigateToUser(lead.id)">{{ lead.booked_by }}</td>
+    <td>{{ lead.booked_by?.first_name }}</td>
     <td @click="navigateToUser(lead.id)">{{ lead.attempt }}</td>
     <td>
       <select

@@ -19,6 +19,9 @@ import type {
   IGender,
   IMedicalInformation,
   IAgentObject,
+  IFeedbackStatus,
+  IFeedbackCategory,
+  IFeedbackType,
 } from '~/types/index'
 import type {
   IAvailableVenueObject,
@@ -48,6 +51,9 @@ export const generalStore = defineStore('store', {
     memberStatus: [] as IMemberStatus[],
     saleStatus: [] as ISaleStatus[],
     subscriptionPlans: [] as ISubscriptionPlan[],
+    feedbackStatus: [] as IFeedbackStatus[],
+    feedbackCategory: [] as IFeedbackCategory[],
+    feedbackType: [] as IFeedbackType[],
   }),
   getters: {},
   actions: {
@@ -270,6 +276,39 @@ export const generalStore = defineStore('store', {
         this.subscriptionPlans = response?.data
       } catch (error: any) {
         this.subscriptionPlans = []
+        console.log(error)
+        useToast().error(error?.messages ?? 'getSubscriptionPlan Error')
+      } finally {
+      }
+    },
+    async getFeedbackStatus() {
+      try {
+        const response = await useNuxtApp().$api.datasets.getFeedbackStatus()
+        this.feedbackStatus = response?.data
+      } catch (error: any) {
+        this.feedbackStatus = []
+        console.log(error)
+        useToast().error(error?.messages ?? 'getSubscriptionPlan Error')
+      } finally {
+      }
+    },
+    async getFeedbackType() {
+      try {
+        const response = await useNuxtApp().$api.datasets.getFeedbackType()
+        this.feedbackType = response?.data
+      } catch (error: any) {
+        this.feedbackType = []
+        console.log(error)
+        useToast().error(error?.messages ?? 'getSubscriptionPlan Error')
+      } finally {
+      }
+    },
+    async getFeedbackCategory() {
+      try {
+        const response = await useNuxtApp().$api.datasets.getFeedbackCategory()
+        this.feedbackCategory = response?.data
+      } catch (error: any) {
+        this.feedbackCategory = []
         console.log(error)
         useToast().error(error?.messages ?? 'getSubscriptionPlan Error')
       } finally {

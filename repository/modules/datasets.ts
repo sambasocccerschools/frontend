@@ -34,6 +34,10 @@ import type {
   IMemberCancelTypeResponse,
   IReferralSourceFilterResponse,
   ISaleStatusResponse,
+  IDatasetEnrolledWeeklyClassesResponse,
+  IFeedbackTypeResponse,
+  IFeedbackCategoryResponse,
+  IFeedbackStatusResponse,
 } from '~/types'
 import type {
   ISeasonResponse,
@@ -497,6 +501,48 @@ class DatasetsModule extends FetchFactory {
       `${this.RESOURCE}/waitingListStatus`,
       undefined,
       undefined,
+    )
+  }
+
+  async getFeedbackStatus() {
+    return this.call<IFeedbackStatusResponse>(
+      'GET',
+      `${this.RESOURCE}/feedbackStatus`,
+      undefined,
+      undefined,
+    )
+  }
+
+  async getFeedbackCategory() {
+    return this.call<IFeedbackCategoryResponse>(
+      'GET',
+      `${this.RESOURCE}/feedbackCategory`,
+      undefined,
+      undefined,
+    )
+  }
+
+  async getFeedbackType() {
+    return this.call<IFeedbackTypeResponse>(
+      'GET',
+      `${this.RESOURCE}/feedbackType`,
+      undefined,
+      undefined,
+    )
+  }
+
+  async getEnrolledWeeklyClass(familyId: number, withCapacity: boolean) {
+    const fetchOptions: FetchOptions<'json'> = {
+      params: {
+        family_id: familyId,
+        with_capacity: withCapacity,
+      },
+    }
+    return this.call<IDatasetEnrolledWeeklyClassesResponse>(
+      'GET',
+      `${this.RESOURCE}/enrolledWeeklyClass`,
+      undefined,
+      fetchOptions,
     )
   }
 }
