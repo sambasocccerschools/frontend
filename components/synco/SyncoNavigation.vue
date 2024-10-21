@@ -178,7 +178,7 @@ const showConfigurationPathway = ref<boolean>(false)
             Leads Database
           </NuxtLink>
         </li>
-        <li v-if="false">
+        <li>
           <NuxtLink
             to="/synco/weekly-classes/capacity"
             class="btn-nav-link"

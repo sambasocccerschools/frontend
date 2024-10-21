@@ -1,58 +1,36 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import type {
+  IAccountRefereeItem,
+  IRefereeReportingItem,
+  IAccountRewardHistoryItem,
+  IAccountLoyaltyPointsHistoryItem,
+} from '~/types/synco/index'
+const props = defineProps<{
+  referralsList: IAccountRefereeItem[]
+  reporting: IRefereeReportingItem
+  loyaltyPointsRewards: IAccountRewardHistoryItem[]
+  loyaltyPointsHistory: IAccountLoyaltyPointsHistoryItem[]
+  currentPoitns: number
+}>()
+
 let selectedAction = ref<string>('Your referrals')
 
-let referralPending = {
-  Date: '01/06/2023',
-  Name: 'Steve Jones',
-  Email: 'tom.jones@gmail.com',
-  Phone: '123456789',
-  Status: 'Pending',
+let referralsList = ref<IAccountRefereeItem[]>(props.referralsList).value
+let reporting = ref<IRefereeReportingItem>(props.reporting).value
+let loyaltyPointsRewards = ref<IAccountRewardHistoryItem[]>(
+  props.loyaltyPointsRewards,
+).value
+let loyaltyPointsHistory = ref<IAccountLoyaltyPointsHistoryItem[]>(
+  props.loyaltyPointsHistory,
+).value
+let currentPoitns = ref<number>(props.currentPoitns).value
+
+const cleanDate = (date: any) => {
+  if (!Number.isInteger(date)) return date
+  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+  return cleanedDate
 }
-
-let referralSuccess = {
-  Date: '01/06/2023',
-  Name: 'Steve Jones',
-  Email: 'tom.jones@gmail.com',
-  Phone: '123456789',
-  Status: 'Success',
-}
-
-let referralsList = [
-  referralPending,
-  referralPending,
-  referralPending,
-  referralPending,
-  referralPending,
-  referralPending,
-  referralSuccess,
-]
-
-let collectPoints = [
-  {
-    title: 'Reserve your Membership every month',
-    points: '100 Points',
-  },
-  {
-    title: 'Book Holiday Camps',
-    points: '100 Points',
-  },
-  {
-    title: 'Book a Birthday Party',
-    points: '100 Points',
-  },
-  {
-    title: 'Book Weekply Classes',
-    points: '100 Points',
-  },
-  {
-    title: 'Book One-To-One Training',
-    points: '100 Points',
-  },
-  {
-    title: 'Reserve your Membership every month',
-    points: '100 Points',
-  },
-]
 </script>
 <template>
   <div class="my-4">
@@ -104,21 +82,23 @@ let collectPoints = [
             </div>
             <div class="card-body rounded-4 p-3">
               <div class="row my-3" v-for="referral in referralsList">
-                <div class="col-2">{{ referral.Date }}</div>
-                <div class="col-3">{{ referral.Name }}</div>
-                <div class="col-3">{{ referral.Email }}</div>
-                <div class="col-2">{{ referral.Phone }}</div>
+                <div class="col-2">{{ cleanDate(referral.created_at) }}</div>
+                <div class="col-3">
+                  {{ referral.first_name }} {{ referral.last_name }}
+                </div>
+                <div class="col-3">{{ referral.email }}</div>
+                <div class="col-2">{{ referral.phone_number }}</div>
                 <div class="col-2">
                   <span
                     class="badge"
                     :class="
-                      referral.Status == 'Pending'
+                      referral.guardianRefereeStatus.title == 'Pending'
                         ? 'badge-warning'
-                        : referral.Status == 'Success'
+                        : referral.guardianRefereeStatus.title == 'Success'
                           ? 'badge-success'
                           : ''
                     "
-                    >{{ referral.Status }}</span
+                    >{{ referral.guardianRefereeStatus.title }}</span
                   >
                 </div>
               </div>
@@ -129,10 +109,10 @@ let collectPoints = [
       <div class="col-2">
         <div class="your-referrals rounded-4 p-3">
           <div class="card rounded-4 border-0 p-4">
-            <h2 class="text-success">1</h2>
+            <h2 class="text-success">{{ reporting.success_count }}</h2>
             <h5>Successful referrals</h5>
             <hr class="border-yellow" />
-            <h2 class="text-success">1</h2>
+            <h2 class="text-success">{{ reporting.total_free_months }}</h2>
             <h5>Free months</h5>
           </div>
         </div>
@@ -144,7 +124,9 @@ let collectPoints = [
       <!-- Current Points -->
       <div class="d-flex flex-column w-50 p-4">
         <div class="bg-primary text-light rounded-4 w-100 p-4">
-          <h3><strong>5,000</strong></h3>
+          <h3>
+            <strong>{{ currentPoitns }}</strong>
+          </h3>
           <span>Current Points</span>
         </div>
         <h4 class="mt-4"><strong>Collected Points History</strong></h4>
@@ -158,15 +140,15 @@ let collectPoints = [
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Refer a friend</td>
-                <td>01/ 06/2023</td>
+              <tr v-for="history in loyaltyPointsHistory">
+                <td>{{ history.loyaltyPoint.title }}</td>
+                <td>{{ cleanDate(history.created_at) }}</td>
                 <td>
                   <span
                     class="badge badge-warning d-flex align-items-center rounded-4 flex-row"
                   >
                     <img src="@/src/assets/img-star.png" width="25px" />
-                    <span class="ms-2">100 Points</span>
+                    <span class="ms-2">{{ history.earned_points }} Points</span>
                   </span>
                 </td>
               </tr>
@@ -177,7 +159,9 @@ let collectPoints = [
       <!-- Rewards Collected -->
       <div class="d-flex flex-column w-50 p-4">
         <div class="bg-warning rounded-4 w-100 p-4">
-          <h3><strong>39</strong></h3>
+          <h3>
+            <strong>{{ loyaltyPointsRewards.length }}</strong>
+          </h3>
           <span>Rewards Collected</span>
         </div>
         <h4 class="mt-4"><strong>Collected Rewards History</strong></h4>
@@ -191,15 +175,17 @@ let collectPoints = [
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Free SSS Skill Ball</td>
-                <td>01/ 06/2023</td>
+              <tr v-for="reward in loyaltyPointsRewards">
+                <td>{{ reward.reward.title }}</td>
+                <td>{{ cleanDate(reward.created_at) }}</td>
                 <td>
                   <span
                     class="badge badge-warning d-flex align-items-center rounded-4 flex-row"
                   >
                     <img src="@/src/assets/img-star.png" width="25px" />
-                    <span class="ms-2">100 Points</span>
+                    <span class="ms-2"
+                      >{{ reward.redeemed_points }} Points</span
+                    >
                   </span>
                 </td>
               </tr>

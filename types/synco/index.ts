@@ -926,3 +926,510 @@ export type ISubscriptionPlan = {
 export type ISubscriptionPlanResponse = {
   data: ISubscriptionPlan[]
 }
+
+export type IFeedbackItem = {
+  id: number
+  weeklyClass: {
+    id: number
+    venue: {
+      id: string
+      area: string
+      name: string
+      lat: number
+      lng: number
+      distance: string
+      address: string
+      has_parking: boolean
+      has_congestion: boolean
+      parking_note: string
+      facility_enter_guide: string
+      price: number | null
+      created_at: any | null
+      deleted_at: any | null
+    }
+    name: string
+    capacity: number
+    free_trial_capacity: null
+    member_capacity: null
+    remaining_capacity: null
+    days: string
+    start_time: string
+    end_time: string
+    is_autumn_indoor: boolean
+    is_spring_indoor: boolean
+    is_summer_indoor: boolean
+    indoor_outdoor_options: string
+    is_free_trail_dates: boolean
+    created_at: any | null
+    deleted_at: any | null
+  }
+  feedbackType: {
+    id: number
+    name: string
+    created_at: any | null
+    deleted_at: any | null
+  }
+  feedbackStatus: {
+    id: number
+    name: string
+    created_at: any | null
+    deleted_at: any | null
+  }
+  feedbackCategory: {
+    id: number
+    name: string
+    created_at: any | null
+    deleted_at: any | null
+  }
+  agent: {
+    id: string
+    first_name: string
+    last_name: string
+    position: string
+    bio: string
+    phone_number: string
+    email: string
+    postal_code: string
+    last_active_at: string
+    avatar_image: string
+    created_at: any | null
+    deleted_at: any | null
+  } | null
+  other_feedback_category: string | null
+  additional_notes: string
+  created_at: any | null
+  deleted_at: any | null
+}
+
+export type IAccountRefereeItem = {
+  id: number
+  guardianRefereeStatus: {
+    id: number
+    title: string
+    created_at: any | null
+    deleted_at: any | null
+  }
+  first_name: string
+  last_name: string
+  phone_number: string
+  email: string
+  created_at: any | null
+}
+
+export type IRefereeReportingItem = {
+  success_count: number
+  total_free_months: number
+}
+
+export type IAccountRewardHistoryItem = {
+  id: number
+  reward: {
+    id: number
+    title: string
+    points: number
+    stock_quantity: number
+    addedBy: {
+      id: string
+      first_name: string
+      last_name: string
+      position: string
+      bio: string
+      phone_number: string
+      email: string
+      postal_code: string
+      last_active_at: string
+      avatar_image: {
+        name: string
+        url: string
+      }
+      created_at: any | null
+      deleted_at: any | null
+    }
+    created_at: any | null
+    deleted_at: any | null
+  }
+  redeemed_points: number
+  created_at: any | null
+}
+
+export type IAccountLoyaltyPointsHistoryItem = {
+  id: number
+  loyaltyPoint: {
+    id: number
+    title: string
+    points: number
+    addedBy: {
+      id: string
+      first_name: string
+      last_name: string
+      position: string
+      bio: string
+      phone_number: string
+      email: string
+      postal_code: string
+      last_active_at: string
+      avatar_image: {
+        name: string
+        url: string
+      }
+      created_at: any | null
+      deleted_at: any | null
+    }
+    created_at: any | null
+    deleted_at: any | null
+  }
+  earned_points: number
+  created_at: any | null
+}
+
+export type IAccountEventsItem = {
+  id: number
+  eventType: {
+    id: number
+    title: string
+    created_at: any | null
+    deleted_at: any | null
+  }
+  performedBy: {
+    id: string
+    name: string
+    avatar_image: string
+  }
+  description: string
+  created_at: any | null
+}
+
+export type IAccountWeeklyClassesServiceHistory = {
+  id: number
+  venue: {
+    id: string
+    area: string
+    name: string
+    lat: number
+    lng: number
+    distance: string
+    address: string
+    has_parking: false
+    has_congestion: true
+    parking_note: string
+    facility_enter_guide: string
+    price: number | null
+    created_at: any | null
+    deleted_at: any | null
+  }
+  weeklyClass: {
+    id: number
+    venue: {
+      id: string
+      area: string
+      name: string
+      lat: number
+      lng: number
+      distance: string
+      address: string
+      has_parking: boolean
+      has_congestion: boolean
+      parking_note: string
+      facility_enter_guide: string
+      price: number | null
+      created_at: any | null
+      deleted_at: any | null
+    }
+    name: string
+    capacity: number
+    free_trial_capacity: number | null
+    member_capacity: number | null
+    remaining_capacity: number | null
+    days: string
+    start_time: string
+    end_time: string
+    is_autumn_indoor: boolean
+    is_spring_indoor: boolean
+    is_summer_indoor: boolean
+    indoor_outdoor_options: string
+    is_free_trail_dates: boolean
+    created_at: any | null
+    deleted_at: any | null
+  }
+  status: {
+    id: number
+    title: string
+    created_at: any | null
+    deleted_at: any | null
+  }
+  student: {
+    id: string
+    first_name: string
+    last_name: string
+    dob: string
+    age: number
+    medical_information: string
+    created_at: any | null
+    deleted_at: any | null
+  }
+  agent: {
+    id: string
+    first_name: string
+    last_name: string
+    position: string
+    bio: string
+    phone_number: string
+    email: string
+    postal_code: string
+    last_active_at: string
+    avatar_image: string
+    created_at: any | null
+    deleted_at: any | null
+  } | null
+  membership_plan: {
+    id: number
+    name: string
+    plan: {
+      id: number
+      name: string
+      created_at: any | null
+      deleted_at: any | null
+    }
+    monthly_subscription_fee: string
+    price_per_class_per_child: string
+    one_off_joining_fee: string
+    created_at: any | null
+    deleted_at: any | null
+  }
+  booked_by: {
+    id: string
+    first_name: string
+    last_name: string
+    position: string
+    bio: string
+    phone_number: string
+    email: string
+    postal_code: string
+    last_active_at: string
+    avatar_image: {
+      name: string
+      url: string
+    }
+    created_at: any | null
+    deleted_at: any | null
+  }
+  start_date: any | null
+  created_at: any | null
+  deleted_at: any | null
+}
+
+export type IAccountHolidayCampServiceHistory = {
+  id: number
+  venue: {
+    id: string
+    area: string
+    name: string
+    lat: number
+    lng: number
+    distance: string
+    address: string
+    has_parking: false
+    has_congestion: true
+    parking_note: string
+    facility_enter_guide: string
+    price: number | null
+    created_at: any | null
+    deleted_at: any | null
+  }
+  holidayCamp: {
+    id: number
+    venue: {
+      id: string
+      area: string
+      name: string
+      lat: number
+      lng: number
+      distance: string
+      address: string
+      has_parking: boolean
+      has_congestion: boolean
+      parking_note: string
+      facility_enter_guide: string
+      price: number | null
+      created_at: any | null
+      deleted_at: any | null
+    }
+    name: string
+    capacity: number
+    free_trial_capacity: number | null
+    member_capacity: number | null
+    remaining_capacity: number | null
+    days: string
+    start_time: string
+    end_time: string
+    is_autumn_indoor: boolean
+    is_spring_indoor: boolean
+    is_summer_indoor: boolean
+    indoor_outdoor_options: string
+    is_free_trail_dates: boolean
+    created_at: any | null
+    deleted_at: any | null
+  }
+  status: {
+    id: number
+    title: string
+    created_at: any | null
+    deleted_at: any | null
+  }
+  student: {
+    id: string
+    first_name: string
+    last_name: string
+    dob: string
+    age: number
+    medical_information: string
+    created_at: any | null
+    deleted_at: any | null
+  }
+  agent: {
+    id: string
+    first_name: string
+    last_name: string
+    position: string
+    bio: string
+    phone_number: string
+    email: string
+    postal_code: string
+    last_active_at: string
+    avatar_image: string
+    created_at: any | null
+    deleted_at: any | null
+  } | null
+  membership_plan: {
+    id: number
+    name: string
+    plan: {
+      id: number
+      name: string
+      created_at: any | null
+      deleted_at: any | null
+    }
+    monthly_subscription_fee: string
+    price_per_class_per_child: string
+    one_off_joining_fee: string
+    created_at: any | null
+    deleted_at: any | null
+  }
+  booked_by: {
+    id: string
+    first_name: string
+    last_name: string
+    position: string
+    bio: string
+    phone_number: string
+    email: string
+    postal_code: string
+    last_active_at: string
+    avatar_image: {
+      name: string
+      url: string
+    }
+    created_at: any | null
+    deleted_at: any | null
+  }
+  start_date: any | null
+  created_at: any | null
+  deleted_at: any | null
+}
+
+export type IAccountServiceHistory = {
+  'weekly-classes': IAccountWeeklyClassesServiceHistory[]
+  'holiday-camps': IAccountHolidayCampServiceHistory[]
+}
+
+export type IAccountInformationObject = {
+  id: number
+  loyalty_points: number
+  guardians: {
+    id: string
+    first_name: string
+    last_name: string
+    email: string
+    phone_number: string
+    relationship: {
+      id: number
+      title: string
+      created_at: any | null
+      deleted_at: any | null
+    }
+    referral_source: {
+      id: number
+      title: string
+      created_at: any | null
+      deleted_at: any | null
+    }
+    status: string
+    created_at: any | null
+    deleted_at: any | null
+  }[]
+  students: {
+    id: string
+    first_name: string
+    last_name: string
+    dob: string
+    age: number
+    gender: {
+      id: number
+      title: string
+      created_at: any | null
+      deleted_at: any | null
+    }
+    medical_information: string
+    created_at: any | null
+    deleted_at: any | null
+  }[]
+  emergencyContacts: {
+    id: number
+    first_name: string
+    last_name: string
+    phone_number: string
+    relationship: {
+      id: number
+      title: string
+      created_at: any | null
+      deleted_at: any | null
+    }
+    created_at: any | null
+    deleted_at: any | null
+  }[]
+  comments: {
+    id: number
+    message: string
+    user: {
+      id: string
+      first_name: string
+      last_name: string
+      avatar_image: {
+        name: string
+        url: string
+      }
+    }
+    created_at: any | null
+    deleted_at: any | null
+  }[]
+  service_history: IAccountServiceHistory
+  feedbacks: IFeedbackItem[]
+  referee_reporting: IRefereeReportingItem
+  referees: IAccountRefereeItem[]
+  rewardHistories: IAccountRewardHistoryItem[]
+  loyaltyPointHistories: IAccountLoyaltyPointsHistoryItem[]
+  events: IAccountEventsItem[]
+}
+
+export type IAccountInformationResponse = {
+  data: IAccountInformationObject
+}
+
+export type ICreateFeedbackItem = {
+  family_id: number
+  weekly_class_id: number
+  feedback_type_id: number
+  feedback_category_id: number
+  additional_notes: string
+  agent_id: string
+}

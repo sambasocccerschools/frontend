@@ -683,3 +683,53 @@ export type ISaleStatus = IBaseDatasetItem & {
   title: string
 }
 export type ISaleStatusResponse = IBaseResponse<ISaleStatus> & {}
+
+export type IFeedbackStatus = IBaseDatasetItem & {
+  name: string
+}
+export type IFeedbackStatusResponse = IBaseResponse<IFeedbackStatus> & {}
+
+export type IFeedbackCategory = IBaseDatasetItem & {
+  name: string
+}
+export type IFeedbackCategoryResponse = IBaseResponse<IFeedbackCategory> & {}
+
+export type IFeedbackType = IBaseDatasetItem & {
+  name: string
+}
+export type IFeedbackTypeResponse = IBaseResponse<IFeedbackType> & {}
+
+export type IDatasetEnrolledClassesItem = {
+  id: number
+  name: string
+  capacity: number
+  free_trial_capacity: number
+  member_capacity: number
+  remaining_capacity: number
+  days: string
+  start_time: string
+  end_time: string
+  autumn_term: any
+  is_autumn_indoor: boolean
+  spring_term: any
+  is_spring_indoor: boolean
+  summer_term: any
+  is_summer_indoor: boolean
+  indoor_outdoor_options: string
+  is_free_trail_dates: boolean
+  free_trial_dates: any | null
+  created_at: any | null
+  deleted_at: any | null
+}
+
+export type IDatasetEnrolledWeeklyClasses = {
+  year: number
+  classes: IDatasetEnrolledClassesItem[]
+}
+export type IDatasetEnrolledWeeklyClassesResponse =
+  IBaseResponse<IDatasetEnrolledWeeklyClasses> & {}
+
+export type IIdTitleItem = {
+  id: any
+  title: string
+}
