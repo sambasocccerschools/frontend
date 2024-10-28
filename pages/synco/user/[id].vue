@@ -111,16 +111,16 @@ let parent = ref<IGuardianCreate[]>()
 let student = ref<IStudentCreate[]>()
 let emergencyContact = ref<IEmregencyContactCreate[]>()
 let comment = ref<IEmregencyContactCreate[]>()
-let ServiceHistoryAccountCardHeaders = [
-  {
-    Status: 'Active',
-    Color: '#43BE4F',
-  },
-  {
-    Status: 'Waiting List',
-    Color: '#A4A5A6',
-  },
-]
+// let ServiceHistoryAccountCardHeaders = [
+//   {
+//     Status: 'Active',
+//     Color: '#43BE4F',
+//   },
+//   {
+//     Status: 'Waiting List',
+//     Color: '#A4A5A6',
+//   },
+// ]
 let feedbackItems = ref<IFeedbackItem[]>()
 let referralsList = ref<IAccountRefereeItem[]>([])
 let referralReporting = ref<IRefereeReportingItem>()
