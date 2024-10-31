@@ -306,6 +306,7 @@ export const generalStore = defineStore('store', {
     async getFeedbackCategory() {
       try {
         const response = await useNuxtApp().$api.datasets.getFeedbackCategory()
+        console.log(response);
         this.feedbackCategory = response?.data
       } catch (error: any) {
         this.feedbackCategory = []
