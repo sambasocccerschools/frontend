@@ -6,102 +6,36 @@
         class="card rounded-4 bg-secondary text-bg-dark d-flex align-items-center justify-content-center"
         style="min-width: 7rem"
       >
-        <strong class="h4">Acton</strong>
+        <strong class="h4">{{ capacities?.name }}</strong>
       </div>
       <!-- Classes  -->
       <div class="w-100 d-flex justify-content-center py-3">
         <!--  -->
-        <div
-          class="d-flex flex-column justify-content-between align-items-center border-end px-3"
-        >
-          <span class="h5">Class 1: 4-7 years</span>
-          <div class="d-flex">
-            <span class="indicator-square indicator-square-lg bg-light border"
-              >24</span
-            >
-            <span
-              class="indicator-square indicator-square-lg bg-primary text-light"
-              >16</span
-            >
-            <span
-              class="indicator-square indicator-square-lg bg-warning text-light"
-              >4</span
-            >
-            <span
-              class="indicator-square indicator-square-lg bg-success text-light"
-              >+4</span
-            >
+        <template v-for="classess in capacities?.weekly_classes">
+          <div
+            class="d-flex flex-column justify-content-between align-items-center border-end px-3"
+          >
+            <span class="h5">{{ classess.name }}</span>
+            <div class="d-flex">
+              <span
+                class="indicator-square indicator-square-lg bg-light border"
+                >{{ classess?.total_capacity }}</span
+              >
+              <span
+                class="indicator-square indicator-square-lg bg-primary text-light"
+                >{{ classess?.member_capacity }}</span
+              >
+              <span
+                class="indicator-square indicator-square-lg bg-warning text-light"
+                >{{ classess?.free_trial_capacity }}</span
+              >
+              <span
+                class="indicator-square indicator-square-lg bg-success text-light"
+                >{{ classess?.remaining_capacity }}</span
+              >
+            </div>
           </div>
-        </div>
-        <!--  -->
-        <div
-          class="d-flex flex-column justify-content-between align-items-center border-end px-3"
-        >
-          <span class="h5">Class 1: 4-7 years</span>
-          <div class="d-flex">
-            <span class="indicator-square indicator-square-lg bg-light border"
-              >24</span
-            >
-            <span
-              class="indicator-square indicator-square-lg bg-primary text-light"
-              >16</span
-            >
-            <span
-              class="indicator-square indicator-square-lg bg-warning text-light"
-              >4</span
-            >
-            <span
-              class="indicator-square indicator-square-lg bg-success text-light"
-              >+4</span
-            >
-          </div>
-        </div>
-        <!--  -->
-        <div
-          class="d-flex flex-column justify-content-between align-items-center border-end px-3"
-        >
-          <span class="h5">Class 1: 4-7 years</span>
-          <div class="d-flex">
-            <span class="indicator-square indicator-square-lg bg-light border"
-              >24</span
-            >
-            <span
-              class="indicator-square indicator-square-lg bg-primary text-light"
-              >16</span
-            >
-            <span
-              class="indicator-square indicator-square-lg bg-warning text-light"
-              >4</span
-            >
-            <span
-              class="indicator-square indicator-square-lg bg-danger text-light"
-              >+4</span
-            >
-          </div>
-        </div>
-        <!--  -->
-        <div
-          class="d-flex flex-column justify-content-between align-items-center px-3"
-        >
-          <span class="h5">Class 1: 4-7 years</span>
-          <div class="d-flex">
-            <span class="indicator-square indicator-square-lg bg-light border"
-              >24</span
-            >
-            <span
-              class="indicator-square indicator-square-lg bg-primary text-light"
-              >16</span
-            >
-            <span
-              class="indicator-square indicator-square-lg bg-warning text-light"
-              >4</span
-            >
-            <span
-              class="indicator-square indicator-square-lg bg-success text-light"
-              >+4</span
-            >
-          </div>
-        </div>
+        </template>
       </div>
 
       <!-- Total  -->
@@ -110,8 +44,8 @@
           <div class="d-flex flex-column">
             <span class="h4">Total</span>
             <span
-              >1654 Booked <br />
-              of 2040 Spaces</span
+              >{{ capacities?.booked_capacity }} Booked <br />
+              of {{ capacities?.total_capacity }} Spaces</span
             >
           </div>
           <div>CHART</div>
@@ -120,6 +54,21 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { IWeeklyClassesCapacities } from '~/types/synco/index'
+
+const props = defineProps<{
+  capacities: IWeeklyClassesCapacities
+}>()
+
+let capacities = ref<IWeeklyClassesCapacities>(props.capacities).value
+
+onMounted(async () => {
+  console.log('components/synco/weekly-classes/capacity-list-item.vue')
+})
+</script>
 
 <style lang="scss" scoped>
 .indicator-square-lg {

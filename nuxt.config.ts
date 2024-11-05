@@ -16,6 +16,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
+      // apiBaseUrl: 'https://localhost:44392',
       apiBaseUrl: 'https://api.synco.staging.sambasoccerschools.co.uk',
     },
   },
