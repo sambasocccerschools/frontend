@@ -5,29 +5,29 @@
         <div class="row row-cols-sm-4">
           <SyncoDashboardMetricsItem
             name="Total Sales"
-            :value="reporting?.total_students.amount"
-            :change="reporting?.total_students.percentage"
+            :value="reporting?.total_students?.amount"
+            :change="reporting?.total_students?.percentage"
             :removePercentage="true"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Monthly Revenue"
-            :value="reporting?.monthly_revenue.amount"
-            :change="reporting?.monthly_revenue.percentage"
+            :value="reporting?.monthly_revenue?.amount"
+            :change="reporting?.monthly_revenue?.percentage"
             :removePercentage="true"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Av. Monthly Fee"
-            :value="reporting?.average_monthly_fee.amount"
-            :change="reporting?.average_monthly_fee.percentage"
+            :value="reporting?.average_monthly_fee?.amount"
+            :change="reporting?.average_monthly_fee?.percentage"
             :removePercentage="true"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Top Sales Agent"
-            :value="reporting?.top_performer.name"
-            :change="reporting?.top_performer.count"
+            :value="reporting?.top_performer?.name"
+            :change="reporting?.top_performer?.count"
             :removePercentage="true"
             icon="ph:users-three"
           />
@@ -112,7 +112,7 @@ const getLeads = async (source: number | null = null, limit: number = 25) => {
   } catch (error: any) {
     leads.value = []
     console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
+    toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }
@@ -123,9 +123,9 @@ const getReporting = async () => {
     const response = await $api.wcSales.getReporting()
     reporting.value = response?.data
   } catch (error: any) {
-    leads.value = []
+    reporting.value = null
     console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
+    toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }
@@ -145,7 +145,7 @@ const exportExcel = async () => {
     store.downloadExcelFile(excel.data.url, excel.data.name)
   } catch (error: any) {
     console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
+    toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }
@@ -172,7 +172,7 @@ const sendText = async () => {
     toast.success(response?.message ?? 'Error')
   } catch (error: any) {
     console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
+    toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }
@@ -197,7 +197,7 @@ const sendEmail = async () => {
     toast.success(response?.message ?? 'Error')
   } catch (error: any) {
     console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
+    toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }
@@ -224,7 +224,7 @@ const applyFilter = async (data: IWeeklyClassesSalesFilterObject) => {
   } catch (error: any) {
     leads.value = []
     console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
+    toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }

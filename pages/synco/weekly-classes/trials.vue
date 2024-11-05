@@ -5,22 +5,22 @@
         <div class="row row-cols-sm-4">
           <SyncoDashboardMetricsItem
             name="Total Free Trials"
-            :value="reporting?.total_free_trials.amount"
-            :change="reporting?.total_free_trials.percentage"
+            :value="reporting?.total_free_trials?.amount"
+            :change="reporting?.total_free_trials?.percentage"
             :removePercentage="true"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Top Performer"
-            :value="reporting?.top_performer.name"
-            :change="reporting?.top_performer.count"
+            :value="reporting?.top_performer?.name"
+            :change="reporting?.top_performer?.count"
             :removePercentage="true"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Free Trials to Member"
-            :value="reporting?.trials_to_member.amount"
-            :change="reporting?.trials_to_member.percentage"
+            :value="reporting?.trials_to_member?.amount"
+            :change="reporting?.trials_to_member?.percentage"
             :removePercentage="true"
             icon="ph:users-three"
           />
@@ -117,7 +117,7 @@ const getLeads = async (source: number | null = null, limit: number = 25) => {
   } catch (error: any) {
     leads.value = []
     console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
+    toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }
@@ -128,9 +128,9 @@ const getReporting = async () => {
     const response = await $api.wcFreeTrials.getReporting()
     reporting.value = response?.data
   } catch (error: any) {
-    leads.value = []
+    reporting.value = null
     console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
+    toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }
@@ -150,7 +150,7 @@ const exportExcel = async () => {
     store.downloadExcelFile(excel.data.url, excel.data.name)
   } catch (error: any) {
     console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
+    toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }
@@ -177,7 +177,7 @@ const sendText = async () => {
     toast.success(response?.message ?? 'Error')
   } catch (error: any) {
     console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
+    toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }
@@ -202,7 +202,7 @@ const sendEmail = async () => {
     toast.success(response?.message ?? 'Error')
   } catch (error: any) {
     console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
+    toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }
@@ -229,7 +229,7 @@ const applyFilter = async (data: IWeeklyClassesFreeTrialsFilterObject) => {
   } catch (error: any) {
     leads.value = []
     console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
+    toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }

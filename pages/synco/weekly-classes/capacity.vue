@@ -3,17 +3,18 @@
     <div class="row mb-4">
       <div class="col-sm-4 d-flex flex-column justify-content-between">
         <h4>Weekly Classes</h4>
-        <div class="d-flex">
+        <!-- <div class="d-flex">
           <SyncoFiltersSelectVenuesDropdown />
           <span class="ms-4">
             <SyncoFiltersFilterVenuesDropdown />
           </span>
-        </div>
+        </div> -->
       </div>
       <div class="col d-flex justify-content-end">
         <div class="d-flex flex-column align-items-end me-3">
           <button
             class="btn btn-primary text-light rounded-3 d-flex align-items-center"
+            @click="exportExcel"
           >
             <Icon name="ph:download-simple-bold" class="me-2" />Export data
           </button>
@@ -38,7 +39,10 @@
           <div class="card-body d-flex p-4">
             <div class="d-flex flex-column">
               <span class="h4">Total</span>
-              <span>1654 Booked of 2040 Spaces</span>
+              <span
+                >{{ reporting?.booked_capacity }} Booked of
+                {{ reporting?.total_capacity }} Spaces</span
+              >
             </div>
             <div>CHART</div>
           </div>
@@ -46,16 +50,79 @@
       </div>
     </div>
 
-    <SyncoWeeklyClassesCapacityListItem />
-    <SyncoWeeklyClassesCapacityListItem />
-    <SyncoWeeklyClassesCapacityListItem />
-    <SyncoWeeklyClassesCapacityListItem />
-    <SyncoWeeklyClassesCapacityListItem />
-    <SyncoWeeklyClassesCapacityListItem />
-    <SyncoWeeklyClassesCapacityListItem />
-    <SyncoWeeklyClassesCapacityListItem />
+    <template v-for="wc in capacities">
+      <SyncoWeeklyClassesCapacityListItem :capacities="wc" />
+    </template>
   </NuxtLayout>
 </template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useToast } from 'vue-toast-notification'
+import type {
+  IWeeklyClassesCapacities,
+  IWeeklyClassesCapacitiesReporting,
+} from '~/types/synco/index'
+import { generalStore } from '~/stores'
+
+const updateKey = ref<number>(0)
+const blockButtons = ref(false)
+// const panel = ref(false)
+// const panelType = ref<string>('')
+const store = generalStore()
+
+const { $api } = useNuxtApp()
+const toast = useToast()
+const capacities = ref<IWeeklyClassesCapacities[]>([])
+const reporting = ref<IWeeklyClassesCapacitiesReporting | null>(null)
+
+const getCapacities = async () => {
+  try {
+    blockButtons.value = true
+    const response = await $api.wcCapacities.getAll()
+    capacities.value = response?.data
+  } catch (error: any) {
+    capacities.value = []
+    console.log(error)
+    toast.error(error?.message ?? 'Error')
+  } finally {
+    blockButtons.value = false
+  }
+}
+const getReporting = async () => {
+  try {
+    blockButtons.value = true
+    const response = await $api.wcCapacities.getReporting()
+    reporting.value = response?.data
+  } catch (error: any) {
+    reporting.value = null
+    console.log(error)
+    toast.error(error?.message ?? 'Error')
+  } finally {
+    blockButtons.value = false
+  }
+}
+
+onMounted(async () => {
+  console.log('pages/synco/weekly-classes/capacity.vue')
+  await getCapacities()
+  await getReporting()
+})
+
+const exportExcel = async () => {
+  if (blockButtons.value) return
+  try {
+    blockButtons.value = true
+    let excel = await $api.wcWaitingList.exportExcel()
+    store.downloadExcelFile(excel.data.url, excel.data.name)
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.message ?? 'Error')
+  } finally {
+    blockButtons.value = false
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .indicator-square {

@@ -12,7 +12,7 @@ import type {
   IWeeklyClassesWaitingListFilterObject,
 } from '~/types/synco'
 
-class WeeklyClassesSalesModule extends FetchFactory {
+class WeeklyClassesWaitingListModule extends FetchFactory {
   private RESOURCE = '/v1/weeklyClassesWaitingLists'
 
   async getAll(limit: number = 25) {
@@ -159,4 +159,4 @@ class WeeklyClassesSalesModule extends FetchFactory {
   }
 }
 
-export default WeeklyClassesSalesModule
+export default WeeklyClassesWaitingListModule

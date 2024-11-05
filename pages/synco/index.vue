@@ -138,9 +138,10 @@ const login = async () => {
           if (store.feedbackStatus.length == 0) store.getFeedbackStatus()
           if (store.feedbackCategory.length == 0) store.getFeedbackCategory()
           if (store.feedbackType.length == 0) store.getFeedbackType()
-          navigateTo({
-            path: '/synco/dashboard',
-          })
+          window.location.href = '/synco/dashboard'
+          // navigateTo({
+          //   path: '/synco/dashboard',
+          // })
         }, 200)
       })
 
@@ -149,7 +150,7 @@ const login = async () => {
     //   path: '/synco/dashboard',
     // })
   } catch (error: any) {
-    toast.error(error?.data?.messages)
+    toast.error(error?.message)
   } finally {
     isLogging.value = false
   }

@@ -20,6 +20,7 @@ import WeeklyClassesCancellationModule from '~/repository/modules/synco/weekly-c
 import WeeklyClassesFindAClassModule from '~/repository/modules/synco/weekly-classes-find-a-class'
 import AccountInformationModule from '~/repository/modules/synco/account-information'
 import FeedbackModule from '~/repository/modules/synco/feedback'
+import WeeklyClassesCapacitiesModule from '~/repository/modules/synco/weekly-classes-capacities'
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
@@ -42,6 +43,7 @@ interface IApiInstance {
   wcFindAClass: WeeklyClassesFindAClassModule
   accountInformation: AccountInformationModule
   feedback: FeedbackModule
+  wcCapacities: WeeklyClassesCapacitiesModule
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -81,6 +83,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     wcFindAClass: new WeeklyClassesFindAClassModule(apiFetcher),
     accountInformation: new AccountInformationModule(apiFetcher),
     feedback: new FeedbackModule(apiFetcher),
+    wcCapacities: new WeeklyClassesCapacitiesModule(apiFetcher),
   }
   return {
     provide: {

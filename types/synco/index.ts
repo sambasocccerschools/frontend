@@ -1433,3 +1433,39 @@ export type ICreateFeedbackItem = {
   additional_notes: string
   agent_id: string
 }
+
+export type IWeeklyClassesCapacitiesClasses = {
+  id: number
+  name: string
+  total_capacity: number
+  free_trial_capacity: number
+  member_capacity: number
+  remaining_capacity: number
+}
+
+export type IWeeklyClassesCapacities = {
+  id: string
+  name: string
+  weekly_classes: IWeeklyClassesCapacitiesClasses[]
+  total_capacity: number
+  booked_capacity: number
+  remaining_capacity: number
+  percentage_booked: string
+  created_at: any | null
+  deleted_at: any | null
+}
+
+export type IWeeklyClassesCapacitiesResponse = {
+  data: IWeeklyClassesCapacities[]
+}
+
+export type IWeeklyClassesCapacitiesReporting = {
+  total_capacity: number
+  booked_capacity: number
+  remaining_capacity: number
+  percentage_booked: string
+}
+
+export type IWeeklyClassesCapacitiesReportingResponse = {
+  data: IWeeklyClassesCapacitiesReporting
+}
