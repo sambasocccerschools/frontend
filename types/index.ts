@@ -1,3 +1,15 @@
+export type IStatusResponse = {
+  id: number
+  message: string
+  http_code: number
+}
+
+export type IDataLoginResponse = {
+  access_token: string
+  refresh_token: string
+  screen_access: []
+}
+
 export type ILoginInput = {
   email: string
   password: string
@@ -5,12 +17,15 @@ export type ILoginInput = {
 }
 
 export type ILoginResponse = {
-  access_token: string
-  expires_in: number
+  status: IStatusResponse
+  data: IDataLoginResponse
+  info: string
 }
 
 export type ILogoutResponse = {
-  message: string
+  status: IStatusResponse
+  data: any
+  info: string
 }
 // Weekly classes
 
@@ -214,7 +229,9 @@ export type ICreateUserResponse = {
 }
 
 export type GenericResponse<T> = {
+  status: IStatusResponse
   data: T
+  info: string
 }
 
 export type IGetUserResponse = GenericResponse<IUser>

@@ -50,7 +50,7 @@
                     >Remember me</label
                   >
                 </div>
-                <NuxtLink to="/synco/forgot-password" class="text-muted"
+                <NuxtLink to="/synco/reset-password" class="text-muted"
                   >Forgot Password</NuxtLink
                 >
               </div>
@@ -99,6 +99,11 @@ const login = async () => {
   try {
     isLogging.value = true
 
+    if (!email.value || !password.value) {
+      toast.error('Email and password are required.')
+      return
+    }
+
     const credentials: ILoginInput = {
       email: email.value,
       password: password.value,
@@ -106,51 +111,25 @@ const login = async () => {
     }
     const loginResponse = await $api.auth.login(credentials)
 
-    token.value = loginResponse.access_token
-    // store.updateAuthenticated(true)
+    token.value = loginResponse.data.access_token
 
-    await $api.profile
-      .getProfile(loginResponse.access_token)
-      .then(async (response) => {
-        console.log('response', response)
-        store.setUser(response?.data)
-        store.updateAuthenticated(true)
-        setTimeout(() => {
-          if (store.regions.length == 0) store.getRegions()
-          if (store.availableVenues.length == 0)
-            store.getAvailableVenues('weekly-classes')
-          if (store.abilityGroups.length == 0)
-            store.getAbilityGroups('weekly-classes')
-          if (store.seasons.length == 0) store.getSeasons()
-          if (store.relationships.length == 0) store.getRelationships()
-          if (store.referralSources.length == 0) store.getReferralSource()
-          if (store.leadStatus.length == 0) store.getLeadStatus()
-          if (store.gender.length == 0) store.getGender()
-          // if (store.medicalInformation.length == 0) store.getMedicalInformation()
-          if (store.agents.length == 0) store.getAgents()
-          if (store.freeTrialStatus.length == 0) store.getFreeTrialStatus()
-          if (store.memberCancelStatus.length == 0)
-            store.getMemberCancelStatus()
-          if (store.memberCancelType.length == 0) store.getMemberCancelType()
-          if (store.memberStatus.length == 0) store.getMemberStatus()
-          // if (store.saleStatus.length == 0) store.getSaleStatus()
-          if (store.subscriptionPlans.length == 0) store.getSubscriptionPlan()
-          if (store.feedbackStatus.length == 0) store.getFeedbackStatus()
-          if (store.feedbackCategory.length == 0) store.getFeedbackCategory()
-          if (store.feedbackType.length == 0) store.getFeedbackType()
-          window.location.href = '/synco/dashboard'
-          // navigateTo({
-          //   path: '/synco/dashboard',
-          // })
-        }, 200)
-      })
+    if (!token.value) {
+      throw new Error('No token provided')
+    }
 
-    // window.location.href = '/synco/dashboard'
-    // await navigateTo({
-    //   path: '/synco/dashboard',
-    // })
+    const profileResponse = await $api.profile.getProfile(token.value)
+
+    store.setUser(profileResponse?.data || {})
+    store.updateAuthenticated(true)
+
+    // Call fetchAllData to fetch all miscellaneous data
+    await store.fetchAllData()
+
+    await navigateTo({ path: '/synco/dashboard' })
   } catch (error: any) {
-    toast.error(error?.message)
+    toast.error(
+      error?.message || 'Something went wrong. Please try again later.',
+    )
   } finally {
     isLogging.value = false
   }

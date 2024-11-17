@@ -9,7 +9,7 @@ import type {
 } from '~/types'
 
 class AuthModule extends FetchFactory {
-  private RESOURCE = '/v1/auth'
+  private RESOURCE = '/auth'
 
   async login(credentials: ILoginInput) {
     return this.call<ILoginResponse>(
@@ -20,8 +20,13 @@ class AuthModule extends FetchFactory {
   }
 
   async logout(asyncDataOptions?: AsyncDataOptions<ILogoutResponse>) {
+    const token = useCookie('token')
     return useAsyncData(() => {
-      const fetchOptions: FetchOptions<'json'> = {}
+      const fetchOptions: FetchOptions<'json'> = {
+        headers: {
+          Authorization: `${token.value}`,
+        },
+      }
       return this.call<ILogoutResponse>(
         'POST',
         `${this.RESOURCE}/logout`,
