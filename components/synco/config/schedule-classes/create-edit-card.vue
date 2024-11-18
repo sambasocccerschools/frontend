@@ -89,7 +89,9 @@ const save = async () => {
 onMounted(async () => {
   console.log('components/synco/config/schedule-classes/create-edit-card.vue')
   await getTerms()
-  if (store.seasons.length == 0) await store.getSeasons()
+  if (!store.seasons.length) {
+    await store.fetchDatasetDataByType('SEASONS')
+  }
 })
 const getTerms = async (limit: number = 25) => {
   try {

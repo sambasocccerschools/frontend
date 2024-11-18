@@ -14,11 +14,11 @@ const { $api } = useNuxtApp()
 const router = useRouter()
 const blockButtons = ref(false)
 const toast = useToast()
-let classes = ref<IWeeklyClassesItem[]>([])
-let selectedClassId = ref<number | null>(null)
+const classes = ref<IWeeklyClassesItem[]>([])
+const selectedClassId = ref<number | null>(null)
 
-let seasons = store.seasons
-let emptyClassItem = ref<IWeeklyClassesCreateItem>({
+const seasons = store.seasons
+const emptyClassItem = ref<IWeeklyClassesCreateItem>({
   venue_id: '',
   name: '',
   capacity: 0,
@@ -33,7 +33,7 @@ let emptyClassItem = ref<IWeeklyClassesCreateItem>({
   is_summer_indoor: false,
   is_free_trail_dates: false,
 })
-let newEditClassItem = ref<IWeeklyClassesCreateItem>({
+const newEditClassItem = ref<IWeeklyClassesCreateItem>({
   venue_id: '',
   name: '',
   capacity: 0,
@@ -48,19 +48,19 @@ let newEditClassItem = ref<IWeeklyClassesCreateItem>({
   is_summer_indoor: false,
   is_free_trail_dates: false,
 })
-let showModal = ref<boolean>(false)
+const showModal = ref<boolean>(false)
 
 let title = ref<string>('Create new').value
 
-let classId = ref<string>('')
+const classId = ref<string>('')
 
 const toggleCreateEdit = async (item: IWeeklyClassesItem | null | boolean) => {
   console.log(item)
   showModal.value = !showModal.value
-  if (!!item) {
+  if (item) {
     title = 'Edit'
     selectedClassId.value = item.id
-    newEditClassItem = JSON.parse(
+    newEditClassItem.value = JSON.parse(
       JSON.stringify({
         venue_id: item.venue?.id,
         name: item.name,
@@ -80,7 +80,7 @@ const toggleCreateEdit = async (item: IWeeklyClassesItem | null | boolean) => {
   } else {
     title = 'Create new'
     selectedClassId.value = null
-    newEditClassItem = JSON.parse(JSON.stringify(emptyClassItem.value))
+    newEditClassItem.value = JSON.parse(JSON.stringify(emptyClassItem.value))
   }
   if (item == true) {
     updateKey.value++
@@ -90,14 +90,16 @@ const toggleCreateEdit = async (item: IWeeklyClassesItem | null | boolean) => {
 
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/schedule-classes/[id].vue')
-  let currentRoute = router.currentRoute.value.path.split('/')
-  let id = currentRoute[currentRoute.length - 1]
+  const currentRoute = router.currentRoute.value.path.split('/')
+  const id = currentRoute[currentRoute.length - 1]
   console.log(id)
   classId.value = id
   emptyClassItem.value.venue_id = id
   newEditClassItem.value.venue_id = id
   await getWeeklyClasses()
-  if (store.seasons.length == 0) await store.getSeasons()
+  if (!store.seasons.length) {
+    await store.fetchDatasetDataByType('SEASONS')
+  }
 })
 
 const getWeeklyClasses = async (limit: number = 25) => {
@@ -184,7 +186,7 @@ const restoreClass = async (id: number) => {
             <SyncoConfigScheduleClassesCreateEditCard
               :class-item="newEditClassItem"
               :title="title"
-              :classId="selectedClassId"
+              :class-id="selectedClassId"
               @toggle-edit="toggleCreateEdit"
             ></SyncoConfigScheduleClassesCreateEditCard>
           </div>

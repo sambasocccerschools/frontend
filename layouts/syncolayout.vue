@@ -1,37 +1,21 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { generalStore } from '~/stores'
 const store = generalStore()
 const { $api } = useNuxtApp()
 
 onMounted(async () => {
   console.log('pages/synco/dashboard/index.vue')
-  if (!store.user)
-    await $api.profile.getProfile(null).then(async (response) => {
-      console.log('response', response)
-      store.setUser(response?.data)
-      store.updateAuthenticated(true)
-      setTimeout(() => {
-        if (store.regions.length == 0) store.getRegions()
-        if (store.availableVenues.length == 0)
-          store.getAvailableVenues('weekly-classes')
-        if (store.abilityGroups.length == 0)
-          store.getAbilityGroups('weekly-classes')
-        if (store.seasons.length == 0) store.getSeasons()
-        if (store.relationships.length == 0) store.getRelationships()
-        if (store.referralSources.length == 0) store.getReferralSource()
-        if (store.leadStatus.length == 0) store.getLeadStatus()
-        if (store.gender.length == 0) store.getGender()
-        // if (store.medicalInformation.length == 0) store.getMedicalInformation()
-        if (store.agents.length == 0) store.getAgents()
-        if (store.freeTrialStatus.length == 0) store.getFreeTrialStatus()
-        if (store.memberCancelStatus.length == 0) store.getMemberCancelStatus()
-        if (store.memberCancelType.length == 0) store.getMemberCancelType()
-        if (store.memberStatus.length == 0) store.getMemberStatus()
-        // if (store.saleStatus.length == 0) store.getSaleStatus()
-        if (store.subscriptionPlans.length == 0) store.getSubscriptionPlan()
-      }, 200)
-    })
+  const token = useCookie('token').value
+  if (!store.user && token) {
+    const profileResponse = await $api.profile.getProfile(token as string)
+
+    store.setUser(profileResponse?.data || {})
+    store.updateAuthenticated(true)
+
+    // Call fetchAllData to fetch all miscellaneous data
+    await store.fetchAllData()
+  }
 })
 
 defineProps<{
@@ -39,7 +23,7 @@ defineProps<{
 }>()
 
 const userFullName = computed(() => {
-  return store.user ? `${store.user.first_name} ${store.user.last_name}` : ''
+  return store.user ? store.user.full_name : ''
 })
 </script>
 
@@ -52,7 +36,7 @@ const userFullName = computed(() => {
           <div class="col">
             <div class="d-flex align-items-center justify-content-between">
               <div class="d-flex flex-column">
-                <h4>Hi Nilio!</h4>
+                <h4>Hi {{ userFullName }}!</h4>
                 <h2>{{ pageTitle || 'Welcome back 👋' }}</h2>
               </div>
 

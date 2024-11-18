@@ -65,8 +65,9 @@ const getData = async () => {
 
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/find.vue')
-  if (store.availableVenues.length == 0)
+  if (!store.availableVenues.length) {
     await store.getAvailableVenues('weekly-classes')
+  }
   await getData()
 })
 

@@ -123,10 +123,10 @@ let endDate = ref<string>('')
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/forms/parent-form.vue')
-  if (store.memberCancelStatus.length == 0) await store.getMemberCancelStatus()
-  if (store.memberCancelType.length == 0) await store.getMemberCancelType()
-  if (store.availableVenues.length == 0)
+  await store.fetchAllData()
+  if (!store.availableVenues.length) {
     await store.getAvailableVenues('weekly-classes')
+  }
 })
 
 const emit = defineEmits(['applyFilter'])

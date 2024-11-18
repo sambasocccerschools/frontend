@@ -9,15 +9,15 @@ const props = defineProps<{
   noBorder?: boolean | null
 }>()
 
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
 const changeLoadingState = (state: boolean) => {
   isLoading.value = state
   blockButtons.value = state
 }
 
-let emergencyContact = ref<IEmregencyContactCreate>(props.emergencyContact)
-let noBorder = ref<boolean>(props.noBorder ?? false)
+const emergencyContact = ref<IEmregencyContactCreate>(props.emergencyContact)
+const noBorder = ref<boolean>(props.noBorder ?? false)
 
 const relationships = store.relationships
 
@@ -25,8 +25,9 @@ onMounted(async () => {
   console.log(
     'components/synco/weekly-classes/forms/emergency-contact-form.vue',
   )
-
-  if (store.relationships.length == 0) await store.getRelationships()
+  if (!store.relationships.length) {
+    await store.fetchDatasetDataByType('RELATIONSHIP_TYPES')
+  }
 })
 </script>
 
@@ -44,10 +45,10 @@ onMounted(async () => {
           >
           <input
             id="emergencyContactFirstName"
+            v-model="emergencyContact.first_name"
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter first name"
-            v-model="emergencyContact.first_name"
           />
         </div>
       </div>
@@ -60,10 +61,10 @@ onMounted(async () => {
           >
           <input
             id="emergencyContactLastName"
+            v-model="emergencyContact.last_name"
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter last name"
-            v-model="emergencyContact.last_name"
           />
         </div>
       </div>
@@ -78,15 +79,15 @@ onMounted(async () => {
           >
           <input
             id="emergencyContactPhoneNumber"
+            v-model="emergencyContact.phone_number"
             type="phone"
             class="form-control form-control-lg"
             placeholder="+44"
-            v-model="emergencyContact.phone_number"
           />
         </div>
       </div>
       <div class="col-6">
-        <div class="form-group w-100 mb-3" v-if="relationships.length > 0">
+        <div v-if="relationships.length > 0" class="form-group w-100 mb-3">
           <label
             for="emergencyContactRelation"
             class="form-labelform-label-light"
@@ -94,14 +95,14 @@ onMounted(async () => {
           >
           <select
             id="emergencyContactRelation"
-            class="form-control form-control-lg"
             v-model="emergencyContact.relationship_id"
+            class="form-control form-control-lg"
           >
             <option :value="0">Select option</option>
             <option
               v-for="(relation, index) in relationships"
-              :value="relation.id"
               :key="index"
+              :value="relation.id"
             >
               {{ relation.title }}
             </option>

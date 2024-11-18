@@ -23,9 +23,7 @@ const referralSources = store.referralSources
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/forms/parent-form.vue')
-
-  if (store.relationships.length == 0) await store.getRelationships()
-  if (store.referralSources.length == 0) await store.getReferralSource()
+  await store.fetchAllData()
 })
 </script>
 

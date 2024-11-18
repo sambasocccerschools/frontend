@@ -22,8 +22,8 @@
                 >
                 <select
                   id="venueInfo"
-                  class="form-control form-control-lg"
                   v-model="venue_id"
+                  class="form-control form-control-lg"
                 >
                   <option value="0">Choose venue</option>
                   <option v-for="venue in venues" :value="venue.id">
@@ -77,8 +77,8 @@
                 >
                 <select
                   id="planInfo"
-                  class="form-control form-control-lg"
                   v-model="selectedPlan"
+                  class="form-control form-control-lg"
                 >
                   <option value="0">Choose plan</option>
                   <template v-if="getSubscriptionPlanFromVenue() != null">
@@ -108,10 +108,10 @@
           <h5 class="py-4"><strong>Select start date</strong></h5>
           <input
             id="startDate"
+            v-model="startDate"
             type="date"
             class="form-control form-control-lg"
             placeholder=""
-            v-model="startDate"
           />
           <!-- <SyncoFilterByCalendar :classDate="classDate" /> -->
         </div>
@@ -123,7 +123,7 @@
             Membership Plan Breakdown {{ !showPlanBreakdown ? '+' : '-' }}
           </button>
         </div>
-        <div class="card rounded-4 mt-4 p-3" v-if="showPlanBreakdown">
+        <div v-if="showPlanBreakdown" class="card rounded-4 mt-4 p-3">
           <div class="d-flex justify-content-between mb-3 flex-row">
             <span>Name</span>
             <span
@@ -135,7 +135,7 @@
       </div>
       <div class="col-8">
         <SyncoWeeklyClassesFormsParentForm :parent="parent">
-          <template v-slot:internal_title>
+          <template #internal_title>
             <div
               class="d-flex justify-content-between align-items-center flex-row"
             >
@@ -154,10 +154,10 @@
         </SyncoWeeklyClassesFormsParentForm>
 
         <SyncoWeeklyClassesFormsStudentForm :student="student">
-          <template v-slot:internal_title>
+          <template #internal_title>
             <h5 class="py-4"><strong>Student information</strong></h5>
           </template>
-          <template v-slot:additional_rows>
+          <template #additional_rows>
             <!-- <div class="row">
               <div class="col-6">
                 <div class="form-group w-100 mb-3">
@@ -204,9 +204,9 @@
         </SyncoWeeklyClassesFormsStudentForm>
 
         <SyncoWeeklyClassesFormsEmergencyContactForm
-          :emergencyContact="emergency_contact"
+          :emergency-contact="emergency_contact"
         >
-          <template v-slot:internal_title>
+          <template #internal_title>
             <h5 class="py-4">
               <strong>Emergency contact details</strong>
               <!-- <Icon name="ph:pencil-simple-line" /> -->
@@ -314,23 +314,23 @@ const router = useRouter()
 const { $api } = useNuxtApp()
 const toast = useToast()
 const store = generalStore()
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
 const changeLoadingState = (state: boolean) => {
   isLoading.value = state
   blockButtons.value = state
 }
 
-let weekly_class_id = ref<number>(0)
-let venue_id = ref<string>('0')
-let agent_id = ref<string>('')
-let showPlanBreakdown = ref<boolean>(false)
-let showSubscriptionCard = ref<boolean>(false)
-let showCalculatorCard = ref<boolean>(false)
-let showScriptCard = ref<boolean>(false)
-let newComment = ref<string>('')
+const weekly_class_id = ref<number>(0)
+const venue_id = ref<string>('0')
+const agent_id = ref<string>('')
+const showPlanBreakdown = ref<boolean>(false)
+const showSubscriptionCard = ref<boolean>(false)
+const showCalculatorCard = ref<boolean>(false)
+const showScriptCard = ref<boolean>(false)
+const newComment = ref<string>('')
 
-let parent = ref<IGuardianCreate>({
+const parent = ref<IGuardianCreate>({
   id: '',
   first_name: '',
   last_name: '',
@@ -339,7 +339,7 @@ let parent = ref<IGuardianCreate>({
   relationship_id: 0,
   referral_source_id: 0,
 })
-let student = ref<IStudentCreate>({
+const student = ref<IStudentCreate>({
   id: '',
   first_name: '',
   last_name: '',
@@ -348,14 +348,14 @@ let student = ref<IStudentCreate>({
   gender_id: 0,
   medical_information: '',
 })
-let emergency_contact = ref<IEmregencyContactCreate>({
+const emergency_contact = ref<IEmregencyContactCreate>({
   id: 0,
   first_name: '',
   last_name: '',
   phone_number: '',
   relationship_id: 0,
 })
-let comments = ref<Array<IComment>>([
+const comments = ref<Array<IComment>>([
   // {
   //   text: '',
   //   avatar: '',
@@ -363,29 +363,27 @@ let comments = ref<Array<IComment>>([
   //   created: '',
   // },
 ])
-let selectedPlan = ref<number>(0)
-let startDate = ref<string>('')
+const selectedPlan = ref<number>(0)
+const startDate = ref<string>('')
 
-let subscriptionPlans = ref<ISubscriptionPlan[]>(store.subscriptionPlans)
-let venues = ref<IAvailableVenueObject[]>(store.availableVenues)
+const subscriptionPlans = ref<ISubscriptionPlan[]>(store.subscriptionPlans)
+const venues = ref<IAvailableVenueObject[]>(store.availableVenues)
 
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/create/membership.vue')
-  let queryClassId = router.currentRoute.value.query.class_id
-  if (!!queryClassId) weekly_class_id.value = +queryClassId
-  let queryVenueId = router.currentRoute.value.query.venue_id
-  if (!!queryVenueId) venue_id.value = queryVenueId.toString()
-  let agentId = store.user?.id
-  if (!!agentId) agent_id.value = agentId
+  const queryClassId = router.currentRoute.value.query.class_id
+  if (queryClassId) weekly_class_id.value = +queryClassId
+  const queryVenueId = router.currentRoute.value.query.venue_id
+  if (queryVenueId) venue_id.value = queryVenueId.toString()
+  const agentId = store.user?.id
+  if (agentId) agent_id.value = agentId
 
-  if (store.subscriptionPlans.length == 0) {
-    store.getSubscriptionPlan().then(() => {
-      subscriptionPlans.value = store.subscriptionPlans
-    })
+  if (!store.subscriptionPlans.length) {
+    await store.fetchDatasetDataByType('SUBSCRIPTION_PLANS')
+    subscriptionPlans.value = store.subscriptionPlans
   }
-  store.getAvailableVenues('weekly-classes').then(() => {
-    venues.value = store.availableVenues
-  })
+  await store.getAvailableVenues('weekly-classes')
+  venues.value = store.availableVenues
 })
 
 const toggleSubscriptionCard = () => {
@@ -418,7 +416,7 @@ const addComment = (comment: string) => {
 }
 
 const createData = async () => {
-  let data: IWeeklyClassesMemberCreate = {
+  const data: IWeeklyClassesMemberCreate = {
     weekly_class_id: weekly_class_id.value,
     subscription_plan_price_id: selectedPlan.value,
     start_date: startDate.value,
@@ -468,13 +466,15 @@ const createData = async () => {
 }
 
 const getSelectedPlan = (): ISubscriptionPlan | null => {
-  let selected = subscriptionPlans.value.find((x) => x.id == selectedPlan.value)
+  const selected = subscriptionPlans.value.find(
+    (x) => x.id == selectedPlan.value,
+  )
   return !selected ? null : selected
 }
 const getSubscriptionPlanFromVenue = () => {
-  let venue = venues.value.find((x) => x.id == venue_id.value)
+  const venue = venues.value.find((x) => x.id == venue_id.value)
   if (!venue) return null
-  let subscriptionPlans = venue.subscriptionPlans
+  const subscriptionPlans = venue.subscriptionPlans
   return !subscriptionPlans ? null : subscriptionPlans
 }
 </script>

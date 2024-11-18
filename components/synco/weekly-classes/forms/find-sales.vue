@@ -104,9 +104,12 @@ let endDate = ref<string>('')
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/forms/parent-form.vue')
-  if (store.saleStatus.length == 0) await store.getSaleStatus()
-  if (store.availableVenues.length == 0)
+  if (!store.saleStatus.length) {
+    await store.fetchDatasetDataByType('SALE-STATUS')
+  }
+  if (!store.availableVenues.length) {
     await store.getAvailableVenues('weekly-classes')
+  }
 })
 
 const emit = defineEmits(['applyFilter'])

@@ -54,7 +54,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   if (token) {
     fetchOptions.headers = {
-      Authorization: `Bearer ${token.value}`,
+      Authorization: `${token.value}`,
       'X-Requested-With': 'XMLHttpRequest',
     }
   }

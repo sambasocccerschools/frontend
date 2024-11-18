@@ -1,19 +1,19 @@
 <template>
-  <div class="card" :key="updateKey">
+  <div :key="updateKey" class="card">
     <div class="card-header">
       <slot name="header"></slot>
     </div>
     <div class="card-body">
-      <div class="row" v-if="term != null">
+      <div v-if="term != null" class="row">
         <div class="col-12 my-1">
           <label for="term-name">Term name</label>
           <input
             id="term-name"
+            v-model="term.name"
             type="text"
             class="form-control mt-2"
             placeholder="Autumn 23 Saturdays"
             name="term-name"
-            v-model="term.name"
           />
         </div>
         <div class="col-12 my-1">
@@ -23,14 +23,14 @@
             >
             <select
               id="seasons"
-              class="form-control form-control-lg"
               v-model="term.season.id"
+              class="form-control form-control-lg"
               @change="seasonChange"
             >
               <option
                 v-for="(season, index) in seasons"
-                :value="season.id"
                 :key="index"
+                :value="season.id"
               >
                 {{ season.title }}
               </option>
@@ -46,39 +46,39 @@
             v-model="term.season.title"
           /> -->
         </div>
-        <div class="col-6 my-1" v-if="!Number.isInteger(term.start_date)">
+        <div v-if="!Number.isInteger(term.start_date)" class="col-6 my-1">
           <label for="start-date">Start date</label>
           <input
             id="start-date"
+            v-model="term.start_date"
             type="date"
             class="form-control mt-2"
             name="start-date"
             placeholder="yyyy-mm-dd"
-            v-model="term.start_date"
           />
         </div>
-        <div class="col-6 my-1" v-if="!Number.isInteger(term.end_date)">
+        <div v-if="!Number.isInteger(term.end_date)" class="col-6 my-1">
           <label for="end-date">End date</label>
           <input
             id="end-date"
+            v-model="term.end_date"
             type="date"
             class="form-control mt-2"
             name="end-date"
             placeholder="yyyy-mm-dd"
-            v-model="term.end_date"
           />
         </div>
-        <div class="col-6 my-1" v-if="!Number.isInteger(term.half_term_date)">
+        <div v-if="!Number.isInteger(term.half_term_date)" class="col-6 my-1">
           <label for="half-term-exclusion-date">
             Half-Term Exclusion Date(s)
           </label>
           <input
             id="half-term-exclusion-date"
+            v-model="term.half_term_date"
             type="date"
             class="form-control mt-2"
             name="half-term-exclusion-date"
             placeholder="yyyy-mm-dd"
-            v-model="term.half_term_date"
           />
         </div>
         <div class="col-6 my-1"></div>
@@ -156,13 +156,15 @@ const props = defineProps<{
   sessions: ITermCreateItem | ITermEditItem | null
 }>()
 
-let updateKey = ref<number>(0)
+const updateKey = ref<number>(0)
 
-let term = ref<ITermItem | null>(props.term).value
-let sessions = ref<ITermCreateItem | ITermEditItem | null>(props.sessions).value
+const term = ref<ITermItem | null>(props.term).value
+const sessions = ref<ITermCreateItem | ITermEditItem | null>(
+  props.sessions,
+).value
 
-let seasons = store.seasons
-let abilityGroups = store.abilityGroups
+const seasons = store.seasons
+const abilityGroups = store.abilityGroups
 
 const emit = defineEmits([
   'toggleAssignSessionCard',
@@ -183,30 +185,33 @@ const assignPlan = (selected: any) => {
 }
 onMounted(async () => {
   console.log('components/synco/config/terms/term-card.vue')
-  if (store.seasons.length == 0) await store.getSeasons()
-  if (!!term) {
+  if (!store.seasons.length) {
+    await store.fetchDatasetDataByType('SEASONS')
+  }
+
+  if (term) {
     term.start_date = cleanDate(term?.start_date)
     term.end_date = cleanDate(term?.end_date)
     term.half_term_date = cleanDate(term?.half_term_date)
   }
 
-  await store.getAbilityGroups('weekly-classes')
+  await store.abilityGroups.filter((i) => i.name == 'Weekly Classes')
 })
 const cleanDate = (date: any) => {
   if (!Number.isInteger(date)) return date
-  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+  const cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
   return cleanedDate
 }
 
 const addNewSession = () => {
-  let groups: IAbilityGroupItem[] = []
+  const groups: IAbilityGroupItem[] = []
   abilityGroups.forEach((x) => {
     groups.push({
       id: x.id,
       name: x.name,
     })
   })
-  let plans: IPlanItem[] = []
+  const plans: IPlanItem[] = []
   groups?.forEach((x) => {
     plans.push({
       id: 0,
@@ -227,9 +232,9 @@ const addNewSession = () => {
 }
 
 const removeSession = (sessionId: number) => {
-  let sessionToRemove = term?.sessions.find((x) => x.id == sessionId)
+  const sessionToRemove = term?.sessions.find((x) => x.id == sessionId)
   if (!!sessionToRemove && !!term) {
-    let session = term?.sessions?.filter(
+    const session = term?.sessions?.filter(
       (x) => JSON.stringify(x) != JSON.stringify(sessionToRemove),
     )
     term.sessions = session
@@ -238,10 +243,10 @@ const removeSession = (sessionId: number) => {
 }
 
 const seasonChange = (event: any) => {
-  let id = event?.target.value
+  const id = event?.target.value
   if (!!id && !!term) {
-    let season = seasons.find((x) => x.id == id)
-    if (!!season) {
+    const season = seasons.find((x) => x.id == id)
+    if (season) {
       term.season = {
         created_at: season.created_at,
         deleted_at: season.deleted_at,

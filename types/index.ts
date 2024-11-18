@@ -166,7 +166,8 @@ type ICity = {
 export type IUser = {
   id: string
   first_name: string
-  last_name: string
+  full_name: string
+  lastName: string
   phone_number: string
   email: string
   position: string | null

@@ -153,10 +153,8 @@ onMounted(async () => {
   await getAccountInformation()
   await getEnrolledWeeklyClasses(accountId.value)
 
-  if (store.feedbackStatus?.length == 0) store.getFeedbackStatus()
-  if (store.feedbackCategory?.length == 0) store.getFeedbackCategory()
-  if (store.feedbackType?.length == 0) store.getFeedbackType()
-  if (store.agents?.length == 0) store.getAgents()
+  // Call fetchAllData to fetch all miscellaneous data
+  await store.fetchAllData()
 })
 
 const getAccountInformation = async () => {

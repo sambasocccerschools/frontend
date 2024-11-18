@@ -125,7 +125,13 @@ const login = async () => {
     // Call fetchAllData to fetch all miscellaneous data
     await store.fetchAllData()
 
-    await navigateTo({ path: '/synco/dashboard' })
+    // Fetch all data for weekly classes
+    await store.getAvailableVenues('weekly-classes')
+    await store.getAbilityGroups('weekly-classes')
+
+    await navigateTo({
+      path: '/synco/dashboard',
+    })
   } catch (error: any) {
     toast.error(
       error?.message || 'Something went wrong. Please try again later.',

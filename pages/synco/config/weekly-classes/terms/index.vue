@@ -18,11 +18,11 @@ const updateKey = ref<number>(0)
 const { $api } = useNuxtApp()
 const blockButtons = ref(false)
 const toast = useToast()
-let terms = ref<ITermItem[]>([])
-let selectedTerm = ref<ITermItem | null>(null)
-let selectedTermId = ref<number | null>(null)
-let seasons = store.seasons
-let emptyTermItem = ref<ITermCreateItem>({
+const terms = ref<ITermItem[]>([])
+const selectedTerm = ref<ITermItem | null>(null)
+const selectedTermId = ref<number | null>(null)
+const seasons = store.seasons
+const emptyTermItem = ref<ITermCreateItem>({
   name: '',
   season_id: 0,
   start_date: '',
@@ -30,7 +30,7 @@ let emptyTermItem = ref<ITermCreateItem>({
   half_term_date: '',
   sessions: [],
 })
-let newEditTermItem = ref<ITermCreateItem | ITermEditItem>({
+const newEditTermItem = ref<ITermCreateItem | ITermEditItem>({
   name: '',
   season_id: 0,
   start_date: '',
@@ -38,31 +38,33 @@ let newEditTermItem = ref<ITermCreateItem | ITermEditItem>({
   half_term_date: '',
   sessions: [],
 })
-let showModal = ref<boolean>(false)
+const showModal = ref<boolean>(false)
 
 let title = ref<string>('Create new').value
 
 const toggleCreateEdit = async (item: ITermItem | null) => {
   console.log(item)
   showModal.value = !showModal.value
-  if (!!item) {
+  if (item) {
     title = 'Edit'
     selectedTermId.value = item.id
     selectedTerm.value = item
-    let sessions: ISessionEditItem[] = item.sessions?.map((x: ISessionItem) => {
-      let plans = x.plans.map((y: IPlanItem) => {
+    const sessions: ISessionEditItem[] = item.sessions?.map(
+      (x: ISessionItem) => {
+        const plans = x.plans.map((y: IPlanItem) => {
+          return {
+            id: y.id,
+            ability_group_id: y.ability_group.id,
+            session_plan_id: y.session_plan.id,
+          }
+        })
         return {
-          id: y.id,
-          ability_group_id: y.ability_group.id,
-          session_plan_id: y.session_plan.id,
+          id: x.id,
+          plans: plans,
         }
-      })
-      return {
-        id: x.id,
-        plans: plans,
-      }
-    })
-    newEditTermItem = JSON.parse(
+      },
+    )
+    newEditTermItem.value = JSON.parse(
       JSON.stringify({
         name: item.name,
         season_id: item.season?.id,
@@ -75,7 +77,7 @@ const toggleCreateEdit = async (item: ITermItem | null) => {
   } else {
     title = 'Create new'
     selectedTermId.value = null
-    newEditTermItem = JSON.parse(JSON.stringify(emptyTermItem.value))
+    newEditTermItem.value = JSON.parse(JSON.stringify(emptyTermItem.value))
   }
   // if (item == true) {
   //   updateKey.value++
@@ -86,8 +88,9 @@ const toggleCreateEdit = async (item: ITermItem | null) => {
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/terms/index.vue')
   await getTerms()
-  if (store.seasons.length == 0) await store.getSeasons()
-  // await store.getAbilityGroups('weekly-classes')
+  if (!store.seasons.length) {
+    await store.fetchDatasetDataByType('SEASONS')
+  }
 })
 
 const getTerms = async (limit: number = 25) => {
@@ -133,19 +136,19 @@ const restoreTerm = async (id: number) => {
   }
 }
 
-let showTermCard = ref<boolean>(false)
-let newEditState = ref<string>('')
+const showTermCard = ref<boolean>(false)
+const newEditState = ref<string>('')
 
-let showAssignSessionCard = ref<boolean>(false)
+const showAssignSessionCard = ref<boolean>(false)
 
 const toggleShowTermCard = (data: any) => {
   showTermCard.value = !showTermCard.value
   newEditState.value = data.newEditText
   if (data.selected != 0) {
-    let term = terms.value.find((x) => x.id == data.selected)
+    const term = terms.value.find((x) => x.id == data.selected)
     if (term == null) return
-    let sessions = term.sessions.map((x) => {
-      let plans = x.plans.map((y) => {
+    const sessions = term.sessions.map((x) => {
+      const plans = x.plans.map((y) => {
         return {
           id: y.id,
           ability_group_id: y.ability_group.id,
@@ -176,10 +179,10 @@ const selectTerm = (termId: number, term: ITermItem) => {
   selectedTermId.value = termId
   selectedTerm.value = term
 }
-let selectedSessionId = ref<number>(-1)
-let selectedPlanId = ref<number>(-1)
-let selectedSessionPlanId = ref<number>(-1)
-let selectedAbilityId = ref<number>(-1)
+const selectedSessionId = ref<number>(-1)
+const selectedPlanId = ref<number>(-1)
+const selectedSessionPlanId = ref<number>(-1)
+const selectedAbilityId = ref<number>(-1)
 
 const assignSelectedSession = (selected: any) => {
   if (selected != '') {
@@ -193,16 +196,16 @@ const assignSelectedSession = (selected: any) => {
 
 const assignPlan = (selected: any) => {
   if (!selectedTerm.value) return
-  let inUseSession = selectedTerm.value.sessions.find(
+  const inUseSession = selectedTerm.value.sessions.find(
     (x) => x.id == selectedSessionId.value,
   )
-  let sessions = selectedTerm.value.sessions.filter(
+  const sessions = selectedTerm.value.sessions.filter(
     (x) => x.id != selectedSessionId.value,
   )
-  let inUsePlan = inUseSession?.plans.find(
+  const inUsePlan = inUseSession?.plans.find(
     (x) => x.ability_group.id == selectedAbilityId.value,
   )
-  let plans = inUseSession?.plans.filter(
+  const plans = inUseSession?.plans.filter(
     (x) => x.ability_group.id != selectedAbilityId.value,
   )
   if (!!inUsePlan && !!inUseSession) {
@@ -223,7 +226,7 @@ const toggleAssignSessionCard = async () => {
   showAssignSessionCard.value = !showAssignSessionCard.value
 }
 
-let updateTerm = ref<ITermEditItem | null>(null)
+const updateTerm = ref<ITermEditItem | null>(null)
 const putTerm = async () => {
   if (selectedTerm.value == null || updateTerm.value == null) return
   try {
@@ -241,15 +244,15 @@ const putTerm = async () => {
   }
 }
 const save = () => {
-  let currentTerm = selectedTerm.value
+  const currentTerm = selectedTerm.value
   if (currentTerm != null) {
-    let sessions = currentTerm.sessions
-    let newSessionObject: ISessionEditItem[] = []
+    const sessions = currentTerm.sessions
+    const newSessionObject: ISessionEditItem[] = []
     sessions.forEach((session) => {
       return session
     })
     sessions.forEach((x) => {
-      let plans: IPlanEditItem[] = []
+      const plans: IPlanEditItem[] = []
       x.plans.forEach((plan) => {
         plans.push({
           id: plan.id,
@@ -257,7 +260,7 @@ const save = () => {
           session_plan_id: plan.session_plan.id,
         })
       })
-      let session: ISessionEditItem = {
+      const session: ISessionEditItem = {
         id: x.id,
         plans: plans,
       }
@@ -282,13 +285,13 @@ const buttonSave = () => {
 
 const cleanDate = (date: any) => {
   if (!Number.isInteger(date)) return date
-  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+  const cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
   return cleanedDate
 }
 </script>
 
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Terms">
+  <NuxtLayout name="syncolayout" page-title="Terms">
     <div class="d-flex flex-column">
       <span class="h3 my-4">Term Dates & Mapping Session Plans</span>
       <div class="d-flex justify-content-between my-4 flex-row">
@@ -300,7 +303,7 @@ const cleanDate = (date: any) => {
           Add new term
         </NuxtLink>
       </div>
-      <div class="card rounded-4" :key="updateKey">
+      <div :key="updateKey" class="card rounded-4">
         <div v-for="term in terms" @click="selectTerm(term.id, term)">
           <SyncoConfigTermsSessionCard
             :term="term"
@@ -328,7 +331,7 @@ const cleanDate = (date: any) => {
               :sessions="newEditTermItem"
               @assign-selected-session="assignSelectedSession"
             >
-              <template v-slot:header>
+              <template #header>
                 <div class="d-flex justify-content-between flex-row">
                   <span class="h4">Edit term</span>
                   <button
@@ -339,7 +342,7 @@ const cleanDate = (date: any) => {
                   </button>
                 </div>
               </template>
-              <template v-slot:footer>
+              <template #footer>
                 <div class="d-flex justify-content-end flex-row">
                   <button
                     class="btn btn-outline-secondary me-2"
