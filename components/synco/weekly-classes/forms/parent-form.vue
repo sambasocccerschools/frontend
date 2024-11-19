@@ -93,7 +93,7 @@ onMounted(async () => {
     </div>
     <div class="row">
       <div class="col-6">
-        <div class="form-group w-100 mb-3" v-if="relationships.length > 0">
+        <div class="form-group w-100 mb-3" v-if="relationships.length">
           <label for="parentRelation" class="form-labelform-label-light"
             >Relation to child</label
           >
@@ -114,7 +114,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="col-6">
-        <div class="form-group w-100 mb-3" v-if="referralSources.length > 0">
+        <div class="form-group w-100 mb-3" v-if="referralSources.length">
           <label for="parentMarketingChannel" class="form-labelform-label-light"
             >How did you hear about us?</label
           >

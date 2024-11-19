@@ -311,7 +311,7 @@ const search = async () => {
       .includes(parentName.value.toLowerCase()),
   )
   console.log('3', parentInfo)
-  parentExists.value = !!parentInfo && parentInfo.length > 0
+  parentExists.value = !!parentInfo && parentInfo.length
 }
 
 const selectParent = (guardian: IGuardianByName) => {

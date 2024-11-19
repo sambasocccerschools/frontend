@@ -80,9 +80,7 @@ const createMember = async (input: ICreateUserParams) => {
               <td>{{ member.phone_number }}</td>
               <td>{{ member.email }}</td>
               <td>{{ member.position }}</td>
-              <td
-                v-if="member.last_active_at && member.last_active_at.length > 0"
-              >
+              <td v-if="member.last_active_at && member.last_active_at.length">
                 {{ $dayjs(member.last_active_at, 'DD/MM/YYYY') }}
               </td>
               <td v-else></td>

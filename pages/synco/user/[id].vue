@@ -804,7 +804,7 @@ let seeDetails = (details: string) => {
                     <div class="d-flex justify-content-between flex-column">
                       <div
                         class="form-group w-100 mb-3"
-                        v-if="enrolledClasses?.length > 0"
+                        v-if="enrolledClasses?.length"
                       >
                         <label
                           for="feedbackClass"
@@ -830,7 +830,7 @@ let seeDetails = (details: string) => {
 
                       <div
                         class="form-group w-100 mb-3"
-                        v-if="feedbackType?.length > 0"
+                        v-if="feedbackType?.length"
                       >
                         <label
                           for="feedbackType"
@@ -856,7 +856,7 @@ let seeDetails = (details: string) => {
 
                       <div
                         class="form-group w-100 mb-3"
-                        v-if="feedbackCategory?.length > 0"
+                        v-if="feedbackCategory?.length"
                       >
                         <label
                           for="feedbackCategory"
@@ -899,7 +899,7 @@ let seeDetails = (details: string) => {
 
                       <div
                         class="form-group w-100 mb-3"
-                        v-if="agents?.length > 0"
+                        v-if="agents?.length"
                       >
                         <label
                           for="feedbackAgent"
