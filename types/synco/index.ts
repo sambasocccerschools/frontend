@@ -40,38 +40,37 @@ export type IVenueItem = {
   id: string
   area: string
   name: string
-  lat: number
-  lng: number
+  facility_enter_guide: string
+  parking_note: string
   address: string
+  latitude: number
+  longitude: number
   has_parking: boolean
   has_congestion: boolean
-  parking_note: string
-  facility_enter_guide: string
-  region: IRegionItem
+  price: number | null
+  Franchise: null
+  region_code: string
   created_at: Date | null
   deleted_at: Date | null
-  price: number | null
 }
 
 export type IVenuesResponse = {
   data: IVenueItem[]
-  meta: IMetaItem
-  links: ILinks
 }
 
 export type IVenueCreateItem = {
   area: string
   name: string
-  lat: string
-  lng: string
+  facility_enter_guide: string
+  parking_note: string
   address: string
+  latitude: number
+  longitude: number
   has_parking: boolean
   has_congestion: boolean
-  parking_note: string
-  facility_enter_guide: string
-  region_id: number
-  service: string
   price: number | null
+  region_code: string
+  // service: string
 }
 
 export type IVenueSuccessfulResponse = {

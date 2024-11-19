@@ -26,12 +26,12 @@ const emptyVenue = ref<IVenueCreateItem>({
   facility_enter_guide: '',
   has_congestion: false,
   has_parking: false,
-  lat: '0',
-  lng: '0',
+  latitude: 40.712776,
+  longitude: -74.005974,
   name: '',
   parking_note: '',
-  region_id: 0,
-  service: 'weekly-classes',
+  price: 150,
+  region_code: '',
 })
 
 const selectedVenueId = ref<string>('')
@@ -41,12 +41,12 @@ const selectedVenue = ref<IVenueCreateItem>({
   facility_enter_guide: '',
   has_congestion: false,
   has_parking: false,
-  lat: '0',
-  lng: '0',
+  latitude: 40.712776,
+  longitude: -74.005974,
   name: '',
   parking_note: '',
-  region_id: 0,
-  service: 'weekly-classes',
+  region_code: '',
+  price: 150,
 })
 
 const regions = store.regions
@@ -55,7 +55,7 @@ const blockFields = ref<boolean>(false)
 
 const getVenues = async (limit: number = 25) => {
   try {
-    const venuesResponse = await $api.venues.getAll('weekly-classes', limit)
+    const venuesResponse = await $api.venues.getAll()
     venues.value = venuesResponse?.data
   } catch (error: any) {
     venues.value = []
@@ -66,7 +66,7 @@ const getVenues = async (limit: number = 25) => {
 
 const getAllVenues = async () => {
   try {
-    const response = await $api.datasets.getAllVenue()
+    const response = await $api.venues.getAll()
     availableVenues.value = response?.data
     autoCompleteVenues.value = response?.data?.map((x) => {
       return {
@@ -78,7 +78,7 @@ const getAllVenues = async () => {
     autoCompleteVenues.value = []
     console.log(error)
     toast.error(error?.data?.messages ?? 'Error')
-  } 
+  }
 }
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/venues.vue')
@@ -86,6 +86,8 @@ onMounted(async () => {
   await getAllVenues()
   await store.fetchAllData()
 })
+
+console.log('regions', regions)
 
 const openPanel = (item: IVenueItem | null) => {
   panel.value = true
@@ -101,12 +103,12 @@ const openPanel = (item: IVenueItem | null) => {
       facility_enter_guide: item.facility_enter_guide,
       has_congestion: item.has_congestion,
       has_parking: item.has_parking,
-      lat: `${item.lat}`,
-      lng: `${item.lng}`,
+      latitude: item.latitude,
+      longitude: item.longitude,
       name: item.name,
       parking_note: item.parking_note,
-      region_id: item.region.id,
-      service: 'weekly-classes',
+      region_code: item.region_code,
+      price: item.price,
     }
     selectedVenueId.value = item.id
   }
@@ -177,12 +179,12 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
       facility_enter_guide: venue.facility_enter_guide,
       has_congestion: venue.has_congestion,
       has_parking: venue.has_parking,
-      lat: `${venue.lat}`,
-      lng: `${venue.lng}`,
+      latitude: venue.latitude,
+      longitude: venue.longitude,
       name: venue.name,
       parking_note: venue.parking_note,
-      region_id: venue.region.id,
-      service: 'weekly-classes',
+      region_code: venue.region.id,
+      price: venue.price,
     }
     selectedVenueId.value = venue.id
     blockFields.value = true
@@ -240,7 +242,7 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
               </th>
               <td>{{ venue.name }}</td>
               <td>{{ venue.address }}</td>
-              <td>{{ venue.region.name }}</td>
+              <td>{{ venue.region.title }}</td>
               <td>
                 <button v-if="venue.has_congestion" class="btn btn-link px-1">
                   <Icon name="emojione-monotone:letter-c" class="text-danger" />
@@ -434,16 +436,16 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
                 <label for="Region" class="form-label">Region</label>
                 <select
                   id="Region"
-                  v-model="selectedVenue.region_id"
+                  v-model="selectedVenue.region_code"
                   class="form-control form-control-lg"
                   :disabled="blockFields"
                 >
                   <option
                     v-for="(region, index) in regions"
                     :key="index"
-                    :value="region.id"
+                    :value="region"
                   >
-                    {{ region.name }}
+                    {{ region.title }}
                   </option>
                 </select>
               </div>

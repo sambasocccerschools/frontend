@@ -8,56 +8,72 @@ import type {
 } from '~/types/synco'
 
 class VenuesModule extends FetchFactory {
-  private RESOURCE = '/v1/venues'
+  private RESOURCE = '/venue'
 
-  async getAll(
-    service:
-      | 'weekly-classes'
-      | 'one-to-one'
-      | 'holiday-camps'
-      | 'birthday-parties'
-      | 'club'
-      | 'pathway',
-    limit: number = 25,
-  ) {
+  async getAll() {
+    // limit: number = 25, //   | 'pathway', //   | 'club' //   | 'birthday-parties' //   | 'holiday-camps' //   | 'one-to-one' //   | 'weekly-classes' // service:
+    const token = useCookie('token')
+    // const fetchOptions: FetchOptions<'json'> = {
+    //   params: {
+    //     limit,
+    //     service,
+    //   },
+    // }
     const fetchOptions: FetchOptions<'json'> = {
-      params: {
-        limit,
-        service,
+      headers: {
+        Authorization: `${token.value}`,
       },
     }
     return this.call<IVenuesResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
       fetchOptions,
     )
   }
 
   async create(venue: IVenueCreateItem) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IVenueSuccessfulResponse>(
       'POST',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/add`,
       venue,
-      undefined,
+      fetchOptions,
     )
   }
 
   async update(id: string, venue: IVenueCreateItem) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IVenueSuccessfulResponse>(
       'PUT',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/edit?id=${id}`,
       venue,
-      undefined,
+      fetchOptions,
     )
   }
 
   async delete(id: string) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IVenueSuccessfulResponse>(
       'DELETE',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/delete?id=${id}`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 
@@ -70,24 +86,23 @@ class VenuesModule extends FetchFactory {
     )
   }
 
-  async availableVenues(
-    service:
-      | 'weekly-classes'
-      | 'one-to-one'
-      | 'holiday-camps'
-      | 'birthday-parties'
-      | 'club'
-      | 'pathway',
-  ) {
+  async availableVenues() {
+    //   | 'pathway', //   | 'club' //   | 'birthday-parties' //   | 'holiday-camps' //   | 'one-to-one' //   | 'weekly-classes' // service:
+    const token = useCookie('token')
+    // const fetchOptions: FetchOptions<'json'> = {
+    //   params: {
+    //     service,
+    //     include_classes: true,
+    //   },
+    // }
     const fetchOptions: FetchOptions<'json'> = {
-      params: {
-        service,
-        include_classes: true,
+      headers: {
+        Authorization: `${token.value}`,
       },
     }
     return this.call<IAvailableVenueResponse>(
       'GET',
-      `/v1/datasets/venue`,
+      `${this.RESOURCE}/get_all`,
       undefined,
       fetchOptions,
     )

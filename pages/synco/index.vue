@@ -107,7 +107,6 @@ const login = async () => {
     const credentials: ILoginInput = {
       email: email.value,
       password: password.value,
-      remember: remember.value,
     }
     const loginResponse = await $api.auth.login(credentials)
 

@@ -13,7 +13,8 @@ export type IDataLoginResponse = {
 export type ILoginInput = {
   email: string
   password: string
-  remember: boolean
+  // remember: boolean
+  // user_name: string | null
 }
 
 export type ILoginResponse = {
@@ -577,7 +578,7 @@ export type IService = IBaseDatasetItem & {
 export type IServiceResponse = IBaseResponse<IService> & {}
 
 export type IRegionItem = IBaseDatasetItem & {
-  name: string
+  title: string
 }
 export type IRegionResponse = IBaseResponse<IRegionItem> & {}
 
