@@ -1,5 +1,4 @@
 // stores/index.ts
-
 import type {
   IFreeTrialStatus,
   IMemberCancelStatus,
@@ -131,17 +130,9 @@ export const generalStore = defineStore('store', {
       }
     },
 
-    async getAvailableVenues(
-      service:
-        | 'weekly-classes'
-        | 'one-to-one'
-        | 'holiday-camps'
-        | 'birthday-parties'
-        | 'club'
-        | 'pathway',
-    ) {
+    async getAvailableVenues() {
       try {
-        const response = await useNuxtApp().$api.venues.availableVenues(service)
+        const response = await useNuxtApp().$api.venues.availableVenues()
         this.availableVenues = response?.data
       } catch (error: any) {
         this.availableVenues = []
@@ -150,19 +141,9 @@ export const generalStore = defineStore('store', {
       }
     },
 
-    async getAbilityGroups(
-      service:
-        | 'weekly-classes'
-        | 'one-to-one'
-        | 'holiday-camps'
-        | 'birthday-parties'
-        | 'club',
-    ) {
+    async getAbilityGroups() {
       try {
-        const response = await useNuxtApp().$api.abilityGroups.getAll(
-          service,
-          null,
-        )
+        const response = await useNuxtApp().$api.abilityGroups.getAll()
         this.abilityGroups = response?.data
       } catch (error: any) {
         this.abilityGroups = []

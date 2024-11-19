@@ -125,8 +125,8 @@ const login = async () => {
     await store.fetchAllData()
 
     // Fetch all data for weekly classes
-    await store.getAvailableVenues('weekly-classes')
-    await store.getAbilityGroups('weekly-classes')
+    await store.getAvailableVenues()
+    await store.getAbilityGroups()
 
     await navigateTo({
       path: '/synco/dashboard',

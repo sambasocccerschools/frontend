@@ -26,11 +26,11 @@ const emptyVenue = ref<IVenueCreateItem>({
   facility_enter_guide: '',
   has_congestion: false,
   has_parking: false,
-  latitude: 40.712776,
-  longitude: -74.005974,
+  latitude: 0,
+  longitude: 0,
   name: '',
   parking_note: '',
-  price: 150,
+  price: 0,
   region_code: '',
 })
 
@@ -41,19 +41,18 @@ const selectedVenue = ref<IVenueCreateItem>({
   facility_enter_guide: '',
   has_congestion: false,
   has_parking: false,
-  latitude: 40.712776,
-  longitude: -74.005974,
+  latitude: 0,
+  longitude: 0,
   name: '',
   parking_note: '',
   region_code: '',
-  price: 150,
+  price: 0,
 })
 
 const regions = store.regions
-
 const blockFields = ref<boolean>(false)
 
-const getVenues = async (limit: number = 25) => {
+const getVenues = async () => {
   try {
     const venuesResponse = await $api.venues.getAll()
     venues.value = venuesResponse?.data
@@ -183,7 +182,7 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
       longitude: venue.longitude,
       name: venue.name,
       parking_note: venue.parking_note,
-      region_code: venue.region.id,
+      region_code: venue.region_code,
       price: venue.price,
     }
     selectedVenueId.value = venue.id
