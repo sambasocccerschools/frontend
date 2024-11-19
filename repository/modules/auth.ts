@@ -56,7 +56,7 @@ class AuthModule extends FetchFactory {
     }
     return this.call<ILoginResponse>(
       'POST',
-      `${this.RESOURCE}/forgetPassword`,
+      `/forgot_password`,
       body,
       undefined,
     )

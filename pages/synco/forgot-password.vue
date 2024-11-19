@@ -51,28 +51,24 @@
 </template>
 
 <script setup>
-const email = ref('test@samba.com')
+const { $api } = useNuxtApp()
+const email = ref('')
 const error = ref(null)
 const success = ref(null)
-const config = useRuntimeConfig()
 
 const forgotPassword = async () => {
-  const { data, error } = await useFetch(
-    config.public.API_BASE_URL + '/v1/auth/forgetPassword',
-    {
-      method: 'POST',
-      body: {
-        email,
-      },
-    },
-  )
-  if (data.value) {
-    console.log(data.value, 'data')
-    success.value = data.value.messages
-  }
-  if (error.value) {
-    console.log(error.value, 'error')
-    error.value = error.value.messages
+  try {
+    if (!email.value) {
+      error.value = 'Email is required.'
+      return
+    }
+
+    await $api.auth.forgetPassword(email.value)
+
+    success.value = 'Password reset link has been sent to your email.'
+  } catch (error) {
+    console.log(error, 'error')
+    error.value = 'An error occurred. Please try again.'
   }
 }
 </script>

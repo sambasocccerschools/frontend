@@ -50,7 +50,7 @@
                     >Remember me</label
                   >
                 </div>
-                <NuxtLink to="/synco/reset-password" class="text-muted"
+                <NuxtLink to="/synco/forgot-password" class="text-muted"
                   >Forgot Password</NuxtLink
                 >
               </div>
