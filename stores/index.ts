@@ -1,12 +1,14 @@
 // stores/index.ts
 import type {
   IFreeTrialStatus,
+  IGenderNew,
   IMemberCancelStatus,
   IMemberCancelType,
   IMemberStatus,
   ISaleStatus,
   IUser,
 } from '~/types'
+import genders from '~/utils/genders.json'
 import { defineStore } from 'pinia'
 import { useToast } from 'vue-toast-notification'
 import type {
@@ -41,7 +43,7 @@ export const generalStore = defineStore('store', {
     relationships: [] as IRelationship[],
     referralSources: [] as IReferralSource[],
     leadStatus: [] as ILeadStatus[],
-    gender: [] as IGender[],
+    gender: [] as IGenderNew[],
     medicalInformation: [] as IMedicalInformation[],
     agents: [] as IAgentObject[],
     freeTrialStatus: [] as IFreeTrialStatus[],
@@ -80,7 +82,6 @@ export const generalStore = defineStore('store', {
         this.leadStatus = data.filter(
           (item: any) => item.type === 'LEAD_STATUS',
         )
-        this.gender = data.filter((item: any) => item.type === 'GENDERS')
         this.medicalInformation = data.filter(
           (item: any) => item.type === 'MEDICAL_INFORMATION',
         )
@@ -158,6 +159,16 @@ export const generalStore = defineStore('store', {
       a.download = name
       a.target = '_blank'
       a.click()
+    },
+
+    async getGenders() {
+      try {
+        this.gender = genders
+      } catch (error) {
+        console.error('Error fetching genders:', error)
+        useToast().error('Failed to load genders data.')
+        return []
+      }
     },
   },
   persist: true,

@@ -511,6 +511,12 @@ export type IBaseDatasetItem = {
 export type IGender = IBaseDatasetItem & {
   title: string
 }
+
+export type IGenderNew = {
+  title: string
+  value: string
+}
+
 export type IGenderResponse = IBaseResponse<IGender> & {}
 
 export type IMedicalInformation = IBaseDatasetItem & {

@@ -37,7 +37,12 @@ watch(
 onMounted(async () => {
   console.log('components/synco/weekly-classes/forms/student-form.vue')
   await store.fetchAllData()
+  if (!gender.length) {
+    await store.getGenders()
+  }
 })
+
+console.log('components/synco/weekly-classes/forms/student-form.vue')
 </script>
 
 <template>
