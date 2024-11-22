@@ -6,7 +6,7 @@ defineProps<{
 }>()
 
 const userFullName = computed(() => {
-  return store.user ? `${store.user.first_name} ${store.user.last_name}` : ''
+  return store.user ? `${store.user.full_name}` : ''
 })
 </script>
 <template>

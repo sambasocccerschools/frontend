@@ -177,7 +177,7 @@ export default {
           .toLowerCase()
           .includes(this.parentName.toLowerCase()),
       )
-      this.parentExists = parentInfo.length > 0
+      this.parentExists = parentInfo.length
     },
     addParent() {
       console.log('add parent')

@@ -8,12 +8,12 @@ const store = generalStore()
 const { $api } = useNuxtApp()
 const toast = useToast()
 
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
 
-let abilityGroups = store.abilityGroups
+const abilityGroups = store.abilityGroups
 
-let sessionPlans = ref<ISessionPlanObject[]>([])
+const sessionPlans = ref<ISessionPlanObject[]>([])
 const getSessionPlans = async (abilityId: number) => {
   try {
     isLoading.value = true
@@ -30,7 +30,7 @@ const getSessionPlans = async (abilityId: number) => {
   }
 }
 
-let selectedAbilityGroupId = ref<number>(-1)
+const selectedAbilityGroupId = ref<number>(-1)
 const selectAbilityGroup = (id: number) => {
   if (blockButtons.value) return
   sessionPlans.value = []
@@ -59,8 +59,8 @@ onMounted(async () => {
             <li
               v-for="group in abilityGroups"
               class="list-group-item list-group-item-action border-top d-flex w-100 rounded-0 border-bottom-0 border-end-0 border-start-0 border py-3"
-              @click="selectAbilityGroup(group.id)"
               :class="selectedAbilityGroupId == group.id ? 'text-primary' : ''"
+              @click="selectAbilityGroup(group.id)"
             >
               <span class="w-100 d-flex">
                 <!-- <img src="@/src/assets/img-avatar-ability-group.png"/> -->

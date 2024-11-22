@@ -311,7 +311,7 @@ const search = async () => {
       .includes(parentName.value.toLowerCase()),
   )
   console.log('3', parentInfo)
-  parentExists.value = !!parentInfo && parentInfo.length > 0
+  parentExists.value = !!parentInfo && parentInfo.length
 }
 
 const selectParent = (guardian: IGuardianByName) => {
@@ -399,12 +399,9 @@ onMounted(async () => {
   console.log('pages/synco/weekly-classes/create/lead.vue')
   // await getWeeklyClasses()
   // await getSeasons()
-  if (store.gender.length == 0) await store.getGender()
-  // if (store.medicalInformation.length == 0) await store.getMedicalInformation()
-  if (store.relationships.length == 0) await store.getRelationships()
-  if (store.referralSources.length == 0) await store.getReferralSource()
-  if (store.availableVenues.length == 0)
-    await store.getAvailableVenues('weekly-classes')
+
+  await store.fetchAllData()
+  await store.getAvailableVenues('weekly-classes')
 })
 
 const getGuardianByName = async (name: string) => {

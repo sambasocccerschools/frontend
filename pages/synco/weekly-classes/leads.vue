@@ -17,7 +17,7 @@
                   >All</span
                 >
               </li>
-              <template v-if="referralSources.length > 0">
+              <template v-if="referralSources.length">
                 <template v-for="source in referralSources">
                   <li
                     class="nav-item rounded-3 show-pointer me-2 border"

@@ -26,12 +26,12 @@ const emptyVenue = ref<IVenueCreateItem>({
   facility_enter_guide: '',
   has_congestion: false,
   has_parking: false,
-  lat: '0',
-  lng: '0',
+  latitude: 0,
+  longitude: 0,
   name: '',
   parking_note: '',
-  region_id: 0,
-  service: 'weekly-classes',
+  price: 0,
+  region_code: '',
 })
 
 const selectedVenueId = ref<string>('')
@@ -41,33 +41,31 @@ const selectedVenue = ref<IVenueCreateItem>({
   facility_enter_guide: '',
   has_congestion: false,
   has_parking: false,
-  lat: '0',
-  lng: '0',
+  latitude: 0,
+  longitude: 0,
   name: '',
   parking_note: '',
-  region_id: 0,
-  service: 'weekly-classes',
+  region_code: '',
+  price: 0,
 })
 
 const regions = store.regions
+const blockFields = ref<boolean>(false)
 
-let blockFields = ref<boolean>(false)
-
-const getVenues = async (limit: number = 25) => {
+const getVenues = async () => {
   try {
-    const venuesResponse = await $api.venues.getAll('weekly-classes', limit)
+    const venuesResponse = await $api.venues.getAll()
     venues.value = venuesResponse?.data
   } catch (error: any) {
     venues.value = []
     console.log(error)
     toast.error(error?.data?.messages ?? 'Error')
-  } finally {
   }
 }
 
 const getAllVenues = async () => {
   try {
-    const response = await $api.datasets.getAllVenue()
+    const response = await $api.venues.getAll()
     availableVenues.value = response?.data
     autoCompleteVenues.value = response?.data?.map((x) => {
       return {
@@ -79,17 +77,16 @@ const getAllVenues = async () => {
     autoCompleteVenues.value = []
     console.log(error)
     toast.error(error?.data?.messages ?? 'Error')
-  } finally {
   }
 }
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/venues.vue')
   await getVenues()
   await getAllVenues()
-  if (store.regions.length == 0) await store.getRegions()
-  if (store.availableVenues.length == 0)
-    await store.getAvailableVenues('weekly-classes')
+  await store.fetchAllData()
 })
+
+console.log('regions', regions)
 
 const openPanel = (item: IVenueItem | null) => {
   panel.value = true
@@ -105,12 +102,12 @@ const openPanel = (item: IVenueItem | null) => {
       facility_enter_guide: item.facility_enter_guide,
       has_congestion: item.has_congestion,
       has_parking: item.has_parking,
-      lat: `${item.lat}`,
-      lng: `${item.lng}`,
+      latitude: item.latitude,
+      longitude: item.longitude,
       name: item.name,
       parking_note: item.parking_note,
-      region_id: item.region.id,
-      service: 'weekly-classes',
+      region_code: item.region_code,
+      price: item.price,
     }
     selectedVenueId.value = item.id
   }
@@ -172,8 +169,8 @@ const restoreVenue = async (id: string) => {
 
 const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
   selectedVenue.value.name = value
-  let venue = availableVenues.value.find((x) => x.name == value)
-  if (!!venue) {
+  const venue = availableVenues.value.find((x) => x.name == value)
+  if (venue) {
     panelType.value = 'Add to service'
     selectedVenue.value = {
       address: venue.address,
@@ -181,12 +178,12 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
       facility_enter_guide: venue.facility_enter_guide,
       has_congestion: venue.has_congestion,
       has_parking: venue.has_parking,
-      lat: `${venue.lat}`,
-      lng: `${venue.lng}`,
+      latitude: venue.latitude,
+      longitude: venue.longitude,
       name: venue.name,
       parking_note: venue.parking_note,
-      region_id: venue.region.id,
-      service: 'weekly-classes',
+      region_code: venue.region_code,
+      price: venue.price,
     }
     selectedVenueId.value = venue.id
     blockFields.value = true
@@ -197,7 +194,7 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
 </script>
 
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Weekly Classes Venues">
+  <NuxtLayout name="syncolayout" page-title="Weekly Classes Venues">
     <div class="row">
       <div class="col">
         <div class="d-flex justify-content-between mb-4">
@@ -230,7 +227,7 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
             </tr>
           </thead>
           <tbody class="">
-            <tr class="align-middle" v-for="venue in venues">
+            <tr v-for="venue in venues" class="align-middle">
               <th scope="row">
                 <input
                   :id="venue.id"
@@ -244,12 +241,12 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
               </th>
               <td>{{ venue.name }}</td>
               <td>{{ venue.address }}</td>
-              <td>{{ venue.region.name }}</td>
+              <td>{{ venue.region.title }}</td>
               <td>
-                <button class="btn btn-link px-1" v-if="venue.has_congestion">
+                <button v-if="venue.has_congestion" class="btn btn-link px-1">
                   <Icon name="emojione-monotone:letter-c" class="text-danger" />
                 </button>
-                <button class="btn btn-link px-1" v-if="venue.has_parking">
+                <button v-if="venue.has_parking" class="btn btn-link px-1">
                   <Icon
                     name="emojione-monotone:letter-p"
                     class="text-success"
@@ -274,12 +271,12 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
                 </button>
                 <button
                   class="btn btn-link mx-1 px-1"
+                  :disabled="blockButtons"
                   @click="
                     !!venue.deleted_at
                       ? restoreVenue(venue.id)
                       : deleteVenue(venue.id)
                   "
-                  :disabled="blockButtons"
                 >
                   <Icon
                     :name="!!venue.deleted_at ? 'ph:recycle' : 'ph:trash'"
@@ -314,8 +311,8 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
                 v-model="selectedVenue.name"
               /> -->
               <a-auto-complete
-                class="w-100"
                 v-model:value="selectedVenue.name"
+                class="w-100"
                 :options="autoCompleteVenues"
                 @select="selectExistingVenue"
               />
@@ -324,10 +321,10 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
               <label for="area" class="form-label">Area</label>
               <input
                 id="area"
+                v-model="selectedVenue.area"
                 type="text"
                 class="form-control"
                 placeholder="Chelsea"
-                v-model="selectedVenue.area"
                 :disabled="blockFields"
               />
             </div>
@@ -335,10 +332,10 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
               <label for="address" class="form-label">Address</label>
               <input
                 id="address"
+                v-model="selectedVenue.address"
                 type="text"
                 class="form-control"
                 placeholder="Lots road, London, SW10 0AB"
-                v-model="selectedVenue.address"
                 :disabled="blockFields"
               />
             </div>
@@ -350,11 +347,11 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
                   <div class="form-check">
                     <input
                       id="parkingyes"
+                      v-model="selectedVenue.has_parking"
                       class="form-check-input"
                       type="radio"
                       name="parking"
                       :value="true"
-                      v-model="selectedVenue.has_parking"
                       :disabled="blockFields"
                     />
                     <label class="form-check-label" for="parkingyes">
@@ -364,11 +361,11 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
                   <div class="form-check">
                     <input
                       id="parkingno"
+                      v-model="selectedVenue.has_parking"
                       class="form-check-input"
                       type="radio"
                       name="parking"
                       :value="false"
-                      v-model="selectedVenue.has_parking"
                       :disabled="blockFields"
                     />
                     <label class="form-check-label" for="parkingno"> No </label>
@@ -382,11 +379,11 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
                   <div class="form-check">
                     <input
                       id="congestionyes"
+                      v-model="selectedVenue.has_congestion"
                       class="form-check-input"
                       type="radio"
                       name="congestion"
                       :value="true"
-                      v-model="selectedVenue.has_congestion"
                       :disabled="blockFields"
                     />
                     <label class="form-check-label" for="congestionyes">
@@ -396,11 +393,11 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
                   <div class="form-check">
                     <input
                       id="congestionno"
+                      v-model="selectedVenue.has_congestion"
                       class="form-check-input"
                       type="radio"
                       name="congestion"
                       :value="false"
-                      v-model="selectedVenue.has_congestion"
                       :disabled="blockFields"
                     />
                     <label class="form-check-label" for="congestionno">
@@ -413,9 +410,9 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
             <div class="form-floating mb-3">
               <textarea
                 id="parking-note"
+                v-model="selectedVenue.parking_note"
                 class="form-control"
                 placeholder="Add a parking note"
-                v-model="selectedVenue.parking_note"
                 :disabled="blockFields"
               ></textarea>
               <label for="parking-note">Add a parking note</label>
@@ -426,9 +423,9 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
               >
               <textarea
                 id="enter-facility"
+                v-model="selectedVenue.facility_enter_guide"
                 class="form-control"
                 placeholder="Add notes"
-                v-model="selectedVenue.facility_enter_guide"
                 :disabled="blockFields"
               ></textarea>
             </div>
@@ -438,16 +435,16 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
                 <label for="Region" class="form-label">Region</label>
                 <select
                   id="Region"
+                  v-model="selectedVenue.region_code"
                   class="form-control form-control-lg"
-                  v-model="selectedVenue.region_id"
                   :disabled="blockFields"
                 >
                   <option
                     v-for="(region, index) in regions"
-                    :value="region.id"
                     :key="index"
+                    :value="region"
                   >
-                    {{ region.name }}
+                    {{ region.title }}
                   </option>
                 </select>
               </div>
@@ -462,8 +459,8 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
               </button>
               <button
                 class="btn btn-primary btn-lg w-100 text-light"
-                @click="actionButton"
                 :disabled="blockButtons"
+                @click="actionButton"
               >
                 {{ panelType }}
               </button>

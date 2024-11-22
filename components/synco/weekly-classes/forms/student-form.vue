@@ -9,37 +9,40 @@ const props = defineProps<{
   noBorder?: boolean | null
 }>()
 
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
 const changeLoadingState = (state: boolean) => {
   isLoading.value = state
   blockButtons.value = state
 }
 
-let student = ref<IStudentCreate>(props.student)
-let noBorder = ref<boolean>(props.noBorder ?? false)
+const student = ref<IStudentCreate>(props.student)
+const noBorder = ref<boolean>(props.noBorder ?? false)
 
-let gender = store.gender
-let medicalInformation = store.medicalInformation
+const gender = store.gender
+const medicalInformation = store.medicalInformation
 
 watch(
   () => student.value.dob,
   (newValue: string, oldValue: string) => {
-    let dob = new Date(newValue)
-    let today = new Date()
-    let ageDifference = today.getTime() - dob.getTime()
-    var ageDate = new Date(ageDifference)
-    let age = Math.abs(ageDate.getUTCFullYear() - 1970)
+    const dob = new Date(newValue)
+    const today = new Date()
+    const ageDifference = today.getTime() - dob.getTime()
+    const ageDate = new Date(ageDifference)
+    const age = Math.abs(ageDate.getUTCFullYear() - 1970)
     student.value.age = age
   },
 )
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/forms/student-form.vue')
-
-  if (store.gender.length == 0) await store.getGender()
-  // if (store.medicalInformation.length == 0) await store.getMedicalInformation()
+  await store.fetchAllData()
+  if (!gender.length) {
+    await store.getGenders()
+  }
 })
+
+console.log('components/synco/weekly-classes/forms/student-form.vue')
 </script>
 
 <template>
@@ -54,10 +57,10 @@ onMounted(async () => {
           >
           <input
             id="studentFirstName"
+            v-model="student.first_name"
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter first name"
-            v-model="student.first_name"
           />
         </div>
       </div>
@@ -68,10 +71,10 @@ onMounted(async () => {
           >
           <input
             id="studentLastName"
+            v-model="student.last_name"
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter last name"
-            v-model="student.last_name"
           />
         </div>
       </div>
@@ -84,10 +87,10 @@ onMounted(async () => {
           >
           <input
             id="studentDoB"
+            v-model="student.dob"
             type="date"
             class="form-control form-control-lg"
             placeholder="Enter date of birth"
-            v-model="student.dob"
           />
         </div>
       </div>
@@ -96,10 +99,10 @@ onMounted(async () => {
           <label for="studentAge" class="form-labelform-label-light">Age</label>
           <input
             id="studentAge"
+            v-model="student.age"
             type="text"
             class="form-control form-control-lg"
             placeholder="Automatic entry"
-            v-model="student.age"
             readonly
           />
         </div>
@@ -107,20 +110,20 @@ onMounted(async () => {
     </div>
     <div class="row">
       <div class="col-6">
-        <div class="form-group w-100 mb-3" v-if="gender.length > 0">
+        <div v-if="gender.length" class="form-group w-100 mb-3">
           <label for="studentGender" class="form-labelform-label-light"
             >Gender</label
           >
           <select
             id="studentGender"
-            class="form-control form-control-lg"
             v-model="student.gender_id"
+            class="form-control form-control-lg"
           >
             <option :value="0">Select option</option>
             <option
               v-for="(item, index) in gender"
-              :value="item.id"
               :key="index"
+              :value="item.id"
             >
               {{ item.title }}
             </option>
@@ -134,13 +137,13 @@ onMounted(async () => {
           >
           <input
             id="studentMedicalInformation"
+            v-model="student.medical_information"
             type="text"
             class="form-control form-control-lg"
             placeholder="Medical information"
-            v-model="student.medical_information"
           />
         </div>
-        <!-- <div class="form-group w-100 mb-3" v-if="medicalInformation.length > 0">
+        <!-- <div class="form-group w-100 mb-3" v-if="medicalInformation.length">
           <label
             for="studentMedicalInformation"
             class="form-labelform-label-light"

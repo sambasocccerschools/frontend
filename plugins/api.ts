@@ -50,12 +50,15 @@ export default defineNuxtPlugin((nuxtApp) => {
   const token = useCookie('token')
   const fetchOptions: FetchOptions = {
     baseURL: nuxtApp.$config.public.API_BASE_URL as string,
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest',
+    },
   }
 
-  if (token) {
+  if (token.value) {
     fetchOptions.headers = {
-      Authorization: `Bearer ${token.value}`,
-      'X-Requested-With': 'XMLHttpRequest',
+      ...fetchOptions.headers,
+      Authorization: `${token.value}`,
     }
   }
 

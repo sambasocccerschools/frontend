@@ -8,27 +8,18 @@ import type {
 } from '~/types/synco'
 
 class VenuesModule extends FetchFactory {
-  private RESOURCE = '/v1/venues'
+  private RESOURCE = '/venue'
 
-  async getAll(
-    service:
-      | 'weekly-classes'
-      | 'one-to-one'
-      | 'holiday-camps'
-      | 'birthday-parties'
-      | 'club'
-      | 'pathway',
-    limit: number = 25,
-  ) {
+  async getAll() {
+    const token = useCookie('token')
     const fetchOptions: FetchOptions<'json'> = {
-      params: {
-        limit,
-        service,
+      headers: {
+        Authorization: `${token.value}`,
       },
     }
     return this.call<IVenuesResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
       fetchOptions,
     )
@@ -37,26 +28,23 @@ class VenuesModule extends FetchFactory {
   async create(venue: IVenueCreateItem) {
     return this.call<IVenueSuccessfulResponse>(
       'POST',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/add`,
       venue,
-      undefined,
     )
   }
 
   async update(id: string, venue: IVenueCreateItem) {
     return this.call<IVenueSuccessfulResponse>(
       'PUT',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/edit?id=${id}`,
       venue,
-      undefined,
     )
   }
 
   async delete(id: string) {
     return this.call<IVenueSuccessfulResponse>(
       'DELETE',
-      `${this.RESOURCE}/${id}`,
-      undefined,
+      `${this.RESOURCE}/delete?id=${id}`,
       undefined,
     )
   }
@@ -70,24 +58,16 @@ class VenuesModule extends FetchFactory {
     )
   }
 
-  async availableVenues(
-    service:
-      | 'weekly-classes'
-      | 'one-to-one'
-      | 'holiday-camps'
-      | 'birthday-parties'
-      | 'club'
-      | 'pathway',
-  ) {
+  async availableVenues() {
+    const token = useCookie('token')
     const fetchOptions: FetchOptions<'json'> = {
-      params: {
-        service,
-        include_classes: true,
+      headers: {
+        Authorization: `${token.value}`,
       },
     }
     return this.call<IAvailableVenueResponse>(
       'GET',
-      `/v1/datasets/venue`,
+      `${this.RESOURCE}/get_all`,
       undefined,
       fetchOptions,
     )

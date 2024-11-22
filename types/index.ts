@@ -1,16 +1,32 @@
+export type IStatusResponse = {
+  id: number
+  message: string
+  http_code: number
+}
+
+export type IDataLoginResponse = {
+  access_token: string
+  refresh_token: string
+  screen_access: []
+}
+
 export type ILoginInput = {
   email: string
   password: string
-  remember: boolean
+  // remember: boolean
+  // user_name: string | null
 }
 
 export type ILoginResponse = {
-  access_token: string
-  expires_in: number
+  status: IStatusResponse
+  data: IDataLoginResponse
+  info: string
 }
 
 export type ILogoutResponse = {
-  message: string
+  status: IStatusResponse
+  data: any
+  info: string
 }
 // Weekly classes
 
@@ -151,7 +167,8 @@ type ICity = {
 export type IUser = {
   id: string
   first_name: string
-  last_name: string
+  full_name: string
+  lastName: string
   phone_number: string
   email: string
   position: string | null
@@ -214,7 +231,9 @@ export type ICreateUserResponse = {
 }
 
 export type GenericResponse<T> = {
+  status: IStatusResponse
   data: T
+  info: string
 }
 
 export type IGetUserResponse = GenericResponse<IUser>
@@ -492,6 +511,12 @@ export type IBaseDatasetItem = {
 export type IGender = IBaseDatasetItem & {
   title: string
 }
+
+export type IGenderNew = {
+  title: string
+  value: string
+}
+
 export type IGenderResponse = IBaseResponse<IGender> & {}
 
 export type IMedicalInformation = IBaseDatasetItem & {
@@ -559,7 +584,7 @@ export type IService = IBaseDatasetItem & {
 export type IServiceResponse = IBaseResponse<IService> & {}
 
 export type IRegionItem = IBaseDatasetItem & {
-  name: string
+  title: string
 }
 export type IRegionResponse = IBaseResponse<IRegionItem> & {}
 

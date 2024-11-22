@@ -65,8 +65,9 @@ const getData = async () => {
 
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/find.vue')
-  if (store.availableVenues.length == 0)
+  if (!store.availableVenues.length) {
     await store.getAvailableVenues('weekly-classes')
+  }
   await getData()
 })
 
@@ -82,12 +83,12 @@ const handleFiltered = async (filteredItems: {
   if (!!filteredItems.class_name) {
     filter.value.class_name = filteredItems.class_name
   }
-  if (!!filteredItems.venues && filteredItems.venues.length > 0) {
+  if (!!filteredItems.venues && filteredItems.venues.length) {
     filter.value.venue_id = filteredItems.venues.join(',')
   } else {
     filter.value.venue_id = null
   }
-  if (!!filteredItems.days && filteredItems.days.length > 0) {
+  if (!!filteredItems.days && filteredItems.days.length) {
     filter.value.days = filteredItems.days.join(',')
   } else {
     filter.value.days = null
@@ -95,8 +96,8 @@ const handleFiltered = async (filteredItems: {
   // if (
   //   (!!filteredItems.venue && filteredItems.venue.length > 2) ||
   //   (!!filteredItems.class_name && filteredItems.class_name.length > 2) ||
-  //   (!!filteredItems.venues && filteredItems.venues.length > 0) ||
-  //   (!!filteredItems.days && filteredItems.days.length > 0)
+  //   (!!filteredItems.venues && filteredItems.venues.length) ||
+  //   (!!filteredItems.days && filteredItems.days.length)
   // ) {
   // }
   console.log(filteredItems)

@@ -50,14 +50,13 @@ const regions = ref([
   { label: 'West London', value: 4 },
 ])
 
-const getVenues = async (limit: number = 25) => {
+const getVenues = async () => {
   try {
-    const venuesResponse = await $api.venues.getAll('club', limit)
+    const venuesResponse = await $api.venues.getAll()
     venues.value = venuesResponse?.data
   } catch (error: any) {
     console.log(error)
     toast.error(error?.data?.messages ?? 'Error')
-  } finally {
   }
 }
 

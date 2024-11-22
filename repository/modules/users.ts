@@ -10,7 +10,7 @@ import type {
 } from '~/types'
 
 class UsersModule extends FetchFactory {
-  private RESOURCE = '/v1/users'
+  private RESOURCE = '/user/get'
 
   async getUsers(
     params: IGetUsersParams,

@@ -1,13 +1,14 @@
 // stores/index.ts
-
 import type {
   IFreeTrialStatus,
+  IGenderNew,
   IMemberCancelStatus,
   IMemberCancelType,
   IMemberStatus,
   ISaleStatus,
   IUser,
 } from '~/types'
+import genders from '~/utils/genders.json'
 import { defineStore } from 'pinia'
 import { useToast } from 'vue-toast-notification'
 import type {
@@ -42,7 +43,7 @@ export const generalStore = defineStore('store', {
     relationships: [] as IRelationship[],
     referralSources: [] as IReferralSource[],
     leadStatus: [] as ILeadStatus[],
-    gender: [] as IGender[],
+    gender: [] as IGenderNew[],
     medicalInformation: [] as IMedicalInformation[],
     agents: [] as IAgentObject[],
     freeTrialStatus: [] as IFreeTrialStatus[],
@@ -63,256 +64,110 @@ export const generalStore = defineStore('store', {
     setUser(user?: IUser) {
       this.user = user
     },
-    async getRegions() {
+
+    async fetchAllData() {
       try {
-        const response = await useNuxtApp().$api.datasets.getRegions()
-        this.regions = response?.data
-      } catch (error: any) {
-        console.log(error)
-        this.regions = []
-        useToast().error(error?.messages ?? 'getRegions Error')
-      } finally {
+        const response = await useNuxtApp().$api.datasets.fetchAllData()
+        const data = response?.data || []
+
+        this.regions = data.filter((item: any) => item.type === 'REGIONS')
+        this.seasons = data.filter((item: any) => item.type === 'SEASONS')
+        this.services = data.filter((item: any) => item.type === 'SERVICES')
+        this.relationships = data.filter(
+          (item: any) => item.type === 'RELATIONSHIP_TYPES',
+        )
+        this.referralSources = data.filter(
+          (item: any) => item.type === 'REFERRAL_SOURCES',
+        )
+        this.leadStatus = data.filter(
+          (item: any) => item.type === 'LEAD_STATUS',
+        )
+        this.medicalInformation = data.filter(
+          (item: any) => item.type === 'MEDICAL_INFORMATION',
+        )
+        this.agents = data.filter((item: any) => item.type === 'AGENTS')
+        this.freeTrialStatus = data.filter(
+          (item: any) => item.type === 'FREE_TRIAL_STATUS',
+        )
+        this.memberCancelStatus = data.filter(
+          (item: any) => item.type === 'MEMBER_CANCEL_STATUS',
+        )
+        this.memberCancelType = data.filter(
+          (item: any) => item.type === 'MEMBER_CANCEL_TYPES',
+        )
+        this.memberStatus = data.filter(
+          (item: any) => item.type === 'MEMBER_STATUS',
+        )
+        this.saleStatus = data.filter(
+          (item: any) => item.type === 'SALE_STATUS',
+        )
+        this.subscriptionPlans = data.filter(
+          (item: any) => item.type === 'SUBSCRIPTION_PLANS',
+        )
+        this.feedbackStatus = data.filter(
+          (item: any) => item.type === 'FEEDBACK_STATUS',
+        )
+        this.feedbackCategory = data.filter(
+          (item: any) => item.type === 'FEEDBACK_CATEGORIES',
+        )
+        this.feedbackType = data.filter(
+          (item: any) => item.type === 'FEEDBACK_TYPES',
+        )
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        useToast().error('Failed to load data.')
       }
     },
-    async getAvailableVenues(
-      service:
-        | 'weekly-classes'
-        | 'one-to-one'
-        | 'holiday-camps'
-        | 'birthday-parties'
-        | 'club'
-        | 'pathway',
-    ) {
+
+    async fetchDatasetDataByType(type: string) {
       try {
-        const response = await useNuxtApp().$api.venues.availableVenues(service)
+        const response =
+          await useNuxtApp().$api.datasets.fetchDatasetByType(type)
+        return response?.data
+      } catch (error: any) {
+        console.log(error)
+        useToast().error(error?.messages ?? `Error fetching dataset: ${type}`)
+        return []
+      }
+    },
+
+    async getAvailableVenues() {
+      try {
+        const response = await useNuxtApp().$api.venues.availableVenues()
         this.availableVenues = response?.data
       } catch (error: any) {
         this.availableVenues = []
         console.log(error)
         useToast().error(error?.messages ?? 'getAvailableVenues Error')
-      } finally {
       }
     },
-    async getSeasons() {
+
+    async getAbilityGroups() {
       try {
-        const response = await useNuxtApp().$api.datasets.getSeasons()
-        this.seasons = response?.data
-      } catch (error: any) {
-        this.seasons = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getSeasons Error')
-      } finally {
-      }
-    },
-    async getAbilityGroups(
-      service:
-        | 'weekly-classes'
-        | 'one-to-one'
-        | 'holiday-camps'
-        | 'birthday-parties'
-        | 'club',
-    ) {
-      try {
-        const response = await useNuxtApp().$api.abilityGroups.getAll(
-          service,
-          null,
-        )
+        const response = await useNuxtApp().$api.abilityGroups.getAll()
         this.abilityGroups = response?.data
       } catch (error: any) {
         this.abilityGroups = []
         console.log(error)
         useToast().error(error?.messages ?? 'getAbilityGroups Error')
-      } finally {
-      }
-    },
-    async getServices() {
-      try {
-        const response = await useNuxtApp().$api.datasets.getServices()
-        this.services = response?.data
-      } catch (error: any) {
-        this.services = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getServices Error')
-      } finally {
-      }
-    },
-    async getRelationships() {
-      try {
-        const response = await useNuxtApp().$api.datasets.getRelationship()
-        this.relationships = response?.data
-      } catch (error: any) {
-        this.relationships = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getRelationships Error')
-      } finally {
-      }
-    },
-    async getReferralSource() {
-      try {
-        const response = await useNuxtApp().$api.datasets.getReferralSource()
-        this.referralSources = response?.data
-      } catch (error: any) {
-        this.referralSources = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getReferralSource Error')
-      } finally {
-      }
-    },
-    async getLeadStatus() {
-      try {
-        const response = await useNuxtApp().$api.datasets.getLeadStatus()
-        this.leadStatus = response?.data
-      } catch (error: any) {
-        this.leadStatus = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getLeadStatus Error')
-      } finally {
       }
     },
 
-    async getGender() {
-      try {
-        const response = await useNuxtApp().$api.datasets.getGender()
-        this.gender = response?.data
-      } catch (error: any) {
-        this.gender = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getGender Error')
-      } finally {
-      }
-    },
-    async getMedicalInformation() {
-      try {
-        const response =
-          await useNuxtApp().$api.datasets.getMedicalInformation()
-        this.medicalInformation = response?.data
-      } catch (error: any) {
-        this.medicalInformation = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getMedicalInformation Error')
-      } finally {
-      }
-    },
-    async getAgents() {
-      try {
-        const response = await useNuxtApp().$api.datasets.getAllAgents()
-        this.agents = response?.data
-      } catch (error: any) {
-        this.agents = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getAgents Error')
-      } finally {
-      }
-    },
     async downloadExcelFile(url: string, name: string) {
-      let a = document.createElement('a')
+      const a = document.createElement('a')
       a.href = url
       a.download = name
       a.target = '_blank'
       a.click()
     },
-    async getFreeTrialStatus() {
+
+    async getGenders() {
       try {
-        const response = await useNuxtApp().$api.datasets.getFreeTrialStatus()
-        this.freeTrialStatus = response?.data
-      } catch (error: any) {
-        this.freeTrialStatus = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getFreeTrialStatus Error')
-      } finally {
-      }
-    },
-    async getMemberCancelStatus() {
-      try {
-        const response =
-          await useNuxtApp().$api.datasets.getMemberCancelStatus()
-        this.memberCancelStatus = response?.data
-      } catch (error: any) {
-        this.memberCancelStatus = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getMemberCancelStatus Error')
-      } finally {
-      }
-    },
-    async getMemberCancelType() {
-      try {
-        const response = await useNuxtApp().$api.datasets.getMemberCancelType()
-        this.memberCancelType = response?.data
-      } catch (error: any) {
-        this.memberCancelType = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getMemberCancelType Error')
-      } finally {
-      }
-    },
-    async getMemberStatus() {
-      try {
-        const response = await useNuxtApp().$api.datasets.getMemberStatus()
-        this.memberStatus = response?.data
-      } catch (error: any) {
-        this.memberStatus = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getMemberStatus Error')
-      } finally {
-      }
-    },
-    async getSaleStatus() {
-      try {
-        const response = await useNuxtApp().$api.datasets.getSaleStatus()
-        this.saleStatus = response?.data
-      } catch (error: any) {
-        this.saleStatus = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getSaleStatus Error')
-      } finally {
-      }
-    },
-    async getSubscriptionPlan() {
-      try {
-        const response = await useNuxtApp().$api.datasets.getSubscriptionPlan(
-          'weekly-classes',
-          null,
-        )
-        this.subscriptionPlans = response?.data
-      } catch (error: any) {
-        this.subscriptionPlans = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getSubscriptionPlan Error')
-      } finally {
-      }
-    },
-    async getFeedbackStatus() {
-      try {
-        const response = await useNuxtApp().$api.datasets.getFeedbackStatus()
-        this.feedbackStatus = response?.data
-      } catch (error: any) {
-        this.feedbackStatus = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getSubscriptionPlan Error')
-      } finally {
-      }
-    },
-    async getFeedbackType() {
-      try {
-        const response = await useNuxtApp().$api.datasets.getFeedbackType()
-        this.feedbackType = response?.data
-      } catch (error: any) {
-        this.feedbackType = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getSubscriptionPlan Error')
-      } finally {
-      }
-    },
-    async getFeedbackCategory() {
-      try {
-        const response = await useNuxtApp().$api.datasets.getFeedbackCategory()
-        console.log(response);
-        this.feedbackCategory = response?.data
-      } catch (error: any) {
-        this.feedbackCategory = []
-        console.log(error)
-        useToast().error(error?.messages ?? 'getSubscriptionPlan Error')
-      } finally {
+        this.gender = genders
+      } catch (error) {
+        console.error('Error fetching genders:', error)
+        useToast().error('Failed to load genders data.')
+        return []
       }
     },
   },

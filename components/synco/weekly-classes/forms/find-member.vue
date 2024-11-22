@@ -18,12 +18,12 @@
             <Icon name="ic:baseline-search" />
           </span>
           <input
+            v-model="student"
             type="text"
             class="form-control"
             placeholder="Search by student name"
             aria-label="Search by student name"
             aria-describedby="search-addon"
-            v-model="student"
           />
         </div>
       </div>
@@ -31,8 +31,8 @@
         <label for="choose-venue" class="form-label">Venue</label>
         <select
           id="choose-venue"
-          class="form-control form-control-lg"
           v-model="venue_id"
+          class="form-control form-control-lg"
         >
           <option value="0">All</option>
           <option v-for="venue in availableVenues" :value="venue.id">
@@ -46,8 +46,8 @@
           <div class="row row-cols-2">
             <select
               id="lead_status"
-              class="form-control form-control-lg"
               v-model="status_id"
+              class="form-control form-control-lg"
             >
               <option value="0">All</option>
               <option v-for="status in memberStatus" :value="status.id">
@@ -68,11 +68,11 @@
     <div class="card-body d-flex flex-row">
       <div class="form-group w-50 mb-3 me-2">
         <label for="start-date" class="form-label">Start date</label>
-        <input type="date" class="form-control" v-model="startDate" />
+        <input v-model="startDate" type="date" class="form-control" />
       </div>
       <div class="form-group w-50 mb-3 ms-2">
         <label for="end-date" class="form-label">End date</label>
-        <input type="date" class="form-control" v-model="endDate" />
+        <input v-model="endDate" type="date" class="form-control" />
       </div>
       <!-- Calendar Selector  -->
       <!-- <SyncoFilterByCalendar /> -->
@@ -86,8 +86,8 @@ import type { IWeeklyClassesLeadFilterObject } from '~/types/synco/index'
 import { generalStore } from '~/stores'
 const store = generalStore()
 
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
 const changeLoadingState = (state: boolean) => {
   isLoading.value = state
   blockButtons.value = state
@@ -96,17 +96,20 @@ const changeLoadingState = (state: boolean) => {
 const memberStatus = store.memberStatus
 const availableVenues = store.availableVenues
 
-let student = ref<string>('')
-let venue_id = ref<number>(0)
-let status_id = ref<number>(0)
-let startDate = ref<string>('')
-let endDate = ref<string>('')
+const student = ref<string>('')
+const venue_id = ref<number>(0)
+const status_id = ref<number>(0)
+const startDate = ref<string>('')
+const endDate = ref<string>('')
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/forms/parent-form.vue')
-  if (store.memberStatus.length == 0) await store.getMemberStatus()
-  if (store.availableVenues.length == 0)
+  if (!store.memberStatus.length) {
+    await store.fetchDatasetDataByType('MEMBER-STATUS')
+  }
+  if (!store.availableVenues.length) {
     await store.getAvailableVenues('weekly-classes')
+  }
 })
 
 const emit = defineEmits(['applyFilter'])

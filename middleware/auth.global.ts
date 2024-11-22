@@ -11,7 +11,11 @@ export default defineNuxtRouteMiddleware((to) => {
     store.updateAuthenticated(authenticated)
   }
 
-  if (!authenticated && to?.path.includes('/synco/')) {
+  if (
+    !authenticated &&
+    to?.path.includes('/synco/') &&
+    to.path !== '/synco/forgot-password'
+  ) {
     return navigateTo('/synco')
   }
 

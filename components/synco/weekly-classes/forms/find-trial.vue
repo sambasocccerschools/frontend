@@ -104,9 +104,12 @@ let endDate = ref<string>('')
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/forms/parent-form.vue')
-  if (store.freeTrialStatus.length == 0) await store.getFreeTrialStatus()
-  if (store.availableVenues.length == 0)
+  if (!store.freeTrialStatus.length) {
+    await store.fetchDatasetDataByType('FREE-TRIAL-STATUS')
+  }
+  if (!store.availableVenues.length) {
     await store.getAvailableVenues('weekly-classes')
+  }
 })
 
 const emit = defineEmits(['applyFilter'])
