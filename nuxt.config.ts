@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: process.env.NODE_ENV !== 'production' }, // Solo habilitar devtools en desarrollo
   modules: [
@@ -61,5 +60,10 @@ export default defineNuxtConfig({
     analyze: process.env.NODE_ENV !== 'production', // Habilita el analizador en desarrollo
     extractCSS: true, // Extrae CSS en archivos separados para optimizar el tamaño del bundle
     transpile: ['ant-design-vue'], // Asegura que ant-design-vue sea procesado correctamente
+  },
+  ssr: false, // Asegura que el modo SPA esté habilitado
+  generate: {
+    dir: 'dist', // Especifica el directorio de salida como dist
+    fallback: true, // Genera un archivo 404.html para manejar rutas no encontradas
   },
 });

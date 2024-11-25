@@ -1,6 +1,6 @@
 [build]
-  command = "npm run build"
-  publish = "dist"
+  command = "npm run generate" # Comando para generar los archivos estáticos
+  publish = "dist"             # Directorio donde están los archivos generados
 
 [build.environment]
   NODE_VERSION = "21.6.1"
@@ -10,3 +10,4 @@
   from = "/*"
   to = "/index.html"
   status = 200
+  force = true                 # Asegura que todas las rutas redirijan correctamente
