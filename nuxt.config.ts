@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
-    '/**': { ssr: false }, // Globally disable SSR, revisit if needed
+    '/**': { ssr: false }, // Globally disable SSR, revisar si se necesita en el futuro
     '/synco/**': { ssr: false },
     '/parents/**': { ssr: false },
   },
@@ -43,7 +43,7 @@ export default defineNuxtConfig({
     build: {
       sourcemap: false, // Deshabilitar source maps para reducir el consumo de memoria
       rollupOptions: {
-        external: ['ant-design-vue'], // Mark ant-design-vue as external
+        external: ['ant-design-vue'], // Externaliza ant-design-vue para evitar conflictos de Rollup
         output: {
           manualChunks(id) {
             // Divide dependencias grandes en chunks
@@ -53,10 +53,13 @@ export default defineNuxtConfig({
           },
         },
       },
+      minify: false, // Deshabilitar temporalmente la minificación si consume demasiada memoria
     },
+    chunkSizeWarningLimit: 1000, // Aumentar el límite de advertencia para chunks grandes
   },
   build: {
-    analyze: process.env.NODE_ENV !== 'production', // Analizador activado en desarrollo
-    extractCSS: true, // Extrae CSS en archivos separados para optimizar
+    analyze: process.env.NODE_ENV !== 'production', // Habilita el analizador en desarrollo
+    extractCSS: true, // Extrae CSS en archivos separados para optimizar el tamaño del bundle
+    transpile: ['ant-design-vue'], // Asegura que ant-design-vue sea procesado correctamente
   },
 });
