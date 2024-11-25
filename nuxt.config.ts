@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV !== 'production' }, // Solo habilitar devtools en desarrollo
   modules: [
     'nuxt-icon',
     '@pinia/nuxt',
@@ -41,9 +41,22 @@ export default defineNuxtConfig({
       },
     },
     build: {
+      sourcemap: false, // Deshabilitar source maps para reducir el consumo de memoria
       rollupOptions: {
         external: ['ant-design-vue'], // Mark ant-design-vue as external
+        output: {
+          manualChunks(id) {
+            // Divide dependencias grandes en chunks
+            if (id.includes('node_modules')) {
+              return id.toString().split('node_modules/')[1].split('/')[0].toString();
+            }
+          },
+        },
       },
     },
+  },
+  build: {
+    analyze: process.env.NODE_ENV !== 'production', // Analizador activado en desarrollo
+    extractCSS: true, // Extrae CSS en archivos separados para optimizar
   },
 });
