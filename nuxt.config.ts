@@ -16,19 +16,16 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBaseUrl: 'http://18.117.147.235:3000',
-      // apiBaseUrl: 'https://api.synco.staging.sambasoccerschools.co.uk',
+      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:3000',
     },
   },
-  // Don't prerender SSR Synco and Parents Platform
   routeRules: {
-    '/**': { ssr: false }, // TODO:revisar
+    '/**': { ssr: false }, // TODO: Revisit this if SSR is needed globally
     '/synco/**': { ssr: false },
     '/parents/**': { ssr: false },
   },
   image: {
     inject: true,
-    // dir: '/src/assets',
   },
   piniaPersistedstate: {
     storage: 'sessionStorage',
@@ -36,5 +33,12 @@ export default defineNuxtConfig({
   tiptap: {
     prefix: 'Tiptap',
   },
-  antd: {},
-})
+  antd: {}, // Default configuration for Ant Design Vue
+  vite: {
+    build: {
+      rollupOptions: {
+        external: ['ant-design-vue'], // Mark ant-design-vue as external to fix Rollup errors
+      },
+    },
+  },
+});
