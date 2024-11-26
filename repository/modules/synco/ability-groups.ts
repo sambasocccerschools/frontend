@@ -9,15 +9,16 @@ import type {
 
 class AbilityGroupsModule extends FetchFactory {
   private RESOURCE = '/abilityGroups'
+  private token = useCookie('token')
+  private fetchOptions: FetchOptions<'json'> = {
+    headers: {
+      Authorization: `${this.token.value}`,
+    },
+    params: {},
+  }
 
   async getAll() {
     // service_package_id: number | null = null, //   | 'club', //   | 'birthday-parties' //   | 'holiday-camps' //   | 'one-to-one' //   | 'weekly-classes' // service:
-    const token = useCookie('token')
-    const fetchOptions: FetchOptions<'json'> = {
-      headers: {
-        Authorization: `${token.value}`,
-      },
-    }
     // if (service_package_id != null && fetchOptions.params != undefined) {
     //   fetchOptions.params.service_package_id = service_package_id
     // }
@@ -25,16 +26,16 @@ class AbilityGroupsModule extends FetchFactory {
       'GET',
       `${this.RESOURCE}/get_all`,
       undefined,
-      fetchOptions,
+      this.fetchOptions,
     )
   }
 
   async getById(id: number) {
     return this.call<IAbilityGroupObjectResponse>(
       'GET',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/get_all?id=${id}`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -50,7 +51,7 @@ class AbilityGroupsModule extends FetchFactory {
       'POST',
       `${this.RESOURCE}`,
       formData,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -63,27 +64,27 @@ class AbilityGroupsModule extends FetchFactory {
     formData.append('_method', 'PUT')
     return this.call<IAbilityGroupObjectResponse>(
       'PUT',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/edit?id=${id}`,
       formData,
-      undefined,
+      this.fetchOptions,
     )
   }
 
   async delete(id: number) {
     return this.call<IAbilityGroupObjectResponse>(
       'DELETE',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/delete?id${id}`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
   async restore(id: number) {
     return this.call<IAbilityGroupObjectResponse>(
       'POST',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/restore?id=${id}`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 }

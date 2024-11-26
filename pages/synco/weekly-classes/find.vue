@@ -66,7 +66,7 @@ const getData = async () => {
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/find.vue')
   if (!store.availableVenues.length) {
-    await store.getAvailableVenues('weekly-classes')
+    await store.getAvailableVenues()
   }
   await getData()
 })
@@ -93,14 +93,7 @@ const handleFiltered = async (filteredItems: {
   } else {
     filter.value.days = null
   }
-  // if (
-  //   (!!filteredItems.venue && filteredItems.venue.length > 2) ||
-  //   (!!filteredItems.class_name && filteredItems.class_name.length > 2) ||
-  //   (!!filteredItems.venues && filteredItems.venues.length) ||
-  //   (!!filteredItems.days && filteredItems.days.length)
-  // ) {
-  // }
-  console.log(filteredItems)
+
   await getData()
 }
 </script>
