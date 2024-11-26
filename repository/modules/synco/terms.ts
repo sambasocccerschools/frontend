@@ -9,18 +9,24 @@ import type {
 
 class TermsModule extends FetchFactory {
   private RESOURCE = '/terms'
+  private token = useCookie('token')
+  private fetchOptions: FetchOptions<'json'> = {
+    headers: {
+      Authorization: `${this.token.value}`,
+    },
+    params: {},
+  }
 
   async getAll(limit: number = 25) {
-    const fetchOptions: FetchOptions<'json'> = {
-      params: {
-        limit,
-      },
+    this.fetchOptions.params = {}
+    this.fetchOptions.params = {
+      limit,
     }
     return this.call<ITermsResponse>(
       'GET',
       `${this.RESOURCE}/get_all`,
       undefined,
-      fetchOptions,
+      this.fetchOptions,
     )
   }
 
@@ -29,7 +35,7 @@ class TermsModule extends FetchFactory {
       'POST',
       `${this.RESOURCE}/add`,
       term,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -63,7 +69,7 @@ class TermsModule extends FetchFactory {
       'PUT',
       `${this.RESOURCE}/edit?id=${id}`,
       body,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -72,16 +78,16 @@ class TermsModule extends FetchFactory {
       'DELETE',
       `${this.RESOURCE}/delete?id=${id}`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
   async restore(id: number) {
     return this.call<ITermsSuccessfulResponse>(
       'POST',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/restore?id=${id}`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 }

@@ -9,19 +9,20 @@ import type {
 
 class VenuesModule extends FetchFactory {
   private RESOURCE = '/venue'
+  private token = useCookie('token')
+  private fetchOptions: FetchOptions<'json'> = {
+    headers: {
+      Authorization: `${this.token.value}`,
+    },
+    params: {},
+  }
 
   async getAll() {
-    const token = useCookie('token')
-    const fetchOptions: FetchOptions<'json'> = {
-      headers: {
-        Authorization: `${token.value}`,
-      },
-    }
     return this.call<IVenuesResponse>(
       'GET',
       `${this.RESOURCE}/get_all`,
       undefined,
-      fetchOptions,
+      this.fetchOptions,
     )
   }
 
@@ -30,6 +31,7 @@ class VenuesModule extends FetchFactory {
       'POST',
       `${this.RESOURCE}/add`,
       venue,
+      this.fetchOptions,
     )
   }
 
@@ -38,6 +40,7 @@ class VenuesModule extends FetchFactory {
       'PUT',
       `${this.RESOURCE}/edit?id=${id}`,
       venue,
+      this.fetchOptions,
     )
   }
 
@@ -46,6 +49,7 @@ class VenuesModule extends FetchFactory {
       'DELETE',
       `${this.RESOURCE}/delete?id=${id}`,
       undefined,
+      this.fetchOptions,
     )
   }
 
@@ -59,17 +63,11 @@ class VenuesModule extends FetchFactory {
   }
 
   async availableVenues() {
-    const token = useCookie('token')
-    const fetchOptions: FetchOptions<'json'> = {
-      headers: {
-        Authorization: `${token.value}`,
-      },
-    }
     return this.call<IAvailableVenueResponse>(
       'GET',
       `${this.RESOURCE}/get_all`,
       undefined,
-      fetchOptions,
+      this.fetchOptions,
     )
   }
 }

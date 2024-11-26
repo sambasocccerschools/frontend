@@ -8,7 +8,7 @@ import type {
 } from '~/types/synco'
 
 class SessionPlansModule extends FetchFactory {
-  private RESOURCE = '/v1/sessionPlans'
+  private RESOURCE = '/sessionPlans'
 
   async getByAbilityGroup(ability_group_id: number) {
     const fetchOptions: FetchOptions<'json'> = {
@@ -18,7 +18,7 @@ class SessionPlansModule extends FetchFactory {
     }
     return this.call<ISessionPlanResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
       fetchOptions,
     )

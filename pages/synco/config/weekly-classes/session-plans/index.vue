@@ -41,13 +41,13 @@ const selectAbilityGroup = (id: number) => {
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/session-plans/index.vue')
 
-  await store.getAbilityGroups('weekly-classes')
+  await store.getAbilityGroups()
   selectAbilityGroup(abilityGroups[0]?.id)
 })
 </script>
 
 <template>
-  <NuxtLayout name="syncolayout">
+  <NuxtLayout name="syncolayout" page-title="Session Plans">
     <h4 class="mb-4">Create Session Plans</h4>
     <div class="row">
       <div class="col-sm-3">
@@ -58,6 +58,7 @@ onMounted(async () => {
           <ul class="list-group">
             <li
               v-for="group in abilityGroups"
+              :key="group.id"
               class="list-group-item list-group-item-action border-top d-flex w-100 rounded-0 border-bottom-0 border-end-0 border-start-0 border py-3"
               :class="selectedAbilityGroupId == group.id ? 'text-primary' : ''"
               @click="selectAbilityGroup(group.id)"
@@ -87,7 +88,11 @@ onMounted(async () => {
               <span class="h3 my-3">
                 <strong>BEGINNER SESSION PLANS</strong>
               </span>
-              <div v-for="session in sessionPlans" class="col-auto my-2">
+              <div
+                v-for="session in sessionPlans"
+                :key="session.id"
+                class="col-auto my-2"
+              >
                 <NuxtLink
                   class=""
                   :to="`/synco/config/weekly-classes/session-plans/edit?sessionPlanId=${session.id}`"

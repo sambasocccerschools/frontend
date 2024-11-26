@@ -304,7 +304,11 @@ const cleanDate = (date: any) => {
         </NuxtLink>
       </div>
       <div :key="updateKey" class="card rounded-4">
-        <div v-for="term in terms" @click="selectTerm(term.id, term)">
+        <div
+          v-for="term in terms"
+          :key="term.id"
+          @click="selectTerm(term.id, term)"
+        >
           <SyncoConfigTermsSessionCard
             :term="term"
             :sessions="newEditTermItem"
