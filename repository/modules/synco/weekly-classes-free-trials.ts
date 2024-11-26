@@ -13,19 +13,23 @@ import type {
 } from '~/types/synco'
 
 class WeeklyClassesFreeTrialsModule extends FetchFactory {
-  private RESOURCE = '/v1/weeklyClassesFreeTrials'
+  private RESOURCE = '/weeklyClassesFreeTrials'
+  private token = useCookie('token')
+  private fetchOptions: FetchOptions<'json'> = {
+    headers: {
+      Authorization: `${this.token.value}`,
+    },
+    params: {},
+  }
 
   async getAll(limit: number = 25) {
-    const fetchOptions: FetchOptions<'json'> = {
-      params: {
-        limit,
-      },
-    }
+    this.fetchOptions.params = {}
+    this.fetchOptions.params.limit = limit
     return this.call<IWeeklyClassesFreeTrialsResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
-      fetchOptions,
+      this.fetchOptions,
     )
   }
 
@@ -33,34 +37,31 @@ class WeeklyClassesFreeTrialsModule extends FetchFactory {
     filter: IWeeklyClassesFreeTrialsFilterObject,
     limit: number = 25,
   ) {
-    const fetchOptions: FetchOptions<'json'> = {
-      params: {
-        limit,
-      },
-    }
-    if (!!fetchOptions.params) {
-      if (!!filter.student) fetchOptions.params.student = filter.student
+    this.fetchOptions.params = {}
+    this.fetchOptions.params.limit = limit
+    if (this.fetchOptions.params) {
+      if (filter.student) this.fetchOptions.params.student = filter.student
       if (!!filter.venue_id && filter.venue_id != '0')
-        fetchOptions.params.venue_id = filter.venue_id
+        this.fetchOptions.params.venue_id = filter.venue_id
       if (!!filter.free_trial_status_id && filter.free_trial_status_id != '0')
-        fetchOptions.params.free_trial_status_id = filter.free_trial_status_id
-      if (!!filter.end_date) fetchOptions.params.end_date = filter.end_date
-      if (!!filter.start_date)
-        fetchOptions.params.start_date = filter.start_date
+        this.fetchOptions.params.free_trial_status_id = filter.free_trial_status_id
+      if (filter.end_date) this.fetchOptions.params.end_date = filter.end_date
+      if (filter.start_date)
+        this.fetchOptions.params.start_date = filter.start_date
     }
 
     return this.call<IWeeklyClassesFreeTrialsResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
-      fetchOptions,
+      this.fetchOptions,
     )
   }
 
   async getById(id: number) {
     return this.call<IWeeklyClassesShowLeadResponse>(
       'GET',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/edit?id=${id}`,
       undefined,
       undefined,
     )
@@ -69,7 +70,7 @@ class WeeklyClassesFreeTrialsModule extends FetchFactory {
   async delete(id: number) {
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'DELETE',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/delete?id=${id}`,
       undefined,
       undefined,
     )
@@ -78,7 +79,7 @@ class WeeklyClassesFreeTrialsModule extends FetchFactory {
   async restore(id: number) {
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'POST',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/restore?id=${id}`,
       undefined,
       undefined,
     )
@@ -124,7 +125,7 @@ class WeeklyClassesFreeTrialsModule extends FetchFactory {
   // }
 
   async assignStatus(id: number, statusId: number) {
-    let body = {
+    const body = {
       weekly_classes_lead_id: [id],
       lead_status_id: statusId,
     }

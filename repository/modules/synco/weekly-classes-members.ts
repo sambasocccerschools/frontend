@@ -63,7 +63,7 @@ class WeeklyClassesMembersModule extends FetchFactory {
       'GET',
       `${this.RESOURCE}/get_all?id=${id}`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -72,7 +72,7 @@ class WeeklyClassesMembersModule extends FetchFactory {
       'DELETE',
       `${this.RESOURCE}/delete?id=${id}`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -81,7 +81,7 @@ class WeeklyClassesMembersModule extends FetchFactory {
       'POST',
       `${this.RESOURCE}/restore?id=${id}`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -90,7 +90,7 @@ class WeeklyClassesMembersModule extends FetchFactory {
       'GET',
       `${this.RESOURCE}/exportExcel`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -99,7 +99,7 @@ class WeeklyClassesMembersModule extends FetchFactory {
       'POST',
       `${this.RESOURCE}/sendText`,
       body,
-      undefined,
+      this.fetchOptions,
     )
   }
   async sendEmail(body: ISendMessageMemberObject) {
@@ -107,7 +107,7 @@ class WeeklyClassesMembersModule extends FetchFactory {
       'POST',
       `${this.RESOURCE}/sendEmail`,
       body,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -133,7 +133,7 @@ class WeeklyClassesMembersModule extends FetchFactory {
       'PUT',
       `${this.RESOURCE}/changeStatus`,
       body,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -142,7 +142,7 @@ class WeeklyClassesMembersModule extends FetchFactory {
       'GET',
       `${this.RESOURCE}/reporting`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -151,7 +151,7 @@ class WeeklyClassesMembersModule extends FetchFactory {
       'POST',
       `${this.RESOURCE}/add`,
       data,
-      undefined,
+      this.fetchOptions,
     )
   }
 }

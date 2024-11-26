@@ -6,14 +6,20 @@ import type {
 } from '~/types/synco'
 
 class WeeklyClassesCapacitiesModule extends FetchFactory {
-  private RESOURCE = '/v1/weeklyClassesCapacities'
+  private RESOURCE = '/weeklyClassesCapacities'
+  private token = useCookie('token')
+  private fetchOptions: FetchOptions<'json'> = {
+    headers: {
+      Authorization: `${this.token.value}`,
+    },
+  }
 
   async getAll() {
     return this.call<IWeeklyClassesCapacitiesResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 

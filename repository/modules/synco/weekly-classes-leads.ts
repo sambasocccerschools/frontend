@@ -16,34 +16,35 @@ import type {
 } from '~/types/synco'
 
 class WeeklyClassesLeadsModule extends FetchFactory {
-  private RESOURCE = '/v1/weeklyClassesLeads'
+  private RESOURCE = '/weeklyClassesLeads'
+  private token = useCookie('token')
+  private fetchOptions: FetchOptions<'json'> = {
+    headers: {
+      Authorization: `${this.token.value}`,
+    },
+    params: {},
+  }
 
   async getAll(limit: number = 25) {
-    const fetchOptions: FetchOptions<'json'> = {
-      params: {
-        limit,
-      },
-    }
+    this.fetchOptions.params = {}
+    this.fetchOptions.params.limit = limit
     return this.call<IWeeklyClassesLeadResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
-      fetchOptions,
+      this.fetchOptions,
     )
   }
 
   async getByReferralSource(source: number, limit: number = 25) {
-    const fetchOptions: FetchOptions<'json'> = {
-      params: {
-        limit,
-        referral_source_id: source,
-      },
-    }
+    this.fetchOptions.params = {}
+    this.fetchOptions.params.limit = limit
+    this.fetchOptions.params.referral_source_id = source
     return this.call<IWeeklyClassesLeadResponse>(
       'GET',
       `${this.RESOURCE}`,
       undefined,
-      fetchOptions,
+      this.fetchOptions,
     )
   }
 
@@ -51,43 +52,40 @@ class WeeklyClassesLeadsModule extends FetchFactory {
     filter: IWeeklyClassesLeadFilterObject,
     limit: number = 25,
   ) {
-    const fetchOptions: FetchOptions<'json'> = {
-      params: {
-        limit,
-      },
-    }
-    if (!!fetchOptions.params) {
-      if (!!filter.student) fetchOptions.params.student = filter.student
+    this.fetchOptions.params = {}
+    this.fetchOptions.params.limit = limit
+    if (this.fetchOptions.params) {
+      if (filter.student) this.fetchOptions.params.student = filter.student
       if (!!filter.venue_id && filter.venue_id != '0')
-        fetchOptions.params.venue_id = filter.venue_id
+        this.fetchOptions.params.venue_id = filter.venue_id
       if (!!filter.referral_source_id && filter.referral_source_id != '0')
-        fetchOptions.params.referral_source_id = filter.referral_source_id
+        this.fetchOptions.params.referral_source_id = filter.referral_source_id
       if (!!filter.lead_status_id && filter.lead_status_id != '0')
-        fetchOptions.params.lead_status_id = filter.lead_status_id
-      if (!!filter.end_date) fetchOptions.params.end_date = filter.end_date
-      if (!!filter.start_date)
-        fetchOptions.params.start_date = filter.start_date
+        this.fetchOptions.params.lead_status_id = filter.lead_status_id
+      if (filter.end_date) this.fetchOptions.params.end_date = filter.end_date
+      if (filter.start_date)
+        this.fetchOptions.params.start_date = filter.start_date
     }
 
     return this.call<IWeeklyClassesLeadResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
-      fetchOptions,
+      this.fetchOptions,
     )
   }
 
   async getById(id: number) {
     return this.call<IWeeklyClassesShowLeadResponse>(
       'GET',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/get_all?id=${id}`,
       undefined,
       undefined,
     )
   }
 
   async create(term: IWeeklyClassesLeadCreate) {
-    let guardians: ICreateGuardian[] = []
+    const guardians: ICreateGuardian[] = []
     term.guardians.forEach((x) => {
       guardians.push({
         first_name: x.first_name,
@@ -98,7 +96,7 @@ class WeeklyClassesLeadsModule extends FetchFactory {
         referral_source_id: x.referral_source_id,
       })
     })
-    let students: ICreateStudent[] = []
+    const students: ICreateStudent[] = []
     term.students.forEach((x) => {
       students.push({
         first_name: x.first_name,
@@ -109,7 +107,7 @@ class WeeklyClassesLeadsModule extends FetchFactory {
         medical_information: x.medical_information,
       })
     })
-    let emergency_contacts: ICreateEmergencyContact[] = []
+    const emergency_contacts: ICreateEmergencyContact[] = []
     term.emergency_contacts.forEach((x) => {
       emergency_contacts.push({
         first_name: x.first_name,
@@ -118,12 +116,12 @@ class WeeklyClassesLeadsModule extends FetchFactory {
         relationship_id: x.relationship_id,
       })
     })
-    let comments: string[] = []
+    const comments: string[] = []
     term.comments.forEach((x) => {
       comments.push(x)
     })
 
-    let body = {
+    const body = {
       weekly_class_id: term.weekly_class_id,
       guardians: guardians,
       students: students,
@@ -132,36 +130,36 @@ class WeeklyClassesLeadsModule extends FetchFactory {
     }
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'POST',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/add`,
       body,
-      undefined,
+      this.fetchOptions,
     )
   }
 
   async update(id: number, term: IWeeklyClassesLeadCreate) {
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'PUT',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/edit?id=${id}`,
       term,
-      undefined,
+      this.fetchOptions,
     )
   }
 
   async delete(id: number) {
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'DELETE',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/delete?id=${id}`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
   async restore(id: number) {
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'POST',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/restore?id=${id}`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -192,7 +190,7 @@ class WeeklyClassesLeadsModule extends FetchFactory {
   }
 
   async assignAgent(id: number, agentId: string) {
-    let body = {
+    const body = {
       weekly_classes_lead_id: [id],
       agent_id: agentId,
     }
@@ -205,7 +203,7 @@ class WeeklyClassesLeadsModule extends FetchFactory {
   }
 
   async assignStatus(id: number, statusId: number) {
-    let body = {
+    const body = {
       weekly_classes_lead_id: [id],
       lead_status_id: statusId,
     }
