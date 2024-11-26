@@ -8,7 +8,7 @@ import type {
 } from '~/types/synco'
 
 class TermsModule extends FetchFactory {
-  private RESOURCE = '/v1/terms'
+  private RESOURCE = '/terms'
 
   async getAll(limit: number = 25) {
     const fetchOptions: FetchOptions<'json'> = {
@@ -18,7 +18,7 @@ class TermsModule extends FetchFactory {
     }
     return this.call<ITermsResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
       fetchOptions,
     )
@@ -27,7 +27,7 @@ class TermsModule extends FetchFactory {
   async create(term: ITermCreateItem) {
     return this.call<ITermsSuccessfulResponse>(
       'POST',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/add`,
       term,
       undefined,
     )
@@ -61,7 +61,7 @@ class TermsModule extends FetchFactory {
     }
     return this.call<ITermsSuccessfulResponse>(
       'PUT',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/edit?id=${id}`,
       body,
       undefined,
     )
@@ -70,7 +70,7 @@ class TermsModule extends FetchFactory {
   async delete(id: number) {
     return this.call<ITermsSuccessfulResponse>(
       'DELETE',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/delete?id=${id}`,
       undefined,
       undefined,
     )
