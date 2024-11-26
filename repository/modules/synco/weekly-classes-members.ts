@@ -54,7 +54,7 @@ class WeeklyClassesMembersModule extends FetchFactory {
       'GET',
       `${this.RESOURCE}/get_all`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
