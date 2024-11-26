@@ -775,11 +775,11 @@ export type IWeeklyClassesSales = {
   venue: IWeeklyClassesVenueObject
   status: IMemberStatus
   student: IStudentObject
-  family_id: number
+  // family_id: number
   membership_plan: any
   booked_by: any
-  created_at: number | null
-  deleted_at: number | null
+  created_date: string | null
+  updated_date: string | null
 }
 export type IWeeklyClassesSalesResponse =
   IBaseResponse<IWeeklyClassesSales> & {}

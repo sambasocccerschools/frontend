@@ -103,6 +103,7 @@ const leads = ref<any[]>([])
 const selectedGuardians = ref<string[]>([])
 const reporting = ref<IWeeklyClassesMembersReportingObject | null>(null)
 
+// TODO: UPDATE THIS FUNCTION ONCE THE API RETURNS THE CORRECT DATA FOR THE VALUES N/A
 const cleanLeadsData = (data: any) => {
   return data.map((item: any) => {
     return {

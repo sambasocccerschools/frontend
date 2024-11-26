@@ -13,19 +13,23 @@ import type {
 } from '~/types/synco'
 
 class WeeklyClassesSalesModule extends FetchFactory {
-  private RESOURCE = '/v1/WeeklyClassesSales'
+  private RESOURCE = '/weeklyClassesSales'
+  private token = useCookie('token')
+  private fetchOptions: FetchOptions<'json'> = {
+    headers: {
+      Authorization: `${this.token.value}`,
+    },
+    params: {},
+  }
 
   async getAll(limit: number = 25) {
-    const fetchOptions: FetchOptions<'json'> = {
-      params: {
-        limit,
-      },
-    }
+    this.fetchOptions.params = {}
+    this.fetchOptions.params.limit = limit
     return this.call<IWeeklyClassesSalesResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
-      fetchOptions,
+      this.fetchOptions,
     )
   }
 
@@ -33,54 +37,51 @@ class WeeklyClassesSalesModule extends FetchFactory {
     filter: IWeeklyClassesSalesFilterObject,
     limit: number = 25,
   ) {
-    const fetchOptions: FetchOptions<'json'> = {
-      params: {
-        limit,
-      },
-    }
-    if (!!fetchOptions.params) {
-      if (!!filter.student) fetchOptions.params.student = filter.student
+    this.fetchOptions.params = {}
+    this.fetchOptions.params.limit = limit
+    if (this.fetchOptions.params) {
+      if (filter.student) this.fetchOptions.params.student = filter.student
       if (!!filter.venue_id && filter.venue_id != '0')
-        fetchOptions.params.venue_id = filter.venue_id
+        this.fetchOptions.params.venue_id = filter.venue_id
       if (!!filter.sale_status_id && filter.sale_status_id != '0')
-        fetchOptions.params.sale_status_id = filter.sale_status_id
-      if (!!filter.end_date) fetchOptions.params.end_date = filter.end_date
-      if (!!filter.start_date)
-        fetchOptions.params.start_date = filter.start_date
+        this.fetchOptions.params.sale_status_id = filter.sale_status_id
+      if (filter.end_date) this.fetchOptions.params.end_date = filter.end_date
+      if (filter.start_date)
+        this.fetchOptions.params.start_date = filter.start_date
     }
 
     return this.call<IWeeklyClassesSalesResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
-      fetchOptions,
+      this.fetchOptions,
     )
   }
 
   async getById(id: number) {
     return this.call<IWeeklyClassesShowLeadResponse>(
       'GET',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/get_all?id=${id}`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
   async delete(id: number) {
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'DELETE',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/delete?id=${id}`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
   async restore(id: number) {
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'POST',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/restore?id=${id}`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -89,7 +90,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
       'GET',
       `${this.RESOURCE}/exportExcel`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -98,7 +99,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
       'POST',
       `${this.RESOURCE}/sendText`,
       body,
-      undefined,
+      this.fetchOptions,
     )
   }
   async sendEmail(body: ISendMessageSaleObject) {
@@ -106,7 +107,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
       'POST',
       `${this.RESOURCE}/sendEmail`,
       body,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -124,7 +125,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
   // }
 
   async assignStatus(id: number, statusId: number) {
-    let body = {
+    const body = {
       weekly_classes_lead_id: [id],
       lead_status_id: statusId,
     }
@@ -132,7 +133,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
       'PUT',
       `${this.RESOURCE}/changeStatus`,
       body,
-      undefined,
+      this.fetchOptions,
     )
   }
 
@@ -141,7 +142,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
       'GET',
       `${this.RESOURCE}/reporting`,
       undefined,
-      undefined,
+      this.fetchOptions,
     )
   }
 }

@@ -13,14 +13,14 @@ const store = generalStore()
 const { $api } = useNuxtApp()
 const toast = useToast()
 
-let lead = ref<IWeeklyClassesSales>(props.lead).value
-let show = ref<boolean>(false)
+const lead = ref<IWeeklyClassesSales>(props.lead).value
+const show = ref<boolean>(false)
 
 const agents = store.agents
 const leadStatus = store.saleStatus
 
-let selectedAgent = ref<string>('')
-let selectedStatus = ref<number>(0)
+const selectedAgent = ref<string>('')
+const selectedStatus = ref<number>(0)
 const blockButtons = ref(false)
 
 onMounted(async () => {
@@ -28,7 +28,7 @@ onMounted(async () => {
   // if (!!lead.agent) {
   //   selectedAgent.value = lead.agent.id
   // }
-  if (!!lead.status) {
+  if (lead.status) {
     selectedStatus.value = lead.status.id
   }
   console.log('status', lead.status)
@@ -41,9 +41,15 @@ const navigateToUser = async (id: number) => {
   await router.push({ path: `/synco/user/${id}` })
   // await router.push({ path: `/synco/user/${id}` })
 }
+
 const cleanDate = (date: any) => {
-  if (!Number.isInteger(date)) return date
-  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+  if (!date || typeof date !== 'string') return date // Verificar que sea una cadena válida
+  const parsedDate = new Date(date)
+  const cleanedDate = parsedDate.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
   return cleanedDate
 }
 
@@ -56,14 +62,14 @@ const selectGuardian = (event: Event) => {
 
 const selectAgent = async (event: Event) => {
   if (!event?.target?.value) return
-  let agentId = event.target.value
+  const agentId = event.target.value
   selectedAgent.value = agentId
-  let id = lead.id
+  const id = lead.id
 
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    let response = await $api.wcLeads.assignAgent(id, agentId)
+    const response = await $api.wcLeads.assignAgent(id, agentId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)
@@ -75,12 +81,12 @@ const selectAgent = async (event: Event) => {
 
 const selectStatus = async (event: Event) => {
   if (!event?.target?.value) return
-  let statusId = event.target.value
-  let id = lead.id
+  const statusId = event.target.value
+  const id = lead.id
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    let response = await $api.wcLeads.assignStatus(id, statusId)
+    const response = await $api.wcLeads.assignStatus(id, statusId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)
@@ -95,10 +101,10 @@ const selectStatus = async (event: Event) => {
   <tr class="align-middle">
     <th scope="row">
       <input
+        :id="`${lead.id}`"
         class="form-check-input"
         type="checkbox"
         value=""
-        :id="`${lead.id}`"
         @change="selectGuardian"
       />
     </th>
@@ -108,25 +114,26 @@ const selectStatus = async (event: Event) => {
       </label>
     </td>
     <td @click="navigateToUser(lead.id)">{{ lead.student.age }}</td>
-    <td @click="navigateToUser(lead.id)">{{ lead.venue.name }}</td>
-    <td @click="navigateToUser(lead.id)">{{ cleanDate(lead.created_at) }}</td>
+    <td @click="navigateToUser(lead.id)">{{ lead.venue }}</td>
+    <!-- // this is the date of the sale? -->
+    <td @click="navigateToUser(lead.id)">{{ cleanDate(lead.created_date) }}</td>
     <td @click="navigateToUser(lead.id)">
-      {{ lead.booked_by.first_name }} {{ lead.booked_by.last_name }}
+      {{ lead.booked_by }}
     </td>
     <!-- <td>12 months, 47.99 per months</td> -->
     <td>
       <select
         id="seasons"
-        class="form-control form-control-lg"
         v-model="selectedStatus"
-        @change="selectStatus"
+        class="form-control form-control-lg"
         :disabled="blockButtons"
+        @change="selectStatus"
       >
         <option value="0">Assign status</option>
         <option
           v-for="(lStatus, index) in leadStatus"
-          :value="lStatus.id"
           :key="index"
+          :value="lStatus.id"
         >
           {{ lStatus.title }}
         </option>
@@ -141,6 +148,7 @@ const selectStatus = async (event: Event) => {
   </tr>
   <tr v-if="show">
     <td colspan="12">
+      <!-- TODO: VERIFY THIS WORKS ONCE THE API RETURNS THE CORRECT DATA -->
       <SyncoWeeklyClassesBookingListItem :item="lead.venue" />
     </td>
   </tr>
