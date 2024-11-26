@@ -13,14 +13,14 @@ const store = generalStore()
 const { $api } = useNuxtApp()
 const toast = useToast()
 
-let lead = ref<IWeeklyClassesMembers>(props.lead).value
-let show = ref<boolean>(false)
+const lead = ref<IWeeklyClassesMembers>(props.lead).value
+const show = ref<boolean>(false)
 
 const agents = store.agents
 const leadStatus = store.memberStatus
 
-let selectedAgent = ref<string>('')
-let selectedStatus = ref<number>(0)
+const selectedAgent = ref<string>('')
+const selectedStatus = ref<number>(0)
 const blockButtons = ref(false)
 
 onMounted(async () => {
@@ -28,7 +28,7 @@ onMounted(async () => {
   // if (!!lead.agent) {
   //   selectedAgent.value = lead.agent.id
   // }
-  if (!!lead.status) {
+  if (lead.status) {
     selectedStatus.value = lead.status.id
   }
   console.log('status', lead.status)
@@ -43,7 +43,7 @@ const navigateToUser = async (id: number) => {
 }
 const cleanDate = (date: any) => {
   if (!Number.isInteger(date)) return date
-  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+  const cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
   return cleanedDate
 }
 
@@ -56,14 +56,14 @@ const selectGuardian = (event: Event) => {
 
 const selectAgent = async (event: Event) => {
   if (!event?.target?.value) return
-  let agentId = event.target.value
+  const agentId = event.target.value
   selectedAgent.value = agentId
-  let id = lead.id
+  const id = lead.id
 
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    let response = await $api.wcLeads.assignAgent(id, agentId)
+    const response = await $api.wcLeads.assignAgent(id, agentId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)
@@ -75,12 +75,12 @@ const selectAgent = async (event: Event) => {
 
 const selectStatus = async (event: Event) => {
   if (!event?.target?.value) return
-  let statusId = event.target.value
-  let id = lead.id
+  const statusId = event.target.value
+  const id = lead.id
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    let response = await $api.wcLeads.assignStatus(id, statusId)
+    const response = await $api.wcLeads.assignStatus(id, statusId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)
@@ -96,49 +96,49 @@ const selectStatus = async (event: Event) => {
   <tr class="align-middle">
     <td>
       <input
+        :id="`${lead.id}`"
         class="form-check-input"
         type="checkbox"
         value=""
-        :id="`${lead.id}`"
         @change="selectGuardian"
       />
     </td>
-    <th scope="row" @click="navigateToUser(lead.id)" style="cursor: pointer">
+    <th scope="row" style="cursor: pointer" @click="navigateToUser(lead.id)">
       <label class="form-check-label text-muted" for="tomjones">
-        {{ lead.student.first_name }} {{ lead.student.last_name }}
+        {{ lead.student?.first_name }} {{ lead.student?.last_name }}
       </label>
     </th>
-    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
+    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
       {{ lead.student.age }}
     </td>
-    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
-      {{ lead.venue.name }}
+    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+      {{ lead.venue }}
     </td>
-    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
-      {{ cleanDate(lead.created_at) }}
+    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+      {{ cleanDate(lead.date_of_booking) }}
     </td>
-    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
-      {{ lead.booked_by.first_name }} {{ lead.booked_by.last_name }}
+    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+      {{ lead.who_booked }}
     </td>
-    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
-      {{ lead?.membership_plan?.name }}
+    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+      {{ lead?.membership_plan.name }}
     </td>
-    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
-      {{ lead.life_cycle_membership }}
+    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+      {{ lead.lifecycle_of_membership }}
     </td>
     <td style="cursor: pointer">
       <select
         id="seasons"
-        class="form-control form-control-lg"
         v-model="selectedStatus"
-        @change="selectStatus"
+        class="form-control form-control-lg"
         :disabled="blockButtons"
+        @change="selectStatus"
       >
         <option value="0">Assign status</option>
         <option
           v-for="(lStatus, index) in leadStatus"
-          :value="lStatus.id"
           :key="index"
+          :value="lStatus.id"
         >
           {{ lStatus.title }}
         </option>

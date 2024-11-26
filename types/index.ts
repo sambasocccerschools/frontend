@@ -692,9 +692,22 @@ export type IMemberCancelType = IBaseDatasetItem & {
 }
 export type IMemberCancelTypeResponse = IBaseResponse<IMemberCancelType> & {}
 
-export type IMemberStatus = IBaseDatasetItem & {
+export type IMemberStatus = {
+  code: string
+  created_date: string
+  father_code: any
+  id: number
+  is_deleted: boolean
+  slug: string
   title: string
+  title_es: string
+  type: string
+  updated_date: string
+  user_updated_id: number
+  value1: any
+  value2: any
 }
+
 export type IMemberStatusResponse = IBaseResponse<IMemberStatus> & {}
 
 export type IReferralSourceFilter = {

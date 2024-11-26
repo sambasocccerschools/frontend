@@ -531,9 +531,10 @@ export type IStudentObject = {
   dob: string
   age: number
   gender: IGender
-  medical_information: IMedicalInformation
-  created_at: Date | null
-  deleted_at: Date | null
+  medical_information: IMedicalInformation | null
+  created_date: string
+  updated_date: string
+  is_deleted: boolean
 }
 
 export type IGuardianObject = {
@@ -759,7 +760,7 @@ export type IWeeklyClassesMembers = {
   venue: IWeeklyClassesVenueObject
   status: IMemberStatus
   student: IStudentObject
-  family_id: number
+  // family_id: number
   membership_plan: any
   life_cycle_membership: string
   booked_by: any
