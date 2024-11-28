@@ -9,7 +9,6 @@ import type {
 
 class VenuesModule extends FetchFactory {
   private RESOURCE = '/venue'
-  private token = useCookie('token')
 
   async getAll() {
     const token = useCookie('token')
