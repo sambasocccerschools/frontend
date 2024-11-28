@@ -10,46 +10,64 @@ import type {
 class VenuesModule extends FetchFactory {
   private RESOURCE = '/venue'
   private token = useCookie('token')
-  private fetchOptions: FetchOptions<'json'> = {
-    headers: {
-      Authorization: `${this.token.value}`,
-    },
-    params: {},
-  }
 
   async getAll() {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IVenuesResponse>(
       'GET',
       `${this.RESOURCE}/get_all`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async create(venue: IVenueCreateItem) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IVenueSuccessfulResponse>(
       'POST',
       `${this.RESOURCE}/add`,
       venue,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async update(id: string, venue: IVenueCreateItem) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IVenueSuccessfulResponse>(
       'PUT',
       `${this.RESOURCE}/edit?id=${id}`,
       venue,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async delete(id: string) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IVenueSuccessfulResponse>(
       'DELETE',
       `${this.RESOURCE}/delete?id=${id}`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
@@ -63,11 +81,17 @@ class VenuesModule extends FetchFactory {
   }
 
   async availableVenues() {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IAvailableVenueResponse>(
       'GET',
       `${this.RESOURCE}/get_all`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 }
