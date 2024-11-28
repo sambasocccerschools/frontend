@@ -9,37 +9,47 @@ import type {
 
 class TermsModule extends FetchFactory {
   private RESOURCE = '/terms'
-  private token = useCookie('token')
-  private fetchOptions: FetchOptions<'json'> = {
-    headers: {
-      Authorization: `${this.token.value}`,
-    },
-    params: {},
-  }
 
   async getAll(limit: number = 25) {
-    this.fetchOptions.params = {}
-    this.fetchOptions.params = {
-      limit,
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {
+        limit,
+      },
     }
     return this.call<ITermsResponse>(
       'GET',
       `${this.RESOURCE}/get_all`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async create(term: ITermCreateItem) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<ITermsSuccessfulResponse>(
       'POST',
       `${this.RESOURCE}/add`,
       term,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async update(id: number, term: ITermEditItem) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     let sessions = []
     term.sessions?.forEach((session) => {
       if (session.id <= 0) {
@@ -69,25 +79,37 @@ class TermsModule extends FetchFactory {
       'PUT',
       `${this.RESOURCE}/edit?id=${id}`,
       body,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async delete(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<ITermsSuccessfulResponse>(
       'DELETE',
       `${this.RESOURCE}/delete?id=${id}`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async restore(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<ITermsSuccessfulResponse>(
       'POST',
       `${this.RESOURCE}/restore?id=${id}`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 }

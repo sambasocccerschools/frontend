@@ -11,7 +11,11 @@ class SessionPlansModule extends FetchFactory {
   private RESOURCE = '/sessionPlans'
 
   async getByAbilityGroup(ability_group_id: number) {
+    const token = useCookie('token')
     const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
       params: {
         ability_group_id,
       },
@@ -25,11 +29,17 @@ class SessionPlansModule extends FetchFactory {
   }
 
   async getById(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<ISingleSessionPlanResponse>(
       'GET',
       `${this.RESOURCE}/${id}`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 
@@ -64,13 +74,15 @@ class SessionPlansModule extends FetchFactory {
   }
 
   async create(data: ISessionPlanCreateUpdateItem) {
-    const formData = this.createFormData(data)
-    formData.append('ability_group_id', data.ability_group_id.toString())
+    const token = useCookie('token')
     const fetchOptions: FetchOptions<'json'> = {
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
+        Authorization: `${token.value}`,
       },
     }
+    const formData = this.createFormData(data)
+    formData.append('ability_group_id', data.ability_group_id.toString())
 
     return this.call<ISessionPlanResponse>(
       'POST',
@@ -81,10 +93,15 @@ class SessionPlansModule extends FetchFactory {
   }
 
   async update(id: number, data: ISessionPlanCreateUpdateItem) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     let formData = await this.createFormData(data)
     formData.append('_method', 'PUT')
 
-    const fetchOptions: FetchOptions<'json'> = {}
     return this.call<ISessionPlanResponse>(
       'POST',
       `${this.RESOURCE}/${id}`,
@@ -112,7 +129,13 @@ class SessionPlansModule extends FetchFactory {
   // }
 
   async getBlobs(url: string) {
-    return this.callBlobs<Blob>('GET', `${url}`, undefined, undefined)
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
+    return this.callBlobs<Blob>('GET', `${url}`, undefined, fetchOptions)
   }
 }
 
