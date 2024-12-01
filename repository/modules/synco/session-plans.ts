@@ -37,7 +37,7 @@ class SessionPlansModule extends FetchFactory {
     }
     return this.call<ISingleSessionPlanResponse>(
       'GET',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/get?id=${id}`,
       undefined,
       fetchOptions,
     )
@@ -86,7 +86,7 @@ class SessionPlansModule extends FetchFactory {
 
     return this.call<ISessionPlanResponse>(
       'POST',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/add`,
       formData,
       fetchOptions,
     )
@@ -104,7 +104,7 @@ class SessionPlansModule extends FetchFactory {
 
     return this.call<ISessionPlanResponse>(
       'POST',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/edit?id=${id}`,
       formData,
       fetchOptions,
     )

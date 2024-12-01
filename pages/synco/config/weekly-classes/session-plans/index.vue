@@ -38,11 +38,20 @@ const selectAbilityGroup = (id: number) => {
   getSessionPlans(id)
 }
 
+// onMounted(async () => {
+//   console.log('pages/synco/config/weekly-classes/session-plans/index.vue')
+
+//   await store.getAbilityGroups()
+//   console.log(store)
+//   selectAbilityGroup(abilityGroups[0]?.id)
+// })
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/session-plans/index.vue')
-
   await store.getAbilityGroups()
-  selectAbilityGroup(abilityGroups[0]?.id)
+  console.log('Ability groups:', abilityGroups)
+  if (abilityGroups.length > 0 && abilityGroups[0].icon) {
+    selectAbilityGroup(abilityGroups[0].id)
+  }
 })
 </script>
 
@@ -64,10 +73,9 @@ onMounted(async () => {
               @click="selectAbilityGroup(group.id)"
             >
               <span class="w-100 d-flex">
-                <!-- <img src="@/src/assets/img-avatar-ability-group.png"/> -->
                 <img
-                  :src="group.icon.url"
-                  :alt="group.icon.name"
+                  :src="group.icon?.url || '/default-icon.png'"
+                  :alt="group.icon?.name || 'No icon available'"
                   height="38px"
                 />
                 <span class="d-flex flex-column ms-3">

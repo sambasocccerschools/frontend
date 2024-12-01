@@ -12,9 +12,9 @@ const router = useRouter()
 const { $api } = useNuxtApp()
 const toast = useToast()
 
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
-let newExcercise = ref<ISessionPlanExcerciseCreateItem>({
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
+const newExcercise = ref<ISessionPlanExcerciseCreateItem>({
   title: '',
   subtitle: '',
   description: '',
@@ -22,7 +22,7 @@ let newExcercise = ref<ISessionPlanExcerciseCreateItem>({
   video: null,
   title_duration: '',
 })
-let newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
+const newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
   title: '',
   description: '',
   ability_group_id: 0,
@@ -30,76 +30,65 @@ let newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
   video: null,
   exercises: [],
 })
-let imageSizeLimit = ref<number>(5120000).value
-let videoSizeLimit = ref<number>(51200000).value
-
-// let sessionPlan = ref<ISessionPlanUpdateItem | null>(null)
+const imageSizeLimit = ref<number>(5120000).value
+const videoSizeLimit = ref<number>(51200000).value
 
 const getSessionPlan = async () => {
-  if (sessionPlanId.value == null) return
+  if (!sessionPlanId.value) return
   try {
     isLoading.value = true
     blockButtons.value = true
+
     const response = await $api.sessionPlans.getById(sessionPlanId.value)
-    let sessionPlan = response?.data
-    console.log('getSessionPlan', sessionPlan)
-    let exercises: ISessionPlanExcerciseCreateItem[] = []
-    sessionPlan?.exercises.forEach(async (x, index) => {
-      // let banner = !!x.banner
-      //   ? await fetch(x.banner.url).then((r) => r.blob())
-      //   : null
-      // let video = !!x.video
-      //   ? await fetch(x.video.url).then((r) => r.blob())
-      //   : null
-      imagePreview.value[index] = !!x.banner ? x.banner.url : null
-      video2Preview.value[index] = !!x.video ? x.video.url : null
-      exercises.push({
-        title: x.title,
-        subtitle: x.subtitle,
-        description: x.description,
-        // banner: !!x.banner ? await loadBlobFromUrl(x.banner.url) : null,
-        // video: !!x.video ? await loadBlobFromUrl(x.video.url) : null,
-        banner: null,
-        video: null,
-        title_duration: x.title_duration,
-      })
-    })
-    // let banner = !!sessionPlan.banner
-    //   ? await fetch(sessionPlan.banner.url).then((r) => r.blob())
-    //   : null
-    bannerPreview.value = !!sessionPlan.banner ? sessionPlan.banner.url : null
-    // let video = !!sessionPlan.video
-    //   ? await fetch(sessionPlan.video.url).then((r) => r.blob())
-    //   : null
-    videoPreview.value = !!sessionPlan.video ? sessionPlan.video.url : null
+    const sessionPlan = response?.data
+
+    // Actualizar el objeto de vista
     newSessionPlan.value = {
       title: sessionPlan.title,
       description: sessionPlan.description,
-      ability_group_id: -1,
-      // banner: !!sessionPlan.banner
-      //   ? await loadBlobFromUrl(sessionPlan.banner.url)
-      //   : null,
-      // video: !!sessionPlan.video
-      //   ? await loadBlobFromUrl(sessionPlan.video.url)
-      //   : null,
+      ability_group_id: sessionPlan?.ability_group?.id ?? 0, // Ajuste para asegurar un valor por defecto
       banner: null,
       video: null,
-      exercises: exercises,
+      exercises: [],
     }
+
+    if (sessionPlan.banner?.url) {
+      bannerPreview.value = sessionPlan.banner.url
+    }
+
+    if (sessionPlan.video?.url) {
+      videoPreview.value = sessionPlan.video.url
+    }
+
+    const exercises = sessionPlan.exercises || []
+    newSessionPlan.value.exercises = exercises.map((exercise, index) => {
+      imagePreview.value[index] = exercise.banner?.url || null
+      video2Preview.value[index] = exercise.video?.url || null
+
+      return {
+        title: exercise.title,
+        subtitle: exercise.subtitle,
+        description: exercise.description,
+        banner: null,
+        video: null,
+        title_duration: exercise.title_duration,
+      }
+    })
   } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
+    console.error(error)
+    toast.error(error?.data?.messages ?? 'Error al obtener el plan de sesión.')
   } finally {
     isLoading.value = false
     blockButtons.value = false
   }
 }
-let sessionPlanId = ref<number | null>(null)
+
+const sessionPlanId = ref<number | null>(null)
 
 onMounted(async () => {
   console.log('components/synco/config/session-plans/edit-form.vue')
-  let querySessionPlanId = router.currentRoute.value.query?.sessionPlanId
-  sessionPlanId.value = !!querySessionPlanId ? +querySessionPlanId : -1
+  const querySessionPlanId = router.currentRoute.value.query?.sessionPlanId
+  sessionPlanId.value = querySessionPlanId ? +querySessionPlanId : -1
   getSessionPlan()
 })
 
@@ -112,9 +101,9 @@ const addNewExercise = () => {
   // let index = newSessionPlan.value.exercises.length - 1
 }
 
-let bannerInput = ref<HTMLInputElement | null>(null)
-let banner = ref<File>()
-let bannerPreview = ref<string | null>(null)
+const bannerInput = ref<HTMLInputElement | null>(null)
+const banner = ref<File>()
+const bannerPreview = ref<string | null>(null)
 
 const handleBannerChange = async () => {
   const files = bannerInput.value?.files!
@@ -124,16 +113,16 @@ const handleBannerChange = async () => {
     return
   }
   banner.value = file
-  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
+  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
     type: file.type,
   })
   newSessionPlan.value.banner = fileBlob
   bannerPreview.value = file ? URL.createObjectURL(file) : null
 }
 
-let videoInput = ref<HTMLInputElement | null>(null)
-let video = ref<File>()
-let videoPreview = ref<string | null>(null)
+const videoInput = ref<HTMLInputElement | null>(null)
+const video = ref<File>()
+const videoPreview = ref<string | null>(null)
 
 const handleVideoChange = async () => {
   const files = videoInput.value?.files!
@@ -143,16 +132,16 @@ const handleVideoChange = async () => {
     return
   }
   video.value = file
-  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
+  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
     type: file.type,
   })
   newSessionPlan.value.video = fileBlob
   videoPreview.value = file ? URL.createObjectURL(file) : null
 }
 
-let imageInput = ref<Array<HTMLInputElement | null>>([])
-let image = ref<Array<File>>([])
-let imagePreview = ref<Array<string | null>>([])
+const imageInput = ref<Array<HTMLInputElement | null>>([])
+const image = ref<Array<File>>([])
+const imagePreview = ref<Array<string | null>>([])
 
 const handleImageInput = (event: Event, index: number) => {
   if (event.target instanceof HTMLInputElement) {
@@ -172,16 +161,16 @@ const handleImageChange = async (index: number) => {
   if (image.value[index] != null) {
     image.value[index] = file
   }
-  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
+  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
     type: file.type,
   })
   newSessionPlan.value.exercises[index].banner = fileBlob
   imagePreview.value[index] = file ? URL.createObjectURL(file) : null
 }
 
-let video2Input = ref<Array<HTMLInputElement | null>>([])
-let video2 = ref<Array<File>>([])
-let video2Preview = ref<Array<string | null>>([])
+const video2Input = ref<Array<HTMLInputElement | null>>([])
+const video2 = ref<Array<File>>([])
+const video2Preview = ref<Array<string | null>>([])
 
 const handleVideo2Input = (event: Event, index: number) => {
   if (event.target instanceof HTMLInputElement) {
@@ -200,7 +189,7 @@ const handleVideo2Change = async (index: number) => {
   if (video2.value[index] != null) {
     video2.value[index] = file
   }
-  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
+  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
     type: file.type,
   })
   newSessionPlan.value.exercises[index].video = fileBlob
@@ -251,7 +240,7 @@ const loadBlobFromUrl = async (url: string) => {
   <div class="card rounded-4">
     <div class="row my-4">
       <div class="col-2"></div>
-      <div class="col-8" v-if="!!newSessionPlan">
+      <div v-if="!!newSessionPlan" class="col-8">
         <div class="d-flex flex-column">
           <span class="h3 mt-4"><strong>Skill of the day</strong></span>
           <div class="row">
@@ -262,10 +251,10 @@ const loadBlobFromUrl = async (url: string) => {
                 </label>
                 <input
                   id="title"
+                  v-model="newSessionPlan.title"
                   type="text"
                   class="form-control form-control-lg"
                   placeholder=""
-                  v-model="newSessionPlan.title"
                 />
               </div>
               <div class="form-group w-100 mb-3">
@@ -274,10 +263,10 @@ const loadBlobFromUrl = async (url: string) => {
                 </label>
                 <input
                   id="description"
+                  v-model="newSessionPlan.description"
                   type="text"
                   class="form-control form-control-lg"
                   placeholder=""
-                  v-model="newSessionPlan.description"
                 />
               </div>
             </div>
@@ -341,8 +330,8 @@ const loadBlobFromUrl = async (url: string) => {
             <span class="h4">Exercise || {Skill}</span>
           </div>
           <div
-            class="row"
             v-for="(excercise, index) in newSessionPlan.exercises"
+            class="row"
           >
             <div class="col-12">
               <div class="form-group w-100 mb-3">
@@ -354,10 +343,10 @@ const loadBlobFromUrl = async (url: string) => {
                 </label>
                 <input
                   :id="`exercise[${index}][title]`"
+                  v-model="excercise.title"
                   type="text"
                   class="form-control form-control-lg"
                   placeholder=""
-                  v-model="excercise.title"
                 />
               </div>
               <div class="form-group w-100 mb-3">
@@ -369,10 +358,10 @@ const loadBlobFromUrl = async (url: string) => {
                 </label>
                 <input
                   :id="`exercise[${index}][subtitle]`"
+                  v-model="excercise.subtitle"
                   type="text"
                   class="form-control form-control-lg"
                   placeholder=""
-                  v-model="excercise.subtitle"
                 />
               </div>
               <div class="form-group w-100 mb-3">
@@ -384,10 +373,10 @@ const loadBlobFromUrl = async (url: string) => {
                 </label>
                 <input
                   :id="`exercise[${index}][duration]`"
+                  v-model="excercise.title_duration"
                   type="text"
                   class="form-control form-control-lg"
                   placeholder=""
-                  v-model="excercise.title_duration"
                 />
               </div>
             </div>
@@ -397,10 +386,10 @@ const loadBlobFromUrl = async (url: string) => {
               </label>
               <input
                 :id="`exercise[${index}][banner]`"
-                @input="handleImageInput($event, index)"
                 type="file"
                 :name="`exercise[${index}][banner]`"
                 accept="image/*"
+                @input="handleImageInput($event, index)"
                 @change="handleImageChange(index)"
               />
               <img
@@ -439,10 +428,10 @@ const loadBlobFromUrl = async (url: string) => {
               </label>
               <input
                 :id="`exercise[${index}][video]`"
-                @input="handleVideo2Input($event, index)"
                 type="file"
                 :name="`exercise[${index}][video]`"
                 accept="video/*"
+                @input="handleVideo2Input($event, index)"
                 @change="handleVideo2Change(index)"
               />
               <video
@@ -472,8 +461,8 @@ const loadBlobFromUrl = async (url: string) => {
       <div class="col-3">
         <button
           class="btn btn-outline-primary w-100"
-          @click="addNewExercise"
           :disabled="blockButtons"
+          @click="addNewExercise"
         >
           Add new exercise
         </button>
