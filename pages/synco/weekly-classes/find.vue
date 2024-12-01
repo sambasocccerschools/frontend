@@ -39,8 +39,8 @@ const toast = useToast()
 
 const venues = store.availableVenues
 
-let weeklyClasses = ref<IFindAClassItem[]>([])
-let filter = ref<IWeeklyClassesFindAClassFilterObject>({
+const weeklyClasses = ref<IFindAClassItem[]>([])
+const filter = ref<IWeeklyClassesFindAClassFilterObject>({
   limit: 25,
   class_name: null,
   days: null,
@@ -77,11 +77,12 @@ const handleFiltered = async (filteredItems: {
   venues?: string[]
   days?: string[]
 }) => {
-  if (!!filteredItems.venue) {
-    filter.value.venue = filteredItems.venue
+  if (filteredItems.venue) {
+    console.log('filteredItems.venue', filteredItems.venue)
+    filterWeeklyClasses(filteredItems.venue)
   }
-  if (!!filteredItems.class_name) {
-    filter.value.class_name = filteredItems.class_name
+  if (filteredItems.class_name) {
+    filterWeeklyClasses(filteredItems.class_name)
   }
   if (!!filteredItems.venues && filteredItems.venues.length) {
     filter.value.venue_id = filteredItems.venues.join(',')
@@ -96,6 +97,17 @@ const handleFiltered = async (filteredItems: {
 
   await getData()
 }
+
+const filterWeeklyClasses = (value: string) => {
+  weeklyClasses.value = weeklyClasses.value.filter((item) => {
+    return (
+      item.name.toLowerCase().includes(value.toLowerCase()) ||
+      item.venue.name.toLowerCase().includes(value.toLowerCase())
+    )
+  })
+}
+
+console.log(weeklyClasses)
 </script>
 
 <template>
@@ -112,8 +124,8 @@ const handleFiltered = async (filteredItems: {
       <div class="col-sm-3">
         <SyncoWeeklyClassesFormsFindClass
           :venues="venues"
-          @filtered="handleFiltered"
           :block-buttons="blockButtons"
+          @filtered="handleFiltered"
         />
       </div>
       <div class="col">

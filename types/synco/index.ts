@@ -827,6 +827,7 @@ export type IFindAClassItem = {
   termsByYear: any[]
   created_at: Date | null
   deleted_at: Date | null
+  venue: any
 }
 
 export type IWeeklyClassesFindAClassResponse = {
