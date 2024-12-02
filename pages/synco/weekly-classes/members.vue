@@ -88,7 +88,7 @@ import type {
   IWeeklyClassesMembersFilterObject,
 } from '~/types/synco/index'
 import { generalStore } from '~/stores'
-import { title } from 'process';
+import { title } from 'process'
 
 const updateKey = ref<number>(0)
 const blockButtons = ref(false)
@@ -109,12 +109,12 @@ const cleanLeadsData = (data: any) => {
     return {
       id: item.id,
       student: item.student,
-      venue: item.venue ?? 'N/A',
+      venue: item.weekly_class.venue_id.name ?? 'N/A',
       date_of_booking: item.date_of_booking?.date ?? 'N/A',
       who_booked: item.booked_by ?? 'N/A',
-      membership_plan: item.subscription_plan_price ?? 'N/A',
+      membership_plan: item?.subscription_plan_price ?? 'N/A',
       lifecycle_of_membership:
-        item.subscription_plan_price?.lifecycle_of_membership ?? 'N/A',
+        item.subscription_plan_price?.lifecycle_of_membership ?? 'Monthly',
       status: item.member_status ?? 'N/A',
     }
   })
@@ -123,15 +123,10 @@ const getLeads = async (source: number | null = null, limit: number = 25) => {
   try {
     blockButtons.value = true
     const response = await $api.wcMembers.getAll(limit)
-    console.log('members')
-    console.log(response.data)
     const data = cleanLeadsData(response?.data)
-    console.log('clean data')
-    console.log(data)
     leads.value = data
   } catch (error: any) {
     leads.value = []
-    console.log(error)
     toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
@@ -144,7 +139,6 @@ const getReporting = async () => {
     reporting.value = response?.data
   } catch (error: any) {
     reporting.value = null
-    console.log(error)
     toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
