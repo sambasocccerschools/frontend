@@ -16,8 +16,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBaseUrl: 'http://18.117.147.235:3000',
-      // apiBaseUrl: 'https://api.synco.staging.sambasoccerschools.co.uk',
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || '',
     },
   },
   // Don't prerender SSR Synco and Parents Platform
