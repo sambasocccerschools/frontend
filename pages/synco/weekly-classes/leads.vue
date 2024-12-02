@@ -18,7 +18,7 @@
                 >
               </li>
               <template v-if="referralSources.length">
-                <template v-for="source in referralSources">
+                <template v-for="source in referralSources" :key="source.id">
                   <li
                     class="nav-item rounded-3 show-pointer me-2 border"
                     @click="selectReferralSource(source.title)"
@@ -51,7 +51,7 @@
             :value="reporting?.new_leads?.amount"
             :change="reporting?.new_leads?.percentage"
             icon="ph:users-three"
-            :removePercentage="true"
+            :remove-percentage="true"
           />
           <SyncoDashboardMetricsItem
             name="Leads to trials"
@@ -79,7 +79,7 @@
         </div>
         <div>
           <SyncoDataOptions
-            @exportExcel="exportExcel"
+            @export-excel="exportExcel"
             @send-email="sendEmail"
             @send-text="sendText"
           />
@@ -108,10 +108,10 @@
             </tr>
           </thead>
           <tbody>
-            <template v-for="lead in leads">
+            <template v-for="(lead, index) in leads" :key="index">
               <LazySyncoWeeklyClassesLeadsListItem
                 :lead="lead"
-                @selectedGuardian="selectedGuardian"
+                @selected-guardian="selectedGuardian"
               />
             </template>
           </tbody>
@@ -146,13 +146,28 @@ const selectedReferralSource = ref<string>('All')
 const selectedReferralSourceId = ref<number>(0)
 const selectedGuardians = ref<string[]>([])
 const reporting = ref<IWeeklyClassesLeadsReportingObject | null>(null)
+
+const cleanLeadsData = (data: any) => {
+  return data.map((item: any) => {
+    return {
+      id: item.id,
+      guardian: item.guardian_id,
+      kid_range: item.kid_range,
+      status: item.lead_status_code,
+      agent: item.agent_id,
+      created_at: item.created_date,
+    }
+  })
+}
+
 const getLeads = async (source: number | null = null, limit: number = 25) => {
   try {
     blockButtons.value = true
     const response = !source
       ? await $api.wcLeads.getAll(limit)
       : await $api.wcLeads.getByReferralSource(source, limit)
-    leads.value = response?.data
+    const data = cleanLeadsData(response?.data)
+    leads.value = data
   } catch (error: any) {
     leads.value = []
     console.log(error)
@@ -191,7 +206,7 @@ const selectReferralSource = async (source: string) => {
     selectedReferralSourceId.value = 0
     await getLeads()
   } else if (referralSources.some((x) => x.title == source)) {
-    let referralSource = referralSources.find((x) => x.title == source)
+    const referralSource = referralSources.find((x) => x.title == source)
     if (!referralSource) return
     selectedReferralSourceId.value = referralSource.id
     await getLeads(referralSource?.id)
@@ -204,7 +219,7 @@ const exportExcel = async () => {
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    let excel = await $api.wcLeads.exportExcel()
+    const excel = await $api.wcLeads.exportExcel()
     store.downloadExcelFile(excel.data.url, excel.data.name)
   } catch (error: any) {
     console.log(error)
@@ -217,14 +232,14 @@ const exportExcel = async () => {
 const sendText = async () => {
   if (blockButtons.value) return
 
-  let guardianIds = selectedGuardians.value.filter(
+  const guardianIds = selectedGuardians.value.filter(
     (value, index, array) => array.indexOf(value) == index,
   )
   if (guardianIds.length == 0) {
     alert('Select any row')
     return
   }
-  let message = prompt('Write text message.')
+  const message = prompt('Write text message.')
   if (!message) return
   try {
     blockButtons.value = true
@@ -242,14 +257,14 @@ const sendText = async () => {
 }
 const sendEmail = async () => {
   if (blockButtons.value) return
-  let guardianIds = selectedGuardians.value.filter(
+  const guardianIds = selectedGuardians.value.filter(
     (value, index, array) => array.indexOf(value) == index,
   )
   if (guardianIds.length == 0) {
     alert('Select any row')
     return
   }
-  let message = prompt('Write email message.')
+  const message = prompt('Write email message.')
   if (!message) return
   try {
     blockButtons.value = true
@@ -269,7 +284,7 @@ const sendEmail = async () => {
 const selectedGuardian = (data: any) => {
   console.log(data)
   if (!data.value) {
-    let dataIndex = selectedGuardians.value.indexOf(data.id)
+    const dataIndex = selectedGuardians.value.indexOf(data.id)
     if (dataIndex >= 0) {
       selectedGuardians.value.splice(dataIndex, 1)
     }

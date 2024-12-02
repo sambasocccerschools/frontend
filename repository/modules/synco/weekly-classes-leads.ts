@@ -17,34 +17,41 @@ import type {
 
 class WeeklyClassesLeadsModule extends FetchFactory {
   private RESOURCE = '/weeklyClassesLeads'
-  private token = useCookie('token')
-  private fetchOptions: FetchOptions<'json'> = {
-    headers: {
-      Authorization: `${this.token.value}`,
-    },
-    params: {},
-  }
 
   async getAll(limit: number = 25) {
-    this.fetchOptions.params = {}
-    this.fetchOptions.params.limit = limit
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {
+        limit,
+      },
+    }
     return this.call<IWeeklyClassesLeadResponse>(
       'GET',
       `${this.RESOURCE}/get_all`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async getByReferralSource(source: number, limit: number = 25) {
-    this.fetchOptions.params = {}
-    this.fetchOptions.params.limit = limit
-    this.fetchOptions.params.referral_source_id = source
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {
+        limit,
+        referral_source_id: source,
+      },
+    }
     return this.call<IWeeklyClassesLeadResponse>(
       'GET',
       `${this.RESOURCE}`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
@@ -52,39 +59,60 @@ class WeeklyClassesLeadsModule extends FetchFactory {
     filter: IWeeklyClassesLeadFilterObject,
     limit: number = 25,
   ) {
-    this.fetchOptions.params = {}
-    this.fetchOptions.params.limit = limit
-    if (this.fetchOptions.params) {
-      if (filter.student) this.fetchOptions.params.student = filter.student
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {
+        limit,
+      },
+    }
+
+    fetchOptions.params = {}
+    fetchOptions.params.limit = limit
+    if (fetchOptions.params) {
+      if (filter.student) fetchOptions.params.student = filter.student
       if (!!filter.venue_id && filter.venue_id != '0')
-        this.fetchOptions.params.venue_id = filter.venue_id
+        fetchOptions.params.venue_id = filter.venue_id
       if (!!filter.referral_source_id && filter.referral_source_id != '0')
-        this.fetchOptions.params.referral_source_id = filter.referral_source_id
+        fetchOptions.params.referral_source_id = filter.referral_source_id
       if (!!filter.lead_status_id && filter.lead_status_id != '0')
-        this.fetchOptions.params.lead_status_id = filter.lead_status_id
-      if (filter.end_date) this.fetchOptions.params.end_date = filter.end_date
-      if (filter.start_date)
-        this.fetchOptions.params.start_date = filter.start_date
+        fetchOptions.params.lead_status_id = filter.lead_status_id
+      if (filter.end_date) fetchOptions.params.end_date = filter.end_date
+      if (filter.start_date) fetchOptions.params.start_date = filter.start_date
     }
 
     return this.call<IWeeklyClassesLeadResponse>(
       'GET',
       `${this.RESOURCE}/get_all`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async getById(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IWeeklyClassesShowLeadResponse>(
       'GET',
       `${this.RESOURCE}/get_all?id=${id}`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 
   async create(term: IWeeklyClassesLeadCreate) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     const guardians: ICreateGuardian[] = []
     term.guardians.forEach((x) => {
       guardians.push({
@@ -132,34 +160,52 @@ class WeeklyClassesLeadsModule extends FetchFactory {
       'POST',
       `${this.RESOURCE}/add`,
       body,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async update(id: number, term: IWeeklyClassesLeadCreate) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'PUT',
       `${this.RESOURCE}/edit?id=${id}`,
       term,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async delete(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'DELETE',
       `${this.RESOURCE}/delete?id=${id}`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async restore(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'POST',
       `${this.RESOURCE}/restore?id=${id}`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 

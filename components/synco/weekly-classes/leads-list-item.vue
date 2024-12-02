@@ -13,22 +13,22 @@ const store = generalStore()
 const { $api } = useNuxtApp()
 const toast = useToast()
 
-let lead = ref<IWeeklyClassesLead>(props.lead).value
-let show = ref<boolean>(false)
+const lead = ref<IWeeklyClassesLead>(props.lead).value
+const show = ref<boolean>(false)
 
 const agents = store.agents
 const leadStatus = store.leadStatus
 
-let selectedAgent = ref<string>('')
-let selectedStatus = ref<number>(0)
+const selectedAgent = ref<string>('')
+const selectedStatus = ref<number>(0)
 const blockButtons = ref(false)
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/leads-list-item.vue')
-  if (!!lead.agent) {
+  if (lead.agent) {
     selectedAgent.value = lead.agent.id
   }
-  if (!!lead.status) {
+  if (lead.status) {
     selectedStatus.value = lead.status.id
   }
   console.log('status', lead.status)
@@ -41,9 +41,15 @@ const navigateToUser = async (id: number) => {
   await router.push({ path: `/synco/user/${id}` })
   // await router.push({ path: `/synco/user/${id}` })
 }
+
 const cleanDate = (date: any) => {
-  if (!Number.isInteger(date)) return date
-  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+  if (!date || typeof date !== 'string') return date // Verificar que sea una cadena válida
+  const parsedDate = new Date(date)
+  const cleanedDate = parsedDate.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
   return cleanedDate
 }
 
@@ -56,14 +62,14 @@ const selectGuardian = (event: Event) => {
 
 const selectAgent = async (event: Event) => {
   if (!event?.target?.value) return
-  let agentId = event.target.value
+  const agentId = event.target.value
   selectedAgent.value = agentId
-  let id = lead.id
+  const id = lead.id
 
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    let response = await $api.wcLeads.assignAgent(id, agentId)
+    const response = await $api.wcLeads.assignAgent(id, agentId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)
@@ -75,12 +81,12 @@ const selectAgent = async (event: Event) => {
 
 const selectStatus = async (event: Event) => {
   if (!event?.target?.value) return
-  let statusId = event.target.value
-  let id = lead.id
+  const statusId = event.target.value
+  const id = lead.id
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    let response = await $api.wcLeads.assignStatus(id, statusId)
+    const response = await $api.wcLeads.assignStatus(id, statusId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)
@@ -96,41 +102,42 @@ const selectStatus = async (event: Event) => {
   <tr class="align-middle">
     <td>
       <input
+        :id="`${lead.id}`"
         class="form-check-input"
         type="checkbox"
         value=""
-        :id="`${lead.id}`"
         @change="selectGuardian"
       />
     </td>
-    <th scope="row" @click="navigateToUser(lead.id)" style="cursor: pointer">
-      {{ cleanDate(lead.created_at) }}
+    <th scope="row" style="cursor: pointer" @click="navigateToUser(lead.id)">
+      {{ cleanDate(lead.created_at) || 'N/A' }}
     </th>
-    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
+    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
       <label class="form-check-label text-muted" for="tomjones">
-        {{ lead.guardian.first_name }} {{ lead.guardian.last_name }}
+        {{ lead.guardian?.first_name || 'N/A' }}
+        {{ lead.guardian?.last_name || 'N/A' }}
       </label>
     </td>
-    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
-      {{ lead.guardian.email }}
+    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+      {{ lead.guardian?.email || 'N/A' }}
     </td>
-    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
-      {{ lead.guardian.phone_number }}
+    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+      {{ lead.guardian?.phone_number || 'N/A' }}
     </td>
     <!-- <td @click="navigateToUser(lead.id)" style="cursor: pointer">ER 7YJ</td> -->
-    <td @click="navigateToUser(lead.id)" style="cursor: pointer">
-      {{ lead.kid_range }}
+    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+      {{ lead?.kid_range || 'N/A' }}
     </td>
     <td>
       <select
         id="seasons"
-        class="form-control form-control-lg"
         v-model="selectedAgent"
-        @change="selectAgent"
+        class="form-control form-control-lg"
         :disabled="blockButtons"
+        @change="selectAgent"
       >
         <option value="">Assign agent</option>
-        <option v-for="(agent, index) in agents" :value="agent.id" :key="index">
+        <option v-for="(agent, index) in agents" :key="index" :value="agent.id">
           {{ agent.first_name }} {{ agent.last_name }}
         </option>
       </select>
@@ -138,16 +145,16 @@ const selectStatus = async (event: Event) => {
     <td>
       <select
         id="seasons"
-        class="form-control form-control-lg"
         v-model="selectedStatus"
-        @change="selectStatus"
+        class="form-control form-control-lg"
         :disabled="blockButtons"
+        @change="selectStatus"
       >
         <option value="0">Assign status</option>
         <option
           v-for="(lStatus, index) in leadStatus"
-          :value="lStatus.id"
           :key="index"
+          :value="lStatus.id"
         >
           {{ lStatus.title }}
         </option>
@@ -161,7 +168,7 @@ const selectStatus = async (event: Event) => {
   </tr>
   <tr v-if="show">
     <td colspan="12">
-      <template v-for="venue in lead.venues">
+      <template v-for="(venue, index) in lead.venues" :key="index">
         <SyncoWeeklyClassesBookingListItem :item="venue" />
       </template>
     </td>
