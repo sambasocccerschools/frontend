@@ -583,8 +583,20 @@ export type IService = IBaseDatasetItem & {
 }
 export type IServiceResponse = IBaseResponse<IService> & {}
 
-export type IRegionItem = IBaseDatasetItem & {
+export type IRegionItem = {
+  id: number
+  code: string
+  type: string
   title: string
+  title_es: null
+  slug: string
+  father_code: null
+  value1: string | null
+  value2: string | null
+  created_date: string
+  updated_date: string | null
+  is_deleted: boolean
+  user_updated_id: string | null
 }
 export type IRegionResponse = IBaseResponse<IRegionItem> & {}
 

@@ -86,8 +86,6 @@ onMounted(async () => {
   await store.fetchAllData()
 })
 
-console.log('regions', regions)
-
 const openPanel = (item: IVenueItem | null) => {
   panel.value = true
   if (!item) {
@@ -100,13 +98,13 @@ const openPanel = (item: IVenueItem | null) => {
       address: item.address,
       area: item.area,
       facility_enter_guide: item.facility_enter_guide,
-      has_congestion: item.has_congestion,
-      has_parking: item.has_parking,
+      has_congestion: !!item.has_congestion,
+      has_parking: !!item.has_parking,
       latitude: item.latitude,
       longitude: item.longitude,
       name: item.name,
       parking_note: item.parking_note,
-      region_code: item.region_code,
+      region_code: item.region.code,
       price: item.price,
     }
     selectedVenueId.value = item.id
@@ -182,7 +180,7 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
       longitude: venue.longitude,
       name: venue.name,
       parking_note: venue.parking_note,
-      region_code: venue.region_code,
+      region_code: venue.region.code,
       price: venue.price,
     }
     selectedVenueId.value = venue.id
@@ -442,7 +440,7 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
                   <option
                     v-for="(region, index) in regions"
                     :key="index"
-                    :value="region"
+                    :value="region.code"
                   >
                     {{ region.title }}
                   </option>
