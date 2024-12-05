@@ -47,9 +47,10 @@ export type IVenueItem = {
   longitude: number
   has_parking: boolean
   has_congestion: boolean
+  title: string
   price: number | null
   Franchise: null
-  region_code: string
+  region: any
   created_at: Date | null
   deleted_at: Date | null
 }
