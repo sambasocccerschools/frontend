@@ -94,8 +94,6 @@ const openPanel = (item: IVenueItem | null) => {
     selectedVenueId.value = ''
   } else {
     panelType.value = 'Update'
-
-    console.log(item)
     selectedVenue.value = {
       address: item.address,
       area: item.area,
@@ -182,7 +180,7 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
       longitude: venue.longitude,
       name: venue.name,
       parking_note: venue.parking_note,
-      region_code: venue.region_code,
+      region_code: venue.region.code,
       price: venue.price,
     }
     selectedVenueId.value = venue.id
@@ -191,7 +189,6 @@ const selectExistingVenue = (value: string, options: IAutoCompleteObject) => {
     blockFields.value = false
   }
 }
-console.log(selectedVenue)
 </script>
 
 <template>
