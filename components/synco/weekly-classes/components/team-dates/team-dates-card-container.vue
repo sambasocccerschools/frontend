@@ -60,6 +60,4 @@ const terms = [
   props.item.spring_term,
   props.item.summer_term,
 ]
-
-console.log('terms', terms)
 </script>

@@ -8,14 +8,10 @@ const props = defineProps<{
 
 console.log(props.item)
 
-const showCards = ref<Record<string, boolean>>({
-  subscription: false,
-  calendar: false,
-  location: false,
-})
+const activeCard = ref<string | null>(null)
 
-const toggleCard = (card: string | number) => {
-  showCards.value[card] = !showCards.value[card]
+const toggleCard = (card: string) => {
+  activeCard.value = activeCard.value === card ? null : card
 }
 </script>
 
@@ -36,30 +32,35 @@ const toggleCard = (card: string | number) => {
       <div class="d-flex gap-3">
         <button
           class="btn btn-light rounded-circle btn-sm"
+          :class="{ 'bg-success text-light': activeCard === 'subscription' }"
           @click="toggleCard('subscription')"
         >
           <Icon name="mingcute:currency-pound-2-fill" />
         </button>
         <button
           class="btn btn-light rounded-circle btn-sm"
+          :class="{ 'bg-success text-light': activeCard === 'teamDates' }"
           @click="toggleCard('teamDates')"
         >
           <Icon name="material-symbols:calendar-month" />
         </button>
         <button
           class="btn btn-light rounded-circle btn-sm"
-          @click="toggleCard('location')"
+          :class="{ 'bg-success text-light': activeCard === 'locationMap' }"
+          @click="toggleCard('locationMap')"
         >
           <Icon name="material-symbols:location-on" />
         </button>
         <button
           class="btn btn-light rounded-circle btn-sm"
-          @click="toggleCard('capacity')"
+          :class="{ 'bg-success text-light': activeCard === 'congestion' }"
+          @click="toggleCard('congestion')"
         >
           <Icon name="tdesign:letters-c" />
         </button>
         <button
           class="btn btn-light rounded-circle btn-sm"
+          :class="{ 'bg-success text-light': activeCard === 'parking' }"
           @click="toggleCard('parking')"
         >
           <Icon name="material-symbols:local-parking" />
@@ -71,17 +72,39 @@ const toggleCard = (card: string | number) => {
       style="background: #f6f6f7"
     >
       <!-- Subscription Plan Card -->
-      <template v-if="showCards.subscription">
+      <template v-if="activeCard === 'subscription'">
         <SyncoWeeklyClassesComponentsSubscriptionPlanCard
           @toggle-subscription-card="toggleCard('subscription')"
         />
       </template>
 
       <!-- Team Dates Card -->
-      <template v-if="showCards.teamDates">
+      <template v-if="activeCard === 'teamDates'">
         <SyncoWeeklyClassesComponentsTeamDatesCardContainer
           :item="item"
           @toggle-team-dates-card="toggleCard('teamDates')"
+        />
+      </template>
+
+      <!-- Congestion Card -->
+      <template v-if="activeCard === 'congestion'">
+        <SyncoWeeklyClassesComponentsInformationCard
+          :item="item"
+          :has-feature="!!item.venue.has_congestion"
+          type="congestion"
+          title="Congestion Information"
+          @toggle-congestion-card="toggleCard('congestion')"
+        />
+      </template>
+
+      <!-- Parking Card -->
+      <template v-if="activeCard === 'parking'">
+        <SyncoWeeklyClassesComponentsInformationCard
+          :item="item"
+          :has-feature="!!item.venue.has_parking"
+          type="parking"
+          title="Parking Information"
+          @toggle-parking-card="toggleCard('parking')"
         />
       </template>
 
@@ -158,4 +181,14 @@ const toggleCard = (card: string | number) => {
       </div>
     </div>
   </div>
+
+  <!-- Location Map -->
+  <template v-if="activeCard === 'locationMap'">
+    <div>
+      <SyncoWeeklyClassesComponentsLocationMap
+        :latitude="Number(item.venue.latitude)"
+        :longitude="Number(item.venue.longitude)"
+      />
+    </div>
+  </template>
 </template>
