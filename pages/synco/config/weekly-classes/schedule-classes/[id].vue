@@ -161,7 +161,7 @@ const restoreClass = async (id: number) => {
       </div>
     </div>
     <div class="card rounded-4 p-3">
-      <template v-for="item in classes" :key="updateKey">
+      <template v-for="item in classes" :key="item.id">
         <div class="rounded-3 my-2 p-2" style="border: 1px solid lightgray">
           <SyncoConfigScheduleClassesClassListItem
             :class-item="item"

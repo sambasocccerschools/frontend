@@ -1,10 +1,22 @@
 <script setup lang="ts">
 import type { IFindAClassItem } from '~/types/synco/index'
-defineProps<{
+const props = defineProps<{
   activity: string
   item: IFindAClassItem
   index: number
 }>()
+
+console.log(props.item)
+
+const showCards = ref<Record<string, boolean>>({
+  subscription: false,
+  calendar: false,
+  location: false,
+})
+
+const toggleCard = (card: string | number) => {
+  showCards.value[card] = !showCards.value[card]
+}
 </script>
 
 <template>
@@ -22,19 +34,34 @@ defineProps<{
         }}
       </div>
       <div class="d-flex gap-3">
-        <button class="btn btn-light rounded-circle btn-sm">
+        <button
+          class="btn btn-light rounded-circle btn-sm"
+          @click="toggleCard('subscription')"
+        >
           <Icon name="mingcute:currency-pound-2-fill" />
         </button>
-        <button class="btn btn-light rounded-circle btn-sm">
+        <button
+          class="btn btn-light rounded-circle btn-sm"
+          @click="toggleCard('teamDates')"
+        >
           <Icon name="material-symbols:calendar-month" />
         </button>
-        <button class="btn btn-light rounded-circle btn-sm">
+        <button
+          class="btn btn-light rounded-circle btn-sm"
+          @click="toggleCard('location')"
+        >
           <Icon name="material-symbols:location-on" />
         </button>
-        <button class="btn btn-light rounded-circle btn-sm">
+        <button
+          class="btn btn-light rounded-circle btn-sm"
+          @click="toggleCard('capacity')"
+        >
           <Icon name="tdesign:letters-c" />
         </button>
-        <button class="btn btn-light rounded-circle btn-sm">
+        <button
+          class="btn btn-light rounded-circle btn-sm"
+          @click="toggleCard('parking')"
+        >
           <Icon name="material-symbols:local-parking" />
         </button>
       </div>
@@ -43,6 +70,21 @@ defineProps<{
       class="card-body bg-muted rounded-4 d-flex align-items-start text-muted mt-3 px-4"
       style="background: #f6f6f7"
     >
+      <!-- Subscription Plan Card -->
+      <template v-if="showCards.subscription">
+        <SyncoWeeklyClassesComponentsSubscriptionPlanCard
+          @toggle-subscription-card="toggleCard('subscription')"
+        />
+      </template>
+
+      <!-- Team Dates Card -->
+      <template v-if="showCards.teamDates">
+        <SyncoWeeklyClassesComponentsTeamDatesCardContainer
+          :item="item"
+          @toggle-team-dates-card="toggleCard('teamDates')"
+        />
+      </template>
+
       <div class="border-end border-muted border-1 d-flex flex-column pe-4">
         <span class="h4">{{ item.name }}</span>
         <!-- <small>{{ item.distance }}</small> -->
@@ -50,7 +92,11 @@ defineProps<{
       <!-- These depend on the classes per venue -->
       <!--  -->
       <div class="d-flex flex-column">
-        <div class="d-flex flex-row" v-for="y in item.classesByYear">
+        <div
+          v-for="y in item.classesByYear"
+          :key="y.year"
+          class="d-flex flex-row"
+        >
           <div
             class="order-end border-bottom border-1 d-flex flex-column justify-content-center px-4"
           >

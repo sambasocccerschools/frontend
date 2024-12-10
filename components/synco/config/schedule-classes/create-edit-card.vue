@@ -17,12 +17,12 @@ const props = defineProps<{
 
 const { $api } = useNuxtApp()
 const toast = useToast()
-let classItem = ref<IWeeklyClassesCreateItem>(props.classItem).value
-let title = ref<string>(props.title).value
-let classId = ref<number | null>(props.classId).value
-let showModalTerm = ref<boolean>(false)
+const classItem = ref<IWeeklyClassesCreateItem>(props.classItem).value
+const title = ref<string>(props.title).value
+const classId = ref<number | null>(props.classId).value
+const showModalTerm = ref<boolean>(false)
 
-let days = ref<string[]>([
+const days = ref<string[]>([
   'Monday',
   'Tuesday',
   'Wednesday',
@@ -32,12 +32,12 @@ let days = ref<string[]>([
   'Sunday',
 ]).value
 
-let terms = ref<ITermItem[]>([])
-let seasons = store.seasons
+const terms = ref<ITermItem[]>([])
+const seasons = store.seasons
 
-let selectedTerm = ref<number>(-1)
-let selectedSeasonId = ref<number>(-1)
-let selectedSeason = ref<string>('')
+const selectedTerm = ref<number>(-1)
+const selectedSeasonId = ref<number>(-1)
+const selectedSeason = ref<string>('')
 
 const emit = defineEmits(['toggleEdit'])
 
@@ -50,11 +50,11 @@ const changeSelectedTerm = (index: number) => {
 
 const assignTerm = () => {
   if (selectedSeason.value == 'Autumn')
-    classItem.autumn_term_id = selectedTerm.value
+    classItem.autumn_term_id = Number(selectedTerm.value)
   else if (selectedSeason.value == 'Spring')
-    classItem.spring_term_id = selectedTerm.value
+    classItem.spring_term_id = Number(selectedTerm.value)
   else if (selectedSeason.value == 'Summer')
-    classItem.summer_term_id = selectedTerm.value
+    classItem.summer_term_id = Number(selectedTerm.value)
   else selectedSeason.value = ''
 
   showModalTerm.value = !showModalTerm.value
@@ -64,7 +64,7 @@ const toggleModalTerm = (id: number, season: string) => {
   showModalTerm.value = !showModalTerm.value
   selectedTerm.value = id
   selectedSeason.value = season
-  let seasonObj = seasons.find((x) => x.title == season)
+  const seasonObj = seasons.find((x) => x.title == season)
   selectedSeasonId.value = seasonObj != null ? seasonObj.id : -1
 }
 
@@ -108,8 +108,8 @@ const getTerms = async (limit: number = 25) => {
 }
 
 const getTermName = (seasonId: number) => {
-  let term = terms.value.find((x) => x.id == seasonId)
-  return !!term ? term.name : seasonId
+  const term = terms.value.find((x) => x.id == seasonId)
+  return term ? term.name : seasonId
 }
 </script>
 <template>
@@ -133,10 +133,10 @@ const getTermName = (seasonId: number) => {
             >
             <input
               id="name"
+              v-model="classItem.name"
               type="text"
               class="form-control form-control-lg"
               placeholder="Enter class name"
-              v-model="classItem.name"
             />
           </div>
         </div>
@@ -147,11 +147,11 @@ const getTermName = (seasonId: number) => {
             >
             <input
               id="capacity"
+              v-model="classItem.capacity"
               type="number"
               min="1"
               class="form-control form-control-lg"
               placeholder="Enter capacity"
-              v-model="classItem.capacity"
             />
           </div>
         </div>
@@ -162,10 +162,10 @@ const getTermName = (seasonId: number) => {
             <label for="day" class="form-labelform-label-light">Day</label>
             <select
               id="day"
-              class="form-control form-control-lg"
               v-model="classItem.days"
+              class="form-control form-control-lg"
             >
-              <option v-for="(day, index) in days" :value="day" :key="index">
+              <option v-for="(day, index) in days" :key="index" :value="day">
                 {{ day }}
               </option>
             </select>
@@ -178,10 +178,10 @@ const getTermName = (seasonId: number) => {
             >
             <input
               id="start"
+              v-model="classItem.start_time"
               type="time"
               class="form-control form-control-lg"
               placeholder="Enter capacity"
-              v-model="classItem.start_time"
             />
           </div>
         </div>
@@ -190,10 +190,10 @@ const getTermName = (seasonId: number) => {
             <label for="end" class="form-labelform-label-light">End Time</label>
             <input
               id="end"
+              v-model="classItem.end_time"
               type="time"
               class="form-control form-control-lg"
               placeholder="Enter capacity"
-              v-model="classItem.end_time"
             />
           </div>
         </div>
@@ -224,12 +224,12 @@ const getTermName = (seasonId: number) => {
             <div class="d-flex flex-row">
               <div class="form-check form-check-inline">
                 <input
+                  id="autumn-indoor"
+                  v-model="classItem.is_autumn_indoor"
                   class="form-check-input"
                   type="radio"
                   name="autumn"
-                  id="autumn-indoor"
                   :value="true"
-                  v-model="classItem.is_autumn_indoor"
                 />
                 <label class="form-check-label" for="autumn-indoor">
                   Indoor
@@ -237,12 +237,12 @@ const getTermName = (seasonId: number) => {
               </div>
               <div class="form-check form-check-inline">
                 <input
+                  id="autumn-outdoor"
+                  v-model="classItem.is_autumn_indoor"
                   class="form-check-input"
                   type="radio"
                   name="autumn"
-                  id="autumn-outdoor"
                   :value="false"
-                  v-model="classItem.is_autumn_indoor"
                 />
                 <label class="form-check-label" for="autumn-outdoor">
                   Outdoor
@@ -278,12 +278,12 @@ const getTermName = (seasonId: number) => {
             <div class="d-flex flex-row">
               <div class="form-check form-check-inline">
                 <input
+                  id="spring-indoor"
+                  v-model="classItem.is_spring_indoor"
                   class="form-check-input"
                   type="radio"
                   name="spring"
-                  id="spring-indoor"
                   :value="true"
-                  v-model="classItem.is_spring_indoor"
                 />
                 <label class="form-check-label" for="spring-indoor">
                   Indoor
@@ -291,12 +291,12 @@ const getTermName = (seasonId: number) => {
               </div>
               <div class="form-check form-check-inline">
                 <input
+                  id="spring-outdoor"
+                  v-model="classItem.is_spring_indoor"
                   class="form-check-input"
                   type="radio"
                   name="spring"
-                  id="spring-outdoor"
                   :value="false"
-                  v-model="classItem.is_spring_indoor"
                 />
                 <label class="form-check-label" for="spring-outdoor">
                   Outdoor
@@ -332,12 +332,12 @@ const getTermName = (seasonId: number) => {
             <div class="d-flex flex-row">
               <div class="form-check form-check-inline">
                 <input
+                  id="summer-indoor"
+                  v-model="classItem.is_summer_indoor"
                   class="form-check-input"
                   type="radio"
                   name="summer"
-                  id="summer-indoor"
                   :value="true"
-                  v-model="classItem.is_summer_indoor"
                 />
                 <label class="form-check-label" for="summer-indoor">
                   Indoor
@@ -345,12 +345,12 @@ const getTermName = (seasonId: number) => {
               </div>
               <div class="form-check form-check-inline">
                 <input
+                  id="summer-outdoor"
+                  v-model="classItem.is_summer_indoor"
                   class="form-check-input"
                   type="radio"
                   name="summer"
-                  id="summer-outdoor"
                   :value="false"
-                  v-model="classItem.is_summer_indoor"
                 />
                 <label class="form-check-label" for="summer-outdoor">
                   Outdoor
@@ -370,23 +370,23 @@ const getTermName = (seasonId: number) => {
             <div class="d-flex flex-row">
               <div class="form-check form-check-inline">
                 <input
+                  id="free-trial-on"
+                  v-model="classItem.is_free_trail_dates"
                   class="form-check-input"
                   type="radio"
                   name="free-trial"
-                  id="free-trial-on"
                   :value="true"
-                  v-model="classItem.is_free_trail_dates"
                 />
                 <label class="form-check-label" for="free-trial-on"> On </label>
               </div>
               <div class="form-check form-check-inline">
                 <input
+                  id="free-trial-off"
+                  v-model="classItem.is_free_trail_dates"
                   class="form-check-input"
                   type="radio"
                   name="free-trial"
-                  id="free-trial-off"
                   :value="false"
-                  v-model="classItem.is_free_trail_dates"
                 />
                 <label class="form-check-label" for="free-trial-off">
                   Off
@@ -447,8 +447,8 @@ const getTermName = (seasonId: number) => {
               <div
                 v-if="term.season.id == selectedSeasonId"
                 class="rounded-4"
-                @click="changeSelectedTerm(term.id)"
                 :style="selectedTerm == term.id ? 'border:1px solid red' : ''"
+                @click="changeSelectedTerm(term.id)"
               >
                 <SyncoConfigScheduleClassesTermCard
                   :term="term"
