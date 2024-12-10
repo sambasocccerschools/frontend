@@ -110,11 +110,11 @@ const cleanLeadsData = (data: any) => {
   return data.map((item: any) => {
     return {
       id: item.id,
-      venue: item.weekly_class.venue_id.name ?? 'N/A',
+      venue: item.weekly_class.venue.name ?? 'N/A',
       student: item.student,
-      status: item.sale_status_code ?? 'N/A',
+      status: item.sale_status.code ?? 'N/A',
       membership_plan: item.subscription_plan_price ?? 'Monthly',
-      booked_by: item.booked_by?.name ?? 'N/A',
+      booked_by: item.booked_by?.user_name ?? 'N/A',
       created_date: item.created_date ?? 'N/A',
       updated_date: item.updated_date ?? 'N/A',
     }

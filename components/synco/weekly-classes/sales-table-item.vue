@@ -140,16 +140,16 @@ const selectStatus = async (event: Event) => {
       </select>
       <!-- <span class="badge bg-success-subtle text-success px-1"> Active </span> -->
     </td>
-    <td>
+    <!-- <td>
       <button class="btn btn-light btn-sm" @click="show = !show">
         <Icon name="mdi:chevron-down" />
       </button>
-    </td>
+    </td> -->
   </tr>
-  <tr v-if="show">
+  <!-- <tr v-if="show">
     <td colspan="12">
-      <!-- TODO: VERIFY THIS WORKS ONCE THE API RETURNS THE CORRECT DATA -->
+      TODO: VERIFY THIS WORKS ONCE THE API RETURNS THE CORRECT DATA
       <SyncoWeeklyClassesBookingListItem :item="lead.venue" />
     </td>
-  </tr>
+  </tr> -->
 </template>

@@ -5,7 +5,7 @@ const props = defineProps<{
   item: IWeeklyClassesVenueObject
 }>()
 
-let item = ref<IWeeklyClassesVenueObject>(props.item)
+const item = ref<IWeeklyClassesVenueObject>(props.item)
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/BookingListItem.vue')
@@ -66,7 +66,7 @@ onMounted(async () => {
             <span class="h5">{{ c.year }}</span>
           </div>
           <div class="d-flex flex-column">
-            <template v-for="classes in c.classes">
+            <template v-for="(classes, idex) in c.classes" :key="idex">
               <div
                 class="d-flex align-items-center justify-content-center gap-3"
               >
