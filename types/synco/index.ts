@@ -389,7 +389,7 @@ export type IWeeklyClassesLead = {
   status: ILeadStatus
   guardian: IGuardian
   kid_range: string
-  venues: IWeeklyClassesVenueObject[]
+  venue: IWeeklyClassesVenueObject[]
   agent: IUserCommentsObject
   created_at: number | null
   deleted_at: number | null
@@ -468,21 +468,22 @@ export type IWeeklyClassesVenueObject = {
   id: string
   area: string
   name: string
-  lat: number
-  lng: number
-  distance: string | null
+  latitude: number
+  longitude: number
+  distance?: string | null
   address: string
   has_parking: boolean
   has_congestion: boolean
-  parking_note: string
-  facility_enter_guide: string
-  region: IRegionItem
-  created_at: Date | null
-  deleted_at: Date | null
-  price: number | null
-  subscriptionPlans: any[]
-  classesByYear: IBaseWeeklyClassesClassesByYear[]
-  termsByYear: IBaseWeeklyClassesTermsByYear[]
+  parking_note?: string
+  facility_enter_guide?: string
+  region?: IRegionItem
+  created_date: Date | null
+  updated_date: Date | null
+  price?: number | null
+  subscriptionPlans?: any[]
+  classesByYear?: IBaseWeeklyClassesClassesByYear[]
+  termsByYear?: IBaseWeeklyClassesTermsByYear[]
+  is_deleted: boolean
 }
 
 export type IBaseWeeklyClassesClassesByYear = {

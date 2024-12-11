@@ -59,7 +59,7 @@
               <th class="text-muted" scope="col">Membership plan</th>
               <th class="text-muted" scope="col">Lifecycle of membership</th>
               <th class="text-muted" scope="col">Status</th>
-              <th></th>
+              <!-- <th></th> -->
             </tr>
           </thead>
           <tbody>

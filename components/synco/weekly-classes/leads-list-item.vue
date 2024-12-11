@@ -31,8 +31,7 @@ onMounted(async () => {
   if (lead.status) {
     selectedStatus.value = lead.status.id
   }
-  console.log('status', lead.status)
-  console.log('agent', lead.agent)
+  console.log('lead', lead)
   // if (store.leadStatus.length == 0) await store.getLeadStatus()
 })
 
@@ -124,12 +123,18 @@ const selectStatus = async (event: Event) => {
     <td style="cursor: pointer" @click="navigateToUser(lead.id)">
       {{ lead.guardian?.phone_number || 'N/A' }}
     </td>
+    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+      {{ lead?.postcode || 'N/A' }}
+    </td>
     <!-- <td @click="navigateToUser(lead.id)" style="cursor: pointer">ER 7YJ</td> -->
     <td style="cursor: pointer" @click="navigateToUser(lead.id)">
       {{ lead?.kid_range || 'N/A' }}
     </td>
     <td>
-      <select
+      <label class="form-check-label text-muted" for="tomjones">
+        {{ lead.agent || 'N/A' }}
+      </label>
+      <!-- <select
         id="seasons"
         v-model="selectedAgent"
         class="form-control form-control-lg"
@@ -140,7 +145,7 @@ const selectStatus = async (event: Event) => {
         <option v-for="(agent, index) in agents" :key="index" :value="agent.id">
           {{ agent.first_name }} {{ agent.last_name }}
         </option>
-      </select>
+      </select> -->
     </td>
     <td>
       <select
@@ -166,11 +171,16 @@ const selectStatus = async (event: Event) => {
       </button>
     </td>
   </tr>
-  <tr v-if="show">
+  <!-- <tr v-if="show">
     <td colspan="12">
       <template v-for="(venue, index) in lead.venues" :key="index">
         <SyncoWeeklyClassesBookingListItem :item="venue" />
       </template>
+    </td>
+  </tr> -->
+  <tr v-if="show">
+    <td colspan="12">
+      <SyncoWeeklyClassesBookingListItem :item="lead.venue" />
     </td>
   </tr>
 </template>

@@ -100,7 +100,7 @@
               <th class="text-muted" scope="col">Parent name</th>
               <th class="text-muted" scope="col">Email</th>
               <th class="text-muted" scope="col">Phone</th>
-              <!-- <th class="text-muted" scope="col">Postcode</th> -->
+              <th class="text-muted" scope="col">Postcode</th>
               <th class="text-muted" scope="col">Kid range</th>
               <th class="text-muted" scope="col">Assigned Agent</th>
               <th class="text-muted" scope="col">Status</th>
@@ -151,11 +151,14 @@ const cleanLeadsData = (data: any) => {
   return data.map((item: any) => {
     return {
       id: item.id,
-      guardian: item.guardian_id,
+      guardian: item.guardian,
+      phone: item.guardian?.phone,
+      postcode: item.guardian?.postcode,
       kid_range: item.kid_range,
       status: item.lead_status_code,
-      agent: item.agent_id,
+      agent: item.agent?.user_name,
       created_at: item.created_date,
+      venue: item.weekly_class?.venue,
     }
   })
 }
