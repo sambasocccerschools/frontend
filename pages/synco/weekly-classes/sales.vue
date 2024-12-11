@@ -63,7 +63,7 @@
               <th class="text-muted" scope="col">Who booked?</th>
               <!-- <th class="text-muted" scope="col">Membership plan</th> -->
               <th class="text-muted" scope="col">Status</th>
-              <th></th>
+              <!-- <th></th> -->
             </tr>
           </thead>
           <tbody>
@@ -112,7 +112,7 @@ const cleanLeadsData = (data: any) => {
       id: item.id,
       venue: item.weekly_class.venue.name ?? 'N/A',
       student: item.student,
-      status: item.sale_status.code ?? 'N/A',
+      status: item.sale_status ?? 'N/A',
       membership_plan: item.subscription_plan_price ?? 'Monthly',
       booked_by: item.booked_by?.user_name ?? 'N/A',
       created_date: item.created_date ?? 'N/A',

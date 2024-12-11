@@ -19,6 +19,8 @@ const show = ref<boolean>(false)
 const agents = store.agents
 const leadStatus = store.saleStatus
 
+console.log('lead', leadStatus)
+
 const selectedAgent = ref<string>('')
 const selectedStatus = ref<number>(0)
 const blockButtons = ref(false)
@@ -28,6 +30,7 @@ onMounted(async () => {
   // if (!!lead.agent) {
   //   selectedAgent.value = lead.agent.id
   // }
+  console.log(lead)
   if (lead.status) {
     selectedStatus.value = lead.status.id
   }
