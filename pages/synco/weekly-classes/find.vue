@@ -78,11 +78,10 @@ const handleFiltered = async (filteredItems: {
   days?: string[]
 }) => {
   if (filteredItems.venue) {
-    console.log('filteredItems.venue', filteredItems.venue)
-    filterWeeklyClasses(filteredItems.venue)
+    filterWeeklyClassesByVenue(filteredItems.venue)
   }
   if (filteredItems.class_name) {
-    filterWeeklyClasses(filteredItems.class_name)
+    filterWeeklyClassesByClass(filteredItems.class_name)
   }
   if (!!filteredItems.venues && filteredItems.venues.length) {
     filter.value.venue_id = filteredItems.venues.join(',')
@@ -98,11 +97,20 @@ const handleFiltered = async (filteredItems: {
   await getData()
 }
 
-const filterWeeklyClasses = (value: string) => {
+const filterWeeklyClassesByVenue = (value: string) => {
   weeklyClasses.value = weeklyClasses.value.filter((item) => {
+    return item.name.toLowerCase().includes(value.toLowerCase())
+  })
+}
+
+const filterWeeklyClassesByClass = (value: string) => {
+  weeklyClasses.value = weeklyClasses.value.filter((item) => {
+    const classes = item?.classes[0]?.classes
     return (
-      item.name.toLowerCase().includes(value.toLowerCase()) ||
-      item.venue.name.toLowerCase().includes(value.toLowerCase())
+      classes &&
+      classes.some((classItem: any) =>
+        classItem.name.toLowerCase().includes(value.toLowerCase()),
+      )
     )
   })
 }

@@ -830,6 +830,27 @@ export type IFindAClassItem = {
   created_at: Date | null
   deleted_at: Date | null
   venue: any
+  classes: any
+}
+
+export type IFindAClassItemNew = {
+  id: string
+  address: string
+  area: string
+  classes: any[]
+  created_date: Date | null
+  facility_enter_guide: string
+  facility: any
+  has_congestion: boolean
+  has_parking: boolean
+  latitude: any
+  longitude: any
+  name: string
+  parking_note: string
+  price: number | null
+  region: any
+  subscriptionPlans: any[]
+  updated_date: Date | null
 }
 
 export type IWeeklyClassesFindAClassResponse = {

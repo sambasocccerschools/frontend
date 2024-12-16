@@ -7,7 +7,7 @@ import type {
 } from '~/types/synco'
 
 class WeeklyClassesFindAClassModule extends FetchFactory {
-  private RESOURCE = '/weeklyClasses'
+  private RESOURCE = '/allWeeklyClasses'
 
   async getByFilter(filter: IWeeklyClassesFindAClassFilterObject) {
     const token = useCookie('token')
@@ -29,7 +29,7 @@ class WeeklyClassesFindAClassModule extends FetchFactory {
 
     return this.call<IWeeklyClassesFindAClassResponse>(
       'GET',
-      `${this.RESOURCE}/get_all`,
+      `${this.RESOURCE}/find_a_class`,
       undefined,
       fetchOptions,
     )

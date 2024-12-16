@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import type { IFindAClassItem } from '~/types/synco/index'
+import type { IFindAClassItemNew } from '~/types/synco/index'
 const props = defineProps<{
   activity: string
-  item: IFindAClassItem
+  item: IFindAClassItemNew
   index: number
 }>()
-
-console.log(props.item)
 
 const activeCard = ref<string | null>(null)
 
@@ -68,7 +66,7 @@ const toggleCard = (card: string) => {
       </div>
     </div>
     <div
-      class="card-body bg-muted rounded-4 d-flex align-items-start text-muted mt-3 px-4"
+      class="card-body bg-muted rounded-4 d-flex align-items-center text-muted mt-3 px-4"
       style="background: #f6f6f7"
     >
       <!-- Subscription Plan Card -->
@@ -90,7 +88,7 @@ const toggleCard = (card: string) => {
       <template v-if="activeCard === 'congestion'">
         <SyncoWeeklyClassesComponentsInformationCard
           :item="item"
-          :has-feature="!!item.venue.has_congestion"
+          :has-feature="!!item.has_congestion"
           type="congestion"
           title="Congestion Information"
           @toggle-congestion-card="toggleCard('congestion')"
@@ -101,7 +99,7 @@ const toggleCard = (card: string) => {
       <template v-if="activeCard === 'parking'">
         <SyncoWeeklyClassesComponentsInformationCard
           :item="item"
-          :has-feature="!!item.venue.has_parking"
+          :has-feature="!!item.has_parking"
           type="parking"
           title="Parking Information"
           @toggle-parking-card="toggleCard('parking')"
@@ -116,12 +114,12 @@ const toggleCard = (card: string) => {
       <!--  -->
       <div class="d-flex flex-column">
         <div
-          v-for="y in item.classesByYear"
+          v-for="y in item.classes"
           :key="y.year"
-          class="d-flex flex-row"
+          class="d-flex alig flex-row"
         >
           <div
-            class="order-end border-bottom border-1 d-flex flex-column justify-content-center px-4"
+            class="order-end border-1 d-flex flex-column justify-content-center px-4"
           >
             <span class="h5">{{ y.year }}</span>
           </div>
@@ -130,7 +128,8 @@ const toggleCard = (card: string) => {
               v-for="(c, idx) in y.classes"
               :key="c.id"
               :index="idx"
-              class="border-bottom border-1 border-muted d-flex justify-content-between align-items-center pb-2"
+              class="border-1 border-muted d-flex justify-content-between align-items-center pb-3 pt-3"
+              style="min-height: 50px"
             >
               <div
                 class="d-flex align-items-center justify-content-center gap-3"
@@ -186,8 +185,8 @@ const toggleCard = (card: string) => {
   <template v-if="activeCard === 'locationMap'">
     <div>
       <SyncoWeeklyClassesComponentsLocationMap
-        :latitude="Number(item.venue.latitude)"
-        :longitude="Number(item.venue.longitude)"
+        :latitude="Number(item.latitude)"
+        :longitude="Number(item.longitude)"
       />
     </div>
   </template>
