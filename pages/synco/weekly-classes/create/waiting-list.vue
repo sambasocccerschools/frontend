@@ -115,9 +115,10 @@
                   class="form-control form-control-lg"
                 >
                   <option value="0">Choose plan</option>
-                  <template v-if="getSubscriptionPlanFromVenue() != null">
+                  <template v-if="store.subscriptionPlans != null">
                     <option
-                      v-for="plan in getSubscriptionPlanFromVenue()"
+                      v-for="plan in store.subscriptionPlans"
+                      :key="plan.id"
                       :value="plan.id"
                     >
                       {{ plan.name }}
@@ -421,7 +422,9 @@ const comments = ref<Array<IComment>>([
 const selectedPlan = ref<number>(0)
 
 const subscriptionPlans = ref<ISubscriptionPlan[]>(store.subscriptionPlans)
+console.log('store', store)
 const venues = ref<IAvailableVenueObject[]>(store.availableVenues)
+console.log('store', store)
 
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/create/waiting-list.vue')
@@ -433,7 +436,7 @@ onMounted(async () => {
   if (agentId) agent_id.value = agentId
 
   if (!store.subscriptionPlans.length) {
-    await store.fetchDatasetDataByType('SUBSCRIPTIONS_PLANS')
+    await store.getSubsciptionPlans()
     subscriptionPlans.value = store.subscriptionPlans
   }
 })

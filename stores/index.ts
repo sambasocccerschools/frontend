@@ -101,9 +101,6 @@ export const generalStore = defineStore('store', {
         this.saleStatus = data.filter(
           (item: any) => item.type === 'SALE_STATUS',
         )
-        this.subscriptionPlans = data.filter(
-          (item: any) => item.type === 'SUBSCRIPTION_PLANS',
-        )
         this.feedbackStatus = data.filter(
           (item: any) => item.type === 'FEEDBACK_STATUS',
         )
@@ -145,6 +142,7 @@ export const generalStore = defineStore('store', {
     async getAbilityGroups() {
       try {
         const response = await useNuxtApp().$api.abilityGroups.getAll()
+        console.log('response!!!!!!!!!!!!!', response)
         this.abilityGroups = response?.data
       } catch (error: any) {
         this.abilityGroups = []
@@ -168,6 +166,18 @@ export const generalStore = defineStore('store', {
         console.error('Error fetching genders:', error)
         useToast().error('Failed to load genders data.')
         return []
+      }
+    },
+
+    async getSubsciptionPlans() {
+      try {
+        const response = await useNuxtApp().$api.subscriptionPlans.getAll()
+        console.log('response', response)
+        this.subscriptionPlans = response?.data
+      } catch (error: any) {
+        this.subscriptionPlans = []
+        console.log(error)
+        useToast().error(error?.messages ?? 'getSubsciptionPlans Error')
       }
     },
   },
