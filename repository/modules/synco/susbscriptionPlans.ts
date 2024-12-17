@@ -2,7 +2,7 @@ import type { FetchOptions } from 'ofetch'
 import FetchFactory from '../../factory'
 
 class SubscriptionPlansModule extends FetchFactory {
-  private RESOURCE = '/subscriptionPlans'
+  private RESOURCE = '/subscriptionPlanPrices'
 
   async getAll() {
     const token = useCookie('token')

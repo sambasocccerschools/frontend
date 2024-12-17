@@ -51,7 +51,7 @@ export const generalStore = defineStore('store', {
     memberCancelType: [] as IMemberCancelType[],
     memberStatus: [] as IMemberStatus[],
     saleStatus: [] as ISaleStatus[],
-    subscriptionPlans: [] as ISubscriptionPlan[],
+    subscriptionPlans: [] as any[],
     feedbackStatus: [] as IFeedbackStatus[],
     feedbackCategory: [] as IFeedbackCategory[],
     feedbackType: [] as IFeedbackType[],
@@ -131,6 +131,7 @@ export const generalStore = defineStore('store', {
     async getAvailableVenues() {
       try {
         const response = await useNuxtApp().$api.venues.availableVenues()
+        console.log('response!!!!!!!!!!!!!', response)
         this.availableVenues = response?.data
       } catch (error: any) {
         this.availableVenues = []
@@ -142,7 +143,6 @@ export const generalStore = defineStore('store', {
     async getAbilityGroups() {
       try {
         const response = await useNuxtApp().$api.abilityGroups.getAll()
-        console.log('response!!!!!!!!!!!!!', response)
         this.abilityGroups = response?.data
       } catch (error: any) {
         this.abilityGroups = []

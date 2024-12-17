@@ -352,8 +352,8 @@ export type IGuardianCreate = {
   last_name: string
   email: string
   phone_number: string
-  relationship_id: number
-  referral_source_id: number
+  relationship_code: number
+  referral_source_code: number
 }
 
 export type IEmregencyContactCreate = {
@@ -864,8 +864,8 @@ export type ICreateGuardian = {
   last_name: string
   email: string
   phone_number: string
-  relationship_id: number
-  referral_source_id: number
+  relationship_code: number
+  referral_source_code: number
 }
 
 export type ICreateStudent = {
@@ -900,6 +900,7 @@ export type IWeeklyClassesWaitingListCreate = {
   students: ICreateStudent[]
   emergency_contacts: ICreateEmergencyContact[]
   comments: string[]
+  waiting_list_status_code: string
 }
 
 export type IWeeklyClassesMemberCreate = {

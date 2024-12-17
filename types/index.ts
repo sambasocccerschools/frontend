@@ -525,13 +525,35 @@ export type IMedicalInformation = IBaseDatasetItem & {
 export type IMedicalInformationResponse =
   IBaseResponse<IMedicalInformation> & {}
 
-export type IRelationship = IBaseDatasetItem & {
+export type IRelationship = {
+  id: string
+  code: string
+  type: string
   title: string
+  title_es: string | null
+  slug: string
+  father_code: string | null
+  value1: string | null
+  value2: string | null
+  created_date: Date | null
+  updated_date: Date | null
+  user_updated_id: string | null
 }
 export type IRelationshipResponse = IBaseResponse<IRelationship> & {}
 
-export type IReferralSource = IBaseDatasetItem & {
+export type IReferralSource = {
+  id: string
+  code: string
+  type: string
   title: string
+  title_es: string | null
+  slug: string
+  father_code: string | null
+  value1: string | null
+  value2: string | null
+  created_date: Date | null
+  updated_date: Date | null
+  user_updated_id: string | null
 }
 export type IReferralSourceResponse = IBaseResponse<IReferralSource> & {}
 

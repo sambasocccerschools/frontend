@@ -188,6 +188,21 @@ class WeeklyClassesWaitingListModule extends FetchFactory {
       fetchOptions,
     )
   }
+
+  async createFromFindAClass(data: IWeeklyClassesWaitingListCreate) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
+    return this.call<IMessageResponseObject>(
+      'POST',
+      `${this.RESOURCE}/add_front`,
+      data,
+      fetchOptions,
+    )
+  }
 }
 
 export default WeeklyClassesWaitingListModule

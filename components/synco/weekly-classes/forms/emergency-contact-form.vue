@@ -102,7 +102,7 @@ onMounted(async () => {
             <option
               v-for="(relation, index) in relationships"
               :key="index"
-              :value="relation.id"
+              :value="relation.code"
             >
               {{ relation.title }}
             </option>
