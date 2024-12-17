@@ -441,8 +441,6 @@ onMounted(async () => {
     const plans = await $api.subscriptionPlans.getAll()
     subscriptionPlans.value = plans.data
   }
-
-  console.log('subscriptionPlans', subscriptionPlans.value)
 })
 
 const toggleSubscriptionCard = () => {

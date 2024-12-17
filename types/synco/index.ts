@@ -912,6 +912,7 @@ export type IWeeklyClassesMemberCreate = {
   students: ICreateStudent[]
   emergency_contacts: ICreateEmergencyContact[]
   comments: string[]
+  member_status_code: string
 }
 
 export type IPaymentType = {

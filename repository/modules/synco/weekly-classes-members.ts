@@ -214,6 +214,21 @@ class WeeklyClassesMembersModule extends FetchFactory {
       fetchOptions,
     )
   }
+
+  async createFromFindAClass(data: IWeeklyClassesMemberCreate) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
+    return this.call<IMessageResponseObject>(
+      'POST',
+      `${this.RESOURCE}/add_front`,
+      data,
+      fetchOptions,
+    )
+  }
 }
 
 export default WeeklyClassesMembersModule
