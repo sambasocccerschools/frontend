@@ -19,7 +19,7 @@ const selectedClassId = ref<number | null>(null)
 
 const seasons = store.seasons
 const emptyClassItem = ref<IWeeklyClassesCreateItem>({
-  venue_id: '',
+  venue_id: 0,
   name: '',
   capacity: 0,
   days: '',
@@ -34,7 +34,7 @@ const emptyClassItem = ref<IWeeklyClassesCreateItem>({
   is_free_trail_dates: false,
 })
 const newEditClassItem = ref<IWeeklyClassesCreateItem>({
-  venue_id: '',
+  venue_id: 0,
   name: '',
   capacity: 0,
   days: '',
@@ -54,7 +54,8 @@ let title = ref<string>('Create new').value
 
 const classId = ref<string>('')
 
-const toggleCreateEdit = async (item: IWeeklyClassesItem | null | boolean) => {
+const toggleCreateEdit = async (item: any | null | boolean) => {
+  console.log('item')
   console.log(item)
   showModal.value = !showModal.value
   if (item) {
@@ -62,7 +63,7 @@ const toggleCreateEdit = async (item: IWeeklyClassesItem | null | boolean) => {
     selectedClassId.value = item.id
     newEditClassItem.value = JSON.parse(
       JSON.stringify({
-        venue_id: item.venue?.id,
+        venue_id: Number(item.venue?.id),
         name: item.name,
         capacity: item.capacity,
         days: item.days,
@@ -94,8 +95,8 @@ onMounted(async () => {
   const id = currentRoute[currentRoute.length - 1]
   console.log(id)
   classId.value = id
-  emptyClassItem.value.venue_id = id
-  newEditClassItem.value.venue_id = id
+  emptyClassItem.value.venue_id = Number(id)
+  newEditClassItem.value.venue_id = Number(id)
   await getWeeklyClasses()
   if (!store.seasons.length) {
     await store.fetchDatasetDataByType('SEASONS')

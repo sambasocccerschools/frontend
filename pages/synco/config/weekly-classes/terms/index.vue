@@ -263,13 +263,13 @@ const save = () => {
       const plans: any[] = []
       x.termSessionPlans?.forEach((plan: any) => {
         plans.push({
-          id: plan.id,
-          ability_group: plan.ability_group.id,
-          session_plan: plan.session_plan.id,
+          // id: Number(plan.id),
+          ability_group: Number(plan.ability_group.id),
+          session_plan: Number(plan.session_plan.id),
         })
       })
       const session: ISessionEditItem = {
-        id: x.id,
+        id: Number(x.id),
         plans: plans,
       }
       newSessionObject.push(session)

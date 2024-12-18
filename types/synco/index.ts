@@ -98,7 +98,7 @@ export type IWeeklyClassesItem = {
 }
 
 export type IWeeklyClassesCreateItem = {
-  venue_id: string
+  venue_id: string | number
   name: string
   capacity: number
   days: string

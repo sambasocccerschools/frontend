@@ -106,24 +106,29 @@ class TermsModule extends FetchFactory {
       },
     }
 
+    console.log(term.sessions)
+
     const sessions: any[] = []
     term.sessions?.forEach((session: any) => {
       if (session.id <= 0) {
         const plans: any[] = []
         session.plans?.forEach((plan: any) => {
           plans.push({
-            ability_group: plan.ability_group,
-            session_plan: plan.session_plan,
+            ability_group: Number(plan.ability_group),
+            session_plan: Number(plan.session_plan),
           })
         })
         sessions.push({
-          id: session.id,
+          id: Number(session.id),
           plans: plans,
         })
       } else {
         sessions.push(session)
       }
     })
+
+    console.log('sessions')
+    console.log(sessions)
     const body = {
       season_code: term.season_code,
       name: term.name,

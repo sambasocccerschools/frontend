@@ -29,11 +29,11 @@ import type { IPlanItem } from '~/types/synco/index'
 
 const props = defineProps<{
   session: any | null
-  sessionId: number
+  sessionId: string | number
 }>()
 
 const session = ref<any | null>(props.session).value
-const sessionId = ref<number>(props.sessionId).value
+const sessionId = ref<string | number>(props.sessionId).value
 
 const emit = defineEmits(['toggleAssignSessionCard'])
 
@@ -41,9 +41,9 @@ const toggleAssignSessionCard = (plan: IPlanItem) => {
   emit('toggleAssignSessionCard', {
     selected: '+',
     sessionId,
-    planId: plan.id,
-    abilityId: plan.ability_group.id,
-    sessionPlanId: plan.session_plan.id,
+    planId: Number(plan.id),
+    abilityId: Number(plan.ability_group.id),
+    sessionPlanId: Number(plan.session_plan.id),
   })
 }
 onMounted(() => {

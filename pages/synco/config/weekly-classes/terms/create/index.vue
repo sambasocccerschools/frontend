@@ -365,8 +365,8 @@ const save = () => {
       const plans: IPlanCreateItem[] = []
       x.plans.forEach((plan) => {
         plans.push({
-          ability_group: plan.ability_group.id,
-          session_plan: plan.session_plan.id,
+          ability_group: Number(plan.ability_group.id),
+          session_plan: Number(plan.session_plan.id),
         })
       })
       const session: ISessionCreateItem = {
