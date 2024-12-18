@@ -250,7 +250,7 @@ class WeeklyClassesLeadsModule extends FetchFactory {
 
   async assignStatus(id: number, statusId: number) {
     const body = {
-      weekly_classes_lead_id: [id],
+      weekly_classes_lead_id: [Number(id)],
       lead_status_code: statusId,
     }
     return this.call<IMessageResponseObject>(

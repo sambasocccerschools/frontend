@@ -65,6 +65,7 @@
             <template v-for="(lead, index) in leads" :key="index">
               <LazySyncoWeeklyClassesMembersTableItem
                 :lead="lead"
+                :status-type="'waitingListStatus'"
                 @selected-guardian="selectedGuardian"
               />
             </template>

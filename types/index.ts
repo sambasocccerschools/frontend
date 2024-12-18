@@ -682,8 +682,19 @@ export type IRole = IBaseDatasetItem & {
 }
 export type IRoleResponse = IBaseResponse<IRole> & {}
 
-export type IWaitingListStatus = IBaseDatasetItem & {
+export type IWaitingListStatus = {
+  id: string | number
+  code: string
+  type: string
   title: string
+  title_es: string | null
+  slug: string
+  father_code: string | null
+  value1: string | null
+  value2: string | null
+  created_date: string
+  updated_date: Date | null
+  user_updated_id: Date | null
 }
 export type IWaitingListStatusResponse = IBaseResponse<IWaitingListStatus> & {}
 

@@ -6,6 +6,7 @@ import { generalStore } from '~/stores'
 
 const props = defineProps<{
   lead: IWeeklyClassesMembers
+  statusType?: string
 }>()
 
 const router = useRouter()
@@ -18,6 +19,10 @@ const show = ref<boolean>(false)
 
 const agents = store.agents
 const leadStatus = store.memberStatus
+const waitingListStatus = store.waitingListStatus
+
+console.log('waitingListStatus', waitingListStatus)
+console.log('leadStatus', leadStatus)
 
 const selectedAgent = ref<string>('')
 const selectedStatus = ref<number>(0)
@@ -29,7 +34,7 @@ onMounted(async () => {
   //   selectedAgent.value = lead.agent.id
   // }
   if (lead.status) {
-    selectedStatus.value = lead.status.id
+    selectedStatus.value = lead.status.code
   }
   console.log('status', lead.status)
   // console.log('agent', lead.agent)
@@ -80,7 +85,15 @@ const selectStatus = async (event: Event) => {
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    const response = await $api.wcLeads.assignStatus(id, statusId)
+    if (props.statusType === 'waitingListStatus') {
+      const response = await $api.wcWaitingList.assignStatus(
+        Number(id),
+        statusId,
+      )
+      toast.success(response?.message)
+      return
+    }
+    const response = await $api.wcLeads.assignStatus(Number(id), statusId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)
@@ -136,9 +149,11 @@ const selectStatus = async (event: Event) => {
       >
         <option value="0">Assign status</option>
         <option
-          v-for="(lStatus, index) in leadStatus"
+          v-for="(lStatus, index) in statusType === 'waitingListStatus'
+            ? waitingListStatus
+            : leadStatus"
           :key="index"
-          :value="lStatus.id"
+          :value="lStatus.code"
         >
           {{ lStatus.title }}
         </option>

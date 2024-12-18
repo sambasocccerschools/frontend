@@ -7,6 +7,7 @@ import type {
   IMemberStatus,
   ISaleStatus,
   IUser,
+  IWaitingListStatus,
 } from '~/types'
 import genders from '~/utils/genders.json'
 import { defineStore } from 'pinia'
@@ -55,6 +56,7 @@ export const generalStore = defineStore('store', {
     feedbackStatus: [] as IFeedbackStatus[],
     feedbackCategory: [] as IFeedbackCategory[],
     feedbackType: [] as IFeedbackType[],
+    waitingListStatus: [] as IWaitingListStatus[],
   }),
   getters: {},
   actions: {
@@ -109,6 +111,9 @@ export const generalStore = defineStore('store', {
         )
         this.feedbackType = data.filter(
           (item: any) => item.type === 'FEEDBACK_TYPES',
+        )
+        this.waitingListStatus = data.filter(
+          (item: any) => item.type === 'WAITING_LIST_STATUS',
         )
       } catch (error) {
         console.error('Error fetching data:', error)
