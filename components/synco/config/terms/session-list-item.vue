@@ -1,34 +1,39 @@
 <template>
-  <div class="d-flex justify-content-between flex-row">
+  <div class="align-items-center d-flex flex-row gap-3 text-sm">
     <div class="">
-      <span class="text-sm">Session {{ session?.id }}</span>
+      <span>Session {{ session?.id }}</span>
     </div>
-    <div class="" v-for="plan in session?.plans">
-      <span class="text-sm">
-        <span class="text-muted">{{ plan.ability_group.name }}: </span>
-        <span>{{ plan.session_plan.title }}</span>
-        <a
-          type="button"
-          class="btn btn-outline-primary border-0"
-          @click="toggleAssignSessionCard(plan)"
-        >
-          Change
-        </a></span
+    <div
+      v-for="plan in session?.termSessionPlans"
+      :key="plan.id"
+      class="align-items-center d-flex flex-row gap-3 text-sm"
+    >
+      <!-- <span class="align-items-center flex-row flex-row gap-3 text-sm"> -->
+      <span class="text-muted">{{ plan.ability_group.name }}: </span>
+      <span>{{ plan.session_plan.title }}</span>
+      <a
+        type="button"
+        class="btn btn-outline-primary border-0 p-0"
+        @click="toggleAssignSessionCard(plan)"
       >
+        Change
+      </a>
+      <!-- </span
+      > -->
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { ISessionItem, IPlanItem } from '~/types/synco/index'
+import type { IPlanItem } from '~/types/synco/index'
 
 const props = defineProps<{
-  session: ISessionItem | null
+  session: any | null
   sessionId: number
 }>()
 
-let session = ref<ISessionItem | null>(props.session).value
-let sessionId = ref<number>(props.sessionId).value
+const session = ref<any | null>(props.session).value
+const sessionId = ref<number>(props.sessionId).value
 
 const emit = defineEmits(['toggleAssignSessionCard'])
 
