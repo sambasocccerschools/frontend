@@ -120,8 +120,8 @@ class WeeklyClassesLeadsModule extends FetchFactory {
         last_name: x.last_name,
         email: x.email,
         phone_number: x.phone_number,
-        relationship_id: x.relationship_id,
-        referral_source_id: x.referral_source_id,
+        relationship_code: x.relationship_code,
+        referral_source_code: x.referral_source_code,
       })
     })
     const students: ICreateStudent[] = []
@@ -251,7 +251,7 @@ class WeeklyClassesLeadsModule extends FetchFactory {
   async assignStatus(id: number, statusId: number) {
     const body = {
       weekly_classes_lead_id: [id],
-      lead_status_id: statusId,
+      lead_status_code: statusId,
     }
     return this.call<IMessageResponseObject>(
       'PUT',

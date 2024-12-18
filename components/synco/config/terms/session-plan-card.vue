@@ -38,15 +38,19 @@
           See all sessions
         </NuxtLink>
       </div>
-      <div class="my-2" v-for="sessionPlan in sessionPlans">
+      <div
+        v-for="sessionPlan in sessionPlans"
+        :key="sessionPlan.id"
+        class="my-2"
+      >
         <div
           class="rounded-2"
-          @click="changeSelectedSessionPlan(sessionPlan)"
           :style="
             selectedSessionPlanId == sessionPlan.id
               ? 'border:1px solid red'
               : ''
           "
+          @click="changeSelectedSessionPlan(sessionPlan)"
         >
           <SyncoConfigTermsPlayLikeCard
             :session-plan="sessionPlan"
@@ -95,14 +99,14 @@ const props = defineProps<{
 const { $api } = useNuxtApp()
 const toast = useToast()
 
-let currentTerm = ref<ITermItem | null>(props.term)
-let updateTerm = ref<ITermEditItem | null>(null)
-let planId = ref<number>(props.planId).value
-let selectedSessionId = ref<number>(props.sessionId).value
-let selectedSessionPlanId = ref<number>(props.sessionPlanId)
-let abilityId = ref<number>(props.abilityId).value
-let sessionPlans = ref<ISessionPlanObject[]>([])
-let abilityGroup = ref<IAbilityGroupObject>()
+const currentTerm = ref<ITermItem | null>(props.term)
+const updateTerm = ref<ITermEditItem | null>(null)
+const planId = ref<number>(props.planId).value
+const selectedSessionId = ref<number>(props.sessionId).value
+const selectedSessionPlanId = ref<number>(props.sessionPlanId)
+const abilityId = ref<number>(props.abilityId).value
+const sessionPlans = ref<ISessionPlanObject[]>([])
+const abilityGroup = ref<IAbilityGroupObject>()
 
 const emit = defineEmits(['toggleAssignSessionCard', 'assignPlan'])
 
@@ -111,7 +115,7 @@ const close = () => {
 }
 
 const assignPlan = () => {
-  let selected = sessionPlans.value.find(
+  const selected = sessionPlans.value.find(
     (x) => x.id == selectedSessionPlanId.value,
   )
   emit('assignPlan', selected)
@@ -134,7 +138,6 @@ const getSessionPlans = async () => {
   } catch (error: any) {
     console.log(error)
     toast.error(error?.data?.messages ?? 'Error')
-  } finally {
   }
 }
 const getAbilityGroup = async () => {
@@ -144,7 +147,6 @@ const getAbilityGroup = async () => {
   } catch (error: any) {
     console.log(error)
     toast.error(error?.data?.messages ?? 'Error')
-  } finally {
   }
 }
 </script>

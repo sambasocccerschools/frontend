@@ -18,11 +18,11 @@ const updateKey = ref<number>(0)
 const { $api } = useNuxtApp()
 const blockButtons = ref(false)
 const toast = useToast()
-const terms = ref<ITermItem[]>([])
-const selectedTerm = ref<ITermItem | null>(null)
+const terms = ref<any[]>([])
+const selectedTerm = ref<any | null>(null)
 const selectedTermId = ref<number | null>(null)
 const seasons = store.seasons
-const emptyTermItem = ref<ITermCreateItem>({
+const emptyTermItem = ref<any>({
   name: '',
   season_id: 0,
   start_date: '',
@@ -30,7 +30,7 @@ const emptyTermItem = ref<ITermCreateItem>({
   half_term_date: '',
   sessions: [],
 })
-const newEditTermItem = ref<ITermCreateItem | ITermEditItem>({
+const newEditTermItem = ref<any>({
   name: '',
   season_id: 0,
   start_date: '',
@@ -43,7 +43,6 @@ const showModal = ref<boolean>(false)
 let title = ref<string>('Create new').value
 
 const toggleCreateEdit = async (item: ITermItem | null) => {
-  console.log(item)
   showModal.value = !showModal.value
   if (item) {
     title = 'Edit'
@@ -145,28 +144,36 @@ const toggleShowTermCard = (data: any) => {
   showTermCard.value = !showTermCard.value
   newEditState.value = data.newEditText
   if (data.selected != 0) {
-    const term = terms.value.find((x) => x.id == data.selected)
+    const term = terms.value.find((x) => x.id == Number(data.selected))
     if (term == null) return
-    const sessions = term.sessions.map((x) => {
-      const plans = x.plans.map((y) => {
+    const sessions = term?.sessions?.map((x: any) => {
+      const plans = x.termSessionPlans.map((y: any) => {
         return {
           id: y.id,
-          ability_group_id: y.ability_group.id,
-          session_plan_id: y.session_plan.id,
+          ability_group: y.ability_group.id,
+          session_plan: y.session_plan.id,
         }
       })
       return {
-        id: x.id,
+        id: Number(x.id),
         plans,
       }
     })
+
     newEditTermItem.value = {
       name: term.name,
       end_date: cleanDate(term.end_date),
       half_term_date: cleanDate(term.half_term_date),
-      season_id: term.season.id,
+      season_code: term.season.code,
       start_date: cleanDate(term.start_date),
-      sessions: sessions,
+      sessions: sessions.map((session: any) => ({
+        id: session.id,
+        plans: session.plans.map((plan: any) => ({
+          id: Number(plan.id),
+          ability_group: plan.ability_group,
+          session_plan: plan.session_plan,
+        })),
+      })),
     }
     selectedTerm.value = term
   } else {
@@ -187,9 +194,9 @@ const selectedAbilityId = ref<number>(-1)
 const assignSelectedSession = (selected: any) => {
   if (selected != '') {
     selectedPlanId.value = selected?.planId
-    selectedAbilityId.value = selected?.abilityId
+    selectedAbilityId.value = Number(selected?.abilityId)
     selectedSessionPlanId.value = selected?.sessionPlanId
-    selectedSessionId.value = selected?.sessionId
+    selectedSessionId.value = Number(selected?.sessionId)
   }
   toggleAssignSessionCard()
 }
@@ -197,16 +204,16 @@ const assignSelectedSession = (selected: any) => {
 const assignPlan = (selected: any) => {
   if (!selectedTerm.value) return
   const inUseSession = selectedTerm.value.sessions.find(
-    (x) => x.id == selectedSessionId.value,
+    (x: any) => x.id == selectedSessionId.value,
   )
   const sessions = selectedTerm.value.sessions.filter(
-    (x) => x.id != selectedSessionId.value,
+    (x: any) => x.id != selectedSessionId.value,
   )
   const inUsePlan = inUseSession?.plans.find(
-    (x) => x.ability_group.id == selectedAbilityId.value,
+    (x: any) => x.ability_group.id == selectedAbilityId.value,
   )
   const plans = inUseSession?.plans.filter(
-    (x) => x.ability_group.id != selectedAbilityId.value,
+    (x: any) => x.ability_group.id != selectedAbilityId.value,
   )
   if (!!inUsePlan && !!inUseSession) {
     inUsePlan.session_plan.id = selected.id
@@ -230,7 +237,7 @@ const updateTerm = ref<ITermEditItem | null>(null)
 const putTerm = async () => {
   if (selectedTerm.value == null || updateTerm.value == null) return
   try {
-    const termResponse = await $api.terms.update(
+    const termResponse = await $api.terms.updateNew(
       selectedTerm.value.id,
       updateTerm.value,
     )
@@ -248,16 +255,17 @@ const save = () => {
   if (currentTerm != null) {
     const sessions = currentTerm.sessions
     const newSessionObject: ISessionEditItem[] = []
-    sessions.forEach((session) => {
+    sessions.forEach((session: any) => {
       return session
     })
-    sessions.forEach((x) => {
-      const plans: IPlanEditItem[] = []
-      x.plans.forEach((plan) => {
+
+    sessions?.forEach((x: any) => {
+      const plans: any[] = []
+      x.termSessionPlans?.forEach((plan: any) => {
         plans.push({
           id: plan.id,
-          ability_group_id: plan.ability_group.id,
-          session_plan_id: plan.session_plan.id,
+          ability_group: plan.ability_group.id,
+          session_plan: plan.session_plan.id,
         })
       })
       const session: ISessionEditItem = {
@@ -266,11 +274,12 @@ const save = () => {
       }
       newSessionObject.push(session)
     })
+
     updateTerm.value = {
       name: currentTerm.name,
       end_date: cleanDate(currentTerm.end_date),
       half_term_date: cleanDate(currentTerm.half_term_date),
-      season_id: currentTerm.season.id,
+      season_code: currentTerm.season.code,
       start_date: cleanDate(currentTerm.start_date),
       sessions: newSessionObject,
     }
@@ -381,7 +390,7 @@ const cleanDate = (date: any) => {
               :term="selectedTerm"
               :plan-id="selectedPlanId"
               :session-plan-id="selectedSessionPlanId"
-              :session-id="selectedSessionId"
+              :session-id="Number(selectedSessionId)"
               :ability-id="selectedAbilityId"
               @toggle-assign-session-card="assignSelectedSession"
               @assign-plan="changePlan"

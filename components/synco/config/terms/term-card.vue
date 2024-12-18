@@ -111,11 +111,11 @@
               class="card-body bg-gray border-0"
               style="overflow: scroll; max-height: 35vh"
             >
-              <template v-for="item in term?.sessions">
+              <template v-for="item in term?.sessions" :key="item.id">
                 <SyncoConfigTermsMapSessionCard
                   :item="null"
                   :session-item="item"
-                  :session-id="item.id"
+                  :session-id="Number(item.id)"
                   @toggle-assign-session-card="assignSelectedSession"
                   @remove-session="removeSession"
                 ></SyncoConfigTermsMapSessionCard>
@@ -248,10 +248,19 @@ const seasonChange = (event: any) => {
     const season = seasons.find((x) => x.id == id)
     if (season) {
       term.season = {
-        created_at: season.created_at,
-        deleted_at: season.deleted_at,
+        is_deleted: season.is_deleted,
         id: season.id,
         title: season.title,
+        code: season.code,
+        created_date: season.created_date,
+        father_code: season.father_code,
+        slug: season.slug,
+        title_es: season.title_es,
+        type: season.type,
+        updated_date: season.updated_date,
+        user_updated_id: season.user_updated_id,
+        value1: season.value1,
+        value2: season.value2,
       }
     }
   }

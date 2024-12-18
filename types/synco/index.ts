@@ -149,24 +149,25 @@ export type ITermItem = {
 
 export type ITermCreateItem = {
   name: string
-  season_id: number
+  season_code: string
   start_date: string
   end_date: string
   half_term_date: string
   sessions: ISessionCreateItem[]
+  franchise_id: number
 }
 
 export type ISessionCreateItem = {
   plans: IPlanCreateItem[]
 }
 export type IPlanCreateItem = {
-  ability_group_id: number
-  session_plan_id: number
+  ability_group: number
+  session_plan: number
 }
 
 export type ITermEditItem = {
   name: string
-  season_id: number
+  season_code: string
   start_date: string
   end_date: string
   half_term_date: string
@@ -197,8 +198,17 @@ export type ITermsSuccessfulResponse = {
 export type ISeasonItem = {
   id: number
   title: string
-  created_at: Date | null
-  deleted_at: Date | null
+  created_date: Date | null
+  code: string
+  father_code: string | null
+  is_deleted: boolean
+  slug: string
+  title_es: string
+  type: string
+  updated_date: Date | null
+  user_updated_id: string | null
+  value1: string | null
+  value2: string | null
 }
 
 export type ISessionItem = {

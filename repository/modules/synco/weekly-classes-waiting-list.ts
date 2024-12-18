@@ -153,15 +153,21 @@ class WeeklyClassesWaitingListModule extends FetchFactory {
   // }
 
   async assignStatus(id: number, statusId: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     const body = {
-      weekly_classes_lead_id: [id],
-      lead_status_id: statusId,
+      weekly_classes_waiting_list_id: [id],
+      waiting_list_status_code: statusId,
     }
     return this.call<IMessageResponseObject>(
       'PUT',
       `${this.RESOURCE}/changeStatus`,
       body,
-      undefined,
+      fetchOptions,
     )
   }
 
