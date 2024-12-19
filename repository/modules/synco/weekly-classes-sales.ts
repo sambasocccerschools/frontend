@@ -166,7 +166,7 @@ class WeeklyClassesSalesModule extends FetchFactory {
   //   )
   // }
 
-  async assignStatus(id: number, statusId: number) {
+  async assignStatus(id: number, statusId: string) {
     const token = useCookie('token')
     const fetchOptions: FetchOptions<'json'> = {
       headers: {
@@ -174,8 +174,8 @@ class WeeklyClassesSalesModule extends FetchFactory {
       },
     }
     const body = {
-      weekly_classes_lead_id: [id],
-      lead_status_id: statusId,
+      weekly_classes_sale_id: [id],
+      sale_status_code: statusId,
     }
     return this.call<IMessageResponseObject>(
       'PUT',

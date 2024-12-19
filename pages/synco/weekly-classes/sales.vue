@@ -238,7 +238,8 @@ const applyFilter = async (data: IWeeklyClassesSalesFilterObject) => {
     // data.referral_source_id = `${selectedReferralSourceId.value}`
     blockButtons.value = true
     const response = await $api.wcSales.getByFilter(data, 25)
-    leads.value = response?.data
+    const cleanData = cleanLeadsData(response?.data)
+    leads.value = cleanData
   } catch (error: any) {
     leads.value = []
     console.log(error)
