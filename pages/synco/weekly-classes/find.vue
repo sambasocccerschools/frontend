@@ -78,44 +78,36 @@ const handleFiltered = async (filteredItems: {
   days?: string[]
 }) => {
   if (filteredItems.venue) {
+    await getData()
     filterWeeklyClassesByVenue(filteredItems.venue)
-  }
-  if (filteredItems.class_name) {
+  } else if (filteredItems.class_name) {
+    await getData()
     filterWeeklyClassesByClass(filteredItems.class_name)
-  }
-  if (!!filteredItems.venues && filteredItems.venues.length) {
-    filter.value.venue_id = filteredItems.venues.join(',')
   } else {
-    filter.value.venue_id = null
+    await getData()
   }
-  if (!!filteredItems.days && filteredItems.days.length) {
-    filter.value.days = filteredItems.days.join(',')
-  } else {
-    filter.value.days = null
-  }
-
-  await getData()
 }
 
 const filterWeeklyClassesByVenue = (value: string) => {
-  weeklyClasses.value = weeklyClasses.value.filter((item) => {
-    return item.name.toLowerCase().includes(value.toLowerCase())
-  })
+  const filtered = weeklyClasses.value.filter((item) =>
+    item.name.toLowerCase().includes(value.toLowerCase())
+  )
+  console.log(filtered)
+  weeklyClasses.value = filtered
 }
 
 const filterWeeklyClassesByClass = (value: string) => {
-  weeklyClasses.value = weeklyClasses.value.filter((item) => {
+  const filtered = weeklyClasses.value.filter((item) => {
     const classes = item?.classes[0]?.classes
     return (
       classes &&
       classes.some((classItem: any) =>
-        classItem.name.toLowerCase().includes(value.toLowerCase()),
+        classItem.name.toLowerCase().includes(value.toLowerCase())
       )
     )
   })
+  weeklyClasses.value = filtered
 }
-
-console.log(weeklyClasses)
 </script>
 
 <template>
