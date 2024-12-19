@@ -85,11 +85,11 @@ const selectAgent = async (event: Event) => {
 const selectStatus = async (event: Event) => {
   if (!event?.target?.value) return
   const statusId = event.target.value
-  const id = lead.id
+  const id = Number(lead.id)
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    const response = await $api.wcLeads.assignStatus(id, statusId)
+    const response = await $api.wcSales.assignStatus(id, statusId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)

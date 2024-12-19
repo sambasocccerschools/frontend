@@ -18,14 +18,10 @@ const lead = ref<IWeeklyClassesMembers>(props.lead).value
 const show = ref<boolean>(false)
 
 const agents = store.agents
-const leadStatus = store.memberStatus
+const memberStatus = store.memberStatus
 const waitingListStatus = store.waitingListStatus
-
-console.log('waitingListStatus', waitingListStatus)
-console.log('leadStatus', leadStatus)
-
 const selectedAgent = ref<string>('')
-const selectedStatus = ref<number>(0)
+const selectedStatus = ref<string>('')
 const blockButtons = ref(false)
 
 onMounted(async () => {
@@ -34,15 +30,13 @@ onMounted(async () => {
   //   selectedAgent.value = lead.agent.id
   // }
   if (lead.status) {
-    selectedStatus.value = lead.status.code
+    selectedStatus.value = lead.status.code || '0'
   }
-  console.log('status', lead.status)
-  // console.log('agent', lead.agent)
-  // if (store.leadStatus.length == 0) await store.getLeadStatus()
+
+  // if (store.memberStatus.length == 0) await store.getmemberStatus()
 })
 
 const navigateToUser = async (id: number) => {
-  console.log(id)
   await router.push({ path: `/synco/user/${id}` })
   // await router.push({ path: `/synco/user/${id}` })
 }
@@ -93,11 +87,6 @@ const selectStatus = async (event: Event) => {
       toast.success(response?.message)
       return
     }
-    // if (props.statusType === 'leadStatus') {
-    //   const response = await $api.wcLeads.assignStatus(Number(id), statusId)
-    //   toast.success(response?.message)
-    //   return
-    // }
     const response = await $api.wcMembers.assignStatus(Number(id), statusId)
     toast.success(response?.message)
   } catch (error: any) {
@@ -156,7 +145,7 @@ const selectStatus = async (event: Event) => {
         <option
           v-for="(lStatus, index) in statusType === 'waitingListStatus'
             ? waitingListStatus
-            : leadStatus"
+            : memberStatus"
           :key="index"
           :value="lStatus.code"
         >
