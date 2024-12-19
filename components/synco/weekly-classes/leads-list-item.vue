@@ -19,8 +19,6 @@ const show = ref<boolean>(false)
 const agents = store.agents
 const leadStatus = store.leadStatus
 
-console.log('leadStatus', leadStatus)
-
 const selectedAgent = ref<string>('')
 const selectedStatus = ref<number>(0)
 const blockButtons = ref(false)
@@ -33,12 +31,10 @@ onMounted(async () => {
   if (lead.status) {
     selectedStatus.value = lead.status.id
   }
-  console.log('lead', lead)
   // if (store.leadStatus.length == 0) await store.getLeadStatus()
 })
 
 const navigateToUser = async (id: number) => {
-  console.log(id)
   await router.push({ path: `/synco/user/${id}` })
   // await router.push({ path: `/synco/user/${id}` })
 }
