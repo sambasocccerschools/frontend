@@ -12,14 +12,14 @@ const store = generalStore()
 const props = defineProps<{
   classItem: IWeeklyClassesCreateItem
   title: string
-  classId: number | null
+  classId: number
 }>()
 
 const { $api } = useNuxtApp()
 const toast = useToast()
 const classItem = ref<IWeeklyClassesCreateItem>(props.classItem).value
 const title = ref<string>(props.title).value
-const classId = ref<number | null>(props.classId).value
+const classId = ref<number>(props.classId).value
 const showModalTerm = ref<boolean>(false)
 
 const days = ref<string[]>([
@@ -77,8 +77,23 @@ const save = async () => {
     })
     toast.success(addResponse?.message)
   } else {
+    const classIdUpdates = {
+      venue_id: classItem.venue_id,
+      name: classItem.name,
+      capacity: classItem.capacity,
+      days: classItem.days,
+      start_time: classItem.start_time,
+      end_time: classItem.end_time,
+      autumn_term_id: Number(classItem.autumn_term_id),
+      is_autumn_indoor: classItem.is_autumn_indoor,
+      spring_term_id: Number(classItem.spring_term_id),
+      is_spring_indoor: classItem.is_spring_indoor,
+      summer_term_id: Number(classItem.summer_term_id),
+      is_summer_indoor: classItem.is_summer_indoor,
+      is_free_trail_dates: classItem.is_free_trail_dates,
+    }
     const updateResponse = await $api.classes
-      .update(classId, classItem)
+      .update(classId, classIdUpdates)
       .finally(() => {
         emit('toggleEdit', true)
       })
@@ -92,11 +107,15 @@ onMounted(async () => {
   if (!store.seasons.length) {
     await store.fetchDatasetDataByType('SEASONS')
   }
+
+  classItem.is_summer_indoor = !!classItem.is_summer_indoor
+  classItem.is_autumn_indoor = !!classItem.is_autumn_indoor
+  classItem.is_spring_indoor = !!classItem.is_spring_indoor
+  classItem.is_free_trail_dates = !!classItem.is_free_trail_dates
 })
 const getTerms = async (limit: number = 25) => {
   try {
     const termResponse = await $api.terms.getAll(limit)
-    console.log(termResponse)
     terms.value = termResponse?.data
   } catch (error: any) {
     console.log(error)
@@ -108,7 +127,7 @@ const getTerms = async (limit: number = 25) => {
 }
 
 const getTermName = (seasonId: number) => {
-  const term = terms.value.find((x) => x.id == seasonId)
+  const term = terms.value.find((x) => Number(x.id) === seasonId)
   return term ? term.name : seasonId
 }
 </script>
@@ -205,7 +224,7 @@ const getTermName = (seasonId: number) => {
               Autumn Term Dates
             </label>
             <span>
-              {{ getTermName(classItem.autumn_term_id) }}
+              {{ getTermName(Number(classItem.autumn_term_id)) }}
               <span
                 class="btn text-primary mx-1 p-0"
                 @click="toggleModalTerm(classItem.autumn_term_id, 'Autumn')"
@@ -259,7 +278,7 @@ const getTermName = (seasonId: number) => {
               Spring Term Dates
             </label>
             <span>
-              {{ getTermName(classItem.spring_term_id) }}
+              {{ getTermName(Number(classItem.spring_term_id)) }}
               <span
                 class="btn text-primary mx-1 p-0"
                 @click="toggleModalTerm(classItem.spring_term_id, 'Spring')"
@@ -313,7 +332,7 @@ const getTermName = (seasonId: number) => {
               Summer Term Dates
             </label>
             <span>
-              {{ getTermName(classItem.summer_term_id) }}
+              {{ getTermName(Number(classItem.summer_term_id)) }}
               <span
                 class="btn text-primary mx-1 p-0"
                 @click="toggleModalTerm(classItem.summer_term_id, 'Summer')"

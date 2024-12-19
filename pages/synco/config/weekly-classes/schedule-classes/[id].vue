@@ -55,8 +55,6 @@ let title = ref<string>('Create new').value
 const classId = ref<string>('')
 
 const toggleCreateEdit = async (item: any | null | boolean) => {
-  console.log('item')
-  console.log(item)
   showModal.value = !showModal.value
   if (item) {
     title = 'Edit'
@@ -73,7 +71,7 @@ const toggleCreateEdit = async (item: any | null | boolean) => {
         is_autumn_indoor: item.is_autumn_indoor,
         spring_term_id: item.spring_term?.id,
         is_spring_indoor: item.is_spring_indoor,
-        summer_term_id: item.summer_term_id?.id,
+        summer_term_id: item.summer_term?.id,
         is_summer_indoor: item.is_summer_indoor,
         is_free_trail_dates: item.is_free_trail_dates,
       }),
@@ -93,7 +91,6 @@ onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/schedule-classes/[id].vue')
   const currentRoute = router.currentRoute.value.path.split('/')
   const id = currentRoute[currentRoute.length - 1]
-  console.log(id)
   classId.value = id
   emptyClassItem.value.venue_id = Number(id)
   newEditClassItem.value.venue_id = Number(id)
@@ -104,6 +101,7 @@ onMounted(async () => {
 })
 
 const getWeeklyClasses = async (limit: number = 25) => {
+  classes.value = []
   try {
     const weeklyClassesResponse = await $api.classes.getAll(
       classId.value,
@@ -187,7 +185,7 @@ const restoreClass = async (id: number) => {
             <SyncoConfigScheduleClassesCreateEditCard
               :class-item="newEditClassItem"
               :title="title"
-              :class-id="selectedClassId"
+              :class-id="Number(selectedClassId)"
               @toggle-edit="toggleCreateEdit"
             ></SyncoConfigScheduleClassesCreateEditCard>
           </div>

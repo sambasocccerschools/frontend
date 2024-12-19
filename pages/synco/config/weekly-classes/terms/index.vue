@@ -95,7 +95,6 @@ onMounted(async () => {
 const getTerms = async (limit: number = 25) => {
   try {
     const termResponse = await $api.terms.getAll(limit)
-    console.log(termResponse)
     terms.value = termResponse?.data
   } catch (error: any) {
     console.log(error)
@@ -241,7 +240,6 @@ const putTerm = async () => {
       selectedTerm.value.id,
       updateTerm.value,
     )
-    console.log(termResponse)
   } catch (error: any) {
     console.log(error)
     toast.error(error?.data?.messages ?? 'Error')
