@@ -19,6 +19,8 @@ const show = ref<boolean>(false)
 const agents = store.agents
 const leadStatus = store.leadStatus
 
+console.log('leadStatus', leadStatus)
+
 const selectedAgent = ref<string>('')
 const selectedStatus = ref<number>(0)
 const blockButtons = ref(false)
@@ -81,7 +83,7 @@ const selectAgent = async (event: Event) => {
 const selectStatus = async (event: Event) => {
   if (!event?.target?.value) return
   const statusId = event.target.value
-  const id = lead.id
+  const id = Number(lead.id)
   if (blockButtons.value) return
   try {
     blockButtons.value = true
@@ -159,7 +161,7 @@ const selectStatus = async (event: Event) => {
         <option
           v-for="(lStatus, index) in leadStatus"
           :key="index"
-          :value="lStatus.id"
+          :value="lStatus.code"
         >
           {{ lStatus.title }}
         </option>

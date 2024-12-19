@@ -93,7 +93,12 @@ const selectStatus = async (event: Event) => {
       toast.success(response?.message)
       return
     }
-    const response = await $api.wcLeads.assignStatus(Number(id), statusId)
+    // if (props.statusType === 'leadStatus') {
+    //   const response = await $api.wcLeads.assignStatus(Number(id), statusId)
+    //   toast.success(response?.message)
+    //   return
+    // }
+    const response = await $api.wcMembers.assignStatus(Number(id), statusId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)

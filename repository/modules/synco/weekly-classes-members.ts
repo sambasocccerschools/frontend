@@ -174,8 +174,8 @@ class WeeklyClassesMembersModule extends FetchFactory {
       },
     }
     const body = {
-      weekly_classes_lead_id: [id],
-      lead_status_id: statusId,
+      weekly_classes_member_id: [id],
+      member_status_code: statusId,
     }
     return this.call<IMessageResponseObject>(
       'PUT',

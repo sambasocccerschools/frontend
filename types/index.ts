@@ -557,8 +557,19 @@ export type IReferralSource = {
 }
 export type IReferralSourceResponse = IBaseResponse<IReferralSource> & {}
 
-export type ILeadStatus = IBaseDatasetItem & {
+export type ILeadStatus = {
+  code: string
+  created_date: Date | null
+  father_code: string | null
+  id: string | number
+  slug: string
   title: string
+  title_es: string | null
+  type: string
+  updated_date: Date | null
+  user_updated_id: string | number | null
+  value1: string | null
+  value2: string | null
 }
 export type ILeadStatusResponse = IBaseResponse<ILeadStatus> & {}
 

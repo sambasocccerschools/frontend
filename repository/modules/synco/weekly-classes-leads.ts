@@ -248,7 +248,7 @@ class WeeklyClassesLeadsModule extends FetchFactory {
     )
   }
 
-  async assignStatus(id: number, statusId: number) {
+  async assignStatus(id: number, statusId: string) {
     const body = {
       weekly_classes_lead_id: [Number(id)],
       lead_status_code: statusId,
