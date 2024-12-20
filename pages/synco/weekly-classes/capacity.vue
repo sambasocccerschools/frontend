@@ -106,7 +106,7 @@ const getReporting = async () => {
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/capacity.vue')
   await getCapacities()
-  await getReporting()
+  // await getReporting()
 })
 
 const exportExcel = async () => {

@@ -7,6 +7,7 @@ import type {
   IMemberStatus,
   ISaleStatus,
   IUser,
+  IWaitingListStatus,
 } from '~/types'
 import genders from '~/utils/genders.json'
 import { defineStore } from 'pinia'
@@ -51,10 +52,11 @@ export const generalStore = defineStore('store', {
     memberCancelType: [] as IMemberCancelType[],
     memberStatus: [] as IMemberStatus[],
     saleStatus: [] as ISaleStatus[],
-    subscriptionPlans: [] as ISubscriptionPlan[],
+    subscriptionPlans: [] as any[],
     feedbackStatus: [] as IFeedbackStatus[],
     feedbackCategory: [] as IFeedbackCategory[],
     feedbackType: [] as IFeedbackType[],
+    waitingListStatus: [] as IWaitingListStatus[],
   }),
   getters: {},
   actions: {
@@ -101,9 +103,6 @@ export const generalStore = defineStore('store', {
         this.saleStatus = data.filter(
           (item: any) => item.type === 'SALE_STATUS',
         )
-        this.subscriptionPlans = data.filter(
-          (item: any) => item.type === 'SUBSCRIPTION_PLANS',
-        )
         this.feedbackStatus = data.filter(
           (item: any) => item.type === 'FEEDBACK_STATUS',
         )
@@ -112,6 +111,9 @@ export const generalStore = defineStore('store', {
         )
         this.feedbackType = data.filter(
           (item: any) => item.type === 'FEEDBACK_TYPES',
+        )
+        this.waitingListStatus = data.filter(
+          (item: any) => item.type === 'WAITING_LIST_STATUS',
         )
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -134,6 +136,7 @@ export const generalStore = defineStore('store', {
     async getAvailableVenues() {
       try {
         const response = await useNuxtApp().$api.venues.availableVenues()
+        console.log('response!!!!!!!!!!!!!', response)
         this.availableVenues = response?.data
       } catch (error: any) {
         this.availableVenues = []
@@ -168,6 +171,18 @@ export const generalStore = defineStore('store', {
         console.error('Error fetching genders:', error)
         useToast().error('Failed to load genders data.')
         return []
+      }
+    },
+
+    async getSubsciptionPlans() {
+      try {
+        const response = await useNuxtApp().$api.subscriptionPlans.getAll()
+        console.log('response', response)
+        this.subscriptionPlans = response?.data
+      } catch (error: any) {
+        this.subscriptionPlans = []
+        console.log(error)
+        useToast().error(error?.messages ?? 'getSubsciptionPlans Error')
       }
     },
   },

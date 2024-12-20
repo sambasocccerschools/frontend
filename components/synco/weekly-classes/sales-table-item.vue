@@ -19,8 +19,10 @@ const show = ref<boolean>(false)
 const agents = store.agents
 const leadStatus = store.saleStatus
 
+console.log('lead', leadStatus)
+
 const selectedAgent = ref<string>('')
-const selectedStatus = ref<number>(0)
+const selectedStatus = ref<any>(0)
 const blockButtons = ref(false)
 
 onMounted(async () => {
@@ -28,8 +30,9 @@ onMounted(async () => {
   // if (!!lead.agent) {
   //   selectedAgent.value = lead.agent.id
   // }
+  console.log(lead)
   if (lead.status) {
-    selectedStatus.value = lead.status.id
+    selectedStatus.value = lead.status.code
   }
   console.log('status', lead.status)
   // console.log('agent', lead.agent)
@@ -82,11 +85,12 @@ const selectAgent = async (event: Event) => {
 const selectStatus = async (event: Event) => {
   if (!event?.target?.value) return
   const statusId = event.target.value
-  const id = lead.id
+  const agentId = lead.agent?.id ?? ''
+  const id = Number(lead.id)
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    const response = await $api.wcLeads.assignStatus(id, statusId)
+    const response = await $api.wcSales.assignStatus(id, statusId, agentId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)
@@ -133,23 +137,23 @@ const selectStatus = async (event: Event) => {
         <option
           v-for="(lStatus, index) in leadStatus"
           :key="index"
-          :value="lStatus.id"
+          :value="lStatus.code"
         >
           {{ lStatus.title }}
         </option>
       </select>
       <!-- <span class="badge bg-success-subtle text-success px-1"> Active </span> -->
     </td>
-    <td>
+    <!-- <td>
       <button class="btn btn-light btn-sm" @click="show = !show">
         <Icon name="mdi:chevron-down" />
       </button>
-    </td>
+    </td> -->
   </tr>
-  <tr v-if="show">
+  <!-- <tr v-if="show">
     <td colspan="12">
-      <!-- TODO: VERIFY THIS WORKS ONCE THE API RETURNS THE CORRECT DATA -->
+      TODO: VERIFY THIS WORKS ONCE THE API RETURNS THE CORRECT DATA
       <SyncoWeeklyClassesBookingListItem :item="lead.venue" />
     </td>
-  </tr>
+  </tr> -->
 </template>

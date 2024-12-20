@@ -6,8 +6,8 @@ const props = defineProps<{
   term: ITermItem
 }>()
 
-let showSessionPlans = ref<boolean>(false)
-let term = ref<ITermItem>(props.term).value
+const showSessionPlans = ref<boolean>(false)
+const term = ref<ITermItem>(props.term).value
 
 const toggleSessionPlans = () => {
   showSessionPlans.value = !showSessionPlans.value
@@ -35,7 +35,7 @@ onMounted(() => {
 })
 const cleanDate = (date: string) => {
   if (!Number.isInteger(date)) return date
-  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+  const cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
   return cleanedDate
   // let cleanedDate = date
   // if (date?.includes('T')) {
@@ -104,8 +104,8 @@ const cleanDate = (date: string) => {
         </div>
       </div>
     </div>
-    <div class="card-body bg-gray border-0" v-if="showSessionPlans">
-      <template v-for="session in term.sessions">
+    <div v-if="showSessionPlans" class="card-body bg-gray border-0">
+      <template v-for="session in term.sessions" :key="session.id">
         <SyncoConfigTermsSessionListItem
           :session-id="session.id"
           :session="session"

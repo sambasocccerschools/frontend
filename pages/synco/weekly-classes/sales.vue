@@ -63,7 +63,7 @@
               <th class="text-muted" scope="col">Who booked?</th>
               <!-- <th class="text-muted" scope="col">Membership plan</th> -->
               <th class="text-muted" scope="col">Status</th>
-              <th></th>
+              <!-- <th></th> -->
             </tr>
           </thead>
           <tbody>
@@ -110,11 +110,11 @@ const cleanLeadsData = (data: any) => {
   return data.map((item: any) => {
     return {
       id: item.id,
-      venue: item.weekly_class.venue_id.name ?? 'N/A',
+      venue: item.weekly_class.venue.name ?? 'N/A',
       student: item.student,
-      status: item.sale_status_code ?? 'N/A',
+      status: item.sale_status ?? 'N/A',
       membership_plan: item.subscription_plan_price ?? 'Monthly',
-      booked_by: item.booked_by?.name ?? 'N/A',
+      booked_by: item.booked_by?.user_name ?? 'N/A',
       created_date: item.created_date ?? 'N/A',
       updated_date: item.updated_date ?? 'N/A',
     }
@@ -152,7 +152,7 @@ const getReporting = async () => {
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/sales.vue')
   await getLeads()
-  await getReporting()
+  // await getReporting()
 })
 
 const exportExcel = async () => {
@@ -238,7 +238,8 @@ const applyFilter = async (data: IWeeklyClassesSalesFilterObject) => {
     // data.referral_source_id = `${selectedReferralSourceId.value}`
     blockButtons.value = true
     const response = await $api.wcSales.getByFilter(data, 25)
-    leads.value = response?.data
+    const cleanData = cleanLeadsData(response?.data)
+    leads.value = cleanData
   } catch (error: any) {
     leads.value = []
     console.log(error)

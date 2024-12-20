@@ -65,6 +65,7 @@
             <template v-for="(lead, index) in leads" :key="index">
               <LazySyncoWeeklyClassesMembersTableItem
                 :lead="lead"
+                :status-type="'waitingListStatus'"
                 @selected-guardian="selectedGuardian"
               />
             </template>
@@ -105,9 +106,9 @@ const cleanLeadsData = (data: any) => {
     return {
       id: item.id,
       student: item.student,
-      venue: item.weekly_class.venue_id.name ?? 'N/A',
+      venue: item.weekly_class.venue.name ?? 'N/A',
       date_of_booking: item.date_of_booking?.date ?? 'N/A',
-      who_booked: item.booked_by ?? 'N/A',
+      who_booked: item.booked_by?.user_name ?? 'N/A',
       membership_plan: item?.subscription_plan_price ?? 'N/A',
       lifecycle_of_membership:
         item.subscription_plan_price?.lifecycle_of_membership ?? 'Monthly',
@@ -148,7 +149,7 @@ const getReporting = async () => {
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/waiting-list.vue')
   await getLeads()
-  await getReporting()
+  // await getReporting()
 })
 
 const exportExcel = async () => {

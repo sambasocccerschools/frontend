@@ -174,8 +174,8 @@ class WeeklyClassesMembersModule extends FetchFactory {
       },
     }
     const body = {
-      weekly_classes_lead_id: [id],
-      lead_status_id: statusId,
+      weekly_classes_member_id: [id],
+      member_status_code: statusId,
     }
     return this.call<IMessageResponseObject>(
       'PUT',
@@ -210,6 +210,21 @@ class WeeklyClassesMembersModule extends FetchFactory {
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/add`,
+      data,
+      fetchOptions,
+    )
+  }
+
+  async createFromFindAClass(data: IWeeklyClassesMemberCreate) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
+    return this.call<IMessageResponseObject>(
+      'POST',
+      `${this.RESOURCE}/add_front`,
       data,
       fetchOptions,
     )

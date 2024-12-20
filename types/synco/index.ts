@@ -98,7 +98,7 @@ export type IWeeklyClassesItem = {
 }
 
 export type IWeeklyClassesCreateItem = {
-  venue_id: string
+  venue_id: string | number
   name: string
   capacity: number
   days: string
@@ -149,24 +149,25 @@ export type ITermItem = {
 
 export type ITermCreateItem = {
   name: string
-  season_id: number
+  season_code: string
   start_date: string
   end_date: string
   half_term_date: string
   sessions: ISessionCreateItem[]
+  franchise_id: number
 }
 
 export type ISessionCreateItem = {
   plans: IPlanCreateItem[]
 }
 export type IPlanCreateItem = {
-  ability_group_id: number
-  session_plan_id: number
+  ability_group: number
+  session_plan: number
 }
 
 export type ITermEditItem = {
   name: string
-  season_id: number
+  season_code: string
   start_date: string
   end_date: string
   half_term_date: string
@@ -197,8 +198,17 @@ export type ITermsSuccessfulResponse = {
 export type ISeasonItem = {
   id: number
   title: string
-  created_at: Date | null
-  deleted_at: Date | null
+  created_date: Date | null
+  code: string
+  father_code: string | null
+  is_deleted: boolean
+  slug: string
+  title_es: string
+  type: string
+  updated_date: Date | null
+  user_updated_id: string | null
+  value1: string | null
+  value2: string | null
 }
 
 export type ISessionItem = {
@@ -352,8 +362,8 @@ export type IGuardianCreate = {
   last_name: string
   email: string
   phone_number: string
-  relationship_id: number
-  referral_source_id: number
+  relationship_code: number
+  referral_source_code: number
 }
 
 export type IEmregencyContactCreate = {
@@ -389,7 +399,7 @@ export type IWeeklyClassesLead = {
   status: ILeadStatus
   guardian: IGuardian
   kid_range: string
-  venues: IWeeklyClassesVenueObject[]
+  venue: IWeeklyClassesVenueObject[]
   agent: IUserCommentsObject
   created_at: number | null
   deleted_at: number | null
@@ -468,21 +478,22 @@ export type IWeeklyClassesVenueObject = {
   id: string
   area: string
   name: string
-  lat: number
-  lng: number
-  distance: string | null
+  latitude: number
+  longitude: number
+  distance?: string | null
   address: string
   has_parking: boolean
   has_congestion: boolean
-  parking_note: string
-  facility_enter_guide: string
-  region: IRegionItem
-  created_at: Date | null
-  deleted_at: Date | null
-  price: number | null
-  subscriptionPlans: any[]
-  classesByYear: IBaseWeeklyClassesClassesByYear[]
-  termsByYear: IBaseWeeklyClassesTermsByYear[]
+  parking_note?: string
+  facility_enter_guide?: string
+  region?: IRegionItem
+  created_date: Date | null
+  updated_date: Date | null
+  price?: number | null
+  subscriptionPlans?: any[]
+  classesByYear?: IBaseWeeklyClassesClassesByYear[]
+  termsByYear?: IBaseWeeklyClassesTermsByYear[]
+  is_deleted: boolean
 }
 
 export type IBaseWeeklyClassesClassesByYear = {
@@ -792,10 +803,10 @@ export type IWeeklyClassesFreeTrials = {
   student: IStudentObject
   family_id: number
   agent: any
-  booked_by: string
+  booked_by: any
   trial_date: number | null
   attempt: number
-  created_at: number | null
+  created_date: number | null
   deleted_at: number | null
 }
 export type IWeeklyClassesFreeTrialsResponse =
@@ -829,6 +840,27 @@ export type IFindAClassItem = {
   created_at: Date | null
   deleted_at: Date | null
   venue: any
+  classes: any
+}
+
+export type IFindAClassItemNew = {
+  id: string
+  address: string
+  area: string
+  classes: any[]
+  created_date: Date | null
+  facility_enter_guide: string
+  facility: any
+  has_congestion: boolean
+  has_parking: boolean
+  latitude: any
+  longitude: any
+  name: string
+  parking_note: string
+  price: number | null
+  region: any
+  subscriptionPlans: any[]
+  updated_date: Date | null
 }
 
 export type IWeeklyClassesFindAClassResponse = {
@@ -842,8 +874,8 @@ export type ICreateGuardian = {
   last_name: string
   email: string
   phone_number: string
-  relationship_id: number
-  referral_source_id: number
+  relationship_code: number
+  referral_source_code: number
 }
 
 export type ICreateStudent = {
@@ -878,6 +910,7 @@ export type IWeeklyClassesWaitingListCreate = {
   students: ICreateStudent[]
   emergency_contacts: ICreateEmergencyContact[]
   comments: string[]
+  waiting_list_status_code: string
 }
 
 export type IWeeklyClassesMemberCreate = {
@@ -889,6 +922,7 @@ export type IWeeklyClassesMemberCreate = {
   students: ICreateStudent[]
   emergency_contacts: ICreateEmergencyContact[]
   comments: string[]
+  member_status_code: string
 }
 
 export type IPaymentType = {

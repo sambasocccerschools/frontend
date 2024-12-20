@@ -7,20 +7,24 @@ import FetchFactory from '../factory'
 import type { FetchOptions } from 'ofetch'
 
 class WeeklyClassesModule extends FetchFactory {
-  private RESOURCE_1 = '/v1/weeklyClasses'
-  private RESOURCE_2 = '/v1/allWeeklyClasses'
+  private resource = '/weeklyClasses'
+  // private RESOURCE_2 = 'allWeeklyClasses'
 
   async getAllWeeklyClasses(
     params: IGetAllWeeklyClassesInput,
     asyncDataOptions?: AsyncDataOptions<IGetWeeklyClassesResponse>,
   ) {
     return useAsyncData(() => {
+      const token = useCookie('token')
       const fetchOptions: FetchOptions<'json'> = {
+        headers: {
+          Authorization: `${token.value}`,
+        },
         params,
       }
       return this.call<IGetWeeklyClassesResponse>(
         'GET',
-        `${this.RESOURCE_2}/findAClass`,
+        `${this.resource}/get_all`,
         undefined,
         fetchOptions,
       )

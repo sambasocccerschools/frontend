@@ -26,7 +26,11 @@
                   class="form-control form-control-lg"
                 >
                   <option value="0">Choose venue</option>
-                  <option v-for="venue in venues" :value="venue.id">
+                  <option
+                    v-for="venue in venues"
+                    :key="venue.id"
+                    :value="venue.id"
+                  >
                     {{ venue.name }}
                   </option>
                 </select>
@@ -81,9 +85,10 @@
                   class="form-control form-control-lg"
                 >
                   <option value="0">Choose plan</option>
-                  <template v-if="getSubscriptionPlanFromVenue() != null">
+                  <template v-if="subscriptionPlans != null">
                     <option
-                      v-for="plan in getSubscriptionPlanFromVenue()"
+                      v-for="plan in subscriptionPlans"
+                      :key="plan.id"
                       :value="plan.id"
                     >
                       {{ plan.name }}
@@ -336,8 +341,8 @@ const parent = ref<IGuardianCreate>({
   last_name: '',
   email: '',
   phone_number: '',
-  relationship_id: 0,
-  referral_source_id: 0,
+  relationship_code: 0,
+  referral_source_code: 0,
 })
 const student = ref<IStudentCreate>({
   id: '',
@@ -366,7 +371,7 @@ const comments = ref<Array<IComment>>([
 const selectedPlan = ref<number>(0)
 const startDate = ref<string>('')
 
-const subscriptionPlans = ref<ISubscriptionPlan[]>(store.subscriptionPlans)
+const subscriptionPlans = ref<any[]>([])
 const venues = ref<IAvailableVenueObject[]>(store.availableVenues)
 
 onMounted(async () => {
@@ -378,12 +383,10 @@ onMounted(async () => {
   const agentId = store.user?.id
   if (agentId) agent_id.value = agentId
 
-  if (!store.subscriptionPlans.length) {
-    await store.fetchDatasetDataByType('SUBSCRIPTION_PLANS')
-    subscriptionPlans.value = store.subscriptionPlans
+  if (!Object.keys(subscriptionPlans.value).length) {
+    const plans = await $api.subscriptionPlans.getAll()
+    subscriptionPlans.value = plans.data
   }
-  await store.getAvailableVenues('weekly-classes')
-  venues.value = store.availableVenues
 })
 
 const toggleSubscriptionCard = () => {
@@ -418,17 +421,18 @@ const addComment = (comment: string) => {
 const createData = async () => {
   const data: IWeeklyClassesMemberCreate = {
     weekly_class_id: weekly_class_id.value,
-    subscription_plan_price_id: selectedPlan.value,
+    subscription_plan_price_id: Number(selectedPlan.value),
     start_date: startDate.value,
     agent_id: agent_id.value,
+    member_status_code: 'ACTIVE_MS',
     guardians: [
       {
         first_name: parent.value.first_name,
         last_name: parent.value.last_name,
         email: parent.value.email,
         phone_number: parent.value.phone_number,
-        relationship_id: parent.value.relationship_id,
-        referral_source_id: parent.value.referral_source_id,
+        relationship_code: parent.value.relationship_code,
+        referral_source_code: parent.value.referral_source_code,
       },
     ],
     students: [
@@ -451,10 +455,9 @@ const createData = async () => {
     ],
     comments: [newComment.value],
   }
-  console.log('data', data)
   try {
     changeLoadingState(true)
-    const response = await $api.wcMembers.create(data)
+    const response = await $api.wcMembers.createFromFindAClass(data)
     await router.push({ path: `/synco/weekly-classes/members` })
     console.log(response)
   } catch (error: any) {
@@ -471,12 +474,12 @@ const getSelectedPlan = (): ISubscriptionPlan | null => {
   )
   return !selected ? null : selected
 }
-const getSubscriptionPlanFromVenue = () => {
-  const venue = venues.value.find((x) => x.id == venue_id.value)
-  if (!venue) return null
-  const subscriptionPlans = venue.subscriptionPlans
-  return !subscriptionPlans ? null : subscriptionPlans
-}
+// const getSubscriptionPlanFromVenue = () => {
+//   const venue = venues.value.find((x) => x.id == venue_id.value)
+//   if (!venue) return null
+//   const subscriptionPlans = venue.subscriptionPlans
+//   return !subscriptionPlans ? null : subscriptionPlans
+// }
 </script>
 <!-- <script>
 const classes = ref([

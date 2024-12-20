@@ -6,6 +6,7 @@ import { generalStore } from '~/stores'
 
 const props = defineProps<{
   lead: IWeeklyClassesMembers
+  statusType?: string
 }>()
 
 const router = useRouter()
@@ -17,10 +18,10 @@ const lead = ref<IWeeklyClassesMembers>(props.lead).value
 const show = ref<boolean>(false)
 
 const agents = store.agents
-const leadStatus = store.memberStatus
-
+const memberStatus = store.memberStatus
+const waitingListStatus = store.waitingListStatus
 const selectedAgent = ref<string>('')
-const selectedStatus = ref<number>(0)
+const selectedStatus = ref<string>('')
 const blockButtons = ref(false)
 
 onMounted(async () => {
@@ -29,15 +30,13 @@ onMounted(async () => {
   //   selectedAgent.value = lead.agent.id
   // }
   if (lead.status) {
-    selectedStatus.value = lead.status.id
+    selectedStatus.value = lead.status.code || '0'
   }
-  console.log('status', lead.status)
-  // console.log('agent', lead.agent)
-  // if (store.leadStatus.length == 0) await store.getLeadStatus()
+
+  // if (store.memberStatus.length == 0) await store.getmemberStatus()
 })
 
 const navigateToUser = async (id: number) => {
-  console.log(id)
   await router.push({ path: `/synco/user/${id}` })
   // await router.push({ path: `/synco/user/${id}` })
 }
@@ -80,7 +79,15 @@ const selectStatus = async (event: Event) => {
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    const response = await $api.wcLeads.assignStatus(id, statusId)
+    if (props.statusType === 'waitingListStatus') {
+      const response = await $api.wcWaitingList.assignStatus(
+        Number(id),
+        statusId,
+      )
+      toast.success(response?.message)
+      return
+    }
+    const response = await $api.wcMembers.assignStatus(Number(id), statusId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)
@@ -136,9 +143,11 @@ const selectStatus = async (event: Event) => {
       >
         <option value="0">Assign status</option>
         <option
-          v-for="(lStatus, index) in leadStatus"
+          v-for="(lStatus, index) in statusType === 'waitingListStatus'
+            ? waitingListStatus
+            : memberStatus"
           :key="index"
-          :value="lStatus.id"
+          :value="lStatus.code"
         >
           {{ lStatus.title }}
         </option>
@@ -153,15 +162,15 @@ const selectStatus = async (event: Event) => {
         Active
       </span> -->
     </td>
-    <td>
+    <!-- <td>
       <button class="btn btn-light btn-sm" @click="show = !show">
         <Icon name="mdi:chevron-down" />
       </button>
-    </td>
+    </td> -->
   </tr>
-  <tr v-if="show">
+  <!-- <tr v-if="show">
     <td colspan="12">
       <SyncoWeeklyClassesBookingListItem :item="lead.venue" />
     </td>
-  </tr>
+  </tr> -->
 </template>
