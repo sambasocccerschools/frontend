@@ -236,10 +236,7 @@ const updateTerm = ref<ITermEditItem | null>(null)
 const putTerm = async () => {
   if (selectedTerm.value == null || updateTerm.value == null) return
   try {
-    const termResponse = await $api.terms.updateNew(
-      selectedTerm.value.id,
-      updateTerm.value,
-    )
+    await $api.terms.updateNew(selectedTerm.value.id, updateTerm.value)
   } catch (error: any) {
     console.log(error)
     toast.error(error?.data?.messages ?? 'Error')

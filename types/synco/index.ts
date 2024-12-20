@@ -803,10 +803,10 @@ export type IWeeklyClassesFreeTrials = {
   student: IStudentObject
   family_id: number
   agent: any
-  booked_by: string
+  booked_by: any
   trial_date: number | null
   attempt: number
-  created_at: number | null
+  created_date: number | null
   deleted_at: number | null
 }
 export type IWeeklyClassesFreeTrialsResponse =

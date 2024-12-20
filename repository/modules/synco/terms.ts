@@ -119,7 +119,6 @@ class TermsModule extends FetchFactory {
           })
         })
         sessions.push({
-          id: Number(session.id),
           plans: plans,
         })
       } else {

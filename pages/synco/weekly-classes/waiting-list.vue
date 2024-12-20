@@ -149,7 +149,7 @@ const getReporting = async () => {
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/waiting-list.vue')
   await getLeads()
-  await getReporting()
+  // await getReporting()
 })
 
 const exportExcel = async () => {

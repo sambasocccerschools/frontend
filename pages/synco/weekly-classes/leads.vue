@@ -198,7 +198,7 @@ const referralSources = store.referralSources
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/leads.vue')
   await getLeads()
-  await getReporting()
+  // await getReporting()
 })
 
 const selectReferralSource = async (source: string) => {
