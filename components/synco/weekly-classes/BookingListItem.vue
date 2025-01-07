@@ -13,8 +13,6 @@ onMounted(async () => {
   // if (store.leadStatus.length == 0) await store.getLeadStatus()
 })
 
-console.log(props.item)
-
 const activeCard = ref<string | null>(null)
 
 const toggleCard = (card: string) => {
@@ -83,12 +81,12 @@ const toggleCard = (card: string) => {
       </template>
 
       <!-- Team Dates Card -->
-      <!-- <template v-if="activeCard === 'teamDates'">
+      <template v-if="activeCard === 'teamDates'">
         <SyncoWeeklyClassesComponentsTeamDatesCardContainer
           :item="item"
           @toggle-team-dates-card="toggleCard('teamDates')"
         />
-      </template> -->
+      </template>
 
       <!-- Congestion Card -->
       <template v-if="activeCard === 'congestion'">
