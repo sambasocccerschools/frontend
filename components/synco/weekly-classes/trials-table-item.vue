@@ -13,26 +13,29 @@ const store = generalStore()
 const { $api } = useNuxtApp()
 const toast = useToast()
 
-let lead = ref<IWeeklyClassesFreeTrials>(props.lead).value
-let show = ref<boolean>(false)
+const lead = ref<IWeeklyClassesFreeTrials>(props.lead).value
+
+console.log('lead')
+console.log(lead)
+const show = ref<boolean>(false)
 
 const agents = store.agents
 const leadStatus = store.freeTrialStatus
 
-let selectedAgent = ref<string>('')
-let selectedStatus = ref<number>(0)
+const selectedAgent = ref<string>('')
+const selectedStatus = ref<number>(0)
 const blockButtons = ref(false)
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/trials-table-item.vue')
-  if (!!lead.agent) {
+  console.log('lead!!!!!!')
+  console.log(lead)
+  if (lead.agent) {
     selectedAgent.value = lead.agent.id
   }
-  if (!!lead.status) {
+  if (lead.status) {
     selectedStatus.value = lead.status.id
   }
-  console.log('status', lead.status)
-  console.log('agent', lead.agent)
   // if (store.leadStatus.length == 0) await store.getLeadStatus()
 })
 
@@ -43,7 +46,7 @@ const navigateToUser = async (id: number) => {
 }
 const cleanDate = (date: any) => {
   if (!Number.isInteger(date)) return date
-  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+  const cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
   return cleanedDate
 }
 
@@ -56,14 +59,14 @@ const selectGuardian = (event: Event) => {
 
 const selectAgent = async (event: Event) => {
   if (!event?.target?.value) return
-  let agentId = event.target.value
+  const agentId = event.target.value
   selectedAgent.value = agentId
-  let id = lead.id
+  const id = lead.id
 
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    let response = await $api.wcLeads.assignAgent(id, agentId)
+    const response = await $api.wcLeads.assignAgent(id, agentId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)
@@ -75,12 +78,12 @@ const selectAgent = async (event: Event) => {
 
 const selectStatus = async (event: Event) => {
   if (!event?.target?.value) return
-  let statusId = event.target.value
-  let id = lead.id
+  const statusId = event.target.value
+  const id = lead.id
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    let response = await $api.wcLeads.assignStatus(id, statusId)
+    const response = await $api.wcLeads.assignStatus(id, statusId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)
@@ -95,20 +98,20 @@ const selectStatus = async (event: Event) => {
   <tr class="align-middle">
     <th scope="row">
       <input
+        :id="`${lead.id}`"
         class="form-check-input"
         type="checkbox"
         value=""
-        :id="`${lead.id}`"
         @change="selectGuardian"
       />
     </th>
     <td @click="navigateToUser(lead.id)">
       <label class="form-check-label text-muted" for="tomjones">
-        {{ lead.student.first_name }} {{ lead.student.last_name }}
+        {{ lead.student?.first_name }} {{ lead.student?.last_name }}
       </label>
     </td>
-    <td @click="navigateToUser(lead.id)">{{ lead.student.age }}</td>
-    <td @click="navigateToUser(lead.id)">{{ lead.venue.name }}</td>
+    <td @click="navigateToUser(lead.id)">{{ lead.student?.age }}</td>
+    <td @click="navigateToUser(lead.id)">{{ lead.venue }}</td>
     <td @click="navigateToUser(lead.id)">{{ cleanDate(lead.created_at) }}</td>
     <td @click="navigateToUser(lead.id)">{{ cleanDate(lead.trial_date) }}</td>
     <td>{{ lead.booked_by?.first_name }}</td>
@@ -116,16 +119,16 @@ const selectStatus = async (event: Event) => {
     <td>
       <select
         id="seasons"
-        class="form-control form-control-lg"
         v-model="selectedStatus"
-        @change="selectStatus"
+        class="form-control form-control-lg"
         :disabled="blockButtons"
+        @change="selectStatus"
       >
         <option value="0">Assign status</option>
         <option
           v-for="(lStatus, index) in leadStatus"
-          :value="lStatus.id"
           :key="index"
+          :value="lStatus.code"
         >
           {{ lStatus.title }}
         </option>

@@ -901,6 +901,8 @@ export type IWeeklyClassesFreeTrialCreate = {
   students: ICreateStudent[]
   emergency_contacts: ICreateEmergencyContact[]
   comments: string[]
+  start_date: string
+  free_trial_status_code: string
 }
 
 export type IWeeklyClassesWaitingListCreate = {

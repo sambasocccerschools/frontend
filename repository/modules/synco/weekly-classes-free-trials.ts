@@ -14,22 +14,22 @@ import type {
 
 class WeeklyClassesFreeTrialsModule extends FetchFactory {
   private RESOURCE = '/weeklyClassesFreeTrials'
-  private token = useCookie('token')
-  private fetchOptions: FetchOptions<'json'> = {
-    headers: {
-      Authorization: `${this.token.value}`,
-    },
-    params: {},
-  }
 
   async getAll(limit: number = 25) {
-    this.fetchOptions.params = {}
-    this.fetchOptions.params.limit = limit
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {
+        limit,
+      },
+    }
     return this.call<IWeeklyClassesFreeTrialsResponse>(
       'GET',
       `${this.RESOURCE}/get_all`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
@@ -37,77 +37,125 @@ class WeeklyClassesFreeTrialsModule extends FetchFactory {
     filter: IWeeklyClassesFreeTrialsFilterObject,
     limit: number = 25,
   ) {
-    this.fetchOptions.params = {}
-    this.fetchOptions.params.limit = limit
-    if (this.fetchOptions.params) {
-      if (filter.student) this.fetchOptions.params.student = filter.student
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {
+        limit,
+      },
+    }
+    if (fetchOptions.params) {
+      if (filter.student) fetchOptions.params.student = filter.student
       if (!!filter.venue_id && filter.venue_id != '0')
-        this.fetchOptions.params.venue_id = filter.venue_id
+        fetchOptions.params.venue_id = filter.venue_id
       if (!!filter.free_trial_status_id && filter.free_trial_status_id != '0')
-        this.fetchOptions.params.free_trial_status_id = filter.free_trial_status_id
-      if (filter.end_date) this.fetchOptions.params.end_date = filter.end_date
-      if (filter.start_date)
-        this.fetchOptions.params.start_date = filter.start_date
+        fetchOptions.params.free_trial_status_id = filter.free_trial_status_id
+      if (filter.end_date) fetchOptions.params.end_date = filter.end_date
+      if (filter.start_date) fetchOptions.params.start_date = filter.start_date
     }
 
     return this.call<IWeeklyClassesFreeTrialsResponse>(
       'GET',
       `${this.RESOURCE}/get_all`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async getById(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
     return this.call<IWeeklyClassesShowLeadResponse>(
       'GET',
       `${this.RESOURCE}/edit?id=${id}`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 
   async delete(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'DELETE',
       `${this.RESOURCE}/delete?id=${id}`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 
   async restore(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'POST',
       `${this.RESOURCE}/restore?id=${id}`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 
   async exportExcel() {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
     return this.call<IExcelResponse>(
       'GET',
       `${this.RESOURCE}/exportExcel`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 
   async sendText(body: ISendMessageFreeTrialObject) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendText`,
       body,
-      undefined,
+      fetchOptions,
     )
   }
   async sendEmail(body: ISendMessageFreeTrialObject) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
     return this.call<IMessageResponseObject>(
       'POST',
       `${this.RESOURCE}/sendEmail`,
       body,
-      undefined,
+      fetchOptions,
     )
   }
 
@@ -125,6 +173,13 @@ class WeeklyClassesFreeTrialsModule extends FetchFactory {
   // }
 
   async assignStatus(id: number, statusId: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
     const body = {
       weekly_classes_lead_id: [id],
       lead_status_id: statusId,
@@ -133,25 +188,54 @@ class WeeklyClassesFreeTrialsModule extends FetchFactory {
       'PUT',
       `${this.RESOURCE}/changeStatus`,
       body,
-      undefined,
+      fetchOptions,
     )
   }
 
   async getReporting() {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
     return this.call<IWeeklyClassesFreeTrialReportingResponse>(
       'GET',
       `${this.RESOURCE}/reporting`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 
   async create(data: IWeeklyClassesFreeTrialCreate) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
     return this.call<IMessageResponseObject>(
       'POST',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/add`,
       data,
-      undefined,
+      fetchOptions,
+    )
+  }
+
+  async createFromFindAClass(data: IWeeklyClassesFreeTrialCreate) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
+    return this.call<IMessageResponseObject>(
+      'POST',
+      `${this.RESOURCE}/add_front`,
+      data,
+      fetchOptions,
     )
   }
 }

@@ -7,21 +7,21 @@
             name="Total Free Trials"
             :value="reporting?.total_free_trials?.amount"
             :change="reporting?.total_free_trials?.percentage"
-            :removePercentage="true"
+            :remove-percentage="true"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Top Performer"
             :value="reporting?.top_performer?.name"
             :change="reporting?.top_performer?.count"
-            :removePercentage="true"
+            :remove-percentage="true"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Free Trials to Member"
             :value="reporting?.trials_to_member?.amount"
             :change="reporting?.trials_to_member?.percentage"
-            :removePercentage="true"
+            :remove-percentage="true"
             icon="ph:users-three"
           />
           <!-- <SyncoDashboardMetricsItem
@@ -39,7 +39,7 @@
 
         <div>
           <SyncoDataOptions
-            @exportExcel="exportExcel"
+            @export-excel="exportExcel"
             @send-email="sendEmail"
             @send-text="sendText"
           />
@@ -72,10 +72,10 @@
             </tr>
           </thead>
           <tbody>
-            <template v-for="lead in leads">
+            <template v-for="lead in leads" :key="lead.id">
               <LazySyncoWeeklyClassesTrialsTableItem
                 :lead="lead"
-                @selectedGuardian="selectedGuardian"
+                @selected-guardian="selectedGuardian"
               />
             </template>
           </tbody>
@@ -146,7 +146,7 @@ const exportExcel = async () => {
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    let excel = await $api.wcFreeTrials.exportExcel()
+    const excel = await $api.wcFreeTrials.exportExcel()
     store.downloadExcelFile(excel.data.url, excel.data.name)
   } catch (error: any) {
     console.log(error)
@@ -159,14 +159,14 @@ const exportExcel = async () => {
 const sendText = async () => {
   if (blockButtons.value) return
 
-  let guardianIds = selectedGuardians.value.filter(
+  const guardianIds = selectedGuardians.value.filter(
     (value, index, array) => array.indexOf(value) == index,
   )
   if (guardianIds.length == 0) {
     alert('Select any row')
     return
   }
-  let message = prompt('Write text message.')
+  const message = prompt('Write text message.')
   if (!message) return
   try {
     blockButtons.value = true
@@ -184,14 +184,14 @@ const sendText = async () => {
 }
 const sendEmail = async () => {
   if (blockButtons.value) return
-  let guardianIds = selectedGuardians.value.filter(
+  const guardianIds = selectedGuardians.value.filter(
     (value, index, array) => array.indexOf(value) == index,
   )
   if (guardianIds.length == 0) {
     alert('Select any row')
     return
   }
-  let message = prompt('Write email message.')
+  const message = prompt('Write email message.')
   if (!message) return
   try {
     blockButtons.value = true
@@ -211,7 +211,7 @@ const sendEmail = async () => {
 const selectedGuardian = (data: any) => {
   console.log(data)
   if (!data.value) {
-    let dataIndex = selectedGuardians.value.indexOf(data.id)
+    const dataIndex = selectedGuardians.value.indexOf(data.id)
     if (dataIndex >= 0) {
       selectedGuardians.value.splice(dataIndex, 1)
     }
