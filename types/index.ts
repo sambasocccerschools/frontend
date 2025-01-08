@@ -723,9 +723,21 @@ export type IAgentObject = {
 }
 export type IAgentObjectResponse = IBaseResponse<IAgentObject> & {}
 
-export type IFreeTrialStatus = IBaseDatasetItem & {
+export type IFreeTrialStatus = {
+  code: string
+  created_date: string
+  father_code: any
+  id: string | number
+  slug: string
   title: string
+  title_es: string
+  type: string
+  updated_date: string
+  user_updated_id: any
+  value1: any
+  value2: any
 }
+
 export type IFreeTrialStatusResponse = IBaseResponse<IFreeTrialStatus> & {}
 
 export type IGuardianAndStudent = {

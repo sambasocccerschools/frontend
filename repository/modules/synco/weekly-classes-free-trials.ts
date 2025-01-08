@@ -172,17 +172,16 @@ class WeeklyClassesFreeTrialsModule extends FetchFactory {
   //   )
   // }
 
-  async assignStatus(id: number, statusId: number) {
+  async assignStatus(id: number, code: string) {
     const token = useCookie('token')
     const fetchOptions: FetchOptions<'json'> = {
       headers: {
         Authorization: `${token.value}`,
       },
-      params: {},
     }
     const body = {
-      weekly_classes_lead_id: [id],
-      lead_status_id: statusId,
+      weekly_classes_free_trial_id: [id],
+      free_trial_status_code: code,
     }
     return this.call<IMessageResponseObject>(
       'PUT',

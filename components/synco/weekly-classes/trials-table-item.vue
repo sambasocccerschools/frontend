@@ -6,7 +6,7 @@ import { generalStore } from '~/stores'
 import { format, parseISO, addDays } from 'date-fns'
 
 const props = defineProps<{
-  lead: IWeeklyClassesFreeTrials
+  lead: any
 }>()
 
 const router = useRouter()
@@ -24,18 +24,18 @@ const agents = store.agents
 const leadStatus = store.freeTrialStatus
 
 const selectedAgent = ref<string>('')
-const selectedStatus = ref<number>(0)
+const selectedStatus = ref<string>('')
 const blockButtons = ref(false)
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/trials-table-item.vue')
-  console.log('lead!!!!!!')
-  console.log(lead)
+  console.log('leadStatus!!!!!!')
+  console.log(leadStatus)
   if (lead.agent) {
     selectedAgent.value = lead.agent.id
   }
-  if (lead.status) {
-    selectedStatus.value = lead.status.id
+  if (lead.free_trial_status) {
+    selectedStatus.value = lead.free_trial_status.code || '0'
   }
   // if (store.leadStatus.length == 0) await store.getLeadStatus()
 })
@@ -90,7 +90,7 @@ const selectStatus = async (event: Event) => {
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    const response = await $api.wcLeads.assignStatus(id, statusId)
+    const response = await $api.wcFreeTrials.assignStatus(Number(id), statusId)
     toast.success(response?.message)
   } catch (error: any) {
     console.log(error)
