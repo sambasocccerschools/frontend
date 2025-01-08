@@ -19,7 +19,6 @@ const searchVenue = ref('')
 const class_name = ref('')
 const selectedVenues = ref<string[]>([])
 const selectedDays = ref([])
-const selectedAges = ref([])
 const emit = defineEmits(['filtered'])
 
 const filteredItems = computed(() => {
@@ -28,7 +27,6 @@ const filteredItems = computed(() => {
     class_name: class_name.value,
     venues: selectedVenues.value,
     days: selectedDays.value,
-    ages: selectedAges.value,
   }
 })
 
