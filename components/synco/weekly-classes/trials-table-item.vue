@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useToast } from 'vue-toast-notification'
 import type { IWeeklyClassesFreeTrials } from '~/types/synco/index'
 import { generalStore } from '~/stores'
+import { format, parseISO, addDays } from 'date-fns'
 
 const props = defineProps<{
   lead: IWeeklyClassesFreeTrials
@@ -13,7 +14,7 @@ const store = generalStore()
 const { $api } = useNuxtApp()
 const toast = useToast()
 
-const lead = ref<IWeeklyClassesFreeTrials>(props.lead).value
+const lead = ref<any>(props.lead).value
 
 console.log('lead')
 console.log(lead)
@@ -48,6 +49,12 @@ const cleanDate = (date: any) => {
   if (!Number.isInteger(date)) return date
   const cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
   return cleanedDate
+}
+
+const formatDate = (dateString: string, daysToAdd: number = 0): string => {
+  const date = parseISO(dateString)
+  const newDate = addDays(date, daysToAdd)
+  return format(newDate, 'yyyy-MM-dd')
 }
 
 const emit = defineEmits(['selectedGuardian'])
@@ -111,8 +118,10 @@ const selectStatus = async (event: Event) => {
       </label>
     </td>
     <td @click="navigateToUser(lead.id)">{{ lead.student?.age }}</td>
-    <td @click="navigateToUser(lead.id)">{{ lead.venue }}</td>
-    <td @click="navigateToUser(lead.id)">{{ cleanDate(lead.created_at) }}</td>
+    <td @click="navigateToUser(lead.id)">{{ lead.weekly_class.venue.name }}</td>
+    <td @click="navigateToUser(lead.id)">
+      {{ formatDate(lead.free_trial_status.created_date) }}
+    </td>
     <td @click="navigateToUser(lead.id)">{{ cleanDate(lead.trial_date) }}</td>
     <td>{{ lead.booked_by?.first_name }}</td>
     <td @click="navigateToUser(lead.id)">{{ lead.attempt }}</td>

@@ -883,7 +883,7 @@ export type ICreateStudent = {
   last_name: string
   dob: string
   age: number
-  gender_id: number
+  gender: number
   medical_information: string
 }
 
@@ -896,12 +896,12 @@ export type ICreateEmergencyContact = {
 
 export type IWeeklyClassesFreeTrialCreate = {
   weekly_class_id: number
-  agent_id: string
+  agent_id?: string
   guardians: ICreateGuardian[]
   students: ICreateStudent[]
   emergency_contacts: ICreateEmergencyContact[]
-  comments: string[]
-  start_date: string
+  comments?: string[]
+  trial_date: string
   free_trial_status_code: string
 }
 

@@ -108,7 +108,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-12">
+            <!-- <div class="col-12">
               <div class="form-group w-100 mb-3">
                 <label
                   for="studentsNumberInfo"
@@ -124,7 +124,7 @@
                   step="1"
                 />
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="card rounded-4 mt-4 px-3 pb-3">
@@ -266,7 +266,6 @@ import type {
   IGuardianCreate,
   IStudentCreate,
   IEmregencyContactCreate,
-  IWeeklyClassesFreeTrialCreate,
   IAvailableVenueObject,
 } from '~/types/synco/index'
 
@@ -365,11 +364,21 @@ const addComment = (comment: string) => {
 }
 
 const createData = async () => {
-  const data: IWeeklyClassesFreeTrialCreate = {
+  const data: any = {
     weekly_class_id: weekly_class_id.value,
-    agent_id: agent_id.value,
-    start_date: startDate.value,
+    // agent_id: agent_id.value,
     free_trial_status_code: 'PENDING_FTS',
+    trial_date: startDate.value,
+    students: [
+      {
+        first_name: student.value.first_name,
+        last_name: student.value.last_name,
+        dob: student.value.dob,
+        age: student.value.age,
+        gender: student.value.gender_id,
+        medical_information: student.value.medical_information,
+      },
+    ],
     guardians: [
       {
         first_name: parent.value.first_name,
@@ -380,16 +389,6 @@ const createData = async () => {
         referral_source_code: parent.value.referral_source_code,
       },
     ],
-    students: [
-      {
-        first_name: student.value.first_name,
-        last_name: student.value.last_name,
-        dob: student.value.dob,
-        age: student.value.age,
-        gender_id: student.value.gender_id,
-        medical_information: student.value.medical_information,
-      },
-    ],
     emergency_contacts: [
       {
         first_name: emergency_contact.value.first_name,
@@ -398,7 +397,7 @@ const createData = async () => {
         relationship_id: emergency_contact.value.relationship_id,
       },
     ],
-    comments: [newComment.value],
+    // comments: [newComment.value],
   }
   try {
     changeLoadingState(true)
