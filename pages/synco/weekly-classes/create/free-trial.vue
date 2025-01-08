@@ -6,7 +6,7 @@
       >
         <NuxtLink class="h4 text-light m-0" to="/synco/weekly-classes/leads">
           <Icon name="material-symbols:arrow-back" class="me-2" />Book a Free
-          Trial???
+          Trial
         </NuxtLink>
 
         <div class="d-flex align-items-center">
