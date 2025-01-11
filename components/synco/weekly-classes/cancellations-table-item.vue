@@ -42,8 +42,13 @@ const navigateToUser = async (id: number) => {
   // await router.push({ path: `/synco/user/${id}` })
 }
 const cleanDate = (date: any) => {
-  if (!Number.isInteger(date)) return date
-  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+  if (!date || typeof date !== 'string') return date
+  const parsedDate = new Date(date)
+  const cleanedDate = parsedDate.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
   return cleanedDate
 }
 

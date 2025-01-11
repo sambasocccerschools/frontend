@@ -46,7 +46,7 @@ const navigateToUser = async (id: number) => {
 }
 
 const cleanDate = (date: any) => {
-  if (!date || typeof date !== 'string') return date // Verificar que sea una cadena válida
+  if (!date || typeof date !== 'string') return date
   const parsedDate = new Date(date)
   const cleanedDate = parsedDate.toLocaleDateString('en-GB', {
     day: '2-digit',
