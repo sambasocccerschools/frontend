@@ -214,10 +214,24 @@
           :emergency-contact="emergency_contact"
         >
           <template #internal_title>
-            <h5 class="py-4">
-              <strong>Emergency contact details</strong>
-              <!-- <Icon name="ph:pencil-simple-line" /> -->
-            </h5>
+            <h5 class="py-4"><strong>Emergency contact details</strong></h5>
+            <div class="row mb-4">
+              <div class="col-12">
+                <div class="form-check">
+                  <input
+                    id="sameAsAbove"
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    :disabled="!filledParentInfo"
+                    @input="copyParentInformation"
+                  />
+                  <label class="form-check-label" for="sameAsAbove">
+                    Fill same as above
+                  </label>
+                </div>
+              </div>
+            </div>
           </template>
         </SyncoWeeklyClassesFormsEmergencyContactForm>
 
@@ -287,6 +301,7 @@ const showSubscriptionCard = ref<boolean>(false)
 const showCalculatorCard = ref<boolean>(false)
 const showScriptCard = ref<boolean>(false)
 const newComment = ref<string>('')
+const filledParentInfo = ref<boolean>(false)
 
 const parent = ref<IGuardianCreate>({
   id: '',
@@ -335,7 +350,17 @@ onMounted(async () => {
   if (queryVenueId) venue_id.value = queryVenueId.toString()
   const agentId = store.user?.id
   if (agentId) agent_id.value = agentId
+
+  filledParentInfo.value = isParentInfoFilled()
 })
+
+watch(
+  parent,
+  () => {
+    filledParentInfo.value = isParentInfoFilled()
+  },
+  { deep: true },
+)
 
 const toggleSubscriptionCard = () => {
   showSubscriptionCard.value = !showSubscriptionCard.value
@@ -361,6 +386,25 @@ const bookTrial = () => {
 
 const addComment = (comment: string) => {
   newComment.value = comment
+}
+
+const copyParentInformation = () => {
+  emergency_contact.value.first_name = parent.value.first_name
+  emergency_contact.value.last_name = parent.value.last_name
+  emergency_contact.value.phone_number = parent.value.phone_number
+  emergency_contact.value.relationship_id = parent.value.relationship_code
+}
+
+const isParentInfoFilled = (): boolean => {
+  const requiredFields: Array<keyof typeof parent.value> = [
+    'first_name',
+    'last_name',
+    'email',
+    'phone_number',
+    'relationship_code',
+  ]
+
+  return requiredFields.every((field) => Boolean(parent.value[field]))
 }
 
 const createData = async () => {
