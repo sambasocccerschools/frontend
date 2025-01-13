@@ -128,15 +128,11 @@
           </div>
         </div>
         <div class="card rounded-4 mt-4 px-3 pb-3">
-          <h5 class="py-4"><strong>Select start date</strong></h5>
-          <input
-            id="startDate"
-            v-model="startDate"
-            type="date"
-            class="form-control form-control-lg"
-            placeholder=""
+          <h5 class="py-4"><strong>Select trial date</strong></h5>
+          <SyncoCustomCalendar
+            :allowed-day="1"
+            @update:start-date="startDate = $event"
           />
-          <!-- <SyncoFilterByCalendar :classDate="classDate" /> -->
         </div>
       </div>
 
@@ -361,6 +357,10 @@ watch(
   },
   { deep: true },
 )
+
+const updateStartDate = (date: string) => {
+  startDate.value = date
+}
 
 const toggleSubscriptionCard = () => {
   showSubscriptionCard.value = !showSubscriptionCard.value
