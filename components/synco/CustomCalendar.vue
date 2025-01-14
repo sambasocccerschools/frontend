@@ -4,7 +4,7 @@
     <div class="calendar-header">
       <button
         class="header-arrow"
-        :disabled="isPreviousMonthDisabled"
+        :disabled="!allowedAllDays && isPreviousMonthDisabled"
         @click="previousMonth"
       >
         &lt;
@@ -23,7 +23,7 @@
         <div class="year-picker">
           <button
             class="year-button"
-            :disabled="pickerYear <= minYear"
+            :disabled="!allowedAllDays && pickerYear <= minYear"
             @click="decrementYear"
           >
             &lt;
@@ -39,7 +39,7 @@
               'month-button',
               { active: index === currentMonth && pickerYear === currentYear },
             ]"
-            :disabled="isMonthDisabled(index)"
+            :disabled="!allowedAllDays && isMonthDisabled(index)"
             @click="selectMonth(index)"
           >
             {{ month }}
@@ -66,10 +66,13 @@
         :key="index"
         class="calendar-cell"
         :class="{
-          disabled: allowedDay && !isAllowedDay(date),
-          enabled: !allowedDay || isAllowedDay(date),
+          allowed: !allowedAllDays && (!allowedDay || isAllowedDay(date)),
           selected: isSelectedDate(date),
+          today: isToday(date),
+          disabled: allowedDay && !isAllowedDay(date),
+          allowedAllDays: !allowedDay && allowedAllDays,
         }"
+        :disabled="!allowedAllDays && allowedDay && !isAllowedDay(date)"
         @click="selectDate(date)"
       >
         <span>{{ date }}</span>
@@ -82,16 +85,21 @@
 export default {
   props: {
     allowedDay: {
-      type: Number, // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-      required: false, // Puede no ser proporcionado
-      default: null, // Si no se da, permite seleccionar cualquier día
+      type: Number,
+      required: false,
+      default: null,
+    },
+    allowedAllDays: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
   data() {
     return {
       currentYear: new Date().getFullYear(),
       currentMonth: new Date().getMonth(),
-      selectedDate: new Date().toISOString().split('T')[0], // Marca la fecha de hoy por defecto
+      selectedDate: new Date().toISOString().split('T')[0],
       showMonthYearPicker: false,
       pickerYear: new Date().getFullYear(),
       minYear: new Date().getFullYear(),
@@ -158,26 +166,34 @@ export default {
       }
     },
     isAllowedDay(date) {
-      if (!this.allowedDay) return true // Si no hay restricciones, permite cualquier día
+      if (!this.allowedDay) return true
       const dayOfWeek = new Date(
         this.currentYear,
         this.currentMonth,
         date,
       ).getDay()
-      return dayOfWeek === this.allowedDay // Compara con el día permitido
-    },
-    selectDate(date) {
-      const selected = new Date(this.currentYear, this.currentMonth, date)
-        .toISOString()
-        .split('T')[0]
-      this.selectedDate = selected // Marca la fecha seleccionada
-      this.$emit('update:startDate', this.selectedDate) // Emitimos la fecha seleccionada
+      return dayOfWeek === this.allowedDay
     },
     isSelectedDate(date) {
       const currentDate = new Date(this.currentYear, this.currentMonth, date)
         .toISOString()
         .split('T')[0]
       return currentDate === this.selectedDate
+    },
+    isToday(date) {
+      const today = new Date().toISOString().split('T')[0]
+      const currentDate = new Date(this.currentYear, this.currentMonth, date)
+        .toISOString()
+        .split('T')[0]
+      return currentDate === today
+    },
+    selectDate(date) {
+      if (this.allowedDay && !this.isAllowedDay(date)) return
+      const selected = new Date(this.currentYear, this.currentMonth, date)
+        .toISOString()
+        .split('T')[0]
+      this.selectedDate = selected
+      this.$emit('update:startDate', this.selectedDate)
     },
     toggleMonthYearPicker() {
       this.showMonthYearPicker = !this.showMonthYearPicker
@@ -187,12 +203,13 @@ export default {
       this.pickerYear++
     },
     decrementYear() {
-      if (this.pickerYear > this.minYear) {
+      if (this.allowedAllDays || this.pickerYear > this.minYear) {
         this.pickerYear--
       }
     },
     selectMonth(monthIndex) {
       if (
+        this.allowedAllDays ||
         this.pickerYear > this.minYear ||
         (this.pickerYear === this.minYear && monthIndex >= this.minMonth)
       ) {
@@ -201,6 +218,16 @@ export default {
         this.showMonthYearPicker = false
       }
     },
+    // selectMonth(monthIndex) {
+    //   if (
+    //     this.pickerYear > this.minYear ||
+    //     (this.pickerYear === this.minYear && monthIndex >= this.minMonth)
+    //   ) {
+    //     this.currentMonth = monthIndex
+    //     this.currentYear = this.pickerYear
+    //     this.showMonthYearPicker = false
+    //   }
+    // },
     isMonthDisabled(monthIndex) {
       return this.pickerYear === this.minYear && monthIndex < this.minMonth
     },
@@ -267,9 +294,8 @@ export default {
 .calendar-cell {
   text-align: center;
   padding: 10px 0;
-  cursor: pointer;
   border-radius: 100%;
-  transition: background-color 0.3s;
+  transition: background-color 0.2s;
   height: 40px;
   width: 40px;
 }
@@ -279,19 +305,34 @@ export default {
   cursor: not-allowed;
 }
 
-.calendar-cell.enabled {
+.calendar-cell.allowed {
   background-color: #e6fffa;
-  color: #2b6cb0;
+  cursor: pointer;
 }
 
-.calendar-cell.enabled:hover {
-  background-color: #81e6d9;
+.calendar-cell.allowed:hover {
+  background-color: #38a169;
+  color: white;
+}
+
+.calendar-cell.allowedAllDays {
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.calendar-cell.allowed:hover {
+  background-color: #38a169;
+  color: white;
 }
 
 .calendar-cell.selected {
   background-color: #38a169;
   color: white;
   font-weight: bold;
+}
+
+.calendar-cell.today {
+  border: 2px solid #38a169;
 }
 
 .blank {
@@ -301,14 +342,20 @@ export default {
 
 .month-year-picker {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
   right: 0;
   bottom: 0;
+  border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 20;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .picker-overlay {
@@ -368,7 +415,7 @@ export default {
   background-color: #edf2f7;
   cursor: pointer;
   border-radius: 4px;
-  transition: background-color 0.3s;
+  transition: background-color 0.2s;
 }
 
 .month-button.active {
@@ -376,10 +423,8 @@ export default {
   color: white;
 }
 
-.month-button:disabled {
+.month-button:hover {
   background-color: #e2e8f0;
-  color: #a0aec0;
-  cursor: not-allowed;
 }
 
 .close-picker {
@@ -390,7 +435,7 @@ export default {
   color: white;
   cursor: pointer;
   border-radius: 4px;
-  transition: background-color 0.3s;
+  transition: background-color 0.2s;
 }
 
 .close-picker:hover {

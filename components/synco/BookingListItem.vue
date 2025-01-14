@@ -6,6 +6,8 @@ const props = defineProps<{
   index: number
 }>()
 
+console.log(props.item)
+
 const activeCard = ref<string | null>(null)
 
 const toggleCard = (card: string) => {
@@ -163,6 +165,7 @@ const toggleCard = (card: string) => {
                   ><strong>Add to Waiting List</strong></NuxtLink
                 >
                 <NuxtLink
+                  v-if="c.is_free_trail_dates"
                   :to="`/synco/weekly-classes/create/membership?class_id=${c.id}&venue_id=${item.id}`"
                   class="btn btn-outline-primary btn-sm me-3"
                 >
