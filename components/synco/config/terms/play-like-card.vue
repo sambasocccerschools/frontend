@@ -1,5 +1,8 @@
 <template>
-  <div class="card rounded-2 border p-3" style="background-color: #e2e1e5">
+  <div
+    class="card rounded-2 border p-3"
+    style="background-color: #e2e1e5; position: relative"
+  >
     <div class="d-flex justify-content-between flex-row">
       <div class="d-flex flex-column">
         <div class="d-flex flex-column">
@@ -14,15 +17,11 @@
       <div>
         <div class="card rounded-3 bg-stadium border-0">
           <div class="row h-100 w-100">
-            <div class="col-5">
-              <div
-                class="d-flex flex-column align-items-center justify-content-center h-100 text-light font-custom"
-              >
-                <span> PLAY LIKE </span>
-                <span class="h3"> {{ sessionPlan.description }} </span>
-              </div>
+            <div class="card-title">
+              <h5>PLAY LIKE</h5>
+              <h5 class="h5">{{ sessionPlan.description }}</h5>
             </div>
-            <div class="col-7">
+            <div class="d-flex justify-content-center card-img flex-row">
               <img src="@/src/assets/img-pele.png" />
             </div>
           </div>
@@ -54,7 +53,7 @@ const props = defineProps<{
   sessionPlan: ISessionPlanObject
 }>()
 
-let sessionPlan = ref<ISessionPlanObject>(props.sessionPlan).value
+const sessionPlan = ref<ISessionPlanObject>(props.sessionPlan).value
 onMounted(() => {
   console.log('components/synco/config/terms/play-like-card.vue')
 })
@@ -69,17 +68,31 @@ onMounted(() => {
   align-items: center;
 }
 .bg-stadium {
-  background-image: url('@/src/assets/bg-stadium.png');
-  background-repeat: no-repeat;
-  background-size: auto;
-  background-position: center center;
+  background: url('@/src/assets/bg-stadium.png') no-repeat center center;
+  background-size: cover;
   width: 360px;
-  height: 90px;
+  height: 120px;
+}
+.card-title {
+  position: absolute;
+  padding: 15px 20px;
+  z-index: 10
 }
 @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
-.font-custom {
+.card-title {
+  background: rgba($color: #000000, $alpha: 0.3);
   font-family: 'Luckiest Guy', cursive;
   font-weight: 400;
   font-style: normal;
+  color: white;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 0.5rem;
+}
+.card-img {
+  position: absolute;
+  bottom: 5px;
 }
 </style>
