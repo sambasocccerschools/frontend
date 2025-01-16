@@ -131,7 +131,7 @@
           <h5 class="py-4"><strong>Select trial date</strong></h5>
           <p>{{ startDate }}</p>
           <SyncoCustomCalendar
-            :allowed-day="1"
+            :allowed-day="getCurrentAllowDay()"
             @update:start-date="startDate = $event"
           />
         </div>
@@ -299,6 +299,7 @@ const showCalculatorCard = ref<boolean>(false)
 const showScriptCard = ref<boolean>(false)
 const newComment = ref<string>('')
 const filledParentInfo = ref<boolean>(false)
+const classData = ref<any>({})
 
 const parent = ref<IGuardianCreate>({
   id: '',
@@ -348,6 +349,8 @@ onMounted(async () => {
   const agentId = store.user?.id
   if (agentId) agent_id.value = agentId
 
+  await getClassData()
+
   filledParentInfo.value = isParentInfoFilled()
 })
 
@@ -358,6 +361,20 @@ watch(
   },
   { deep: true },
 )
+
+const getClassData = async () => {
+  try {
+    const response = await $api.weeklyClasses.getWeeklyClassesById(
+      weekly_class_id.value,
+    )
+    classData.value = response?.data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    changeLoadingState(false)
+  }
+}
 
 const updateStartDate = (date: string) => {
   startDate.value = date
@@ -406,6 +423,20 @@ const isParentInfoFilled = (): boolean => {
   ]
 
   return requiredFields.every((field) => Boolean(parent.value[field]))
+}
+
+const getCurrentAllowDay = () => {
+  const daysList = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ]
+
+  return daysList.indexOf(classData.value?.days)
 }
 
 const createData = async () => {

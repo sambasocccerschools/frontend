@@ -5,6 +5,7 @@ import type {
 } from '~/types'
 import FetchFactory from '../factory'
 import type { FetchOptions } from 'ofetch'
+import type { IWeeklyClassesShowLeadResponse } from '~/types/synco'
 
 class WeeklyClassesModule extends FetchFactory {
   private resource = '/weeklyClasses'
@@ -29,6 +30,42 @@ class WeeklyClassesModule extends FetchFactory {
         fetchOptions,
       )
     }, asyncDataOptions)
+  }
+
+  // async getWeeklyClassesById(
+  //   id: number,
+  //   asyncDataOptions?: AsyncDataOptions<IGetWeeklyClassesResponse>,
+  // ) {
+  //   return useAsyncData(() => {
+  //     const token = useCookie('token')
+  //     const fetchOptions: FetchOptions<'json'> = {
+  //       headers: {
+  //         Authorization: `${token.value}`,
+  //       },
+  //     }
+  //     return this.call<IGetWeeklyClassesResponse>(
+  //       'GET',
+  //       `${this.resource}/get?id=${id}`,
+  //       undefined,
+  //       fetchOptions,
+  //     )
+  //   }, asyncDataOptions)
+  // }
+
+  async getWeeklyClassesById(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
+    return this.call<IWeeklyClassesShowLeadResponse>(
+      'GET',
+      `${this.resource}/get?id=${id}`,
+      undefined,
+      fetchOptions,
+    )
   }
 }
 
