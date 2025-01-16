@@ -6,8 +6,6 @@ const props = defineProps<{
   index: number
 }>()
 
-console.log(props.item)
-
 const activeCard = ref<string | null>(null)
 
 const toggleCard = (card: string) => {

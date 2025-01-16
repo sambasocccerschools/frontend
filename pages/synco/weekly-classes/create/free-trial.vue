@@ -338,7 +338,6 @@ const comments = ref<Array<IComment>>([
 const startDate = ref<string>('')
 
 const venues = ref<IAvailableVenueObject[]>(store.availableVenues)
-console.log(venues)
 
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/create/free-trial.vue')
