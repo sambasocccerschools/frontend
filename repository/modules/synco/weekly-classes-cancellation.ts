@@ -23,13 +23,19 @@ class WeeklyClassesCancellationModule extends FetchFactory {
   }
 
   async getAll(limit: number = 25) {
-    this.fetchOptions.params = {}
-    this.fetchOptions.params.limit = limit
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: { limit },
+    }
+
     return this.call<IWeeklyClassesCancellationResponse>(
       'GET',
       `${this.RESOURCE}/get_all`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 

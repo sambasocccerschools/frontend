@@ -175,7 +175,6 @@ export type ITermEditItem = {
 }
 
 export type ISessionEditItem = {
-  id: number
   plans: IPlanEditItem[]
 }
 export type IPlanEditItem = {
