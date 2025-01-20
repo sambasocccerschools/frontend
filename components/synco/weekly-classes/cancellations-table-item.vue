@@ -100,7 +100,7 @@ const selectStatus = async (event: Event) => {
       </label>
     </td>
     <td @click="navigateToUser(Number(cancellation?.id))">
-      {{ cancellation?.total_students || 'N/A' }}
+      {{ cancellation?.total_student || 'N/A' }}
     </td>
     <td @click="navigateToUser(Number(cancellation?.id))">
       {{ cancellation?.venue?.name || 'N/A' }}

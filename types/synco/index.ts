@@ -384,13 +384,19 @@ export type IWeeklyClassesLeadCreateResponse =
   IBaseResponse<IWeeklyClassesLeadCreate> & {}
 
 export type IGuardian = {
+  email: string | null
+  other_relationship: string | null
+  relationship: any
+  referal_source: IReferralSource
+  family: any
+  franchise: any
   id: string
   first_name: string
   last_name: string
-  email: string
   phone_number: string
-  created_at: Date | null
-  deleted_at: Date | null
+  is_deleted: boolean | number
+  created_date: Date | null
+  deleted_date: Date | null
 }
 
 export type IWeeklyClassesLead = {
@@ -753,15 +759,22 @@ export type IWeeklyClassesWaitingListReportingResponse = {
 }
 
 export type IWeeklyClassesCancellation = {
-  id: number
-  status: IMemberCancelStatus
-  cancel_reason: IReason
-  venue: IWeeklyClassesVenueObject
-  guardian: IGuardian
+  id: string | number
+  additional_notes: string
+  agent: any
+  cancelled_by: any
+  created_date: string | null
+  franchise: any
+  is_deleted: boolean | number
+  member_cancel_status: any
+  member_cancel_type: any
+  membership_cancel_reason: any
+  termination_date: string | null
+  updated_date: string | null
+  weekly_class_member: any
+  venue: any
   total_student: number
-  termination_date: number | null
-  created_at: number | null
-  deleted_at: number | null
+  guardian: IGuardian
 }
 export type IWeeklyClassesCancellationResponse =
   IBaseResponse<IWeeklyClassesCancellation> & {}
