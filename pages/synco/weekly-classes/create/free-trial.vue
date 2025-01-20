@@ -129,7 +129,6 @@
         </div>
         <div class="card rounded-4 mt-4 px-3 pb-3">
           <h5 class="py-4"><strong>Select trial date</strong></h5>
-          <p>{{ startDate }}</p>
           <SyncoCustomCalendar
             :allowed-day="getCurrentAllowDay()"
             @update:start-date="startDate = $event"
