@@ -1498,7 +1498,7 @@ export type IWeeklyClassesCapacities = {
   name: string
   weekly_classes: IWeeklyClassesCapacitiesClasses[]
   total_capacity: number
-  booked_capacity: number
+  total_booked_capacity: number
   remaining_capacity: number
   percentage_booked: string
   created_at: any | null
