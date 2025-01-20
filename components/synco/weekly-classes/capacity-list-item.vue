@@ -1,19 +1,33 @@
 <template>
   <div class="card rounded-4 mb-4 border">
-    <div class="card-body d-flex justify-content-between p-2">
+    <div class="card-body d-flex justify-content-between p-2" style="gap: 24px">
       <!-- Venue  -->
       <div
         class="card rounded-4 bg-secondary text-bg-dark d-flex align-items-center justify-content-center"
-        style="min-width: 7rem"
+        style="width: 10%; padding: 20px"
       >
-        <strong class="h4">{{ capacities?.name }}</strong>
+        <strong
+          class="h4"
+          style="
+            text-align: center;
+            margin: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+          "
+          >{{ capacities?.name }}</strong
+        >
       </div>
       <!-- Classes  -->
-      <div class="w-100 d-flex justify-content-center py-3">
-        <!--  -->
-        <template v-for="classess in capacities?.weekly_classes">
+      <div class="w-100 d-flex justify-content-start py-3" style="gap: 24px">
+        <template
+          v-for="(classess, index) in capacities?.weekly_classes"
+          :key="index"
+        >
           <div
-            class="d-flex flex-column justify-content-between align-items-center border-end px-3"
+            class="d-flex flex-column justify-content-between align-items-center px-3"
           >
             <span class="h5">{{ classess.name }}</span>
             <div class="d-flex">
@@ -35,6 +49,7 @@
               >
             </div>
           </div>
+          <div class="border-end" style="width: 1px"></div>
         </template>
       </div>
 
@@ -63,7 +78,7 @@ const props = defineProps<{
   capacities: IWeeklyClassesCapacities
 }>()
 
-let capacities = ref<IWeeklyClassesCapacities>(props.capacities).value
+const capacities = ref<IWeeklyClassesCapacities>(props.capacities).value
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/capacity-list-item.vue')

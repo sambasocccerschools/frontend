@@ -17,7 +17,7 @@ class WeeklyClassesCapacitiesModule extends FetchFactory {
   async getAll() {
     return this.call<IWeeklyClassesCapacitiesResponse>(
       'GET',
-      `${this.RESOURCE}/get_all`,
+      `${this.RESOURCE}/get_capacities`,
       undefined,
       this.fetchOptions,
     )
