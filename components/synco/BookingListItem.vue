@@ -129,7 +129,7 @@ const toggleCard = (card: string) => {
               :key="c.id"
               :index="idx"
               class="border-1 border-muted d-flex justify-content-between align-items-center pb-3 pt-3"
-              style="min-height: 50px"
+              style="min-height: 50px; gap: 0.7rem"
             >
               <div
                 class="d-flex align-items-center justify-content-center gap-3"
@@ -145,31 +145,31 @@ const toggleCard = (card: string) => {
                 <span
                   class="d-flex align-items-center rounded-3 px-2"
                   :class="{
-                    'bg-danger-subtle text-danger': c.capacity === 0,
-                    'bg-success-subtitle text-success': c.capacity !== 0,
+                    'bg-danger-subtle text-danger': c.capacity_spaces === 0,
+                    'bg-success-subtitle text-success': c.capacity_spaces !== 0,
                   }"
                   >{{
-                    c.capacity === 0
+                    c.capacity_spaces === 0
                       ? 'Fully Booked'
-                      : `+${c.capacity} ${c.capacity > 2 ? 'spaces' : 'space'}`
+                      : `+${c.capacity_spaces} ${c.capacity_spaces > 2 ? 'spaces' : 'space'}`
                   }}</span
                 >
               </div>
               <div class="d-flex flex-row">
-                <!-- v-if="c.capacity === 0" -->
+                <!-- v-if="c.capacity_spaces === 0" -->
                 <NuxtLink
                   :to="`/synco/weekly-classes/create/waiting-list?class_id=${c.id}&venue_id=${item.id}`"
                   class="btn btn-primary btn-sm text-light me-3"
                   ><strong>Add to Waiting List</strong></NuxtLink
                 >
                 <NuxtLink
-                  v-if="c.is_free_trail_dates"
                   :to="`/synco/weekly-classes/create/membership?class_id=${c.id}&venue_id=${item.id}`"
                   class="btn btn-outline-primary btn-sm me-3"
                 >
                   <strong>Book a Membership</strong>
                 </NuxtLink>
                 <NuxtLink
+                  v-if="c.is_free_trail_dates"
                   :to="`/synco/weekly-classes/create/free-trial?class_id=${c.id}&venue_id=${item.id}`"
                   class="btn btn-primary btn-sm text-light"
                   ><strong>Book a Free Trial</strong></NuxtLink
