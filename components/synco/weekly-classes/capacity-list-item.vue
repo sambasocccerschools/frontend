@@ -4,7 +4,7 @@
       <!-- Venue  -->
       <div
         class="card rounded-4 bg-secondary text-bg-dark d-flex align-items-center justify-content-center"
-        style="width: 10%; padding: 20px"
+        style="min-width: 12%; padding: 20px"
       >
         <strong
           class="h4"
