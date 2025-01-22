@@ -43,51 +43,59 @@ class SessionPlansModule extends FetchFactory {
     )
   }
 
-  private createFormData = (data: ISessionPlanCreateUpdateItem) => {
-    let formData = new FormData()
-    formData.append('title', data.title)
-    formData.append('description', data.description)
-    formData.append('player', data.description)
-    if (data.banner) {
-      formData.append('banner', data.banner)
-    }
-    if (data.video) {
-      formData.append('video', data.video)
-    }
-    data.exercises.forEach((exercise, index) => {
-      formData.append(`exercises[${index}][title]`, exercise.title)
-      formData.append(`exercises[${index}][subtitle]`, exercise.subtitle)
-      formData.append(`exercises[${index}][description]`, exercise.description)
-      formData.append(
-        `exercises[${index}][title_duration]`,
-        exercise.title_duration,
-      )
-      if (exercise.banner) {
-        formData.append(`exercises[${index}][banner][]`, exercise.banner)
-      }
-      if (exercise.video) {
-        formData.append(`exercises[${index}][video][]`, exercise.video)
-      }
-    })
+  // private createFormData = (data: ISessionPlanCreateUpdateItem) => {
+  //   let formData = new FormData()
+  //   formData.append('title', data.title)
+  //   formData.append('description', data.description)
+  //   formData.append('player', data.description)
+  //   if (data.banner) {
+  //     formData.append('banner', data.banner)
+  //   }
+  //   if (data.video) {
+  //     formData.append('video', data.video)
+  //   }
+  //   data.exercises.forEach((exercise, index) => {
+  //     formData.append(`exercises[${index}][title]`, exercise.title)
+  //     formData.append(`exercises[${index}][subtitle]`, exercise.subtitle)
+  //     formData.append(`exercises[${index}][description]`, exercise.description)
+  //     formData.append(
+  //       `exercises[${index}][title_duration]`,
+  //       exercise.title_duration,
+  //     )
+  //     if (exercise.banner) {
+  //       formData.append(`exercises[${index}][banner][]`, exercise.banner)
+  //     }
+  //     if (exercise.video) {
+  //       formData.append(`exercises[${index}][video][]`, exercise.video)
+  //     }
+  //   })
 
-    return formData
-  }
+  //   return formData
+  // }
 
   async create(data: ISessionPlanCreateUpdateItem) {
+    // const token = useCookie('token')
+    // const fetchOptions: FetchOptions<'json'> = {
+    //   headers: {
+    //     'X-Requested-With': 'XMLHttpRequest',
+    //     Authorization: `${token.value}`,
+    //   },
+    // }
     const token = useCookie('token')
     const fetchOptions: FetchOptions<'json'> = {
       headers: {
-        'X-Requested-With': 'XMLHttpRequest',
         Authorization: `${token.value}`,
       },
+      params: {},
     }
-    const formData = this.createFormData(data)
-    formData.append('ability_group_id', data.ability_group_id.toString())
+    // const formData = this.createFormData(data)
+    // formData.append('ability_group_id', data.ability_group_id.toString())
 
+    console.log('data', data)
     return this.call<ISessionPlanResponse>(
       'POST',
       `${this.RESOURCE}/add`,
-      formData,
+      data,
       fetchOptions,
     )
   }
@@ -99,13 +107,13 @@ class SessionPlansModule extends FetchFactory {
         Authorization: `${token.value}`,
       },
     }
-    let formData = await this.createFormData(data)
-    formData.append('_method', 'PUT')
+    // let formData = await this.createFormData(data)
+    // formData.append('_method', 'PUT')
 
     return this.call<ISessionPlanResponse>(
-      'POST',
+      'PUT',
       `${this.RESOURCE}/edit?id=${id}`,
-      formData,
+      data,
       fetchOptions,
     )
   }

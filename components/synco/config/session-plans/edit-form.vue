@@ -205,12 +205,10 @@ const onSubmit = async () => {
     isLoading.value = true
     blockButtons.value = true
     if (!sessionPlanId.value) return
-    const sessionPlansResponse = await $api.sessionPlans.update(
-      sessionPlanId.value,
-      newSessionPlan.value,
-    )
+    await $api.sessionPlans.update(sessionPlanId.value, newSessionPlan.value)
+
     getSessionPlan()
-    // router.push('/synco/config/weekly-classes/session-plans')
+    router.push('/synco/config/weekly-classes/session-plans')
   } catch (error: any) {
     console.log(error)
     toast.error(error?.data?.messages ?? 'Error')

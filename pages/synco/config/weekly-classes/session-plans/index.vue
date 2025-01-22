@@ -32,6 +32,7 @@ const getSessionPlans = async (abilityId: number) => {
 
 const selectedAbilityGroupId = ref<number>(-1)
 const selectAbilityGroup = (id: number) => {
+  console.log('Selecting ability group:', id)
   if (blockButtons.value) return
   sessionPlans.value = []
   selectedAbilityGroupId.value = id
@@ -50,6 +51,7 @@ onMounted(async () => {
   await store.getAbilityGroups()
   console.log('Ability groups:', abilityGroups)
   if (abilityGroups.length > 0 && abilityGroups[0].icon) {
+    console.log('Selected ability group:', abilityGroups[0])
     selectAbilityGroup(abilityGroups[0].id)
   }
 })
