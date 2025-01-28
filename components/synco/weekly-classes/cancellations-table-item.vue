@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useToast } from 'vue-toast-notification'
+// import { useToast } from 'vue-toast-notification'
 import type { IWeeklyClassesCancellation } from '~/types/synco/index'
 import { generalStore } from '~/stores'
 
@@ -10,16 +10,16 @@ const props = defineProps<{
 
 const router = useRouter()
 const store = generalStore()
-const { $api } = useNuxtApp()
-const toast = useToast()
+// const { $api } = useNuxtApp()
+// const toast = useToast()
 
 const cancellation = ref<IWeeklyClassesCancellation>(props.cancellation).value
-const show = ref<boolean>(false)
-const agents = store.agents
+// const show = ref<boolean>(false)
+// const agents = store.agents
 const leadStatus = store.memberCancelStatus
 const selectedAgent = ref<string>('')
 const selectedStatus = ref<number>(0)
-const blockButtons = ref(false)
+// const blockButtons = ref(false)
 
 onMounted(() => {
   if (cancellation.agent) {
@@ -51,34 +51,49 @@ const selectGuardian = (event: Event) => {
   emit('selectedGuardian', { id: target.id, value: target.checked })
 }
 
-const selectAgent = async (event: Event) => {
-  const agentId = event.target.value
-  if (!agentId || blockButtons.value) return
-  try {
-    blockButtons.value = true
-    await $api.wcLeads.assignAgent(cancellation.id, agentId)
-    toast.success('Agent assigned successfully')
-  } catch (error: any) {
-    console.error(error)
-    toast.error(error?.message ?? 'Error assigning agent')
-  } finally {
-    blockButtons.value = false
-  }
-}
+// const selectAgent = async (event: Event) => {
+//   const agentId = event.target.value
+//   if (!agentId || blockButtons.value) return
+//   try {
+//     blockButtons.value = true
+//     await $api.wcLeads.assignAgent(cancellation.id, agentId)
+//     toast.success('Agent assigned successfully')
+//   } catch (error: any) {
+//     console.error(error)
+//     toast.error(error?.message ?? 'Error assigning agent')
+//   } finally {
+//     blockButtons.value = false
+//   }
+// }
 
-const selectStatus = async (event: Event) => {
-  const statusId = event.target.value
-  if (!statusId || blockButtons.value) return
-  try {
-    blockButtons.value = true
-    await $api.wcLeads.assignStatus(cancellation.id, statusId)
-    toast.success('Status updated successfully')
-  } catch (error: any) {
-    console.error(error)
-    toast.error(error?.message ?? 'Error updating status')
-  } finally {
-    blockButtons.value = false
-  }
+// const selectStatus = async (event: Event) => {
+//   const statusId = event.target.value
+//   if (!statusId || blockButtons.value) return
+//   try {
+//     blockButtons.value = true
+//     await $api.wcLeads.assignStatus(cancellation.id, statusId)
+//     toast.success('Status updated successfully')
+//   } catch (error: any) {
+//     console.error(error)
+//     toast.error(error?.message ?? 'Error updating status')
+//   } finally {
+//     blockButtons.value = false
+//   }
+// }
+
+// Define un Map para asociar los estados con las clases de estilo
+const statusBadgeClasses = new Map([
+  ['pending', 'bg-warning-subtle text-warning'],
+  ['cancelled', 'bg-danger-subtle text-danger'],
+  ['approved', 'bg-success-subtle text-success'],
+])
+
+// Computa la clase del badge según el estado actual
+const getStatusBadgeClass = (status: string | undefined) => {
+  return (
+    statusBadgeClasses.get(status ? status.toLowerCase() : '') ||
+    'bg-secondary-subtle text-secondary'
+  )
 }
 </script>
 
@@ -114,8 +129,18 @@ const selectStatus = async (event: Event) => {
     <td @click="navigateToUser(Number(cancellation?.id))">
       {{ cancellation?.membership_cancel_reason?.title || 'N/A' }}
     </td>
-    <td>
-      <select
+    <td class="badge-container">
+      <span
+        :class="
+          cancellation?.member_cancel_status?.title.includes('Cancelled')
+            ? 'badge bg-danger-subtle text-danger px-2'
+            : 'bg-warning-subtle text-warning px-1'
+        "
+        class="badge px-2"
+      >
+        {{ cancellation?.member_cancel_status?.title || 'Unknown' }}
+      </span>
+      <!-- <select
         v-model="selectedStatus"
         class="form-control"
         :disabled="blockButtons"
@@ -129,7 +154,19 @@ const selectStatus = async (event: Event) => {
         >
           {{ status?.title || 'Unknown' }}
         </option>
-      </select>
+      </select> -->
     </td>
   </tr>
 </template>
+<style scoped lang="scss">
+.badge {
+  display: inline-flex;
+  height: 29px;
+  padding: 6px 12px;
+  justify-content: center;
+  // align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 155px;
+}
+</style>
