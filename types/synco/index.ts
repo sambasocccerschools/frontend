@@ -302,18 +302,23 @@ export type ISessionPlanCreateUpdateItem = {
   title: string
   description: string
   ability_group_id: number
-  banner: Blob | null
-  video: Blob | null
+  banner?: Blob | null
+  video?: Blob | null
   exercises: ISessionPlanExcerciseCreateItem[]
+}
+
+export type IExerciseMediaObject = {
+  extension: string
+  url: string
+  type: string
 }
 
 export type ISessionPlanExcerciseCreateItem = {
   title: string
   subtitle: string
-  description: string
   title_duration: string
-  banner: Blob | null
-  video: Blob | null
+  description: string
+  json_urls: IExerciseMediaObject[]
 }
 
 export type ISessionPlanUpdateItem = {

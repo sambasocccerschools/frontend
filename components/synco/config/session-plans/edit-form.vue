@@ -292,8 +292,14 @@ const loadBlobFromUrl = async (url: string) => {
             </div>
             <div class="col-12 d-flex flex-column mb-3">
               <label for="video" class="form-label"> Add video </label>
-
               <input
+                id="video-file"
+                v-model="newSessionPlan.video"
+                type="text"
+                class="form-control form-control-lg"
+                placeholder="Video URL"
+              />
+              <!-- <input
                 id="video-file"
                 ref="videoInput"
                 type="file"
@@ -307,7 +313,7 @@ const loadBlobFromUrl = async (url: string) => {
                 style="max-height: 200px"
                 class="rounded-4"
                 controls
-              ></video>
+              ></video> -->
               <!-- <video
                 v-if="!!sessionPlan.video"
                 :src="sessionPlan.video.url"

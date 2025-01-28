@@ -39,13 +39,6 @@ const selectAbilityGroup = (id: number) => {
   getSessionPlans(id)
 }
 
-// onMounted(async () => {
-//   console.log('pages/synco/config/weekly-classes/session-plans/index.vue')
-
-//   await store.getAbilityGroups()
-//   console.log(store)
-//   selectAbilityGroup(abilityGroups[0]?.id)
-// })
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/session-plans/index.vue')
   await store.getAbilityGroups()

@@ -51,20 +51,59 @@ const addNewExercise = () => {
 const bannerInput = ref<HTMLInputElement | null>(null)
 const banner = ref<File>()
 const bannerPreview = ref<string | null>(null)
+const bannerFormData = ref<FormData | null>(null)
 
+// const handleBannerChange = async () => {
+//   const files = bannerInput.value?.files!
+//   const file = files?.[0]
+//   if (file.size >= imageSizeLimit) {
+//     alert('Image to big!')
+//     return
+//   }
+//   banner.value = file
+//   const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
+//     type: file.type,
+//   })
+//   newSessionPlan.value.banner = fileBlob
+//   bannerPreview.value = file ? URL.createObjectURL(file) : null
+// }
 const handleBannerChange = async () => {
-  const files = bannerInput.value?.files!
-  const file = files?.[0]
+  const files = bannerInput.value?.files
+  if (!files || files.length === 0) return
+
+  const file = files[0]
+
   if (file.size >= imageSizeLimit) {
-    alert('Image to big!')
+    alert('Image too big!')
     return
   }
-  banner.value = file
-  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-    type: file.type,
-  })
-  newSessionPlan.value.banner = fileBlob
-  bannerPreview.value = file ? URL.createObjectURL(file) : null
+
+  bannerPreview.value = URL.createObjectURL(file)
+
+  // 🛠️ Crear FormData asegurando que fields sea un string plano
+  const newFormData = new FormData()
+  newFormData.append('file', file) // ✅ Se asegura de que el archivo se agrega correctamente
+  newFormData.append(
+    'fields',
+    JSON.stringify({
+      title: 'Front end SSS',
+      type: 'IMG',
+      description: 'Descripción del documento',
+      id_for_table: 1,
+      table: 'USER',
+      action_type: 'PROFILE_PICTURE',
+      user_id: 5,
+      is_public: 1,
+    }),
+  ) // ✅ Se envía como string, no como Blob
+
+  bannerFormData.value = newFormData
+
+  // 🔹 Verificar FormData antes de enviarlo
+  console.log('Verificando FormData antes de submit:')
+  for (const pair of newFormData.entries()) {
+    console.log(pair[0], pair[1])
+  }
 }
 
 const videoInput = ref<HTMLInputElement | null>(null)
@@ -110,7 +149,10 @@ const handleImageChange = async (index: number) => {
   const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
     type: file.type,
   })
-  newSessionPlan.value.exercises[index].banner = fileBlob
+
+  // console.log('fileBlob', fileBlob)
+  // // newSessionPlan.value.exercises[index].json_urls[index].url = fileBlob
+  // await $api.documents.create(fileBlob)
   imagePreview.value[index] = file ? URL.createObjectURL(file) : null
 }
 
@@ -189,55 +231,49 @@ const updateDescription = (index: number, description: string) => {
   newSessionPlan.value.exercises[index].description = description
 }
 
-// const onSubmit = async () => {
-//   try {
-//     isLoading.value = true
-//     blockButtons.value = true
-//     const sessionPlansResponse = await $api.sessionPlans.create(
-//       newSessionPlan.value,
-//     )
-//     router.push('/synco/config/weekly-classes/session-plans')
-//   } catch (error: any) {
-//     console.log(error)
-//     toast.error(error?.data?.messages ?? 'Error')
-//   } finally {
-//     isLoading.value = false
-//     blockButtons.value = false
-//   }
-// }
 const onSubmit = async () => {
   try {
     isLoading.value = true
     blockButtons.value = true
 
-    // Construir el body de forma dinámica
-    const formattedExercises = newSessionPlan.value.exercises.map(
-      (exercise, index) => {
-        const json_urls = []
+    let bannerUrl = null
 
-        // if (exercise.banner) {
-        //   json_urls.push({
-        //     extension: exercise.banner.type.split('/')[1],
-        //     url: URL.createObjectURL(exercise.banner),
-        //     type: 'IMG',
-        //   })
-        // }
+    if (bannerFormData.value) {
+      console.log('🚀 Enviando FormData:', bannerFormData.value)
 
-        if (exercise?.json_urls[index]?.type === 'video') {
-          json_urls.push({
-            extension: exercise.json_urls[index].type.split('/')[1] ?? 'mp4',
-            // url: URL.createObjectURL(exercise.json_urls[index].url),
-            url: exercise.json_urls[index].url,
-            type: 'VIDEO',
-          })
+      for (const pair of bannerFormData.value.entries()) {
+        console.log(pair[0], pair[1])
+      }
+
+      try {
+        // 🔥 Llamar correctamente al método `create()`
+        const response = await $api.documents.create(
+          JSON.parse(bannerFormData.value.get('fields') as string), // Se pasa el JSON correcto
+          bannerFormData.value.get('file') as File,
+        )
+
+        if (!response || response.status.http_code !== 200) {
+          throw new Error('Error uploading banner')
         }
 
+        const result = await response
+        bannerUrl = result?.data?.url || '' // ✅ Guardar la URL del banner desde la respuesta
+      } catch (error) {
+        console.error('❌ Failed to upload banner:', error)
+        toast.error('Error uploading banner')
+        return
+      }
+    }
+
+    // 📌 Construcción del payload final con la URL del banner
+    const formattedExercises = newSessionPlan.value.exercises.map(
+      (exercise, index) => {
         return {
           title: exercise.title,
           subtitle: exercise.subtitle,
           title_duration: exercise.title_duration,
           description: exercise.description,
-          json_urls: json_urls,
+          json_urls: exercise.json_urls || [],
         }
       },
     )
@@ -245,18 +281,20 @@ const onSubmit = async () => {
     const payload = {
       title: newSessionPlan.value.title,
       description: newSessionPlan.value.description,
-      banner: newSessionPlan.value.banner,
+      banner: bannerUrl, // ✅ Se incluye la URL del banner obtenida después del upload
       video: newSessionPlan.value.video,
       ability_group_id: newSessionPlan.value.ability_group_id,
       exercises: formattedExercises,
     }
 
+    console.log('✅ Payload final enviado:', payload)
+
+    // 🚀 Enviar la sesión con el banner ya subido
     await $api.sessionPlans.create(payload)
 
     router.push('/synco/config/weekly-classes/session-plans')
-  } catch (error: any) {
+  } catch (error) {
     console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
   } finally {
     isLoading.value = false
     blockButtons.value = false
