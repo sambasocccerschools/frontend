@@ -76,7 +76,7 @@ onMounted(() => {
 .card-title {
   position: absolute;
   padding: 15px 20px;
-  z-index: 10
+  z-index: 10;
 }
 @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
 .card-title {

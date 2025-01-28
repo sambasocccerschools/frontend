@@ -358,6 +358,7 @@ const postTerm = async () => {
 
 const save = () => {
   const currentTerm = term.value
+  console.log('currentTerm', currentTerm)
   if (currentTerm != null) {
     const sessions = currentTerm.sessions
     const newSessionObject: ISessionCreateItem[] = []

@@ -120,14 +120,18 @@ const assignPlan = () => {
   )
   emit('assignPlan', selected)
 }
+
 const changeSelectedSessionPlan = (session: ISessionPlanObject) => {
   selectedSessionPlanId.value = session.id
 }
 
 onMounted(async () => {
-  console.log('components/synco/config/terms/session-plan-card.vue')
-  getSessionPlans()
-  getAbilityGroup()
+  console.log('Mounted session-plan-card.vue')
+  await getSessionPlans()
+  await getAbilityGroup()
+
+  console.log('Session Plans Loaded:', sessionPlans.value)
+  console.log('Selected Session Plan ID:', selectedSessionPlanId.value)
 })
 
 const getSessionPlans = async () => {
@@ -140,6 +144,7 @@ const getSessionPlans = async () => {
     toast.error(error?.data?.messages ?? 'Error')
   }
 }
+
 const getAbilityGroup = async () => {
   try {
     const abilityGroupsResponse = await $api.abilityGroups.getById(abilityId)

@@ -146,15 +146,15 @@ const toggleShowTermCard = (data: any) => {
     const term = terms.value.find((x) => x.id == Number(data.selected))
     if (term == null) return
     const sessions = term?.sessions?.map((x: any) => {
-      const plans = x.termSessionPlans.map((y: any) => {
+      const plans = x.plans.map((y: any) => {
         return {
-          id: y.id,
+          // id: y.id,
           ability_group: y.ability_group.id,
           session_plan: y.session_plan.id,
         }
       })
       return {
-        id: Number(x.id),
+        // id: Number(x.id),
         plans,
       }
     })
@@ -256,15 +256,13 @@ const save = () => {
 
     sessions?.forEach((x: any) => {
       const plans: any[] = []
-      x.termSessionPlans?.forEach((plan: any) => {
+      x.plans?.forEach((plan: any) => {
         plans.push({
-          // id: Number(plan.id),
           ability_group: Number(plan.ability_group.id),
           session_plan: Number(plan.session_plan.id),
         })
       })
       const session: ISessionEditItem = {
-        id: Number(x.id),
         plans: plans,
       }
       newSessionObject.push(session)

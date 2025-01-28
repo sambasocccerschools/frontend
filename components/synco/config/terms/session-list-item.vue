@@ -4,7 +4,7 @@
       <span>Session {{ session?.id }}</span>
     </div>
     <div
-      v-for="plan in session?.termSessionPlans"
+      v-for="plan in session?.plans"
       :key="plan.id"
       class="align-items-center d-flex flex-row gap-3 text-sm"
     >

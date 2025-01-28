@@ -60,11 +60,7 @@ const cleanDate = (date: string) => {
           <div class="col-auto">
             <span class="text-sm">Session {{ item.id }}</span>
           </div>
-          <div
-            v-for="plan in item.termSessionPlans"
-            :key="plan.id"
-            class="col-auto"
-          >
+          <div v-for="plan in item.plans" :key="plan.id" class="col-auto">
             <span class="text-sm"
               ><span class="text-muted">{{ plan.ability_group.name }}</span>
               {{ plan.session_plan.title }}</span
