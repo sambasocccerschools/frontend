@@ -1,12 +1,12 @@
 <template>
   <div class="align-items-center d-flex flex-row gap-3 text-sm">
-    <div class="">
+    <div class="mb-3">
       <span>Session {{ session?.id }}</span>
     </div>
     <div
       v-for="plan in session?.plans"
       :key="plan.id"
-      class="align-items-center d-flex flex-row gap-3 text-sm"
+      class="align-items-center d-flex mb-3 flex-row gap-3 text-sm"
     >
       <!-- <span class="align-items-center flex-row flex-row gap-3 text-sm"> -->
       <span class="text-muted">{{ plan.ability_group.name }}: </span>
