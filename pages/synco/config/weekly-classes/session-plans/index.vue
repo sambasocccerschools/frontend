@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import defaultIcon from '~/assets/styles/synco/default-icon.svg'
+
 import { ref } from 'vue'
 import { useToast } from 'vue-toast-notification'
 import type { ISessionPlanObject } from '~/types/synco/index'
@@ -69,7 +71,7 @@ onMounted(async () => {
             >
               <span class="w-100 d-flex">
                 <img
-                  :src="group.icon?.url || '/default-icon.png'"
+                  :src="group.icon?.url || defaultIcon"
                   :alt="group.icon?.name || 'No icon available'"
                   height="38px"
                 />

@@ -216,6 +216,25 @@ const onSubmit = async () => {
     isLoading.value = blockButtons.value = false
   }
 }
+
+const getEmbedUrl = (url: string) => {
+  if (!url) return ''
+
+  // Detecta si es un enlace corto de YouTube (youtu.be)
+  const shortUrlMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/)
+  if (shortUrlMatch) {
+    return `https://www.youtube.com/embed/${shortUrlMatch[1]}`
+  }
+
+  // Detecta si es un enlace normal de YouTube (watch?v=)
+  const normalUrlMatch = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/)
+  if (normalUrlMatch) {
+    return `https://www.youtube.com/embed/${normalUrlMatch[1]}`
+  }
+
+  // Si no es de YouTube, devolver el mismo URL
+  return url
+}
 </script>
 <template>
   <div class="card rounded-4">
@@ -264,7 +283,7 @@ const onSubmit = async () => {
               <img
                 v-if="bannerPreview"
                 :src="bannerPreview"
-                style="max-width: 200px"
+                class="img-preview"
               />
             </div>
             <div class="col-12 d-flex flex-column mb-3">
@@ -276,6 +295,32 @@ const onSubmit = async () => {
                 class="form-control form-control-lg"
                 placeholder="Video URL"
               />
+              <!-- Preview del video -->
+              <div v-if="newSessionPlan.video" style="margin: 20px 0">
+                <iframe
+                  v-if="
+                    newSessionPlan.video.includes('youtube.com') ||
+                    newSessionPlan.video.includes('youtu.be')
+                  "
+                  :src="getEmbedUrl(newSessionPlan.video)"
+                  width="583"
+                  height="296"
+                  frameborder="0"
+                  allowfullscreen
+                  style="border-radius: 7px"
+                ></iframe>
+
+                <video
+                  v-else
+                  controls
+                  width="583"
+                  height="300"
+                  style="border-radius: 7px"
+                >
+                  <source :src="newSessionPlan.video" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
             </div>
             <hr />
           </div>
@@ -355,7 +400,7 @@ const onSubmit = async () => {
               <img
                 v-if="imagePreview[index]"
                 :src="imagePreview[index]"
-                style="max-width: 200px"
+                class="img-preview"
               />
             </div>
             <div class="col-12">
@@ -391,6 +436,33 @@ const onSubmit = async () => {
                   placeholder="Enter YouTube or video URL"
                   @input="handleVideoUrlChange(index)"
                 />
+
+                <!-- Preview del video -->
+                <div v-if="excercise.videoInput" style="margin: 20px 0">
+                  <iframe
+                    v-if="
+                      excercise.videoInput.includes('youtube.com') ||
+                      excercise.videoInput.includes('youtu.be')
+                    "
+                    :src="getEmbedUrl(excercise.videoInput)"
+                    width="583"
+                    height="296"
+                    frameborder="0"
+                    allowfullscreen
+                    style="border-radius: 7px"
+                  ></iframe>
+
+                  <video
+                    v-else
+                    controls
+                    width="583"
+                    height="300"
+                    style="border-radius: 7px"
+                  >
+                    <source :src="excercise.videoInput" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
               </div>
             </div>
 
@@ -431,3 +503,11 @@ const onSubmit = async () => {
     </div>
   </div>
 </template>
+<style scoped lang="scss">
+.img-preview {
+  border-radius: 20px;
+  width: 250px;
+  height: auto;
+  margin: 20px 0;
+}
+</style>

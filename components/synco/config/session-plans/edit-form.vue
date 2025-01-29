@@ -332,6 +332,32 @@ const onSubmit = async () => {
     isLoading.value = blockButtons.value = false
   }
 }
+const getLatestImg = (urls: any) => {
+  if (!Array.isArray(urls) || urls.length === 0) return null
+
+  const imgUrls = urls.filter((img) => img.type === 'IMG' && img.url)
+
+  return imgUrls.length > 0 ? imgUrls[imgUrls.length - 1].url : null
+}
+
+const getEmbedUrl = (url: string) => {
+  if (!url) return ''
+
+  // Detecta si es un enlace corto de YouTube (youtu.be)
+  const shortUrlMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/)
+  if (shortUrlMatch) {
+    return `https://www.youtube.com/embed/${shortUrlMatch[1]}`
+  }
+
+  // Detecta si es un enlace normal de YouTube (watch?v=)
+  const normalUrlMatch = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/)
+  if (normalUrlMatch) {
+    return `https://www.youtube.com/embed/${normalUrlMatch[1]}`
+  }
+
+  // Si no es de YouTube, devolver el mismo URL
+  return url
+}
 </script>
 
 <template>
@@ -382,7 +408,7 @@ const onSubmit = async () => {
               <img
                 v-if="newSessionPlan.banner || bannerPreview"
                 :src="bannerPreview || newSessionPlan.banner"
-                style="max-width: 200px"
+                class="img-preview"
               />
             </div>
             <div class="col-12 d-flex flex-column mb-3">
@@ -394,6 +420,33 @@ const onSubmit = async () => {
                 class="form-control form-control-lg"
                 placeholder="Video URL"
               />
+
+              <!-- Preview del video -->
+              <div v-if="newSessionPlan.video" style="margin: 20px 0">
+                <iframe
+                  v-if="
+                    newSessionPlan.video.includes('youtube.com') ||
+                    newSessionPlan.video.includes('youtu.be')
+                  "
+                  :src="getEmbedUrl(newSessionPlan.video)"
+                  width="583"
+                  height="296"
+                  frameborder="0"
+                  allowfullscreen
+                  style="border-radius: 7px"
+                ></iframe>
+
+                <video
+                  v-else
+                  controls
+                  width="583"
+                  height="300"
+                  style="border-radius: 7px"
+                >
+                  <source :src="newSessionPlan.video" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
             </div>
             <hr />
           </div>
@@ -471,15 +524,9 @@ const onSubmit = async () => {
                 @change="handleImageChange(index)"
               />
               <img
-                v-if="
-                  newSessionPlan.exercises[index]?.json_urls?.[0]?.url ||
-                  imagePreview[index]
-                "
-                :src="
-                  imagePreview[index] ||
-                  (newSessionPlan.exercises[index]?.json_urls?.[0]?.url ?? '')
-                "
-                style="max-width: 200px"
+                v-if="getLatestImg(newSessionPlan.exercises[index]?.json_urls)"
+                :src="getLatestImg(newSessionPlan.exercises[index]?.json_urls)"
+                class="img-preview"
               />
             </div>
             <div class="col-12">
@@ -514,6 +561,33 @@ const onSubmit = async () => {
                 placeholder="Enter YouTube or video URL"
                 @input="handleVideoUrlChange(index)"
               />
+
+              <!-- Preview del video -->
+              <div v-if="excercise.videoInput" style="margin: 20px 0">
+                <iframe
+                  v-if="
+                    excercise.videoInput.includes('youtube.com') ||
+                    excercise.videoInput.includes('youtu.be')
+                  "
+                  :src="getEmbedUrl(excercise.videoInput)"
+                  width="583"
+                  height="296"
+                  frameborder="0"
+                  allowfullscreen
+                  style="border-radius: 7px"
+                ></iframe>
+
+                <video
+                  v-else
+                  controls
+                  width="583"
+                  height="300"
+                  style="border-radius: 7px"
+                >
+                  <source :src="excercise.videoInput" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
             </div>
 
             <hr class="my-4" />
@@ -553,3 +627,11 @@ const onSubmit = async () => {
     </div>
   </div>
 </template>
+<style scoped lang="scss">
+.img-preview {
+  border-radius: 20px;
+  width: 250px;
+  height: auto;
+  margin: 20px 0;
+}
+</style>
