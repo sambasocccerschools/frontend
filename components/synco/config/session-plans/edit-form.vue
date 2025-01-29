@@ -56,17 +56,26 @@ const getSessionPlan = async () => {
     bannerPreview.value = sessionPlan.banner || ''
     videoPreview.value = sessionPlan.video || ''
 
+    newSessionPlan.value.exercises = []
+
     newSessionPlan.value.exercises = (sessionPlan.exercises || []).map(
       (exercise, index) => {
-        imagePreview.value[index] = exercise.banner?.url || ''
-        video2Preview.value[index] = exercise.video?.url || ''
+        imagePreview.value[index] =
+          exercise.json_urls?.find((item: any) => item.type === 'IMG')?.url ||
+          ''
+
+        video2Preview.value[index] =
+          exercise.json_urls?.find((item: any) => item.type === 'VIDEO')?.url ||
+          ''
 
         return {
           title: exercise.title || '',
           subtitle: exercise.subtitle || '',
           description: exercise.description || '',
           title_duration: exercise.title_duration || '',
-          json_urls: exercise.json_urls || [],
+          json_urls: Array.isArray(exercise.json_urls)
+            ? exercise.json_urls
+            : [], // 🔥 Se asegura que `json_urls` siempre sea un array
           videoInput:
             exercise.json_urls?.find((item: any) => item.type === 'VIDEO')
               ?.url || '',
@@ -92,7 +101,11 @@ onMounted(async () => {
 })
 
 const addNewExercise = () => {
-  newSessionPlan.value.exercises.push({ ...newExcercise.value, videoInput: '' })
+  newSessionPlan.value.exercises.push({
+    ...newExcercise.value,
+    videoInput: '',
+    json_urls: [],
+  })
 }
 
 const bannerInput = ref<HTMLInputElement | null>(null)
@@ -137,13 +150,41 @@ const handleImageChange = async (index: number) => {
   if (!file || file.size >= imageSizeLimit) return alert('Image too big!')
 
   imagePreview.value[index] = URL.createObjectURL(file)
-  newSessionPlan.value.exercises[index].json_urls ||= []
-  newSessionPlan.value.exercises[index].json_urls.push({
-    extension: file.type.split('/')[1],
-    url: '',
-    type: 'IMG',
-    file,
-  })
+
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append(
+      'fields',
+      JSON.stringify({
+        title: `Exercise ${index + 1} - Image`,
+        type: 'IMG',
+        description: `Image for exercise: ${newSessionPlan.value.exercises[index].title}`,
+        id_for_table: 1,
+        table: 'USER',
+        action_type: 'PROFILE_PICTURE',
+        user_id: 5,
+        is_public: 1,
+      }),
+    )
+
+    const response = await $api.documents.create(
+      JSON.parse(formData.get('fields') as string),
+      formData.get('file') as File,
+    )
+
+    if (!response || response.status.http_code !== 200) {
+      throw new Error(`Error uploading image for exercise ${index + 1}`)
+    }
+
+    newSessionPlan.value.exercises[index].json_urls.push({
+      url: response.data.url,
+      type: 'IMG',
+      extension: response.data.extension,
+    })
+  } catch (error) {
+    console.error(`❌ Image upload failed for exercise ${index + 1}:`, error)
+  }
 }
 
 const video2Preview = ref<Array<string | null>>([])
@@ -152,10 +193,12 @@ const updateDescription = (index: number, description: string) => {
   newSessionPlan.value.exercises[index].description = description
 }
 
-const getChangedFields = (newData: any, originalData: any) => {
+const getChangedFields = (newData: any, originalData: any = {}) => {
   const changes: any = {}
   Object.keys(newData).forEach((key) => {
-    if (JSON.stringify(newData[key]) !== JSON.stringify(originalData[key])) {
+    if (
+      JSON.stringify(newData[key]) !== JSON.stringify(originalData[key] || null)
+    ) {
       changes[key] = newData[key]
     }
   })
@@ -429,12 +472,12 @@ const onSubmit = async () => {
               />
               <img
                 v-if="
-                  newSessionPlan.exercises[index].json_urls[0].url ||
+                  newSessionPlan.exercises[index]?.json_urls?.[0]?.url ||
                   imagePreview[index]
                 "
                 :src="
                   imagePreview[index] ||
-                  newSessionPlan.exercises[index].json_urls[0].url
+                  (newSessionPlan.exercises[index]?.json_urls?.[0]?.url ?? '')
                 "
                 style="max-width: 200px"
               />
