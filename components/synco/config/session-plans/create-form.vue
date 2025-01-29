@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toast-notification'
 import type {
   ISessionPlanCreateUpdateItem,
@@ -10,16 +10,19 @@ const router = useRouter()
 const { $api } = useNuxtApp()
 const toast = useToast()
 
-const isLoading = ref<boolean>(false)
-const blockButtons = ref<boolean>(false)
+const isLoading = ref(false)
+const blockButtons = ref(false)
 const abilityId = ref<number | null>(null)
+
 const newExcercise = ref<ISessionPlanExcerciseCreateItem>({
   title: '',
   subtitle: '',
   title_duration: '',
   description: '',
   json_urls: [],
+  videoInput: '',
 })
+
 const newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
   title: '',
   description: '',
@@ -29,61 +32,31 @@ const newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
   exercises: [],
 })
 
-const imageSizeLimit = ref<number>(5120000).value
-const videoSizeLimit = ref<number>(51200000).value
+const imageSizeLimit = 5120000
 
-onMounted(async () => {
+onMounted(() => {
   console.log('components/synco/config/session-plans/create-form.vue')
-  const queryAbilityId = router.currentRoute.value.query?.abilityId
-  abilityId.value = queryAbilityId ? +queryAbilityId : -1
+  abilityId.value = Number(router.currentRoute.value.query?.abilityId) || -1
   newSessionPlan.value.ability_group_id = abilityId.value
   addNewExercise()
 })
+
 const addNewExercise = () => {
-  newSessionPlan.value.exercises.push(
-    JSON.parse(JSON.stringify(newExcercise.value)),
-  )
-  video2Input.value.push(null)
-  video2Input.value.push(null)
-  // let index = newSessionPlan.value.exercises.length - 1
+  newSessionPlan.value.exercises.push({ ...newExcercise.value, videoInput: '' })
 }
 
 const bannerInput = ref<HTMLInputElement | null>(null)
-const banner = ref<File>()
 const bannerPreview = ref<string | null>(null)
 const bannerFormData = ref<FormData | null>(null)
 
-// const handleBannerChange = async () => {
-//   const files = bannerInput.value?.files!
-//   const file = files?.[0]
-//   if (file.size >= imageSizeLimit) {
-//     alert('Image to big!')
-//     return
-//   }
-//   banner.value = file
-//   const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-//     type: file.type,
-//   })
-//   newSessionPlan.value.banner = fileBlob
-//   bannerPreview.value = file ? URL.createObjectURL(file) : null
-// }
 const handleBannerChange = async () => {
-  const files = bannerInput.value?.files
-  if (!files || files.length === 0) return
-
-  const file = files[0]
-
-  if (file.size >= imageSizeLimit) {
-    alert('Image too big!')
-    return
-  }
+  const file = bannerInput.value?.files?.[0]
+  if (!file || file.size >= imageSizeLimit) return alert('Image too big!')
 
   bannerPreview.value = URL.createObjectURL(file)
-
-  // 🛠️ Crear FormData asegurando que fields sea un string plano
-  const newFormData = new FormData()
-  newFormData.append('file', file) // ✅ Se asegura de que el archivo se agrega correctamente
-  newFormData.append(
+  bannerFormData.value = new FormData()
+  bannerFormData.value.append('file', file)
+  bannerFormData.value.append(
     'fields',
     JSON.stringify({
       title: 'Front end SSS',
@@ -95,169 +68,109 @@ const handleBannerChange = async () => {
       user_id: 5,
       is_public: 1,
     }),
-  ) // ✅ Se envía como string, no como Blob
-
-  bannerFormData.value = newFormData
-
-  // 🔹 Verificar FormData antes de enviarlo
-  console.log('Verificando FormData antes de submit:')
-  for (const pair of newFormData.entries()) {
-    console.log(pair[0], pair[1])
-  }
-}
-
-const videoInput = ref<HTMLInputElement | null>(null)
-const video = ref<File>()
-const videoPreview = ref<string | null>(null)
-
-const handleVideoChange = async () => {
-  const files = videoInput.value?.files!
-  const file = files?.[0]
-  if (file.size >= videoSizeLimit) {
-    alert('Video to big!')
-    return
-  }
-  video.value = file
-  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-    type: file.type,
-  })
-  newSessionPlan.value.video = fileBlob
-  videoPreview.value = file ? URL.createObjectURL(file) : null
+  )
 }
 
 const imageInput = ref<Array<HTMLInputElement | null>>([])
-const image = ref<Array<File>>([])
 const imagePreview = ref<Array<string | null>>([])
 
 const handleImageInput = (event: Event, index: number) => {
   if (event.target instanceof HTMLInputElement) {
-    const inputElement = event.target
-    imageInput.value[index] = inputElement
+    imageInput.value[index] = event.target
   }
 }
 
 const handleImageChange = async (index: number) => {
-  const files = imageInput.value[index]?.files!
-  const file = files?.[0]
-  if (file.size >= imageSizeLimit) {
-    alert('Image to big!')
-    return
-  }
-  if (image.value[index] != null) {
-    image.value[index] = file
-  }
-  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-    type: file.type,
+  const file = imageInput.value[index]?.files?.[0]
+  if (!file || file.size >= imageSizeLimit) return alert('Image too big!')
+
+  imagePreview.value[index] = URL.createObjectURL(file)
+  newSessionPlan.value.exercises[index].json_urls ||= []
+  newSessionPlan.value.exercises[index].json_urls.push({
+    extension: file.type.split('/')[1],
+    url: '',
+    type: 'IMG',
+    file,
   })
-
-  // console.log('fileBlob', fileBlob)
-  // // newSessionPlan.value.exercises[index].json_urls[index].url = fileBlob
-  // await $api.documents.create(fileBlob)
-  imagePreview.value[index] = file ? URL.createObjectURL(file) : null
-}
-
-const video2Input = ref<Array<HTMLInputElement | null>>([])
-const video2 = ref<Array<File>>([])
-const video2Preview = ref<Array<string | null>>([])
-
-const handleVideo2Input = (event: Event, index: number) => {
-  if (event.target instanceof HTMLInputElement) {
-    const inputElement = event.target
-    video2Input.value[index] = inputElement
-  }
-}
-// const handleVideo2Change = async (index: number) => {
-//   const files = video2Input.value[index]?.files!
-//   const file = files?.[0]
-//   if (file.size >= videoSizeLimit) {
-//     alert('Video to big!')
-//     return
-//   }
-//   if (video2.value[index] != null) {
-//     video2.value[index] = file
-//   }
-//   const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-//     type: file.type,
-//   })
-//   newSessionPlan.value.exercises[index].json_urls.video = fileBlob
-//   video2Preview.value[index] = file ? URL.createObjectURL(file) : null
-// }
-const handleVideo2Change = async (index: number, url?: string) => {
-  if (url) {
-    // Si se proporciona una URL en lugar de un archivo
-    newSessionPlan.value.exercises[index].json_urls = [
-      ...(newSessionPlan.value.exercises[index].json_urls || []),
-      {
-        extension: 'mp4', // Asume que la extensión es mp4; puedes cambiar esto si es necesario
-        url: url,
-        type: 'VIDEO',
-      },
-    ]
-    video2Preview.value[index] = url // Establece la URL directamente como preview
-    return
-  }
-
-  // Si se selecciona un archivo
-  const files = video2Input.value[index]?.files!
-  const file = files?.[0]
-  if (!file) {
-    alert('No video file selected!')
-    return
-  }
-  if (file.size >= videoSizeLimit) {
-    alert('Video too big!')
-    return
-  }
-  if (video2.value[index] != null) {
-    video2.value[index] = file
-  }
-  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-    type: file.type,
-  })
-
-  // Agrega el archivo como objeto JSON a json_urls
-  newSessionPlan.value.exercises[index].json_urls = [
-    ...(newSessionPlan.value.exercises[index].json_urls || []),
-    {
-      extension: file.type.split('/')[1], // Extrae la extensión del archivo
-      url: URL.createObjectURL(file), // Crea una URL temporal para el archivo
-      type: 'VIDEO',
-    },
-  ]
-  video2Preview.value[index] = URL.createObjectURL(file)
 }
 
 const updateDescription = (index: number, description: string) => {
   newSessionPlan.value.exercises[index].description = description
 }
 
-const onSubmit = async () => {
-  try {
-    isLoading.value = true
-    blockButtons.value = true
+const uploadExerciseImages = async () => {
+  for (const [i, exercise] of newSessionPlan.value.exercises.entries()) {
+    if (!exercise.json_urls?.length) continue
 
-    let bannerUrl = null
-
-    if (bannerFormData.value) {
-      console.log('🚀 Enviando FormData:', bannerFormData.value)
-
-      for (const pair of bannerFormData.value.entries()) {
-        console.log(pair[0], pair[1])
-      }
+    for (const [j, image] of exercise.json_urls.entries()) {
+      if (!image.file) continue
 
       try {
-        // 🔥 Llamar correctamente al método `create()`
+        const formData = new FormData()
+        formData.append('file', image.file)
+        formData.append(
+          'fields',
+          JSON.stringify({
+            title: `Exercise ${i + 1} - Image ${j + 1}`,
+            type: 'IMG',
+            description: `Image for exercise: ${exercise.title}`,
+            id_for_table: 1,
+            table: 'USER',
+            action_type: 'PROFILE_PICTURE',
+            user_id: 5,
+            is_public: 1,
+          }),
+        )
+
         const response = await $api.documents.create(
-          JSON.parse(bannerFormData.value.get('fields') as string), // Se pasa el JSON correcto
-          bannerFormData.value.get('file') as File,
+          JSON.parse(formData.get('fields') as string),
+          formData.get('file') as File,
         )
 
         if (!response || response.status.http_code !== 200) {
-          throw new Error('Error uploading banner')
+          throw new Error(
+            `Error uploading image ${j + 1} for exercise ${i + 1}`,
+          )
         }
 
-        const result = await response
-        bannerUrl = result?.data?.url || '' // ✅ Guardar la URL del banner desde la respuesta
+        image.url = response.data.url
+        image.extension = response.data.extension
+        delete image.file
+      } catch (error) {
+        console.error(`❌ Image upload failed for exercise ${i + 1}:`, error)
+      }
+    }
+  }
+}
+
+const handleVideoUrlChange = (index: number) => {
+  const exercise = newSessionPlan.value.exercises[index]
+  const videoUrl = exercise.videoInput?.trim() ?? ''
+  if (!videoUrl) return
+
+  exercise.json_urls =
+    exercise.json_urls?.filter((item) => item.type !== 'VIDEO') ?? []
+  exercise.json_urls.push({ url: videoUrl, type: 'VIDEO', extension: '' })
+}
+
+const onSubmit = async () => {
+  try {
+    isLoading.value = blockButtons.value = true
+
+    await uploadExerciseImages()
+
+    let bannerUrl = null
+    if (bannerFormData.value) {
+      try {
+        console.log('🚀 Subiendo banner...')
+        const response = await $api.documents.create(
+          JSON.parse(bannerFormData.value.get('fields') as string),
+          bannerFormData.value.get('file') as File,
+        )
+
+        if (!response || response.status.http_code !== 200)
+          throw new Error('Error uploading banner')
+        bannerUrl = response.data.url
       } catch (error) {
         console.error('❌ Failed to upload banner:', error)
         toast.error('Error uploading banner')
@@ -265,43 +178,45 @@ const onSubmit = async () => {
       }
     }
 
-    // 📌 Construcción del payload final con la URL del banner
     const formattedExercises = newSessionPlan.value.exercises.map(
-      (exercise, index) => {
-        return {
-          title: exercise.title,
-          subtitle: exercise.subtitle,
-          title_duration: exercise.title_duration,
-          description: exercise.description,
-          json_urls: exercise.json_urls || [],
-        }
-      },
+      ({ title, subtitle, title_duration, description, json_urls }) => ({
+        title,
+        subtitle,
+        title_duration,
+        description,
+        json_urls: json_urls.map(({ extension, url, type }) => ({
+          extension,
+          url,
+          type,
+        })),
+      }),
     )
 
     const payload = {
       title: newSessionPlan.value.title,
       description: newSessionPlan.value.description,
-      banner: bannerUrl, // ✅ Se incluye la URL del banner obtenida después del upload
+      banner: bannerUrl,
       video: newSessionPlan.value.video,
       ability_group_id: newSessionPlan.value.ability_group_id,
       exercises: formattedExercises,
     }
 
-    console.log('✅ Payload final enviado:', payload)
+    console.log('✅ Final payload:', payload)
+    const sessionResponse = await $api.sessionPlans.create(payload)
 
-    // 🚀 Enviar la sesión con el banner ya subido
-    await $api.sessionPlans.create(payload)
+    if (!sessionResponse || sessionResponse?.status?.http_code !== 200) {
+      throw new Error('Error creating session plan')
+    }
 
     router.push('/synco/config/weekly-classes/session-plans')
   } catch (error) {
-    console.log(error)
+    console.error('❌ Error en onSubmit:', error)
+    toast.error('Error creating session plan')
   } finally {
-    isLoading.value = false
-    blockButtons.value = false
+    isLoading.value = blockButtons.value = false
   }
 }
 </script>
-
 <template>
   <div class="card rounded-4">
     <div class="row my-4">
@@ -353,22 +268,7 @@ const onSubmit = async () => {
               />
             </div>
             <div class="col-12 d-flex flex-column mb-3">
-              <label for="video" class="form-label"> Add video</label>
-              <!-- <input
-                id="video-file"
-                ref="videoInput"
-                type="file"
-                name="video"
-                accept="video/*"
-                @change="handleVideoChange"
-              />
-              <video
-                v-if="videoPreview"
-                :src="videoPreview"
-                style="max-height: 200px"
-                class="rounded-4"
-                controls
-              ></video> -->
+              <label for="video" class="form-label">Add video URL</label>
               <input
                 id="video-file"
                 v-model="newSessionPlan.video"
@@ -478,24 +378,20 @@ const onSubmit = async () => {
               </div>
             </div>
             <div class="col-12 d-flex flex-column">
-              <label :for="`exercise[${index}][video]`" class="form-label">
-                Add one or more videos
-              </label>
-              <input
-                :id="`exercise[${index}][video]`"
-                type="file"
-                :name="`exercise[${index}][video]`"
-                accept="video/*"
-                @input="handleVideo2Input($event, index)"
-                @change="handleVideo2Change(index)"
-              />
-              <video
-                v-if="video2Preview[index]"
-                :src="video2Preview[index]"
-                style="max-height: 200px"
-                class="rounded-4"
-                controls
-              ></video>
+              <div class="col-12 d-flex flex-column">
+                <label :for="`exercise[${index}][video]`" class="form-label">
+                  Add one or more videos
+                </label>
+                <input
+                  :id="`exercise[${index}][video]`"
+                  v-model="excercise.videoInput"
+                  :name="`exercise[${index}][video]`"
+                  type="text"
+                  class="form-control form-control-lg"
+                  placeholder="Enter YouTube or video URL"
+                  @input="handleVideoUrlChange(index)"
+                />
+              </div>
             </div>
 
             <hr class="my-4" />

@@ -250,6 +250,7 @@ export type ISessionPlanObject = {
 }
 
 export type ISessionPlanResponse = {
+  status: any
   data: ISessionPlanObject[]
 }
 
@@ -302,8 +303,8 @@ export type ISessionPlanCreateUpdateItem = {
   title: string
   description: string
   ability_group_id: number
-  banner?: Blob | null
-  video?: Blob | null
+  banner?: string
+  video?: string
   exercises: ISessionPlanExcerciseCreateItem[]
 }
 
@@ -311,6 +312,7 @@ export type IExerciseMediaObject = {
   extension: string
   url: string
   type: string
+  file?: File | null
 }
 
 export type ISessionPlanExcerciseCreateItem = {
@@ -319,20 +321,23 @@ export type ISessionPlanExcerciseCreateItem = {
   title_duration: string
   description: string
   json_urls: IExerciseMediaObject[]
+  videoInput?: string
 }
 
 export type ISessionPlanUpdateItem = {
+  ability_group: any
   id: number
   title: string
   description: string
-  banner: IIconItem | null
-  video: IIconItem | null
+  banner: string | null
+  video: string | null
   exercises: ISessionPlanExcerciseUpdateItem[]
   created_at: Date | null
   deleted_at: Date | null
 }
 
 export type ISessionPlanExcerciseUpdateItem = {
+  json_urls: any
   id: number
   title: string
   subtitle: string

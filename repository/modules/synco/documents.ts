@@ -43,16 +43,11 @@ class DocumentsModule extends FetchFactory {
   private createFormData(data: any, file?: File) {
     const formData = new FormData()
 
-    // 🔹 Asegurar que `fields` es un string válido
     formData.append('fields', JSON.stringify(data))
 
-    // 🔹 Si hay un archivo, agregarlo con su nombre
     if (file) {
-      formData.append('file', file, file.name) // 🔥 Asegurar que el nombre del archivo se incluye
+      formData.append('file', file, file.name)
     }
-
-    // 🔍 Verificación antes de enviar
-    console.log('✅ FormData generado:', formData)
     for (const pair of formData.entries()) {
       console.log(pair[0], pair[1])
     }
@@ -68,8 +63,6 @@ class DocumentsModule extends FetchFactory {
       },
     }
     const formData = this.createFormData(data, file)
-
-    // console.log('✅ FormData final antes del request:', formData)
 
     return this.call<any>(
       'POST',

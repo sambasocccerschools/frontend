@@ -2,10 +2,8 @@
 import { ref } from 'vue'
 import { useToast } from 'vue-toast-notification'
 import type {
-  ISessionPlanUpdateItem,
   ISessionPlanCreateUpdateItem,
   ISessionPlanExcerciseCreateItem,
-  IIconItem,
 } from '~/types/synco/index'
 
 const router = useRouter()
@@ -17,24 +15,27 @@ const blockButtons = ref<boolean>(false)
 const newExcercise = ref<ISessionPlanExcerciseCreateItem>({
   title: '',
   subtitle: '',
-  description: '',
-  banner: null,
-  video: null,
   title_duration: '',
+  description: '',
+  json_urls: [],
+  videoInput: '',
 })
+
 const newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
   title: '',
   description: '',
   ability_group_id: 0,
-  banner: null,
-  video: null,
+  banner: '',
+  video: '',
   exercises: [],
 })
-const imageSizeLimit = ref<number>(5120000).value
-const videoSizeLimit = ref<number>(51200000).value
+
+const imageSizeLimit = 5120000
+const originalSessionPlan = ref<ISessionPlanCreateUpdateItem | null>(null)
 
 const getSessionPlan = async () => {
   if (!sessionPlanId.value) return
+
   try {
     isLoading.value = true
     blockButtons.value = true
@@ -42,40 +43,38 @@ const getSessionPlan = async () => {
     const response = await $api.sessionPlans.getById(sessionPlanId.value)
     const sessionPlan = response?.data
 
-    // Actualizar el objeto de vista
-    newSessionPlan.value = {
-      title: sessionPlan.title,
-      description: sessionPlan.description,
-      ability_group_id: sessionPlan?.ability_group?.id ?? 0, // Ajuste para asegurar un valor por defecto
-      banner: null,
-      video: null,
-      exercises: [],
-    }
+    if (!sessionPlan) return
 
-    if (sessionPlan.banner?.url) {
-      bannerPreview.value = sessionPlan.banner.url
-    }
+    originalSessionPlan.value = JSON.parse(JSON.stringify(sessionPlan))
 
-    if (sessionPlan.video?.url) {
-      videoPreview.value = sessionPlan.video.url
-    }
+    newSessionPlan.value.title = sessionPlan.title || ''
+    newSessionPlan.value.description = sessionPlan.description || ''
+    newSessionPlan.value.ability_group_id = sessionPlan?.ability_group?.id ?? 0
+    newSessionPlan.value.banner = sessionPlan.banner || ''
+    newSessionPlan.value.video = sessionPlan.video || ''
 
-    const exercises = sessionPlan.exercises || []
-    newSessionPlan.value.exercises = exercises.map((exercise, index) => {
-      imagePreview.value[index] = exercise.banner?.url || null
-      video2Preview.value[index] = exercise.video?.url || null
+    bannerPreview.value = sessionPlan.banner || ''
+    videoPreview.value = sessionPlan.video || ''
 
-      return {
-        title: exercise.title,
-        subtitle: exercise.subtitle,
-        description: exercise.description,
-        banner: null,
-        video: null,
-        title_duration: exercise.title_duration,
-      }
-    })
+    newSessionPlan.value.exercises = (sessionPlan.exercises || []).map(
+      (exercise, index) => {
+        imagePreview.value[index] = exercise.banner?.url || ''
+        video2Preview.value[index] = exercise.video?.url || ''
+
+        return {
+          title: exercise.title || '',
+          subtitle: exercise.subtitle || '',
+          description: exercise.description || '',
+          title_duration: exercise.title_duration || '',
+          json_urls: exercise.json_urls || [],
+          videoInput:
+            exercise.json_urls?.find((item: any) => item.type === 'VIDEO')
+              ?.url || '',
+        }
+      },
+    )
   } catch (error: any) {
-    console.error(error)
+    console.error('❌ Error al obtener el plan de sesión:', error)
     toast.error(error?.data?.messages ?? 'Error al obtener el plan de sesión.')
   } finally {
     isLoading.value = false
@@ -93,144 +92,202 @@ onMounted(async () => {
 })
 
 const addNewExercise = () => {
-  newSessionPlan.value.exercises.push(
-    JSON.parse(JSON.stringify(newExcercise.value)),
-  )
-  video2Input.value.push(null)
-  video2Input.value.push(null)
-  // let index = newSessionPlan.value.exercises.length - 1
+  newSessionPlan.value.exercises.push({ ...newExcercise.value, videoInput: '' })
 }
 
 const bannerInput = ref<HTMLInputElement | null>(null)
-const banner = ref<File>()
 const bannerPreview = ref<string | null>(null)
+const bannerFormData = ref<FormData | null>(null)
 
 const handleBannerChange = async () => {
-  const files = bannerInput.value?.files!
-  const file = files?.[0]
-  if (file.size >= imageSizeLimit) {
-    alert('Image to big!')
-    return
-  }
-  banner.value = file
-  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-    type: file.type,
-  })
-  newSessionPlan.value.banner = fileBlob
-  bannerPreview.value = file ? URL.createObjectURL(file) : null
+  const file = bannerInput.value?.files?.[0]
+  if (!file || file.size >= imageSizeLimit) return alert('Image too big!')
+
+  bannerPreview.value = URL.createObjectURL(file)
+  bannerFormData.value = new FormData()
+  bannerFormData.value.append('file', file)
+  bannerFormData.value.append(
+    'fields',
+    JSON.stringify({
+      title: 'Skill of the day - Banner',
+      type: 'IMG',
+      description: 'Descripción del documento',
+      id_for_table: 1,
+      table: 'USER',
+      action_type: 'PROFILE_PICTURE',
+      user_id: 5,
+      is_public: 1,
+    }),
+  )
 }
 
-const videoInput = ref<HTMLInputElement | null>(null)
-const video = ref<File>()
 const videoPreview = ref<string | null>(null)
 
-const handleVideoChange = async () => {
-  const files = videoInput.value?.files!
-  const file = files?.[0]
-  if (file.size >= videoSizeLimit) {
-    alert('Video to big!')
-    return
-  }
-  video.value = file
-  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-    type: file.type,
-  })
-  newSessionPlan.value.video = fileBlob
-  videoPreview.value = file ? URL.createObjectURL(file) : null
-}
-
 const imageInput = ref<Array<HTMLInputElement | null>>([])
-const image = ref<Array<File>>([])
 const imagePreview = ref<Array<string | null>>([])
 
 const handleImageInput = (event: Event, index: number) => {
   if (event.target instanceof HTMLInputElement) {
-    const inputElement = event.target
-    imageInput.value[index] = inputElement
+    imageInput.value[index] = event.target
   }
 }
 
 const handleImageChange = async (index: number) => {
-  const files = imageInput.value[index]?.files!
-  console.log(index, imageInput.value[index])
-  const file = files?.[0]
-  if (file.size >= imageSizeLimit) {
-    alert('Image to big!')
-    return
-  }
-  if (image.value[index] != null) {
-    image.value[index] = file
-  }
-  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-    type: file.type,
+  const file = imageInput.value[index]?.files?.[0]
+  if (!file || file.size >= imageSizeLimit) return alert('Image too big!')
+
+  imagePreview.value[index] = URL.createObjectURL(file)
+  newSessionPlan.value.exercises[index].json_urls ||= []
+  newSessionPlan.value.exercises[index].json_urls.push({
+    extension: file.type.split('/')[1],
+    url: '',
+    type: 'IMG',
+    file,
   })
-  newSessionPlan.value.exercises[index].banner = fileBlob
-  imagePreview.value[index] = file ? URL.createObjectURL(file) : null
 }
 
-const video2Input = ref<Array<HTMLInputElement | null>>([])
-const video2 = ref<Array<File>>([])
 const video2Preview = ref<Array<string | null>>([])
-
-const handleVideo2Input = (event: Event, index: number) => {
-  if (event.target instanceof HTMLInputElement) {
-    const inputElement = event.target
-    video2Input.value[index] = inputElement
-  }
-}
-const handleVideo2Change = async (index: number) => {
-  const files = video2Input.value[index]?.files!
-  console.log(index, video2Input.value[index])
-  const file = files?.[0]
-  if (file.size >= videoSizeLimit) {
-    alert('Video to big!')
-    return
-  }
-  if (video2.value[index] != null) {
-    video2.value[index] = file
-  }
-  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-    type: file.type,
-  })
-  newSessionPlan.value.exercises[index].video = fileBlob
-  video2Preview.value[index] = file ? URL.createObjectURL(file) : null
-}
 
 const updateDescription = (index: number, description: string) => {
   newSessionPlan.value.exercises[index].description = description
 }
 
-const onSubmit = async () => {
-  try {
-    isLoading.value = true
-    blockButtons.value = true
-    if (!sessionPlanId.value) return
-    await $api.sessionPlans.update(sessionPlanId.value, newSessionPlan.value)
+const getChangedFields = (newData: any, originalData: any) => {
+  const changes: any = {}
+  Object.keys(newData).forEach((key) => {
+    if (JSON.stringify(newData[key]) !== JSON.stringify(originalData[key])) {
+      changes[key] = newData[key]
+    }
+  })
+  return changes
+}
 
-    getSessionPlan()
-    router.push('/synco/config/weekly-classes/session-plans')
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-  } finally {
-    isLoading.value = false
-    blockButtons.value = false
+const uploadChangedImages = async () => {
+  if (!bannerFormData.value) return null
+
+  try {
+    console.log('🚀 Uploading banner...')
+    const response = await $api.documents.create(
+      JSON.parse(bannerFormData.value.get('fields') as string),
+      bannerFormData.value.get('file') as File,
+    )
+
+    if (!response || response.status.http_code !== 200) {
+      throw new Error('Error uploading banner')
+    }
+    return response.data.url
+  } catch (error) {
+    console.error('❌ Failed to upload banner:', error)
+    toast.error('Error uploading banner')
+    return null
   }
 }
 
-const loadBlobFromUrl = async (url: string) => {
-  const token = useCookie('token')
-  const xhr = new XMLHttpRequest()
-  xhr.open('GET', url, true)
-  xhr.setRequestHeader('Access-Control-Allow-Origin', '*')
-  xhr.setRequestHeader('Authorization', `Bearer ${token.value}`)
-  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
-  // xhr.responseType = 'blob'
-  return new Promise((resolve, reject) => {
-    xhr.onload = () => resolve(xhr)
-    xhr.onerror = (error) => reject(error)
-    xhr.send()
-  })
+const uploadChangedExerciseImages = async () => {
+  for (const [i, exercise] of newSessionPlan.value.exercises.entries()) {
+    if (
+      !imagePreview.value[i] ||
+      imagePreview.value[i] ===
+        originalSessionPlan.value?.exercises[i]?.json_urls?.find(
+          (img: any) => img.type === 'IMG',
+        )?.url
+    ) {
+      continue
+    }
+
+    const file = imageInput.value[i]?.files?.[0]
+    if (!file) continue
+
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append(
+        'fields',
+        JSON.stringify({
+          title: `Exercise ${i + 1} - Image`,
+          type: 'IMG',
+          description: `Image for exercise: ${exercise.title}`,
+          id_for_table: 1,
+          table: 'USER',
+          action_type: 'PROFILE_PICTURE',
+          user_id: 5,
+          is_public: 1,
+        }),
+      )
+
+      const response = await $api.documents.create(
+        JSON.parse(formData.get('fields') as string),
+        formData.get('file') as File,
+      )
+
+      if (!response || response.status.http_code !== 200) {
+        throw new Error(`Error uploading image for exercise ${i + 1}`)
+      }
+
+      exercise.json_urls.push({
+        url: response.data.url,
+        type: 'IMG',
+        extension: response.data.extension,
+      })
+    } catch (error) {
+      console.error(`❌ Image upload failed for exercise ${i + 1}:`, error)
+    }
+  }
+}
+
+const handleVideoUrlChange = (index: number) => {
+  const exercise = newSessionPlan.value.exercises[index]
+  const videoUrl = exercise.videoInput?.trim() ?? ''
+  if (!videoUrl) return
+
+  exercise.json_urls =
+    exercise.json_urls?.filter((item) => item.type !== 'VIDEO') ?? []
+  exercise.json_urls.push({ url: videoUrl, type: 'VIDEO', extension: '' })
+}
+
+const onSubmit = async () => {
+  try {
+    if (!originalSessionPlan.value) {
+      toast.error('Error: There is no data to compare.')
+      console.error('❌ originalSessionPlan is null on submit')
+      return
+    }
+
+    isLoading.value = blockButtons.value = true
+
+    const bannerUrl = await uploadChangedImages()
+    await uploadChangedExerciseImages()
+
+    const changedData = getChangedFields(
+      newSessionPlan.value,
+      originalSessionPlan.value,
+    )
+
+    if (Object.keys(changedData).length === 0) {
+      toast.info('No changes detected.')
+      return
+    }
+
+    if (bannerUrl) {
+      changedData.banner = bannerUrl
+    }
+
+    const sessionResponse = await $api.sessionPlans.update(
+      sessionPlanId.value,
+      changedData,
+    )
+
+    if (!sessionResponse || sessionResponse?.status?.http_code !== 200) {
+      throw new Error('Error updating session plan')
+    }
+
+    router.push('/synco/config/weekly-classes/session-plans')
+  } catch (error) {
+    console.error('❌ Error en onSubmit:', error)
+    toast.error('Error updating session plan')
+  } finally {
+    isLoading.value = blockButtons.value = false
+  }
 }
 </script>
 
@@ -280,15 +337,10 @@ const loadBlobFromUrl = async (url: string) => {
                 @change="handleBannerChange"
               />
               <img
-                v-if="bannerPreview"
-                :src="bannerPreview"
+                v-if="newSessionPlan.banner || bannerPreview"
+                :src="bannerPreview || newSessionPlan.banner"
                 style="max-width: 200px"
               />
-              <!-- <img
-                v-if="!!sessionPlan.banner"
-                :src="sessionPlan.banner.url"
-                :height="200"
-              /> -->
             </div>
             <div class="col-12 d-flex flex-column mb-3">
               <label for="video" class="form-label"> Add video </label>
@@ -299,28 +351,6 @@ const loadBlobFromUrl = async (url: string) => {
                 class="form-control form-control-lg"
                 placeholder="Video URL"
               />
-              <!-- <input
-                id="video-file"
-                ref="videoInput"
-                type="file"
-                name="video"
-                accept="video/*"
-                @change="handleVideoChange"
-              />
-              <video
-                v-if="videoPreview"
-                :src="videoPreview"
-                style="max-height: 200px"
-                class="rounded-4"
-                controls
-              ></video> -->
-              <!-- <video
-                v-if="!!sessionPlan.video"
-                :src="sessionPlan.video.url"
-                :height="200"
-                class="rounded-4"
-                controls
-              ></video> -->
             </div>
             <hr />
           </div>
@@ -335,6 +365,7 @@ const loadBlobFromUrl = async (url: string) => {
           </div>
           <div
             v-for="(excercise, index) in newSessionPlan.exercises"
+            :key="index"
             class="row"
           >
             <div class="col-12">
@@ -397,15 +428,16 @@ const loadBlobFromUrl = async (url: string) => {
                 @change="handleImageChange(index)"
               />
               <img
-                v-if="imagePreview[index]"
-                :src="imagePreview[index]"
+                v-if="
+                  newSessionPlan.exercises[index].json_urls[0].url ||
+                  imagePreview[index]
+                "
+                :src="
+                  imagePreview[index] ||
+                  newSessionPlan.exercises[index].json_urls[0].url
+                "
                 style="max-width: 200px"
               />
-              <!-- <img
-                v-if="!!excercise.banner"
-                :src="excercise.banner.url"
-                :height="200"
-              /> -->
             </div>
             <div class="col-12">
               <div class="form-group w-100 my-3">
@@ -432,26 +464,13 @@ const loadBlobFromUrl = async (url: string) => {
               </label>
               <input
                 :id="`exercise[${index}][video]`"
-                type="file"
+                v-model="excercise.videoInput"
                 :name="`exercise[${index}][video]`"
-                accept="video/*"
-                @input="handleVideo2Input($event, index)"
-                @change="handleVideo2Change(index)"
+                type="text"
+                class="form-control form-control-lg"
+                placeholder="Enter YouTube or video URL"
+                @input="handleVideoUrlChange(index)"
               />
-              <video
-                v-if="video2Preview[index]"
-                :src="video2Preview[index]"
-                style="max-height: 200px"
-                class="rounded-4"
-                controls
-              ></video>
-              <!-- <video
-                v-if="!!excercise.video"
-                :src="excercise.video.url"
-                :height="200"
-                class="rounded-4"
-                controls
-              ></video> -->
             </div>
 
             <hr class="my-4" />
