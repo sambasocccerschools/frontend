@@ -116,6 +116,7 @@ const cleanLeadsData = (data: any) => {
       lifecycle_of_membership:
         item.subscription_plan_price?.lifecycle_of_membership ?? 'Monthly',
       status: item.member_status ?? 'N/A',
+      family_id: item.student.family.id,
     }
   })
 }
@@ -124,6 +125,7 @@ const getLeads = async (source: number | null = null, limit: number = 25) => {
     blockButtons.value = true
     const response = await $api.wcMembers.getAll(limit)
     const data = cleanLeadsData(response?.data)
+    console.log(data)
     leads.value = data
   } catch (error: any) {
     leads.value = []

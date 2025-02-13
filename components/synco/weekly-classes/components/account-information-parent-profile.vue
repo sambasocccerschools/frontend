@@ -1,7 +1,7 @@
 <template>
   <template v-for="parent in parents">
     <SyncoWeeklyClassesFormsParentForm :parent="parent">
-      <template v-slot:internal_title>
+      <template #internal_title>
         <div class="d-flex justify-content-between align-items-center flex-row">
           <h5 class="m-0 py-4">
             <strong>Parent information</strong>
@@ -20,9 +20,9 @@
   </template>
   <template v-for="emergencyContact in emergencyContacts">
     <SyncoWeeklyClassesFormsEmergencyContactForm
-      :emergencyContact="emergencyContact"
+      :emergency-contact="emergencyContact"
     >
-      <template v-slot:internal_title>
+      <template #internal_title>
         <h5 class="py-4">
           <strong>Emergency contact details</strong>
           <!-- <Icon name="ph:pencil-simple-line" /> -->
@@ -73,18 +73,20 @@ const props = defineProps<{
   comment: IComment[]
 }>()
 
-let parents = ref<IGuardianCreate[]>(props.parent).value
-let emergencyContacts = ref<IEmregencyContactCreate[]>(
+console.log('props', props)
+
+const parents = ref<IGuardianCreate[]>(props.parent).value
+const emergencyContacts = ref<IEmregencyContactCreate[]>(
   props.emergencyContact,
 ).value
-let comments = ref<IComment[]>(props.comment).value
+const comments = ref<IComment[]>(props.comment).value
 
-let newComment = ref<string>('')
+const newComment = ref<string>('')
 
-let addParent = () => {
+const addParent = () => {
   console.log('addParent')
 }
-let sendMessage = (type: string) => {
+const sendMessage = (type: string) => {
   console.log('sendMessage', type)
 }
 

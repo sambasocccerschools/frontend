@@ -794,7 +794,7 @@ export type IWeeklyClassesMembers = {
   venue: IWeeklyClassesVenueObject
   status: IMemberStatus
   student: IStudentObject
-  // family_id: number
+  family_id?: number
   membership_plan: any
   life_cycle_membership: string
   booked_by: any
