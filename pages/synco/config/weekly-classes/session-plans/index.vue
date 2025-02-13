@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import defaultIcon from '~/assets/styles/synco/default-icon.svg'
+
 import { ref } from 'vue'
 import { useToast } from 'vue-toast-notification'
 import type { ISessionPlanObject } from '~/types/synco/index'
@@ -32,24 +34,19 @@ const getSessionPlans = async (abilityId: number) => {
 
 const selectedAbilityGroupId = ref<number>(-1)
 const selectAbilityGroup = (id: number) => {
+  console.log('Selecting ability group:', id)
   if (blockButtons.value) return
   sessionPlans.value = []
   selectedAbilityGroupId.value = id
   getSessionPlans(id)
 }
 
-// onMounted(async () => {
-//   console.log('pages/synco/config/weekly-classes/session-plans/index.vue')
-
-//   await store.getAbilityGroups()
-//   console.log(store)
-//   selectAbilityGroup(abilityGroups[0]?.id)
-// })
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/session-plans/index.vue')
   await store.getAbilityGroups()
   console.log('Ability groups:', abilityGroups)
   if (abilityGroups.length > 0 && abilityGroups[0].icon) {
+    console.log('Selected ability group:', abilityGroups[0])
     selectAbilityGroup(abilityGroups[0].id)
   }
 })
@@ -74,7 +71,7 @@ onMounted(async () => {
             >
               <span class="w-100 d-flex">
                 <img
-                  :src="group.icon?.url || '/default-icon.png'"
+                  :src="group.icon?.url || defaultIcon"
                   :alt="group.icon?.name || 'No icon available'"
                   height="38px"
                 />

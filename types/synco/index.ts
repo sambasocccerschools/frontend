@@ -175,7 +175,6 @@ export type ITermEditItem = {
 }
 
 export type ISessionEditItem = {
-  id: number
   plans: IPlanEditItem[]
 }
 export type IPlanEditItem = {
@@ -251,6 +250,7 @@ export type ISessionPlanObject = {
 }
 
 export type ISessionPlanResponse = {
+  status: any
   data: ISessionPlanObject[]
 }
 
@@ -303,32 +303,41 @@ export type ISessionPlanCreateUpdateItem = {
   title: string
   description: string
   ability_group_id: number
-  banner: Blob | null
-  video: Blob | null
+  banner?: string
+  video?: string
   exercises: ISessionPlanExcerciseCreateItem[]
+}
+
+export type IExerciseMediaObject = {
+  extension: string
+  url: string
+  type: string
+  file?: File | null
 }
 
 export type ISessionPlanExcerciseCreateItem = {
   title: string
   subtitle: string
-  description: string
   title_duration: string
-  banner: Blob | null
-  video: Blob | null
+  description: string
+  json_urls: IExerciseMediaObject[]
+  videoInput?: string
 }
 
 export type ISessionPlanUpdateItem = {
+  ability_group: any
   id: number
   title: string
   description: string
-  banner: IIconItem | null
-  video: IIconItem | null
+  banner: string | null
+  video: string | null
   exercises: ISessionPlanExcerciseUpdateItem[]
   created_at: Date | null
   deleted_at: Date | null
 }
 
 export type ISessionPlanExcerciseUpdateItem = {
+  json_urls: any
   id: number
   title: string
   subtitle: string
@@ -385,13 +394,19 @@ export type IWeeklyClassesLeadCreateResponse =
   IBaseResponse<IWeeklyClassesLeadCreate> & {}
 
 export type IGuardian = {
+  email: string | null
+  other_relationship: string | null
+  relationship: any
+  referal_source: IReferralSource
+  family: any
+  franchise: any
   id: string
   first_name: string
   last_name: string
-  email: string
   phone_number: string
-  created_at: Date | null
-  deleted_at: Date | null
+  is_deleted: boolean | number
+  created_date: Date | null
+  deleted_date: Date | null
 }
 
 export type IWeeklyClassesLead = {
@@ -754,15 +769,22 @@ export type IWeeklyClassesWaitingListReportingResponse = {
 }
 
 export type IWeeklyClassesCancellation = {
-  id: number
-  status: IMemberCancelStatus
-  cancel_reason: IReason
-  venue: IWeeklyClassesVenueObject
-  guardian: IGuardian
+  id: string | number
+  additional_notes: string
+  agent: any
+  cancelled_by: any
+  created_date: string | null
+  franchise: any
+  is_deleted: boolean | number
+  member_cancel_status: any
+  member_cancel_type: any
+  membership_cancel_reason: any
+  termination_date: string | null
+  updated_date: string | null
+  weekly_class_member: any
+  venue: any
   total_student: number
-  termination_date: number | null
-  created_at: number | null
-  deleted_at: number | null
+  guardian: IGuardian
 }
 export type IWeeklyClassesCancellationResponse =
   IBaseResponse<IWeeklyClassesCancellation> & {}
@@ -772,7 +794,7 @@ export type IWeeklyClassesMembers = {
   venue: IWeeklyClassesVenueObject
   status: IMemberStatus
   student: IStudentObject
-  // family_id: number
+  family_id?: number
   membership_plan: any
   life_cycle_membership: string
   booked_by: any
@@ -883,7 +905,7 @@ export type ICreateStudent = {
   last_name: string
   dob: string
   age: number
-  gender_id: number
+  gender: number
   medical_information: string
 }
 
@@ -896,11 +918,13 @@ export type ICreateEmergencyContact = {
 
 export type IWeeklyClassesFreeTrialCreate = {
   weekly_class_id: number
-  agent_id: string
+  agent_id?: string
   guardians: ICreateGuardian[]
   students: ICreateStudent[]
   emergency_contacts: ICreateEmergencyContact[]
-  comments: string[]
+  comments?: string[]
+  trial_date: string
+  free_trial_status_code: string
 }
 
 export type IWeeklyClassesWaitingListCreate = {
@@ -1484,7 +1508,7 @@ export type IWeeklyClassesCapacities = {
   name: string
   weekly_classes: IWeeklyClassesCapacitiesClasses[]
   total_capacity: number
-  booked_capacity: number
+  total_booked_capacity: number
   remaining_capacity: number
   percentage_booked: string
   created_at: any | null

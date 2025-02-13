@@ -90,27 +90,29 @@ const router = useRouter()
 const { $api } = useNuxtApp()
 const toast = useToast()
 const store = generalStore()
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
 const changeLoadingState = (state: boolean) => {
   isLoading.value = state
   blockButtons.value = state
 }
 
-let accountId = ref<number>(-1)
-let accountInformation = ref<IAccountInformationObject>()
-let selection = ref<string>('Service History')
-let previousRoute = ref<string>('/synco/weekly-classes/waiting-list')
-let showFilter = ref<boolean>(false)
-let showBookings = ref<boolean>(false)
-let showServiceHistoryDetails = ref<boolean>(false)
-let showFeedbackModal = ref<boolean>(false)
+const accountId = ref<number>(-1)
+const accountInformation = ref<IAccountInformationObject>()
+const selection = ref<string>('Service History')
+const previousRoute = ref<string>('/synco/weekly-classes/waiting-list')
+const showFilter = ref<boolean>(false)
+const showBookings = ref<boolean>(false)
+const showServiceHistoryDetails = ref<boolean>(false)
+const showFeedbackModal = ref<boolean>(false)
 
-let loyalty_points = ref<number>(0)
-let parent = ref<IGuardianCreate[]>()
-let student = ref<IStudentCreate[]>()
-let emergencyContact = ref<IEmregencyContactCreate[]>()
-let comment = ref<IEmregencyContactCreate[]>()
+const loyalty_points = ref<number>(0)
+// const parent = ref<IGuardianCreate[]>()
+const parent = ref<any[]>()
+// const student = ref<IStudentCreate[]>()
+const student = ref<any[]>()
+const emergencyContact = ref<IEmregencyContactCreate[]>()
+const comment = ref<IEmregencyContactCreate[]>()
 // let ServiceHistoryAccountCardHeaders = [
 //   {
 //     Status: 'Active',
@@ -121,15 +123,15 @@ let comment = ref<IEmregencyContactCreate[]>()
 //     Color: '#A4A5A6',
 //   },
 // ]
-let feedbackItems = ref<IFeedbackItem[]>()
-let referralsList = ref<IAccountRefereeItem[]>([])
-let referralReporting = ref<IRefereeReportingItem>()
-let loyaltyPointsRewards = ref<IAccountRewardHistoryItem[]>()
-let loyaltyPointsHistory = ref<IAccountLoyaltyPointsHistoryItem[]>()
+const feedbackItems = ref<IFeedbackItem[]>()
+const referralsList = ref<IAccountRefereeItem[]>([])
+const referralReporting = ref<IRefereeReportingItem>()
+const loyaltyPointsRewards = ref<IAccountRewardHistoryItem[]>()
+const loyaltyPointsHistory = ref<IAccountLoyaltyPointsHistoryItem[]>()
 
-let eventList = ref<ICandidateEventItem[]>()
+const eventList = ref<ICandidateEventItem[]>()
 
-let feedbackItem = ref<ICreateFeedbackItem>({
+const feedbackItem = ref<ICreateFeedbackItem>({
   family_id: 0,
   agent_id: '',
   additional_notes: '',
@@ -138,20 +140,20 @@ let feedbackItem = ref<ICreateFeedbackItem>({
   weekly_class_id: 0,
 })
 
-let serviceHistoryWeecklyClasses = ref<IAccountWeeklyClassesServiceHistory[]>()
+const serviceHistoryWeecklyClasses = ref<any[]>()
 
 // const feedbackStatus = store.feedbackStatus
 const feedbackCategory = store.feedbackCategory
 const feedbackType = store.feedbackType
 const agents = store.agents
-let enrolledClasses = ref<IIdTitleItem[]>([])
+const enrolledClasses = ref<IIdTitleItem[]>([])
 
 onMounted(async () => {
   console.log('pages/synco/user/[id].vue')
-  let queryAccountId = router.currentRoute.value.params.id
-  accountId.value = !!queryAccountId ? +queryAccountId : -1
+  const queryAccountId = router.currentRoute.value.params.id
+  accountId.value = queryAccountId ? +queryAccountId : -1
   await getAccountInformation()
-  await getEnrolledWeeklyClasses(accountId.value)
+  // await getEnrolledWeeklyClasses(accountId.value)
 
   // Call fetchAllData to fetch all miscellaneous data
   await store.fetchAllData()
@@ -161,52 +163,33 @@ const getAccountInformation = async () => {
   try {
     changeLoadingState(true)
     const response = await $api.accountInformation.getById(accountId.value)
-    console.log('getAccountInformation', response)
+    console.log('response', response)
     loyalty_points.value = response.data.loyalty_points
-    parent.value = response.data.guardians.map((x) => {
-      let guardian = x
-      guardian.referral_source_id = x.referral_source.id
-      guardian.relationship_id = x.relationship.id
-      return guardian
-    })
-    student.value = response.data.students.map((x) => {
-      let child = x
-      child.gender_id = x.gender.id
-      child.dob = x.dob?.split('T')[0]
-      return child
-    })
-    emergencyContact.value = response.data.emergencyContacts.map((x) => {
-      let econtact = x
-      econtact.relationship_id = x.relationship.id
-      return econtact
-    })
-    comment.value = response.data.comments.map((x) => {
-      let cmt: IComment = {
-        avatar: x.user.avatar_image.url,
-        name: `${x.user.first_name} ${x.user.last_name}`,
-        created: x.created_at,
-        text: x.message,
-      }
-      return cmt
-    })
+    parent.value = response.data.guardians
+    student.value = response.data.students
     feedbackItems.value = response.data.feedbacks
     referralsList.value = response.data.referees
     referralReporting.value = response.data.referee_reporting
     loyaltyPointsRewards.value = response.data.rewardHistories
     loyaltyPointsHistory.value = response.data.loyaltyPointHistories
-    eventList.value = response.data.events.map((x) => {
-      return {
-        Date: x.created_at,
-        Description: x.description,
-        EventType: x.eventType.title,
-        ImageUrl: x.performedBy.avatar_image,
-        Title: x.eventType.title,
-        ExtraInformation: null,
-      }
-    })
-    serviceHistoryWeecklyClasses.value =
-      response.data.service_history['weekly-classes']
-    let data = response?.data
+    eventList.value =
+      response.data.events?.map((x) => {
+        return {
+          Date: x.created_at,
+          Description: x.description,
+          EventType: x.eventType.title,
+          ImageUrl: x.performedBy.avatar_image,
+          Title: x.eventType.title,
+          ExtraInformation: null,
+        }
+      }) ?? []
+
+    serviceHistoryWeecklyClasses.value = response.data.service_history
+
+    console.log(serviceHistoryWeecklyClasses.value)
+
+    // response.data.service_history['weekly-classes']
+    const data = response?.data
     accountInformation.value = data
   } catch (error: any) {
     console.log(error)
@@ -216,28 +199,28 @@ const getAccountInformation = async () => {
   }
 }
 
-const getEnrolledWeeklyClasses = async (familiId: number) => {
-  try {
-    changeLoadingState(true)
-    const response = await $api.datasets.getEnrolledWeeklyClass(familiId, true)
-    console.log('getEnrolledWeeklyClasses', response)
-    let eClasses: IIdTitleItem[] = []
-    response.data.forEach((x) => {
-      x?.classes.forEach((y) => {
-        eClasses.push({
-          title: `${x.year} - ${y.name}`,
-          id: y.id,
-        })
-      })
-    })
-    enrolledClasses.value = eClasses
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-  } finally {
-    changeLoadingState(false)
-  }
-}
+// const getEnrolledWeeklyClasses = async (familiId: number) => {
+//   try {
+//     changeLoadingState(true)
+//     const response = await $api.datasets.getEnrolledWeeklyClass(familiId, true)
+//     console.log('getEnrolledWeeklyClasses', response)
+//     const eClasses: IIdTitleItem[] = []
+//     response.data.forEach((x) => {
+//       x?.classes.forEach((y) => {
+//         eClasses.push({
+//           title: `${x.year} - ${y.name}`,
+//           id: y.id,
+//         })
+//       })
+//     })
+//     enrolledClasses.value = eClasses
+//   } catch (error: any) {
+//     console.log(error)
+//     toast.error(error?.data?.messages ?? 'Error')
+//   } finally {
+//     changeLoadingState(false)
+//   }
+// }
 
 const selectInformation = (selected: string) => {
   selection.value = selected
@@ -266,10 +249,26 @@ const addBooking = async (booking: string) => {
   await router.push({ path: `${path}` })
 }
 
+// const cleanDate = (date: any) => {
+//   if (!Number.isInteger(date)) return date
+//   const cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+//   return cleanedDate
+// }
+
 const cleanDate = (date: any) => {
-  if (!Number.isInteger(date)) return date
-  let cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
-  return cleanedDate
+  if (!date) return ''
+
+  const parsedDate = new Date(date)
+  if (isNaN(parsedDate.getTime())) return date
+
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(parsedDate)
 }
 
 const resolveFeedback = async (id: number) => {
@@ -313,9 +312,9 @@ const openCloseCleanFeedbackItem = (state: boolean) => {
   showFeedbackModal.value = state
 }
 
-let selectedDetails = ref('')
+const selectedDetails = ref('')
 
-let seeDetails = (details: string) => {
+const seeDetails = (details: string) => {
   selectedDetails.value = details
   showServiceHistoryDetails.value = !showServiceHistoryDetails.value
 }
@@ -406,16 +405,16 @@ let seeDetails = (details: string) => {
             <button
               type="button"
               class="btn btn-light mx-2 border bg-white"
-              @click="toggleFilter"
               data-toggle="dropdown"
               :aria-expanded="showFilter"
               data-display="static"
+              @click="toggleFilter"
             >
               <Icon name="ph:faders" /> Filters
             </button>
             <div
-              class="dropdown-menu dropdown-menu-right card rounded-3 position-absolute shadow-lg"
               v-if="showFilter"
+              class="dropdown-menu dropdown-menu-right card rounded-3 position-absolute shadow-lg"
               style="width: 510px; right: -100px; top: 70px"
             >
               <div
@@ -522,16 +521,16 @@ let seeDetails = (details: string) => {
             <button
               type="button"
               class="btn btn-primary text-light dropdown-toggle mx-2"
-              @click="toggleBooking"
               data-toggle="dropdown"
               :aria-expanded="showBookings"
               data-display="static"
+              @click="toggleBooking"
             >
               + Add booking
             </button>
             <div
-              class="position-absolute card rounded-4 bg-white p-4 shadow-lg"
               v-if="showBookings"
+              class="position-absolute card rounded-4 bg-white p-4 shadow-lg"
               style="right: 0px; top: 40px; z-index: 1000"
             >
               <button
@@ -582,7 +581,7 @@ let seeDetails = (details: string) => {
       <template v-if="selection == 'Parent Profile'">
         <SyncoWeeklyClassesComponentsAccountInformationParentProfile
           :parent="parent"
-          :emergencyContact="emergencyContact"
+          :emergency-contact="emergencyContact"
           :comment="comment"
         />
       </template>
@@ -598,76 +597,88 @@ let seeDetails = (details: string) => {
           :header="ServiceHistoryAccountCardHeaders[1]"
         /> -->
         <template v-for="weeklyClasses in serviceHistoryWeecklyClasses">
-          <template v-if="selectedDetails == ''">
-            <SyncoWeeklyClassesServiceHistoryItem>
-              <template v-slot:title>
-                <Icon name="ph:crown" class="h5 m-0" />
-                <span class="h5 m-0 mx-2">{{
-                  weeklyClasses.weeklyClass.name
+          <!-- <template v-if="selectedDetails == ''"> -->
+          <SyncoWeeklyClassesServiceHistoryItem>
+            <template #title>
+              <Icon name="ph:crown" class="h5 m-0" />
+              <span class="h5 m-0 mx-2">
+                {{ weeklyClasses.weekly_class.name }}
+              </span>
+              <span class="mx-2"
+                ><strong>{{
+                  cleanDate(weeklyClasses.start_date)
+                }}</strong></span
+              >
+            </template>
+            <template #status>
+              <button
+                class="btn btn-sm text-light border-0"
+                :class="
+                  weeklyClasses.member_status.title == 'Active'
+                    ? 'btn-success'
+                    : 'btn-danger'
+                "
+                style="width: 95px"
+              >
+                {{ weeklyClasses.member_status.title }}
+              </button>
+            </template>
+            <template #fields>
+              <!-- <SyncoWeeklyClassesComponentsServiceHistoryWeeklyClassesListItem /> -->
+
+              <div class="d-flex flex-column px-3">
+                <label>Membership Plan</label>
+                <span>{{ weeklyClasses.subscription_plan_price.name }}</span>
+              </div>
+              <div class="d-flex flex-column px-3">
+                <label>Students</label>
+                <span>{{
+                  weeklyClasses.subscription_plan_price.student_coverage
+                    .title || ''
                 }}</span>
-                <span class="mx-2"
-                  ><strong>{{
-                    cleanDate(weeklyClasses.start_date)
-                  }}</strong></span
+              </div>
+              <div class="d-flex flex-column px-3">
+                <label>Venue</label>
+                <!-- <span>{{ weeklyClasses.venue.name }}</span> -->
+                <span>{{ weeklyClasses.weekly_class.venue.name }}</span>
+              </div>
+              <div class="d-flex flex-column px-3">
+                <label>Monthly price</label>
+                <span
+                  >£{{
+                    weeklyClasses.subscription_plan_price
+                      .monthly_subscription_fee
+                  }}</span
                 >
-              </template>
-              <template v-slot:status>
-                <button
-                  class="btn btn-sm text-light border-0"
-                  :class="
-                    weeklyClasses.status.title == 'Active'
-                      ? 'btn-success'
-                      : 'btn-danger'
-                  "
-                  style="width: 95px"
-                >
-                  {{ weeklyClasses.status.title }}
-                </button>
-              </template>
-              <template v-slot:fields>
-                <!-- <SyncoWeeklyClassesComponentsServiceHistoryWeeklyClassesListItem /> -->
-                <div class="d-flex flex-column px-3">
-                  <label>Membership Plan</label>
-                  <span>{{ weeklyClasses.membership_plan.name }}</span>
-                </div>
-                <div class="d-flex flex-column px-3">
-                  <label>Venue</label>
-                  <span>{{ weeklyClasses.venue.name }}</span>
-                </div>
-                <div class="d-flex flex-column px-3">
-                  <label>Monthly price</label>
-                  <span>{{
-                    weeklyClasses.membership_plan.monthly_subscription_fee
-                  }}</span>
-                </div>
-                <div class="d-flex flex-column px-3">
-                  <label>Date of booking</label>
-                  <span>{{ cleanDate(weeklyClasses.created_at) }}</span>
-                </div>
-                <!-- <div class="d-flex flex-column px-3">
+              </div>
+              <div class="d-flex flex-column px-3">
+                <label>Date of booking</label>
+                <span>{{ cleanDate(weeklyClasses.created_date) }}</span>
+              </div>
+              <!-- <div class="d-flex flex-column px-3">
                   <label>Progress</label>
                   <span>6/12 months</span>
                 </div> -->
-                <div class="d-flex flex-column px-3">
-                  <label>Booking Source</label>
-                  <span
-                    >{{ weeklyClasses.booked_by.first_name }}
-                    {{ weeklyClasses.booked_by.last_name }}</span
-                  >
-                </div>
-              </template>
-              <template v-slot:footer>
-                <!-- <div class="mt-3">
-                  <button
-                    class="btn btn-light me-1 border bg-transparent"
-                    @click="seeDetails('weekly-classes')"
-                  >
-                    See details
-                  </button>
-                </div> -->
-              </template>
-            </SyncoWeeklyClassesServiceHistoryItem>
-          </template>
+              <div class="d-flex flex-column px-3">
+                <label>Booking Source</label>
+                <span
+                  >{{ weeklyClasses.agent?.first_name || '-' }}
+                  {{ weeklyClasses.agent?.last_name || '-' }}</span
+                >
+              </div>
+            </template>
+            <template #footer>
+              <div class="mt-3">
+                <button
+                  class="btn btn-light me-1 border bg-transparent"
+                  @click="seeDetails('weekly-classes')"
+                >
+                  See details
+                </button>
+              </div>
+            </template>
+          </SyncoWeeklyClassesServiceHistoryItem>
+          <!-- </template> -->
           <!-- <template v-else>
             <div class="row">
               <div class="col-8">
@@ -803,8 +814,8 @@ let seeDetails = (details: string) => {
                   >
                     <div class="d-flex justify-content-between flex-column">
                       <div
-                        class="form-group w-100 mb-3"
                         v-if="enrolledClasses?.length"
+                        class="form-group w-100 mb-3"
                       >
                         <label
                           for="feedbackClass"
@@ -814,14 +825,14 @@ let seeDetails = (details: string) => {
                         </label>
                         <select
                           id="feedbackClass"
-                          class="form-control form-control-lg"
                           v-model="feedbackItem.weekly_class_id"
+                          class="form-control form-control-lg"
                         >
                           <option :value="0">Select option</option>
                           <option
                             v-for="(item, index) in enrolledClasses"
-                            :value="item.id"
                             :key="index"
+                            :value="item.id"
                           >
                             {{ item.title }}
                           </option>
@@ -829,8 +840,8 @@ let seeDetails = (details: string) => {
                       </div>
 
                       <div
-                        class="form-group w-100 mb-3"
                         v-if="feedbackType?.length"
+                        class="form-group w-100 mb-3"
                       >
                         <label
                           for="feedbackType"
@@ -840,14 +851,14 @@ let seeDetails = (details: string) => {
                         >
                         <select
                           id="feedbackType"
-                          class="form-control form-control-lg"
                           v-model="feedbackItem.feedback_type_id"
+                          class="form-control form-control-lg"
                         >
                           <option :value="0">Select option</option>
                           <option
                             v-for="(item, index) in feedbackType"
-                            :value="item.id"
                             :key="index"
+                            :value="item.id"
                           >
                             {{ item.name }}
                           </option>
@@ -855,8 +866,8 @@ let seeDetails = (details: string) => {
                       </div>
 
                       <div
-                        class="form-group w-100 mb-3"
                         v-if="feedbackCategory?.length"
+                        class="form-group w-100 mb-3"
                       >
                         <label
                           for="feedbackCategory"
@@ -866,14 +877,14 @@ let seeDetails = (details: string) => {
                         >
                         <select
                           id="feedbackCategory"
-                          class="form-control form-control-lg"
                           v-model="feedbackItem.feedback_category_id"
+                          class="form-control form-control-lg"
                         >
                           <option :value="0">Select option</option>
                           <option
                             v-for="(item, index) in feedbackCategory"
-                            :value="item.id"
                             :key="index"
+                            :value="item.id"
                           >
                             {{ item.name }}
                           </option>
@@ -889,18 +900,15 @@ let seeDetails = (details: string) => {
                         </label>
                         <textarea
                           id="feedbackNotes"
+                          v-model="feedbackItem.additional_notes"
                           class="form-control form-control-lg"
                           placeholder=""
-                          v-model="feedbackItem.additional_notes"
                           rows="4"
                         >
                         </textarea>
                       </div>
 
-                      <div
-                        class="form-group w-100 mb-3"
-                        v-if="agents?.length"
-                      >
+                      <div v-if="agents?.length" class="form-group w-100 mb-3">
                         <label
                           for="feedbackAgent"
                           class="form-labelform-label-light"
@@ -909,14 +917,14 @@ let seeDetails = (details: string) => {
                         </label>
                         <select
                           id="feedbackAgent"
-                          class="form-control form-control-lg"
                           v-model="feedbackItem.agent_id"
+                          class="form-control form-control-lg"
                         >
                           <option :value="0">Select option</option>
                           <option
                             v-for="(item, index) in agents"
-                            :value="item.id"
                             :key="index"
+                            :value="item.id"
                           >
                             {{ item.first_name }} {{ item.last_name }}
                           </option>
@@ -1000,7 +1008,7 @@ let seeDetails = (details: string) => {
           </table>
         </div>
       </template>
-      <template v-else-if="selection == 'Rewards'">
+      <!-- <template v-else-if="selection == 'Rewards'">
         <SyncoUserRewards
           :referrals-list="referralsList"
           :reporting="referralReporting"
@@ -1013,7 +1021,7 @@ let seeDetails = (details: string) => {
         <div class="mt-4">
           <SyncoRecruitmentEvents :event-list="eventList" />
         </div>
-      </template>
+      </template> -->
     </div>
   </NuxtLayout>
 </template>

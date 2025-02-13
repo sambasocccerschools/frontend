@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <template v-for="wc in capacities">
+    <template v-for="wc in capacities" :key="wc.id">
       <SyncoWeeklyClassesCapacityListItem :capacities="wc" />
     </template>
   </NuxtLayout>
@@ -89,19 +89,19 @@ const getCapacities = async () => {
     blockButtons.value = false
   }
 }
-const getReporting = async () => {
-  try {
-    blockButtons.value = true
-    const response = await $api.wcCapacities.getReporting()
-    reporting.value = response?.data
-  } catch (error: any) {
-    reporting.value = null
-    console.log(error)
-    toast.error(error?.message ?? 'Error')
-  } finally {
-    blockButtons.value = false
-  }
-}
+// const getReporting = async () => {
+//   try {
+//     blockButtons.value = true
+//     const response = await $api.wcCapacities.getReporting()
+//     reporting.value = response?.data
+//   } catch (error: any) {
+//     reporting.value = null
+//     console.log(error)
+//     toast.error(error?.message ?? 'Error')
+//   } finally {
+//     blockButtons.value = false
+//   }
+// }
 
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/capacity.vue')
@@ -113,7 +113,7 @@ const exportExcel = async () => {
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    let excel = await $api.wcWaitingList.exportExcel()
+    const excel = await $api.wcWaitingList.exportExcel()
     store.downloadExcelFile(excel.data.url, excel.data.name)
   } catch (error: any) {
     console.log(error)

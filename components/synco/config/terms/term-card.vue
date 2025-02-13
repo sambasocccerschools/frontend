@@ -203,6 +203,34 @@ const cleanDate = (date: any) => {
   return cleanedDate
 }
 
+// const addNewSession = () => {
+//   const groups: IAbilityGroupItem[] = []
+//   abilityGroups.forEach((x) => {
+//     groups.push({
+//       id: x.id,
+//       name: x.name,
+//     })
+//   })
+//   const plans: IPlanItem[] = []
+//   groups?.forEach((x) => {
+//     plans.push({
+//       id: 0,
+//       session_plan: {
+//         id: 0,
+//         title: '',
+//       },
+//       ability_group: x,
+//     })
+//   })
+//   term?.sessions?.push({
+//     created_at: null,
+//     deleted_at: null,
+//     id: updateKey.value,
+//     plans: plans,
+//   })
+//   updateKey.value--
+// }
+
 const addNewSession = () => {
   const groups: IAbilityGroupItem[] = []
   abilityGroups.forEach((x) => {
@@ -222,13 +250,18 @@ const addNewSession = () => {
       ability_group: x,
     })
   })
+  // Asignar un ID único basado en la longitud de las sesiones existentes
+  const newId =
+    term?.sessions && term.sessions.length > 0
+      ? Math.max(...term.sessions.map((s) => s.id)) + 1
+      : 1
+
   term?.sessions?.push({
     created_at: null,
     deleted_at: null,
-    id: updateKey.value,
+    id: newId, // Asignar un ID válido y único
     plans: plans,
   })
-  updateKey.value--
 }
 
 const removeSession = (sessionId: number) => {

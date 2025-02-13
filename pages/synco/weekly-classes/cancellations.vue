@@ -25,28 +25,28 @@
             name="Total Requests"
             :value="reporting?.total_requests?.amount"
             :change="reporting?.total_requests?.percentage"
-            :removePercentage="true"
+            :remove-percentage="true"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Membership Tenure"
             :value="reporting?.membership_tenture?.amount"
             :change="reporting?.membership_tenture?.percentage"
-            :removePercentage="true"
+            :remove-percentage="true"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Top Reasons for request to cancel"
             :value="reporting?.top_cancel_reason?.name"
             :change="reporting?.top_cancel_reason?.count"
-            :removePercentage="true"
+            :remove-percentage="true"
             icon="ph:users-three"
           />
           <SyncoDashboardMetricsItem
             name="Venue with most requests"
             :value="reporting?.most_requested_venue?.name"
             :change="reporting?.most_requested_venue?.count"
-            :removePercentage="true"
+            :remove-percentage="true"
             icon="ph:users-three"
           />
         </div>
@@ -89,7 +89,7 @@
 
         <div>
           <SyncoDataOptions
-            @exportExcel="exportExcel"
+            @export-excel="exportExcel"
             @send-email="sendEmail"
             @send-text="sendText"
           />
@@ -119,12 +119,32 @@
               <th class="text-muted" scope="col">Status</th>
             </tr>
           </thead>
-          <tbody>
-            <template v-for="lead in leads">
+          <!-- <tbody>
+            <template
+              v-for="cancellation in cancellations"
+              :key="Number(cancellation.id)"
+            >
               <LazySyncoWeeklyClassesCancellationsTableItem
-                :lead="lead"
-                @selectedGuardian="selectedGuardian"
+                :cancellation="cancellation"
+                @selected-guardian="selectedGuardian"
               />
+            </template>
+          </tbody> -->
+          <tbody>
+            <template
+              v-for="(cancellation, index) in cancellations"
+              :key="cancellation?.id || `cancellation-${index}`"
+            >
+              <LazySyncoWeeklyClassesCancellationsTableItem
+                v-if="cancellation && cancellation.id"
+                :cancellation="cancellation"
+                @selected-guardian="selectedGuardian"
+              />
+              <tr v-else>
+                <td colspan="8" class="text-danger text-center">
+                  Invalid cancellation data
+                </td>
+              </tr>
             </template>
           </tbody>
         </table>
@@ -154,39 +174,40 @@ const store = generalStore()
 
 const { $api } = useNuxtApp()
 const toast = useToast()
-const leads = ref<IWeeklyClassesCancellation[]>([])
+const cancellations = ref<IWeeklyClassesCancellation[]>([])
 const selectedGuardians = ref<string[]>([])
 const reporting = ref<IWeeklyClassesCancellationReportingObject | null>(null)
-const getLeads = async (source: number | null = null, limit: number = 25) => {
+const getCancellations = async () => {
   try {
     blockButtons.value = true
-    const response = await $api.wcCancellation.getAll(limit)
-    leads.value = response?.data
+    const response = await $api.wcCancellation.getAll()
+    cancellations.value = response?.data
+    console.log
   } catch (error: any) {
-    leads.value = []
+    cancellations.value = []
     console.log(error)
     toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }
 }
-const getReporting = async () => {
-  try {
-    blockButtons.value = true
-    const response = await $api.wcCancellation.getReporting()
-    reporting.value = response?.data
-  } catch (error: any) {
-    reporting.value = null
-    console.log(error)
-    toast.error(error?.message ?? 'Error')
-  } finally {
-    blockButtons.value = false
-  }
-}
+// const getReporting = async () => {
+//   try {
+//     blockButtons.value = true
+//     const response = await $api.wcCancellation.getReporting()
+//     reporting.value = response?.data
+//   } catch (error: any) {
+//     reporting.value = null
+//     console.log(error)
+//     toast.error(error?.message ?? 'Error')
+//   } finally {
+//     blockButtons.value = false
+//   }
+// }
 
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/cancellations.vue')
-  await getLeads()
+  await getCancellations()
   // await getReporting()
 })
 
@@ -194,7 +215,7 @@ const exportExcel = async () => {
   if (blockButtons.value) return
   try {
     blockButtons.value = true
-    let excel = await $api.wcCancellation.exportExcel()
+    const excel = await $api.wcCancellation.exportExcel()
     store.downloadExcelFile(excel.data.url, excel.data.name)
   } catch (error: any) {
     console.log(error)
@@ -207,14 +228,14 @@ const exportExcel = async () => {
 const sendText = async () => {
   if (blockButtons.value) return
 
-  let guardianIds = selectedGuardians.value.filter(
+  const guardianIds = selectedGuardians.value.filter(
     (value, index, array) => array.indexOf(value) == index,
   )
   if (guardianIds.length == 0) {
     alert('Select any row')
     return
   }
-  let message = prompt('Write text message.')
+  const message = prompt('Write text message.')
   if (!message) return
   try {
     blockButtons.value = true
@@ -232,14 +253,14 @@ const sendText = async () => {
 }
 const sendEmail = async () => {
   if (blockButtons.value) return
-  let guardianIds = selectedGuardians.value.filter(
+  const guardianIds = selectedGuardians.value.filter(
     (value, index, array) => array.indexOf(value) == index,
   )
   if (guardianIds.length == 0) {
     alert('Select any row')
     return
   }
-  let message = prompt('Write email message.')
+  const message = prompt('Write email message.')
   if (!message) return
   try {
     blockButtons.value = true
@@ -257,9 +278,8 @@ const sendEmail = async () => {
 }
 
 const selectedGuardian = (data: any) => {
-  console.log(data)
   if (!data.value) {
-    let dataIndex = selectedGuardians.value.indexOf(data.id)
+    const dataIndex = selectedGuardians.value.indexOf(data.id)
     if (dataIndex >= 0) {
       selectedGuardians.value.splice(dataIndex, 1)
     }
@@ -273,9 +293,9 @@ const applyFilter = async (data: IWeeklyClassesCancellationFilterObject) => {
     // data.referral_source_id = `${selectedReferralSourceId.value}`
     blockButtons.value = true
     const response = await $api.wcCancellation.getByFilter(data, 25)
-    leads.value = response?.data
+    cancellations.value = response?.data
   } catch (error: any) {
-    leads.value = []
+    cancellations.value = []
     console.log(error)
     toast.error(error?.message ?? 'Error')
   } finally {

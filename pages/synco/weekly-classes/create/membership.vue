@@ -139,25 +139,6 @@
         </div>
       </div>
       <div class="col-8">
-        <SyncoWeeklyClassesFormsParentForm :parent="parent">
-          <template #internal_title>
-            <div
-              class="d-flex justify-content-between align-items-center flex-row"
-            >
-              <h5 class="m-0 py-4">
-                <strong>Parent information</strong>
-              </h5>
-              <!-- <button
-                type="button"
-                class="btn btn-primary text-light"
-                @click="addParent"
-              >
-                Add Parent
-              </button> -->
-            </div>
-          </template>
-        </SyncoWeeklyClassesFormsParentForm>
-
         <SyncoWeeklyClassesFormsStudentForm :student="student">
           <template #internal_title>
             <h5 class="py-4"><strong>Student information</strong></h5>
@@ -208,14 +189,47 @@
           </template>
         </SyncoWeeklyClassesFormsStudentForm>
 
+        <SyncoWeeklyClassesFormsParentForm :parent="parent">
+          <template #internal_title>
+            <div
+              class="d-flex justify-content-between align-items-center flex-row"
+            >
+              <h5 class="m-0 py-4">
+                <strong>Parent information</strong>
+              </h5>
+              <!-- <button
+                type="button"
+                class="btn btn-primary text-light"
+                @click="addParent"
+              >
+                Add Parent
+              </button> -->
+            </div>
+          </template>
+        </SyncoWeeklyClassesFormsParentForm>
+
         <SyncoWeeklyClassesFormsEmergencyContactForm
           :emergency-contact="emergency_contact"
         >
           <template #internal_title>
-            <h5 class="py-4">
-              <strong>Emergency contact details</strong>
-              <!-- <Icon name="ph:pencil-simple-line" /> -->
-            </h5>
+            <h5 class="py-4"><strong>Emergency contact details</strong></h5>
+            <div class="row mb-4">
+              <div class="col-12">
+                <div class="form-check">
+                  <input
+                    id="sameAsAbove"
+                    class="form-check-input"
+                    type="checkbox"
+                    :disabled="!filledParentInfo"
+                    value=""
+                    @input="copyParentInformation"
+                  />
+                  <label class="form-check-label" for="sameAsAbove">
+                    Fill same as above
+                  </label>
+                </div>
+              </div>
+            </div>
           </template>
         </SyncoWeeklyClassesFormsEmergencyContactForm>
         <!-- <div class="card rounded-4 mt-4 px-3">
@@ -373,6 +387,7 @@ const startDate = ref<string>('')
 
 const subscriptionPlans = ref<any[]>([])
 const venues = ref<IAvailableVenueObject[]>(store.availableVenues)
+const filledParentInfo = ref<boolean>(false)
 
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/create/membership.vue')
@@ -387,7 +402,17 @@ onMounted(async () => {
     const plans = await $api.subscriptionPlans.getAll()
     subscriptionPlans.value = plans.data
   }
+
+  filledParentInfo.value = isParentInfoFilled()
 })
+
+watch(
+  parent,
+  () => {
+    filledParentInfo.value = isParentInfoFilled()
+  },
+  { deep: true },
+)
 
 const toggleSubscriptionCard = () => {
   showSubscriptionCard.value = !showSubscriptionCard.value
@@ -406,6 +431,18 @@ const toggleScriptCard = () => {
 }
 const togglePlanBreakdown = () => {
   showPlanBreakdown.value = !showPlanBreakdown.value
+}
+
+const isParentInfoFilled = (): boolean => {
+  const requiredFields: Array<keyof typeof parent.value> = [
+    'first_name',
+    'last_name',
+    'email',
+    'phone_number',
+    'relationship_code',
+  ]
+
+  return requiredFields.every((field) => Boolean(parent.value[field]))
 }
 
 const cancel = () => {}
@@ -466,6 +503,13 @@ const createData = async () => {
   } finally {
     changeLoadingState(false)
   }
+}
+
+const copyParentInformation = () => {
+  emergency_contact.value.first_name = parent.value.first_name
+  emergency_contact.value.last_name = parent.value.last_name
+  emergency_contact.value.phone_number = parent.value.phone_number
+  emergency_contact.value.relationship_id = parent.value.relationship_code
 }
 
 const getSelectedPlan = (): ISubscriptionPlan | null => {

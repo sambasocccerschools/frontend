@@ -41,8 +41,13 @@ const navigateToUser = async (id: number) => {
   // await router.push({ path: `/synco/user/${id}` })
 }
 const cleanDate = (date: any) => {
-  if (!Number.isInteger(date)) return date
-  const cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+  if (!date || typeof date !== 'string') return date
+  const parsedDate = new Date(date)
+  const cleanedDate = parsedDate.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
   return cleanedDate
 }
 
@@ -110,27 +115,31 @@ const selectStatus = async (event: Event) => {
         @change="selectGuardian"
       />
     </td>
-    <th scope="row" style="cursor: pointer" @click="navigateToUser(lead.id)">
+    <th
+      scope="row"
+      style="cursor: pointer"
+      @click="navigateToUser(lead.family_id)"
+    >
       <label class="form-check-label text-muted" for="tomjones">
         {{ lead.student?.first_name }} {{ lead.student?.last_name }}
       </label>
     </th>
-    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+    <td style="cursor: pointer" @click="navigateToUser(lead.family_id)">
       {{ lead.student.age }}
     </td>
-    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+    <td style="cursor: pointer" @click="navigateToUser(lead.family_id)">
       {{ lead.venue }}
     </td>
-    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+    <td style="cursor: pointer" @click="navigateToUser(lead.family_id)">
       {{ cleanDate(lead.date_of_booking) }}
     </td>
-    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+    <td style="cursor: pointer" @click="navigateToUser(lead.family_id)">
       {{ lead.who_booked }}
     </td>
-    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+    <td style="cursor: pointer" @click="navigateToUser(lead.family_id)">
       {{ lead?.membership_plan.name }}
     </td>
-    <td style="cursor: pointer" @click="navigateToUser(lead.id)">
+    <td style="cursor: pointer" @click="navigateToUser(lead.family_id)">
       {{ lead.lifecycle_of_membership }}
     </td>
     <td style="cursor: pointer">

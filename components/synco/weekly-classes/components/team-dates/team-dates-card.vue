@@ -17,8 +17,8 @@ const addOrdinalSuffix = (day: number): string => {
   return `${day}${suffix[(value - 20) % 10] || suffix[value] || suffix[0]}`
 }
 
-// Función para formatear la fecha en el formato requerido
 const formatCustomDate = (startDate: string, endDate: string): string => {
+  console.log('startDate', startDate)
   const start = parseISO(startDate)
   const end = parseISO(endDate)
 
@@ -30,6 +30,9 @@ const formatCustomDate = (startDate: string, endDate: string): string => {
     parseInt(format(end, 'd')),
   )} ${format(end, 'MMM yyyy')}`
 
+  if (formattedStart === formattedEnd) {
+    return formattedStart
+  }
   return `${formattedStart} - ${formattedEnd}`
 }
 

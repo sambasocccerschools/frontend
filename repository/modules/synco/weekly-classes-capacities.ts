@@ -7,37 +7,49 @@ import type {
 
 class WeeklyClassesCapacitiesModule extends FetchFactory {
   private RESOURCE = '/weeklyClassesCapacities'
-  private token = useCookie('token')
-  private fetchOptions: FetchOptions<'json'> = {
-    headers: {
-      Authorization: `${this.token.value}`,
-    },
-  }
 
   async getAll() {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IWeeklyClassesCapacitiesResponse>(
       'GET',
-      `${this.RESOURCE}/get_all`,
+      `${this.RESOURCE}/get_capacities`,
       undefined,
-      this.fetchOptions,
+      fetchOptions,
     )
   }
 
   async exportExcel() {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<any>(
       'GET',
       `${this.RESOURCE}/exportExcel`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 
   async getReporting() {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IWeeklyClassesCapacitiesReportingResponse>(
       'GET',
       `${this.RESOURCE}/reporting`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 }

@@ -84,30 +84,31 @@
     </div>
     <div class="row">
       <div class="col-4">
-        <!-- <div class="card rounded-4 mt-4 px-3">
+        <div class="card rounded-4 mt-4 px-3">
           <h5 class="py-4"><strong>Enter information</strong></h5>
           <div class="row">
             <div class="col-12">
-              <div class="w-100 mb-3">
+              <div class="form-group w-100 mb-3">
                 <label for="venueInfo" class="form-labelform-label-light"
                   >Venue</label
                 >
-                <div class="input-group input-group-lg">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">
-                      <Icon name="ph:magnifying-glass" class="indicator"
-                    /></span>
-                  </div>
-                  <input
-                    id="venueInfo"
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter venue"
-                  />
-                </div>
+                <select
+                  id="venueInfo"
+                  v-model="venue_id"
+                  class="form-control form-control-lg"
+                >
+                  <option value="0">Choose venue</option>
+                  <option
+                    v-for="venue in venues"
+                    :key="venue.id"
+                    :value="venue.id"
+                  >
+                    {{ venue.name }}
+                  </option>
+                </select>
               </div>
             </div>
-            <div class="col-12">
+            <!-- <div class="col-12">
               <div class="form-group w-100 mb-3">
                 <label
                   for="studentsNumberInfo"
@@ -123,41 +124,25 @@
                   step="1"
                 />
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
-        <div class="card rounded-4 mt-4 px-3">
-          <h5 class="py-4"><strong>Select start date</strong></h5>
-          <SyncoFilterByCalendar :classDate="classDate" />
-        </div> -->
+        <div class="card rounded-4 mt-4 px-3 pb-3">
+          <h5 class="py-4"><strong>Select trial date</strong></h5>
+          <SyncoCustomCalendar
+            :allowed-day="getCurrentAllowDay()"
+            @update:start-date="startDate = $event"
+          />
+        </div>
       </div>
 
       <div class="col-8">
-        <SyncoWeeklyClassesFormsParentForm :parent="parent">
-          <template v-slot:internal_title>
-            <div
-              class="d-flex justify-content-between align-items-center flex-row"
-            >
-              <h5 class="m-0 py-4">
-                <strong>Parent information</strong>
-              </h5>
-              <!-- <button
-                type="button"
-                class="btn btn-primary text-light"
-                @click="addParent"
-              >
-                Add Parent
-              </button> -->
-            </div>
-          </template>
-        </SyncoWeeklyClassesFormsParentForm>
-
         <SyncoWeeklyClassesFormsStudentForm :student="student">
-          <template v-slot:internal_title>
+          <template #internal_title>
             <h5 class="py-4"><strong>Student information</strong></h5>
           </template>
-          <template v-slot:additional_rows>
-            <!-- <div class="row">
+          <!-- <template #additional_rows>
+            <div class="row">
               <div class="col-6">
                 <div class="form-group w-100 mb-3">
                   <label for="studentClass" class="form-labelform-label-light"
@@ -198,18 +183,51 @@
                   </select>
                 </div>
               </div>
-            </div> -->
-          </template>
+            </div>
+          </template> -->
         </SyncoWeeklyClassesFormsStudentForm>
 
+        <SyncoWeeklyClassesFormsParentForm :parent="parent">
+          <template #internal_title>
+            <div
+              class="d-flex justify-content-between align-items-center flex-row"
+            >
+              <h5 class="m-0 py-4">
+                <strong>Parent information</strong>
+              </h5>
+              <!-- <button
+                type="button"
+                class="btn btn-primary text-light"
+                @click="addParent"
+              >
+                Add Parent
+              </button> -->
+            </div>
+          </template>
+        </SyncoWeeklyClassesFormsParentForm>
+
         <SyncoWeeklyClassesFormsEmergencyContactForm
-          :emergencyContact="emergency_contact"
+          :emergency-contact="emergency_contact"
         >
-          <template v-slot:internal_title>
-            <h5 class="py-4">
-              <strong>Emergency contact details</strong>
-              <!-- <Icon name="ph:pencil-simple-line" /> -->
-            </h5>
+          <template #internal_title>
+            <h5 class="py-4"><strong>Emergency contact details</strong></h5>
+            <div class="row mb-4">
+              <div class="col-12">
+                <div class="form-check">
+                  <input
+                    id="sameAsAbove"
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    :disabled="!filledParentInfo"
+                    @input="copyParentInformation"
+                  />
+                  <label class="form-check-label" for="sameAsAbove">
+                    Fill same as above
+                  </label>
+                </div>
+              </div>
+            </div>
           </template>
         </SyncoWeeklyClassesFormsEmergencyContactForm>
 
@@ -258,38 +276,40 @@ import type {
   IGuardianCreate,
   IStudentCreate,
   IEmregencyContactCreate,
-  IWeeklyClassesFreeTrialCreate,
+  IAvailableVenueObject,
 } from '~/types/synco/index'
 
 const router = useRouter()
 const { $api } = useNuxtApp()
 const toast = useToast()
 const store = generalStore()
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
 const changeLoadingState = (state: boolean) => {
   isLoading.value = state
   blockButtons.value = state
 }
 
-let weekly_class_id = ref<number>(0)
-let venue_id = ref<string>('')
-let agent_id = ref<string>('')
-let showSubscriptionCard = ref<boolean>(false)
-let showCalculatorCard = ref<boolean>(false)
-let showScriptCard = ref<boolean>(false)
-let newComment = ref<string>('')
+const weekly_class_id = ref<number>(0)
+const venue_id = ref<string>('')
+const agent_id = ref<string>('')
+const showSubscriptionCard = ref<boolean>(false)
+const showCalculatorCard = ref<boolean>(false)
+const showScriptCard = ref<boolean>(false)
+const newComment = ref<string>('')
+const filledParentInfo = ref<boolean>(false)
+const classData = ref<any>({})
 
-let parent = ref<IGuardianCreate>({
+const parent = ref<IGuardianCreate>({
   id: '',
   first_name: '',
   last_name: '',
   email: '',
   phone_number: '',
-  relationship_id: 0,
-  referral_source_id: 0,
+  relationship_code: 0,
+  referral_source_code: 0,
 })
-let student = ref<IStudentCreate>({
+const student = ref<IStudentCreate>({
   id: '',
   first_name: '',
   last_name: '',
@@ -298,14 +318,14 @@ let student = ref<IStudentCreate>({
   gender_id: 0,
   medical_information: '',
 })
-let emergency_contact = ref<IEmregencyContactCreate>({
+const emergency_contact = ref<IEmregencyContactCreate>({
   id: 0,
   first_name: '',
   last_name: '',
   phone_number: '',
   relationship_id: 0,
 })
-let comments = ref<Array<IComment>>([
+const comments = ref<Array<IComment>>([
   // {
   //   text: '',
   //   avatar: '',
@@ -314,15 +334,49 @@ let comments = ref<Array<IComment>>([
   // },
 ])
 
+const startDate = ref<string>('')
+
+const venues = ref<IAvailableVenueObject[]>(store.availableVenues)
+
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/create/free-trial.vue')
-  let queryClassId = router.currentRoute.value.query.class_id
-  if (!!queryClassId) weekly_class_id.value = +queryClassId
-  let queryVenueId = router.currentRoute.value.query.venue_id
-  if (!!queryVenueId) venue_id.value = queryVenueId.toString()
-  let agentId = store.user?.id
-  if (!!agentId) agent_id.value = agentId
+  const queryClassId = router.currentRoute.value.query.class_id
+  if (queryClassId) weekly_class_id.value = +queryClassId
+  const queryVenueId = router.currentRoute.value.query.venue_id
+  if (queryVenueId) venue_id.value = queryVenueId.toString()
+  const agentId = store.user?.id
+  if (agentId) agent_id.value = agentId
+
+  await getClassData()
+
+  filledParentInfo.value = isParentInfoFilled()
 })
+
+watch(
+  parent,
+  () => {
+    filledParentInfo.value = isParentInfoFilled()
+  },
+  { deep: true },
+)
+
+const getClassData = async () => {
+  try {
+    const response = await $api.weeklyClasses.getWeeklyClassesById(
+      weekly_class_id.value,
+    )
+    classData.value = response?.data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    changeLoadingState(false)
+  }
+}
+
+const updateStartDate = (date: string) => {
+  startDate.value = date
+}
 
 const toggleSubscriptionCard = () => {
   showSubscriptionCard.value = !showSubscriptionCard.value
@@ -350,28 +404,63 @@ const addComment = (comment: string) => {
   newComment.value = comment
 }
 
+const copyParentInformation = () => {
+  emergency_contact.value.first_name = parent.value.first_name
+  emergency_contact.value.last_name = parent.value.last_name
+  emergency_contact.value.phone_number = parent.value.phone_number
+  emergency_contact.value.relationship_id = parent.value.relationship_code
+}
+
+const isParentInfoFilled = (): boolean => {
+  const requiredFields: Array<keyof typeof parent.value> = [
+    'first_name',
+    'last_name',
+    'email',
+    'phone_number',
+    'relationship_code',
+  ]
+
+  return requiredFields.every((field) => Boolean(parent.value[field]))
+}
+
+const getCurrentAllowDay = () => {
+  const daysList = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ]
+
+  return daysList.indexOf(classData.value?.days)
+}
+
 const createData = async () => {
-  let data: IWeeklyClassesFreeTrialCreate = {
+  const data: any = {
     weekly_class_id: weekly_class_id.value,
-    agent_id: agent_id.value,
-    guardians: [
-      {
-        first_name: parent.value.first_name,
-        last_name: parent.value.last_name,
-        email: parent.value.email,
-        phone_number: parent.value.phone_number,
-        relationship_id: parent.value.relationship_id,
-        referral_source_id: parent.value.referral_source_id,
-      },
-    ],
+    // agent_id: agent_id.value,
+    free_trial_status_code: 'PENDING_FTS',
+    trial_date: startDate.value,
     students: [
       {
         first_name: student.value.first_name,
         last_name: student.value.last_name,
         dob: student.value.dob,
         age: student.value.age,
-        gender_id: student.value.gender_id,
+        gender: student.value.gender_id,
         medical_information: student.value.medical_information,
+      },
+    ],
+    guardians: [
+      {
+        first_name: parent.value.first_name,
+        last_name: parent.value.last_name,
+        email: parent.value.email,
+        phone_number: parent.value.phone_number,
+        relationship_code: parent.value.relationship_code,
+        referral_source_code: parent.value.referral_source_code,
       },
     ],
     emergency_contacts: [
@@ -382,11 +471,12 @@ const createData = async () => {
         relationship_id: emergency_contact.value.relationship_id,
       },
     ],
-    comments: [newComment.value],
+    // comments: [newComment.value],
   }
   try {
     changeLoadingState(true)
-    const response = await $api.wcFreeTrials.create(data)
+    console.log(data)
+    const response = await $api.wcFreeTrials.createFromFindAClass(data)
     await router.push({ path: `/synco/weekly-classes/trials` })
     console.log(response)
   } catch (error: any) {

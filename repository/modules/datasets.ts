@@ -2,6 +2,9 @@ import type { FetchOptions } from 'ofetch'
 import FetchFactory from '../factory'
 
 class DatasetsModule extends FetchFactory {
+  getEnrolledWeeklyClass(familiId: number, arg1: boolean) {
+    throw new Error('Method not implemented.')
+  }
   private RESOURCE = '/udc'
 
   async fetchAllData() {

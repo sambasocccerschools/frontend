@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toast-notification'
 import type {
   ISessionPlanCreateUpdateItem,
@@ -10,18 +10,20 @@ const router = useRouter()
 const { $api } = useNuxtApp()
 const toast = useToast()
 
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
-let abilityId = ref<number | null>(null)
-let newExcercise = ref<ISessionPlanExcerciseCreateItem>({
+const isLoading = ref(false)
+const blockButtons = ref(false)
+const abilityId = ref<number | null>(null)
+
+const newExcercise = ref<ISessionPlanExcerciseCreateItem>({
   title: '',
   subtitle: '',
-  description: '',
-  banner: null,
-  video: null,
   title_duration: '',
+  description: '',
+  json_urls: [],
+  videoInput: '',
 })
-let newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
+
+const newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
   title: '',
   description: '',
   ability_group_id: 0,
@@ -30,140 +32,210 @@ let newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
   exercises: [],
 })
 
-let imageSizeLimit = ref<number>(5120000).value
-let videoSizeLimit = ref<number>(51200000).value
+const imageSizeLimit = 5120000
 
-onMounted(async () => {
+onMounted(() => {
   console.log('components/synco/config/session-plans/create-form.vue')
-  let queryAbilityId = router.currentRoute.value.query?.abilityId
-  abilityId.value = !!queryAbilityId ? +queryAbilityId : -1
+  abilityId.value = Number(router.currentRoute.value.query?.abilityId) || -1
   newSessionPlan.value.ability_group_id = abilityId.value
   addNewExercise()
 })
+
 const addNewExercise = () => {
-  newSessionPlan.value.exercises.push(
-    JSON.parse(JSON.stringify(newExcercise.value)),
-  )
-  video2Input.value.push(null)
-  video2Input.value.push(null)
-  // let index = newSessionPlan.value.exercises.length - 1
+  newSessionPlan.value.exercises.push({ ...newExcercise.value, videoInput: '' })
 }
 
-let bannerInput = ref<HTMLInputElement | null>(null)
-let banner = ref<File>()
-let bannerPreview = ref<string | null>(null)
+const bannerInput = ref<HTMLInputElement | null>(null)
+const bannerPreview = ref<string | null>(null)
+const bannerFormData = ref<FormData | null>(null)
 
 const handleBannerChange = async () => {
-  const files = bannerInput.value?.files!
-  const file = files?.[0]
-  if (file.size >= imageSizeLimit) {
-    alert('Image to big!')
-    return
-  }
-  banner.value = file
-  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-    type: file.type,
-  })
-  newSessionPlan.value.banner = fileBlob
-  bannerPreview.value = file ? URL.createObjectURL(file) : null
+  const file = bannerInput.value?.files?.[0]
+  if (!file || file.size >= imageSizeLimit) return alert('Image too big!')
+
+  bannerPreview.value = URL.createObjectURL(file)
+  bannerFormData.value = new FormData()
+  bannerFormData.value.append('file', file)
+  bannerFormData.value.append(
+    'fields',
+    JSON.stringify({
+      title: 'Front end SSS',
+      type: 'IMG',
+      description: 'Descripción del documento',
+      id_for_table: 1,
+      table: 'USER',
+      action_type: 'PROFILE_PICTURE',
+      user_id: 5,
+      is_public: 1,
+    }),
+  )
 }
 
-let videoInput = ref<HTMLInputElement | null>(null)
-let video = ref<File>()
-let videoPreview = ref<string | null>(null)
-
-const handleVideoChange = async () => {
-  const files = videoInput.value?.files!
-  const file = files?.[0]
-  if (file.size >= videoSizeLimit) {
-    alert('Video to big!')
-    return
-  }
-  video.value = file
-  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-    type: file.type,
-  })
-  newSessionPlan.value.video = fileBlob
-  videoPreview.value = file ? URL.createObjectURL(file) : null
-}
-
-let imageInput = ref<Array<HTMLInputElement | null>>([])
-let image = ref<Array<File>>([])
-let imagePreview = ref<Array<string | null>>([])
+const imageInput = ref<Array<HTMLInputElement | null>>([])
+const imagePreview = ref<Array<string | null>>([])
 
 const handleImageInput = (event: Event, index: number) => {
   if (event.target instanceof HTMLInputElement) {
-    const inputElement = event.target
-    imageInput.value[index] = inputElement
+    imageInput.value[index] = event.target
   }
 }
 
 const handleImageChange = async (index: number) => {
-  const files = imageInput.value[index]?.files!
-  const file = files?.[0]
-  if (file.size >= imageSizeLimit) {
-    alert('Image to big!')
-    return
-  }
-  if (image.value[index] != null) {
-    image.value[index] = file
-  }
-  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-    type: file.type,
-  })
-  newSessionPlan.value.exercises[index].banner = fileBlob
-  imagePreview.value[index] = file ? URL.createObjectURL(file) : null
-}
+  const file = imageInput.value[index]?.files?.[0]
+  if (!file || file.size >= imageSizeLimit) return alert('Image too big!')
 
-let video2Input = ref<Array<HTMLInputElement | null>>([])
-let video2 = ref<Array<File>>([])
-let video2Preview = ref<Array<string | null>>([])
-
-const handleVideo2Input = (event: Event, index: number) => {
-  if (event.target instanceof HTMLInputElement) {
-    const inputElement = event.target
-    video2Input.value[index] = inputElement
-  }
-}
-const handleVideo2Change = async (index: number) => {
-  const files = video2Input.value[index]?.files!
-  const file = files?.[0]
-  if (file.size >= videoSizeLimit) {
-    alert('Video to big!')
-    return
-  }
-  if (video2.value[index] != null) {
-    video2.value[index] = file
-  }
-  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
-    type: file.type,
+  imagePreview.value[index] = URL.createObjectURL(file)
+  newSessionPlan.value.exercises[index].json_urls ||= []
+  newSessionPlan.value.exercises[index].json_urls.push({
+    extension: file.type.split('/')[1],
+    url: '',
+    type: 'IMG',
+    file,
   })
-  newSessionPlan.value.exercises[index].video = fileBlob
-  video2Preview.value[index] = file ? URL.createObjectURL(file) : null
 }
 
 const updateDescription = (index: number, description: string) => {
   newSessionPlan.value.exercises[index].description = description
 }
 
-const onSubmit = async () => {
-  try {
-    isLoading.value = true
-    blockButtons.value = true
-    const sessionPlansResponse = await $api.sessionPlans.create(
-      newSessionPlan.value,
-    )
-    router.push('/synco/config/weekly-classes/session-plans')
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-  } finally {
-    isLoading.value = false
-    blockButtons.value = false
+const uploadExerciseImages = async () => {
+  for (const [i, exercise] of newSessionPlan.value.exercises.entries()) {
+    if (!exercise.json_urls?.length) continue
+
+    for (const [j, image] of exercise.json_urls.entries()) {
+      if (!image.file) continue
+
+      try {
+        const formData = new FormData()
+        formData.append('file', image.file)
+        formData.append(
+          'fields',
+          JSON.stringify({
+            title: `Exercise ${i + 1} - Image ${j + 1}`,
+            type: 'IMG',
+            description: `Image for exercise: ${exercise.title}`,
+            id_for_table: 1,
+            table: 'USER',
+            action_type: 'PROFILE_PICTURE',
+            user_id: 5,
+            is_public: 1,
+          }),
+        )
+
+        const response = await $api.documents.create(
+          JSON.parse(formData.get('fields') as string),
+          formData.get('file') as File,
+        )
+
+        if (!response || response.status.http_code !== 200) {
+          throw new Error(
+            `Error uploading image ${j + 1} for exercise ${i + 1}`,
+          )
+        }
+
+        image.url = response.data.url
+        image.extension = response.data.extension
+        delete image.file
+      } catch (error) {
+        console.error(`❌ Image upload failed for exercise ${i + 1}:`, error)
+      }
+    }
   }
 }
-</script>
 
+const handleVideoUrlChange = (index: number) => {
+  const exercise = newSessionPlan.value.exercises[index]
+  const videoUrl = exercise.videoInput?.trim() ?? ''
+  if (!videoUrl) return
+
+  exercise.json_urls =
+    exercise.json_urls?.filter((item) => item.type !== 'VIDEO') ?? []
+  exercise.json_urls.push({ url: videoUrl, type: 'VIDEO', extension: '' })
+}
+
+const onSubmit = async () => {
+  try {
+    isLoading.value = blockButtons.value = true
+
+    await uploadExerciseImages()
+
+    let bannerUrl = null
+    if (bannerFormData.value) {
+      try {
+        console.log('🚀 Subiendo banner...')
+        const response = await $api.documents.create(
+          JSON.parse(bannerFormData.value.get('fields') as string),
+          bannerFormData.value.get('file') as File,
+        )
+
+        if (!response || response.status.http_code !== 200)
+          throw new Error('Error uploading banner')
+        bannerUrl = response.data.url
+      } catch (error) {
+        console.error('❌ Failed to upload banner:', error)
+        toast.error('Error uploading banner')
+        return
+      }
+    }
+
+    const formattedExercises = newSessionPlan.value.exercises.map(
+      ({ title, subtitle, title_duration, description, json_urls }) => ({
+        title,
+        subtitle,
+        title_duration,
+        description,
+        json_urls: json_urls.map(({ extension, url, type }) => ({
+          extension,
+          url,
+          type,
+        })),
+      }),
+    )
+
+    const payload = {
+      title: newSessionPlan.value.title,
+      description: newSessionPlan.value.description,
+      banner: bannerUrl,
+      video: newSessionPlan.value.video,
+      ability_group_id: newSessionPlan.value.ability_group_id,
+      exercises: formattedExercises,
+    }
+
+    console.log('✅ Final payload:', payload)
+    const sessionResponse = await $api.sessionPlans.create(payload)
+
+    if (!sessionResponse || sessionResponse?.status?.http_code !== 200) {
+      throw new Error('Error creating session plan')
+    }
+
+    router.push('/synco/config/weekly-classes/session-plans')
+  } catch (error) {
+    console.error('❌ Error en onSubmit:', error)
+    toast.error('Error creating session plan')
+  } finally {
+    isLoading.value = blockButtons.value = false
+  }
+}
+
+const getEmbedUrl = (url: string) => {
+  if (!url) return ''
+
+  // Detecta si es un enlace corto de YouTube (youtu.be)
+  const shortUrlMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/)
+  if (shortUrlMatch) {
+    return `https://www.youtube.com/embed/${shortUrlMatch[1]}`
+  }
+
+  // Detecta si es un enlace normal de YouTube (watch?v=)
+  const normalUrlMatch = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/)
+  if (normalUrlMatch) {
+    return `https://www.youtube.com/embed/${normalUrlMatch[1]}`
+  }
+
+  // Si no es de YouTube, devolver el mismo URL
+  return url
+}
+</script>
 <template>
   <div class="card rounded-4">
     <div class="row my-4">
@@ -179,10 +251,10 @@ const onSubmit = async () => {
                 </label>
                 <input
                   id="title"
+                  v-model="newSessionPlan.title"
                   type="text"
                   class="form-control form-control-lg"
                   placeholder=""
-                  v-model="newSessionPlan.title"
                 />
               </div>
               <div class="form-group w-100 mb-3">
@@ -191,10 +263,10 @@ const onSubmit = async () => {
                 </label>
                 <input
                   id="description"
+                  v-model="newSessionPlan.description"
                   type="text"
                   class="form-control form-control-lg"
                   placeholder=""
-                  v-model="newSessionPlan.description"
                 />
               </div>
             </div>
@@ -211,26 +283,44 @@ const onSubmit = async () => {
               <img
                 v-if="bannerPreview"
                 :src="bannerPreview"
-                style="max-width: 200px"
+                class="img-preview"
               />
             </div>
             <div class="col-12 d-flex flex-column mb-3">
-              <label for="video" class="form-label"> Add video </label>
+              <label for="video" class="form-label">Add video URL</label>
               <input
                 id="video-file"
-                ref="videoInput"
-                type="file"
-                name="video"
-                accept="video/*"
-                @change="handleVideoChange"
+                v-model="newSessionPlan.video"
+                type="text"
+                class="form-control form-control-lg"
+                placeholder="Video URL"
               />
-              <video
-                v-if="videoPreview"
-                :src="videoPreview"
-                style="max-height: 200px"
-                class="rounded-4"
-                controls
-              ></video>
+              <!-- Preview del video -->
+              <div v-if="newSessionPlan.video" style="margin: 20px 0">
+                <iframe
+                  v-if="
+                    newSessionPlan.video.includes('youtube.com') ||
+                    newSessionPlan.video.includes('youtu.be')
+                  "
+                  :src="getEmbedUrl(newSessionPlan.video)"
+                  width="583"
+                  height="296"
+                  frameborder="0"
+                  allowfullscreen
+                  style="border-radius: 7px"
+                ></iframe>
+
+                <video
+                  v-else
+                  controls
+                  width="583"
+                  height="300"
+                  style="border-radius: 7px"
+                >
+                  <source :src="newSessionPlan.video" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
             </div>
             <hr />
           </div>
@@ -244,8 +334,9 @@ const onSubmit = async () => {
             <span class="h4">Exercise || {Skill}</span>
           </div>
           <div
-            class="row"
             v-for="(excercise, index) in newSessionPlan.exercises"
+            :key="index"
+            class="row"
           >
             <div class="col-12">
               <div class="form-group w-100 mb-3">
@@ -257,10 +348,10 @@ const onSubmit = async () => {
                 </label>
                 <input
                   :id="`exercise[${index}][title]`"
+                  v-model="excercise.title"
                   type="text"
                   class="form-control form-control-lg"
                   placeholder=""
-                  v-model="excercise.title"
                 />
               </div>
               <div class="form-group w-100 mb-3">
@@ -272,10 +363,10 @@ const onSubmit = async () => {
                 </label>
                 <input
                   :id="`exercise[${index}][subtitle]`"
+                  v-model="excercise.subtitle"
                   type="text"
                   class="form-control form-control-lg"
                   placeholder=""
-                  v-model="excercise.subtitle"
                 />
               </div>
               <div class="form-group w-100 mb-3">
@@ -287,10 +378,10 @@ const onSubmit = async () => {
                 </label>
                 <input
                   :id="`exercise[${index}][duration]`"
+                  v-model="excercise.title_duration"
                   type="text"
                   class="form-control form-control-lg"
                   placeholder=""
-                  v-model="excercise.title_duration"
                 />
               </div>
             </div>
@@ -300,16 +391,16 @@ const onSubmit = async () => {
               </label>
               <input
                 :id="`exercise[${index}][banner]`"
-                @input="handleImageInput($event, index)"
                 type="file"
                 :name="`exercise[${index}][banner]`"
                 accept="image/*"
+                @input="handleImageInput($event, index)"
                 @change="handleImageChange(index)"
               />
               <img
                 v-if="imagePreview[index]"
                 :src="imagePreview[index]"
-                style="max-width: 200px"
+                class="img-preview"
               />
             </div>
             <div class="col-12">
@@ -332,24 +423,47 @@ const onSubmit = async () => {
               </div>
             </div>
             <div class="col-12 d-flex flex-column">
-              <label :for="`exercise[${index}][video]`" class="form-label">
-                Add one or more videos
-              </label>
-              <input
-                :id="`exercise[${index}][video]`"
-                @input="handleVideo2Input($event, index)"
-                type="file"
-                :name="`exercise[${index}][video]`"
-                accept="video/*"
-                @change="handleVideo2Change(index)"
-              />
-              <video
-                v-if="video2Preview[index]"
-                :src="video2Preview[index]"
-                style="max-height: 200px"
-                class="rounded-4"
-                controls
-              ></video>
+              <div class="col-12 d-flex flex-column">
+                <label :for="`exercise[${index}][video]`" class="form-label">
+                  Add one or more videos
+                </label>
+                <input
+                  :id="`exercise[${index}][video]`"
+                  v-model="excercise.videoInput"
+                  :name="`exercise[${index}][video]`"
+                  type="text"
+                  class="form-control form-control-lg"
+                  placeholder="Enter YouTube or video URL"
+                  @input="handleVideoUrlChange(index)"
+                />
+
+                <!-- Preview del video -->
+                <div v-if="excercise.videoInput" style="margin: 20px 0">
+                  <iframe
+                    v-if="
+                      excercise.videoInput.includes('youtube.com') ||
+                      excercise.videoInput.includes('youtu.be')
+                    "
+                    :src="getEmbedUrl(excercise.videoInput)"
+                    width="583"
+                    height="296"
+                    frameborder="0"
+                    allowfullscreen
+                    style="border-radius: 7px"
+                  ></iframe>
+
+                  <video
+                    v-else
+                    controls
+                    width="583"
+                    height="300"
+                    style="border-radius: 7px"
+                  >
+                    <source :src="excercise.videoInput" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
             </div>
 
             <hr class="my-4" />
@@ -363,8 +477,8 @@ const onSubmit = async () => {
       <div class="col-3">
         <button
           class="btn btn-outline-primary w-100"
-          @click="addNewExercise"
           :disabled="blockButtons"
+          @click="addNewExercise"
         >
           Add new exercise
         </button>
@@ -389,3 +503,11 @@ const onSubmit = async () => {
     </div>
   </div>
 </template>
+<style scoped lang="scss">
+.img-preview {
+  border-radius: 20px;
+  width: 250px;
+  height: auto;
+  margin: 20px 0;
+}
+</style>

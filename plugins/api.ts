@@ -22,6 +22,7 @@ import AccountInformationModule from '~/repository/modules/synco/account-informa
 import FeedbackModule from '~/repository/modules/synco/feedback'
 import WeeklyClassesCapacitiesModule from '~/repository/modules/synco/weekly-classes-capacities'
 import SubscriptionPlansModule from '~/repository/modules/synco/susbscriptionPlans'
+import DocumentsModule from '~/repository/modules/synco/documents'
 
 /** ApiInstance interface provides us with good typing */
 interface IApiInstance {
@@ -46,6 +47,7 @@ interface IApiInstance {
   feedback: FeedbackModule
   wcCapacities: WeeklyClassesCapacitiesModule
   subscriptionPlans: SubscriptionPlansModule
+  documents: DocumentsModule
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -90,6 +92,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     feedback: new FeedbackModule(apiFetcher),
     wcCapacities: new WeeklyClassesCapacitiesModule(apiFetcher),
     subscriptionPlans: new SubscriptionPlansModule(apiFetcher),
+    documents: new DocumentsModule(apiFetcher),
   }
   return {
     provide: {

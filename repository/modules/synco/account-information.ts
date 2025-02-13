@@ -7,12 +7,12 @@ import type {
 } from '~/types/synco'
 
 class AccountInformationModule extends FetchFactory {
-  private RESOURCE = '/v1/accountInformation'
+  private RESOURCE = '/accountInformation'
 
   async getById(id: number) {
     return this.call<IAccountInformationResponse>(
       'GET',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/get?id=${id}`,
       undefined,
       undefined,
     )

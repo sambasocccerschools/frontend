@@ -58,55 +58,53 @@ class TermsModule extends FetchFactory {
     )
   }
 
-  async update(id: number, term: ITermEditItem) {
+  // async update(id: number, term: ITermEditItem) {
+  //   const token = useCookie('token')
+  //   const fetchOptions: FetchOptions<'json'> = {
+  //     headers: {
+  //       Authorization: `${token.value}`,
+  //     },
+  //   }
+  //   const sessions = []
+  //   term.sessions?.forEach((session) => {
+  //     if (session.id <= 0) {
+  //       const plans = []
+  //       session.plans?.forEach((plan) => {
+  //         plans.push({
+  //           ability_group_id: plan.ability_group_id,
+  //           session_plan_id: plan.session_plan_id,
+  //         })
+  //       })
+  //       sessions.push({
+  //         plans: plans,
+  //       })
+  //     } else {
+  //       sessions.push(session)
+  //     }
+  //   })
+  //   const body = {
+  //     season_id: term.season_id,
+  //     name: term.name,
+  //     end_date: term.end_date,
+  //     start_date: term.start_date,
+  //     half_term_date: term.half_term_date,
+  //     sessions: sessions,
+  //   }
+  //   return this.call<ITermsSuccessfulResponse>(
+  //     'PUT',
+  //     `${this.RESOURCE}/edit?id=${id}`,
+  //     body,
+  //     fetchOptions,
+  //   )
+  // }
+
+  async updateNew(id: number, term: ITermEditItem) {
     const token = useCookie('token')
     const fetchOptions: FetchOptions<'json'> = {
       headers: {
         Authorization: `${token.value}`,
       },
     }
-    const sessions = []
-    term.sessions?.forEach((session) => {
-      if (session.id <= 0) {
-        const plans = []
-        session.plans?.forEach((plan) => {
-          plans.push({
-            ability_group_id: plan.ability_group_id,
-            session_plan_id: plan.session_plan_id,
-          })
-        })
-        sessions.push({
-          plans: plans,
-        })
-      } else {
-        sessions.push(session)
-      }
-    })
-    const body = {
-      season_id: term.season_id,
-      name: term.name,
-      end_date: term.end_date,
-      start_date: term.start_date,
-      half_term_date: term.half_term_date,
-      sessions: sessions,
-    }
-    return this.call<ITermsSuccessfulResponse>(
-      'PUT',
-      `${this.RESOURCE}/edit?id=${id}`,
-      body,
-      fetchOptions,
-    )
-  }
-
-  async updateNew(id: number, term: any) {
-    const token = useCookie('token')
-    const fetchOptions: FetchOptions<'json'> = {
-      headers: {
-        Authorization: `${token.value}`,
-      },
-    }
-
-    console.log(term.sessions)
 
     const sessions: any[] = []
     term.sessions?.forEach((session: any) => {
@@ -126,8 +124,6 @@ class TermsModule extends FetchFactory {
       }
     })
 
-    console.log('sessions')
-    console.log(sessions)
     const body = {
       season_code: term.season_code,
       name: term.name,
