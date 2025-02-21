@@ -16,7 +16,7 @@
       />
       <div class="d-flex flex-column text-light">
         <span class="h4 m-0"><strong>Account Holder</strong></span>
-        <span>John Doe / Father</span>
+        <span>{{ `${holder[0].first_name} ${holder[0].last_name}` }}</span>
       </div>
     </div>
     <div class="d-flex flex-column text-light px-3">
@@ -30,8 +30,10 @@ import { ref } from 'vue'
 const props = defineProps<{
   headerColor: string
   accountStatus: string
+  holder: any
 }>()
 
-let headerColor = ref<string>(props.headerColor).value
-let accountStatus = ref<string>(props.accountStatus).value
+const headerColor = ref<string>(props.headerColor).value
+const accountStatus = ref<string>(props.accountStatus).value
+const holder = ref<any>(props.holder).value
 </script>
