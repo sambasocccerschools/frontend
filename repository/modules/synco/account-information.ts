@@ -10,11 +10,17 @@ class AccountInformationModule extends FetchFactory {
   private RESOURCE = '/accountInformation'
 
   async getById(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IAccountInformationResponse>(
       'GET',
       `${this.RESOURCE}/get?id=${id}`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 

@@ -70,6 +70,7 @@ export default {
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useToast } from 'vue-toast-notification'
+import { date } from 'yup'
 import { generalStore } from '~/stores'
 import type { IComment, ICandidateEventItem, IIdTitleItem } from '~/types/index'
 import type {
@@ -186,6 +187,7 @@ const getAccountInformation = async () => {
 
     serviceHistoryWeecklyClasses.value = response.data.service_history
 
+    console.log('serviceHistoryWeecklyClasses.value')
     console.log(serviceHistoryWeecklyClasses.value)
 
     // response.data.service_history['weekly-classes']
@@ -317,6 +319,47 @@ const selectedDetails = ref('')
 const seeDetails = (details: string) => {
   selectedDetails.value = details
   showServiceHistoryDetails.value = !showServiceHistoryDetails.value
+}
+
+const getServiceHistory = (index: number) => {
+  return {
+    accountInfo: {
+      holder: `${parent.value?.[index]?.first_name} ${parent.value?.[index]?.last_name}`,
+      membership:
+        serviceHistoryWeecklyClasses.value?.[index]?.subscription_plan_price
+          ?.name ?? '',
+      students:
+        serviceHistoryWeecklyClasses.value?.[index]?.subscription_plan_price
+          ?.student_coverage?.title ?? '',
+      venue:
+        serviceHistoryWeecklyClasses.value?.[index]?.weekly_class?.venue.name,
+      monthlyPrice:
+        serviceHistoryWeecklyClasses.value?.[index]?.subscription_plan_price
+          ?.monthly_subscription_fee ?? '',
+      dateOfBooking:
+        serviceHistoryWeecklyClasses.value?.[index]?.created_date ?? '',
+      bookingSource: `${serviceHistoryWeecklyClasses.value?.[index]?.agent?.first_name ?? ''} ${serviceHistoryWeecklyClasses.value?.[index]?.agent?.last_name ?? ''}`,
+    },
+  }
+}
+
+const getStudentBookingInfo = (index: number) => {
+  return {
+    student: {
+      firstName: student.value?.[index]?.first_name ?? '',
+      lastName: student.value?.[index]?.last_name ?? '',
+    },
+    bookingInfo: {
+      startDate: serviceHistoryWeecklyClasses.value?.[index]?.start_date ?? '',
+      venue:
+        serviceHistoryWeecklyClasses.value?.[index]?.weekly_class.venue?.name ??
+        '',
+      classAgeRange: `${serviceHistoryWeecklyClasses.value?.[index]?.weekly_class?.min_age ?? ''} - ${serviceHistoryWeecklyClasses.value?.[index]?.weekly_class?.max_age ?? ''} years`,
+      time: `${serviceHistoryWeecklyClasses.value?.[index]?.weekly_class?.start_time ?? ''} - ${serviceHistoryWeecklyClasses.value?.[index]?.weekly_class?.end_time ?? ''}`,
+      dateOfBooking:
+        serviceHistoryWeecklyClasses.value?.[index]?.created_date ?? '',
+    },
+  }
 }
 </script>
 
@@ -596,183 +639,248 @@ const seeDetails = (details: string) => {
         <!-- <SyncoWeeklyClassesComponentsAccountInformationServiceHistory
           :header="ServiceHistoryAccountCardHeaders[1]"
         /> -->
-        <template v-for="weeklyClasses in serviceHistoryWeecklyClasses">
-          <!-- <template v-if="selectedDetails == ''"> -->
-          <SyncoWeeklyClassesServiceHistoryItem>
-            <template #title>
-              <Icon name="ph:crown" class="h5 m-0" />
-              <span class="h5 m-0 mx-2">
-                {{ weeklyClasses.weekly_class.name }}
-              </span>
-              <span class="mx-2"
-                ><strong>{{
-                  cleanDate(weeklyClasses.start_date)
-                }}</strong></span
-              >
-            </template>
-            <template #status>
-              <button
-                class="btn btn-sm text-light border-0"
-                :class="
-                  weeklyClasses.member_status.title == 'Active'
-                    ? 'btn-success'
-                    : 'btn-danger'
-                "
-                style="width: 95px"
-              >
-                {{ weeklyClasses.member_status.title }}
-              </button>
-            </template>
-            <template #fields>
-              <!-- <SyncoWeeklyClassesComponentsServiceHistoryWeeklyClassesListItem /> -->
-
-              <div class="d-flex flex-column px-3">
-                <label>Membership Plan</label>
-                <span>{{ weeklyClasses.subscription_plan_price.name }}</span>
-              </div>
-              <div class="d-flex flex-column px-3">
-                <label>Students</label>
-                <span>{{
-                  weeklyClasses.subscription_plan_price.student_coverage
-                    .title || ''
-                }}</span>
-              </div>
-              <div class="d-flex flex-column px-3">
-                <label>Venue</label>
-                <!-- <span>{{ weeklyClasses.venue.name }}</span> -->
-                <span>{{ weeklyClasses.weekly_class.venue.name }}</span>
-              </div>
-              <div class="d-flex flex-column px-3">
-                <label>Monthly price</label>
-                <span
-                  >£{{
-                    weeklyClasses.subscription_plan_price
-                      .monthly_subscription_fee
-                  }}</span
-                >
-              </div>
-              <div class="d-flex flex-column px-3">
-                <label>Date of booking</label>
-                <span>{{ cleanDate(weeklyClasses.created_date) }}</span>
-              </div>
-              <!-- <div class="d-flex flex-column px-3">
-                  <label>Progress</label>
-                  <span>6/12 months</span>
-                </div> -->
-              <div class="d-flex flex-column px-3">
-                <label>Booking Source</label>
-                <span
-                  >{{ weeklyClasses.agent?.first_name || '-' }}
-                  {{ weeklyClasses.agent?.last_name || '-' }}</span
-                >
-              </div>
-            </template>
-            <template #footer>
-              <div class="mt-3">
-                <button
-                  class="btn btn-light me-1 border bg-transparent"
-                  @click="seeDetails('weekly-classes')"
-                >
-                  See details
-                </button>
-              </div>
-            </template>
-          </SyncoWeeklyClassesServiceHistoryItem>
-          <!-- </template> -->
-          <!-- <template v-else>
-            <div class="row">
-              <div class="col-8">
-                <SyncoWeeklyClassesComponentsServiceHistoryInformation>
-                  <template v-slot:title>
-                    <span
-                      style="padding-right: 0.5rem; cursor: pointer"
-                      @click="seeDetails('')"
-                      ><Icon name="material-symbols:arrow-back"
-                    /></span>
-                    <h5 class="m-0 py-4">
-                      <strong>Student information</strong>
-                    </h5>
-                  </template>
-                </SyncoWeeklyClassesComponentsServiceHistoryInformation>
-                <SyncoWeeklyClassesFormsCommentFormList />
-              </div>
-              <div class="col-4">
-                <SyncoWeeklyClassesComponentsServiceHistoryAccountCard
-                  :header-color="
-                    weeklyClasses.status.title == 'Active'
-                      ? '#43BE4F'
-                      : '#A4A5A6'
-                  "
-                  :account-status="weeklyClasses.status.title"
-                >
-                  <template v-slot:body>
-                    <template v-if="selectedDetails == 'weekly-classes'">
-                      <SyncoWeeklyClassesComponentsServiceHistoryWeeklyClassesCardItem />
-                    </template>
-                    <template v-if="selectedDetails == 'birthday-party'">
-                      <SyncoWeeklyClassesComponentsServiceHistoryBirthdayPartyCardItem />
-                    </template>
-                    <template v-if="selectedDetails == 'one-to-one'">
-                      <SyncoWeeklyClassesComponentsServiceHistoryOneToOneCardItem />
-                    </template>
-                    <template v-if="selectedDetails == 'holiday-camp'">
-                      <SyncoWeeklyClassesComponentsServiceHistoryHolidayCampCardItem />
-                    </template>
-                    <template v-if="selectedDetails == 'club'">
-                      <SyncoWeeklyClassesComponentsServiceHistoryClubCardItem />
-                    </template>
-                    <template v-if="selectedDetails == 'merchandise'">
-                      <SyncoWeeklyClassesComponentsServiceHistoryMerchandiseCardItem />
-                    </template>
-                  </template>
-                </SyncoWeeklyClassesComponentsServiceHistoryAccountCard>
-                <div class="card rounded-4 mb-3 p-2">
-                  <div class="d-flex flex-column">
-                  <div
-                    class="d-flex justify-content-between align-items-center my-2 flex-row"
+        <template
+          v-for="(weeklyClasses, index) in serviceHistoryWeecklyClasses"
+        >
+          <template v-if="selectedDetails == ''">
+            <div :key="weeklyClasses.id">
+              <SyncoWeeklyClassesServiceHistoryItem>
+                <template #title>
+                  <Icon name="ph:crown" class="h5 m-0" />
+                  <span class="h5 m-0 mx-2">Weekly Classes Membership</span>
+                  <span class="mx-2"
+                    ><strong>{{
+                      cleanDate(weeklyClasses.start_date)
+                    }}</strong></span
                   >
-                    <button
-                      type="button"
-                      class="btn btn-light mx-2 border bg-white"
-                      @click="sendMessage('email')"
+                </template>
+                <template #status>
+                  <button
+                    class="btn btn-sm text-light border-0"
+                    :class="
+                      weeklyClasses.member_status.title == 'Active'
+                        ? 'btn-success'
+                        : 'btn-danger'
+                    "
+                    style="width: 95px"
+                  >
+                    {{ weeklyClasses.member_status.title }}
+                  </button>
+                </template>
+                <template #fields>
+                  <!-- <SyncoWeeklyClassesComponentsServiceHistoryWeeklyClassesListItem /> -->
+                  <div class="d-flex flex-column px-3">
+                    <label>Membership Plan</label>
+                    <span>{{
+                      weeklyClasses.subscription_plan_price.name
+                    }}</span>
+                  </div>
+                  <div class="d-flex flex-column px-3">
+                    <label>Students</label>
+                    <span>{{
+                      weeklyClasses.subscription_plan_price.student_coverage
+                        .title || ''
+                    }}</span>
+                  </div>
+                  <div class="d-flex flex-column px-3">
+                    <label>Venue</label>
+                    <!-- <span>{{ weeklyClasses.venue.name }}</span> -->
+                    <span>{{ weeklyClasses.weekly_class.venue.name }}</span>
+                  </div>
+                  <div class="d-flex flex-column px-3">
+                    <label>Monthly price</label>
+                    <span
+                      >£{{
+                        weeklyClasses.subscription_plan_price
+                          .monthly_subscription_fee
+                      }}</span
                     >
-                      <span class="px-4"
-                        ><Icon name="ph:envelope-simple" /><span class="mx-2"
-                          >Send Email</span
-                        ></span
-                      >
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-light mx-2 border bg-white"
-                      @click="sendMessage('text')"
+                  </div>
+                  <div class="d-flex flex-column px-3">
+                    <label>Date of booking</label>
+                    <span>{{ cleanDate(weeklyClasses.created_date) }}</span>
+                  </div>
+                  <!-- <div class="d-flex flex-column px-3">
+                      <label>Progress</label>
+                      <span>6/12 months</span>
+                    </div> -->
+                  <div class="d-flex flex-column px-3">
+                    <label>Booking Source</label>
+                    <span
+                      >{{ weeklyClasses.agent?.first_name || '-' }}
+                      {{ weeklyClasses.agent?.last_name || '-' }}</span
                     >
-                      <span class="px-4"
-                        ><Icon name="ph:text-a-underline" /><span class="mx-2"
-                          >Send text</span
-                        ></span
-                      >
+                  </div>
+                </template>
+                <template #footer>
+                  <div class="mt-3">
+                    <button
+                      class="btn btn-light me-1 border bg-transparent"
+                      @click="seeDetails('weekly-classes')"
+                    >
+                      See details
                     </button>
                   </div>
-                  <button
-                    type="button"
-                    class="btn btn-primary text-light m-2"
-                    @click="bookMembership"
-                  >
-                    Book a membership
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-light m-2 border bg-white"
-                    @click="leaveWaitingList"
-                  >
-                    Leave waiting list
-                  </button>
+                </template>
+              </SyncoWeeklyClassesServiceHistoryItem>
+            </div>
+          </template>
+          <!-- <template v-else>
+            <div :key="weeklyClasses.id">
+              <div class="row">
+                <div class="col-8">
+                  <SyncoWeeklyClassesComponentsServiceHistoryInformation>
+                    <template #title>
+                      <span
+                        style="padding-right: 0.5rem; cursor: pointer"
+                        @click="seeDetails('')"
+                        ><Icon name="material-symbols:arrow-back"
+                      /></span>
+                      <h5 class="m-0 py-4">
+                        <strong>Student information</strong>
+                      </h5>
+                    </template>
+                  </SyncoWeeklyClassesComponentsServiceHistoryInformation>
+                  <SyncoWeeklyClassesFormsCommentFormList />
                 </div>
+                <div class="col-4">
+                  <SyncoWeeklyClassesComponentsServiceHistoryAccountCard
+                    :header-color="
+                      weeklyClasses.member_status.title == 'Active'
+                        ? '#43BE4F'
+                        : '#A4A5A6'
+                    "
+                    :account-status="weeklyClasses.member_status.title"
+                  >
+                    <template v-slot:body>
+                      <template v-if="selectedDetails == 'weekly-classes'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryWeeklyClassesCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'birthday-party'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryBirthdayPartyCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'one-to-one'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryOneToOneCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'holiday-camp'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryHolidayCampCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'club'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryClubCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'merchandise'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryMerchandiseCardItem />
+                      </template>
+                    </template>
+                  </SyncoWeeklyClassesComponentsServiceHistoryAccountCard>
+                  <div class="card rounded-4 mb-3 p-2"></div>
                 </div>
               </div>
             </div>
           </template> -->
+          <template v-else>
+            <div :key="weeklyClasses.id">
+              <div class="row">
+                <div class="col-8">
+                  <SyncoWeeklyClassesComponentsServiceHistoryInformation
+                    :data="getStudentBookingInfo(index)"
+                  >
+                    <template #title>
+                      <span
+                        style="padding-right: 0.5rem; cursor: pointer"
+                        @click="seeDetails('')"
+                        ><Icon name="material-symbols:arrow-back"
+                      /></span>
+                      <h5 class="m-0 py-4">
+                        <strong>Student information</strong>
+                      </h5>
+                    </template>
+                  </SyncoWeeklyClassesComponentsServiceHistoryInformation>
+                  <SyncoWeeklyClassesFormsCommentFormList />
+                </div>
+                <div class="col-4">
+                  <SyncoWeeklyClassesComponentsServiceHistoryAccountCard
+                    :holder="parent"
+                    :header-color="
+                      weeklyClasses.member_status.title == 'Active'
+                        ? '#43BE4F'
+                        : '#A4A5A6'
+                    "
+                    :account-status="weeklyClasses.member_status.title"
+                  >
+                    <template #body>
+                      <template v-if="selectedDetails == 'weekly-classes'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryWeeklyClassesCardItem
+                          :data="getServiceHistory(index)"
+                        />
+                      </template>
+                      <template v-if="selectedDetails == 'birthday-party'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryBirthdayPartyCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'one-to-one'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryOneToOneCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'holiday-camp'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryHolidayCampCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'club'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryClubCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'merchandise'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryMerchandiseCardItem />
+                      </template>
+                    </template>
+                  </SyncoWeeklyClassesComponentsServiceHistoryAccountCard>
+                  <div class="card rounded-4 mb-3 p-2">
+                    <div class="d-flex flex-column">
+                      <div
+                        class="d-flex justify-content-between align-items-center my-2 flex-row"
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-light mx-2 border bg-white"
+                          @click="sendMessage('email')"
+                        >
+                          <span class="px-4"
+                            ><Icon name="ph:envelope-simple" /><span
+                              class="mx-2"
+                              >Send Email</span
+                            ></span
+                          >
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-light mx-2 border bg-white"
+                          @click="sendMessage('text')"
+                        >
+                          <span class="px-4"
+                            ><Icon name="ph:text-a-underline" /><span
+                              class="mx-2"
+                              >Send text</span
+                            ></span
+                          >
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        class="btn btn-primary text-light m-2"
+                        @click="bookMembership"
+                      >
+                        Book a membership
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-light m-2 border bg-white"
+                        @click="leaveWaitingList"
+                      >
+                        Leave waiting list
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
         </template>
       </template>
 
