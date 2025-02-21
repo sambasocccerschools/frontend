@@ -28,7 +28,7 @@
   <hr />
   <div class="d-flex flex-column px-3">
     <span class="h5 text-semibold m-0">Date of booking</span>
-    <span>{{ dataInfo.accountInfo.dateOfBooking }}</span>
+    <span>{{ cleanDate(dataInfo.accountInfo.dateOfBooking) }}</span>
   </div>
   <hr />
   <div class="d-flex flex-column px-3">
@@ -58,4 +58,20 @@ const props = defineProps<{
 }>()
 
 const dataInfo = ref<any>(props.data).value
+
+const cleanDate = (date: any) => {
+  if (!date) return ''
+
+  const parsedDate = new Date(date)
+  if (isNaN(parsedDate.getTime())) return date
+
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(parsedDate)
+}
 </script>
