@@ -101,7 +101,7 @@ const changeLoadingState = (state: boolean) => {
 const accountId = ref<number>(-1)
 const accountInformation = ref<IAccountInformationObject>()
 const selection = ref<string>('Service History')
-const previousRoute = ref<string>('/synco/weekly-classes/waiting-list')
+const previousRoute = ref<string>('/synco/weekly-classes/members')
 const showFilter = ref<boolean>(false)
 const showBookings = ref<boolean>(false)
 const showServiceHistoryDetails = ref<boolean>(false)
