@@ -109,19 +109,41 @@ const toast = useToast()
 const leads = ref<IWeeklyClassesFreeTrials[]>([])
 const selectedGuardians = ref<string[]>([])
 const reporting = ref<IWeeklyClassesFreeTrialReportingObject | null>(null)
+
+const cleanLeadsData = (data: any) => {
+  return data.map((item: any) => {
+    return {
+      id: item.id,
+      attemp: item.attempt,
+      student: item.student,
+      venue: item.weekly_class.venue.name ?? 'N/A',
+      date_of_booking: item.created_date ?? 'N/A',
+      who_booked: item.booked_by?.user_name ?? 'N/A',
+      membership_plan: '',
+      lifecycle_of_membership: '',
+      free_trial_status: item.free_trial_status ?? 'N/A',
+      family_id: item.student.family.id,
+      trial_date: item.trial_date ?? 'N/A',
+    }
+  })
+}
+
 const getLeads = async (source: number | null = null, limit: number = 25) => {
   try {
     blockButtons.value = true
     const response = await $api.wcFreeTrials.getAll(limit)
-    leads.value = response?.data
+    const data = cleanLeadsData(response?.data)
+    console.log('data')
+    console.log(data)
+    leads.value = data
   } catch (error: any) {
     leads.value = []
-    console.log(error)
     toast.error(error?.message ?? 'Error')
   } finally {
     blockButtons.value = false
   }
 }
+
 const getReporting = async () => {
   try {
     blockButtons.value = true

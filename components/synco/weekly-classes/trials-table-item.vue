@@ -29,8 +29,6 @@ const blockButtons = ref(false)
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/trials-table-item.vue')
-  console.log('leadStatus!!!!!!')
-  console.log(leadStatus)
   if (lead.agent) {
     selectedAgent.value = lead.agent.id
   }
@@ -41,7 +39,6 @@ onMounted(async () => {
 })
 
 const navigateToUser = async (id: number) => {
-  console.log(id)
   await router.push({ path: `/synco/user/${id}` })
   // await router.push({ path: `/synco/user/${id}` })
 }
@@ -118,19 +115,21 @@ const selectStatus = async (event: Event) => {
         @change="selectGuardian"
       />
     </th>
-    <td @click="navigateToUser(lead.id)">
+    <td @click="navigateToUser(lead.family_id)">
       <label class="form-check-label text-muted" for="tomjones">
         {{ lead.student?.first_name }} {{ lead.student?.last_name }}
       </label>
     </td>
-    <td @click="navigateToUser(lead.id)">{{ lead.student?.age }}</td>
-    <td @click="navigateToUser(lead.id)">{{ lead.weekly_class.venue.name }}</td>
-    <td @click="navigateToUser(lead.id)">
-      {{ formatDate(lead.free_trial_status.created_date) }}
+    <td @click="navigateToUser(lead.family_id)">{{ lead.student?.age }}</td>
+    <td @click="navigateToUser(lead.family_id)">{{ lead.venue }}</td>
+    <td @click="navigateToUser(lead.family_id)">
+      {{ formatDate(lead.date_of_booking) }}
     </td>
-    <td @click="navigateToUser(lead.id)">{{ cleanDate(lead.trial_date) }}</td>
-    <td>{{ lead.booked_by?.first_name }}</td>
-    <td @click="navigateToUser(lead.id)">{{ lead.attempt }}</td>
+    <td @click="navigateToUser(lead.family_id)">
+      {{ cleanDate(lead.trial_date) }}
+    </td>
+    <td>{{ lead.who_booked }}</td>
+    <td @click="navigateToUser(lead.family_id)">{{ lead.attempt }}</td>
     <td>
       <select
         id="seasons"
