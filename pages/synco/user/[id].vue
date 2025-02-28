@@ -101,7 +101,7 @@ const changeLoadingState = (state: boolean) => {
 const accountId = ref<number>(-1)
 const accountInformation = ref<IAccountInformationObject>()
 const selection = ref<string>('Service History')
-const previousRoute = ref<string>('/synco/weekly-classes/waiting-list')
+const previousRoute = ref<string>('/synco/weekly-classes/members')
 const showFilter = ref<boolean>(false)
 const showBookings = ref<boolean>(false)
 const showServiceHistoryDetails = ref<boolean>(false)
@@ -360,6 +360,43 @@ const getStudentBookingInfo = (index: number) => {
         serviceHistoryWeecklyClasses.value?.[index]?.created_date ?? '',
     },
   }
+}
+
+type accountStatus =
+  | 'Active'
+  | 'Waiting List'
+  | 'Pay Pending'
+  | 'Expired'
+  | 'Request Cancel'
+  | 'Cancelled'
+  | 'Frozen'
+
+const getColorHeader = (status: accountStatus) => {
+  const colors: Record<accountStatus, string> = {
+    'Waiting List': '#A4A5A6',
+    'Pay Pending': '#ffc107',
+    'Request Cancel': '#fe7058',
+    Active: '#43BE4F',
+    Expired: '#fe7058',
+    Cancelled: '#fe7058',
+    Frozen: '#509EF9',
+  }
+
+  return colors[status] ?? '#A4A5A6'
+}
+
+const getBtnColor = (status: accountStatus) => {
+  const colors: Record<accountStatus, string> = {
+    Active: 'btn-success',
+    'Waiting List': 'btn-secondary',
+    'Pay Pending': 'btn-warning',
+    'Request Cancel': 'btn-danger',
+    Expired: 'btn-danger',
+    Cancelled: 'btn-danger',
+    Frozen: 'btn-primary',
+  }
+
+  return colors[status] ?? 'btn-secondary'
 }
 </script>
 
@@ -657,11 +694,7 @@ const getStudentBookingInfo = (index: number) => {
                 <template #status>
                   <button
                     class="btn btn-sm text-light border-0"
-                    :class="
-                      weeklyClasses.member_status.title == 'Active'
-                        ? 'btn-success'
-                        : 'btn-danger'
-                    "
+                    :class="getBtnColor(weeklyClasses.member_status.title)"
                     style="width: 95px"
                   >
                     {{ weeklyClasses.member_status.title }}
@@ -802,9 +835,7 @@ const getStudentBookingInfo = (index: number) => {
                   <SyncoWeeklyClassesComponentsServiceHistoryAccountCard
                     :holder="parent"
                     :header-color="
-                      weeklyClasses.member_status.title == 'Active'
-                        ? '#43BE4F'
-                        : '#A4A5A6'
+                      getColorHeader(weeklyClasses.member_status.title)
                     "
                     :account-status="weeklyClasses.member_status.title"
                   >
