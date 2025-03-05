@@ -1486,12 +1486,13 @@ export type IAccountInformationResponse = {
 }
 
 export type ICreateFeedbackItem = {
-  family_id: number
   weekly_class_id: number
-  feedback_type_id: number
-  feedback_category_id: number
+  feedback_type_code: string
+  feedback_category_code: string
+  feedback_status_code: string
   additional_notes: string
-  agent_id: string
+  family_id: number
+  agent_id?: string
 }
 
 export type IWeeklyClassesCapacitiesClasses = {

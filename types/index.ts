@@ -796,12 +796,12 @@ export type IFeedbackStatus = IBaseDatasetItem & {
 export type IFeedbackStatusResponse = IBaseResponse<IFeedbackStatus> & {}
 
 export type IFeedbackCategory = IBaseDatasetItem & {
-  name: string
+  title: string
 }
 export type IFeedbackCategoryResponse = IBaseResponse<IFeedbackCategory> & {}
 
 export type IFeedbackType = IBaseDatasetItem & {
-  name: string
+  title: string
 }
 export type IFeedbackTypeResponse = IBaseResponse<IFeedbackType> & {}
 
