@@ -132,20 +132,24 @@ const loyaltyPointsHistory = ref<IAccountLoyaltyPointsHistoryItem[]>()
 
 const eventList = ref<ICandidateEventItem[]>()
 
-const feedbackItem = ref<ICreateFeedbackItem>({
-  family_id: 0,
-  agent_id: '',
-  additional_notes: '',
-  feedback_category_id: 0,
-  feedback_type_id: 0,
-  weekly_class_id: 0,
-})
-
 const serviceHistoryWeecklyClasses = ref<any[]>()
+
+const weeklyClassId = ref<number>(0)
+
+const feedbackItem = ref<ICreateFeedbackItem>({
+  weekly_class_id: 0,
+  feedback_type_code: '',
+  feedback_category_code: '',
+  feedback_status_code: 'PENDING_FS',
+  additional_notes: '',
+  family_id: accountId.value,
+  // agent_id: '',
+})
 
 // const feedbackStatus = store.feedbackStatus
 const feedbackCategory = store.feedbackCategory
 const feedbackType = store.feedbackType
+
 const agents = store.agents
 const enrolledClasses = ref<IIdTitleItem[]>([])
 
@@ -164,7 +168,6 @@ const getAccountInformation = async () => {
   try {
     changeLoadingState(true)
     const response = await $api.accountInformation.getById(accountId.value)
-    console.log('response', response)
     loyalty_points.value = response.data.loyalty_points
     parent.value = response.data.guardians
     student.value = response.data.students
@@ -187,8 +190,8 @@ const getAccountInformation = async () => {
 
     serviceHistoryWeecklyClasses.value = response.data.service_history
 
-    console.log('serviceHistoryWeecklyClasses.value')
-    console.log(serviceHistoryWeecklyClasses.value)
+    weeklyClassId.value =
+      serviceHistoryWeecklyClasses.value?.[0]?.weekly_class.id
 
     // response.data.service_history['weekly-classes']
     const data = response?.data
@@ -248,7 +251,13 @@ const addBooking = async (booking: string) => {
     default:
       break
   }
-  await router.push({ path: `${path}` })
+  await router.push({
+    path,
+    query: {
+      class_id: serviceHistoryWeecklyClasses.value?.[0].weekly_class.id,
+      venue_id: serviceHistoryWeecklyClasses.value?.[0].weekly_class.venue.id,
+    },
+  })
 }
 
 // const cleanDate = (date: any) => {
@@ -276,8 +285,7 @@ const cleanDate = (date: any) => {
 const resolveFeedback = async (id: number) => {
   try {
     changeLoadingState(true)
-    const response = await $api.feedback.resolve(id)
-    console.log(response)
+    await $api.feedback.resolve(id)
     await getAccountInformation()
   } catch (error: any) {
     console.log(error)
@@ -291,8 +299,9 @@ const submitFeedback = async () => {
   try {
     changeLoadingState(true)
     feedbackItem.value.family_id = accountId.value
-    const response = await $api.feedback.create(feedbackItem.value)
-    console.log(response)
+    feedbackItem.value.weekly_class_id = weeklyClassId.value
+    await $api.feedback.create(feedbackItem.value)
+
     openCloseCleanFeedbackItem(false)
   } catch (error: any) {
     console.log(error)
@@ -304,12 +313,13 @@ const submitFeedback = async () => {
 
 const openCloseCleanFeedbackItem = (state: boolean) => {
   feedbackItem.value = {
-    family_id: 0,
-    agent_id: '',
-    additional_notes: '',
-    feedback_category_id: 0,
-    feedback_type_id: 0,
     weekly_class_id: 0,
+    feedback_category_code: '',
+    feedback_type_code: '',
+    feedback_status_code: 'PENDING_FS',
+    additional_notes: '',
+    family_id: accountId.value,
+    // agent_id: '',
   }
   showFeedbackModal.value = state
 }
@@ -842,7 +852,7 @@ const getBtnColor = (status: accountStatus) => {
                     <template #body>
                       <template v-if="selectedDetails == 'weekly-classes'">
                         <SyncoWeeklyClassesComponentsServiceHistoryWeeklyClassesCardItem
-                          :data="getServiceHistory(index)"
+                          :data="getServiceHistory(0)"
                         />
                       </template>
                       <template v-if="selectedDetails == 'birthday-party'">
@@ -990,16 +1000,16 @@ const getBtnColor = (status: accountStatus) => {
                         >
                         <select
                           id="feedbackType"
-                          v-model="feedbackItem.feedback_type_id"
+                          v-model="feedbackItem.feedback_type_code"
                           class="form-control form-control-lg"
                         >
                           <option :value="0">Select option</option>
                           <option
                             v-for="(item, index) in feedbackType"
                             :key="index"
-                            :value="item.id"
+                            :value="item.code"
                           >
-                            {{ item.name }}
+                            {{ item.title }}
                           </option>
                         </select>
                       </div>
@@ -1012,20 +1022,20 @@ const getBtnColor = (status: accountStatus) => {
                           for="feedbackCategory"
                           class="form-labelform-label-light"
                         >
-                          Category</label
+                          Feedback Category</label
                         >
                         <select
                           id="feedbackCategory"
-                          v-model="feedbackItem.feedback_category_id"
+                          v-model="feedbackItem.feedback_category_code"
                           class="form-control form-control-lg"
                         >
                           <option :value="0">Select option</option>
                           <option
                             v-for="(item, index) in feedbackCategory"
                             :key="index"
-                            :value="item.id"
+                            :value="item.code"
                           >
-                            {{ item.name }}
+                            {{ item.title }}
                           </option>
                         </select>
                       </div>
@@ -1114,10 +1124,10 @@ const getBtnColor = (status: accountStatus) => {
             <tbody>
               <tr v-for="item in feedbackItems" style="vertical-align: middle">
                 <!-- <td><input type="checkbox" /></td> -->
-                <td>{{ cleanDate(item.created_at) }}</td>
-                <td>{{ item.feedbackType.name }}</td>
-                <td>{{ item.weeklyClass.venue.name }}</td>
-                <td>{{ item.feedbackCategory.name }}</td>
+                <td>{{ cleanDate(item.created_date) }}</td>
+                <td>{{ item.feedbackType?.name }}</td>
+                <td>{{ item.weeklyClass?.venue?.name }}</td>
+                <td>{{ item.feedbackCategory?.name }}</td>
                 <td>{{ item.additional_notes }}</td>
                 <td>
                   <img :src="item.agent?.avatar_image" class="me-2" /><span
@@ -1127,7 +1137,7 @@ const getBtnColor = (status: accountStatus) => {
                 </td>
                 <td>
                   <span class="badge-warning rounded-4 px-3 py-1">{{
-                    item.feedbackStatus.name
+                    item.feedbackStatus?.name
                   }}</span>
                 </td>
                 <td>
@@ -1135,7 +1145,7 @@ const getBtnColor = (status: accountStatus) => {
                     type="button"
                     class="btn btn-primary text-white"
                     :disabled="
-                      blockButtons || item.feedbackStatus.name == 'Solved'
+                      blockButtons || item.feedbackStatus?.name == 'Solved'
                     "
                     @click="resolveFeedback(item.id)"
                   >

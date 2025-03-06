@@ -3,23 +3,40 @@ import FetchFactory from '../../factory'
 import type { IMessageResponseObject, ICreateFeedbackItem } from '~/types/synco'
 
 class FeedbackModule extends FetchFactory {
-  private RESOURCE = '/v1/feedbacks'
+  private RESOURCE = '/feedback'
 
   async resolve(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
+
     return this.call<IMessageResponseObject>(
       'PUT',
-      `${this.RESOURCE}/${id}/resolve`,
-      undefined,
-      undefined,
+      `${this.RESOURCE}/changeStatus`,
+      {
+        feedbacks_id: [id],
+        status: 'ARCHIVED_FS',
+      },
+      fetchOptions,
     )
   }
 
   async create(feedback: ICreateFeedbackItem) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
+
     return this.call<IMessageResponseObject>(
       'POST',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/add`,
       feedback,
-      undefined,
+      fetchOptions,
     )
   }
 }

@@ -562,6 +562,7 @@ export type IStudentObject = {
   created_date: string
   updated_date: string
   is_deleted: boolean
+  family?: any
 }
 
 export type IGuardianObject = {
@@ -797,6 +798,9 @@ export type IWeeklyClassesMembers = {
   family_id?: number
   membership_plan: any
   life_cycle_membership: string
+  date_of_booking?: string
+  who_booked?: string
+  lifecycle_of_membership?: string
   booked_by: any
   created_at: number | null
   deleted_at: number | null
@@ -988,6 +992,7 @@ export type ISubscriptionPlanResponse = {
 }
 
 export type IFeedbackItem = {
+  created_date(created_date: any): unknown
   id: number
   weeklyClass: {
     id: number
@@ -1486,12 +1491,13 @@ export type IAccountInformationResponse = {
 }
 
 export type ICreateFeedbackItem = {
-  family_id: number
   weekly_class_id: number
-  feedback_type_id: number
-  feedback_category_id: number
+  feedback_type_code: string
+  feedback_category_code: string
+  feedback_status_code: string
   additional_notes: string
-  agent_id: string
+  family_id: number
+  agent_id?: string
 }
 
 export type IWeeklyClassesCapacitiesClasses = {

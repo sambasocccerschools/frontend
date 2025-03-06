@@ -33,14 +33,15 @@
   <hr />
   <div class="d-flex flex-column px-3">
     <span class="h5 text-semibold m-0">Progress **</span>
-    <span>6/12 months</span>
-    <div class="progress">
+    <!-- <span>{{ dataInfo.accountInfo.progress || '---' }}</span> -->
+    <span>1 months, 15 days, 21 hours</span>
+    <!-- <div class="progress">
       <div
         class="progress-bar bg-success"
         role="progressbar"
         style="width: 50%"
       ></div>
-    </div>
+    </div> -->
   </div>
   <hr />
   <div class="d-flex flex-column px-3">
