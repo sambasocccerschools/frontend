@@ -15,8 +15,11 @@ class FeedbackModule extends FetchFactory {
 
     return this.call<IMessageResponseObject>(
       'PUT',
-      `${this.RESOURCE}/${id}/resolve`,
-      undefined,
+      `${this.RESOURCE}/changeStatus`,
+      {
+        feedbacks_id: [id],
+        status: 'ARCHIVED_FS',
+      },
       fetchOptions,
     )
   }

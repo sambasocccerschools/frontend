@@ -22,6 +22,8 @@ const selectedStatus = ref<number>(0)
 // const blockButtons = ref(false)
 
 onMounted(() => {
+  console.log('cancellation')
+  console.log(cancellation)
   if (cancellation.agent) {
     selectedAgent.value = cancellation.agent.id
   }
@@ -108,25 +110,61 @@ const getStatusBadgeClass = (status: string | undefined) => {
         @change="selectGuardian"
       />
     </th>
-    <td @click="navigateToUser(Number(cancellation?.id))">
+    <td
+      @click="
+        navigateToUser(
+          Number(cancellation?.weekly_class_member?.student?.family.id),
+        )
+      "
+    >
       <label class="form-check-label text-muted">
         {{ cancellation?.guardian?.first_name || 'N/A' }}
         {{ cancellation?.guardian?.last_name || 'N/A' }}
       </label>
     </td>
-    <td @click="navigateToUser(Number(cancellation?.id))">
+    <td
+      @click="
+        navigateToUser(
+          Number(cancellation?.weekly_class_member?.student?.family.id),
+        )
+      "
+    >
       {{ cancellation?.total_student || 'N/A' }}
     </td>
-    <td @click="navigateToUser(Number(cancellation?.id))">
+    <td
+      @click="
+        navigateToUser(
+          Number(cancellation?.weekly_class_member?.student?.family.id),
+        )
+      "
+    >
       {{ cancellation?.venue?.name || 'N/A' }}
     </td>
-    <td @click="navigateToUser(Number(cancellation?.id))">
+    <td
+      @click="
+        navigateToUser(
+          Number(cancellation?.weekly_class_member?.student?.family.id),
+        )
+      "
+    >
       {{ cleanDate(cancellation?.created_date) }}
     </td>
-    <td @click="navigateToUser(Number(cancellation?.id))">
+    <td
+      @click="
+        navigateToUser(
+          Number(cancellation?.weekly_class_member?.student?.family.id),
+        )
+      "
+    >
       {{ cleanDate(cancellation?.termination_date) }}
     </td>
-    <td @click="navigateToUser(Number(cancellation?.id))">
+    <td
+      @click="
+        navigateToUser(
+          Number(cancellation?.weekly_class_member?.student?.family.id),
+        )
+      "
+    >
       {{ cancellation?.membership_cancel_reason?.title || 'N/A' }}
     </td>
     <td class="badge-container">

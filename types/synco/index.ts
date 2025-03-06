@@ -562,6 +562,7 @@ export type IStudentObject = {
   created_date: string
   updated_date: string
   is_deleted: boolean
+  family?: any
 }
 
 export type IGuardianObject = {
@@ -797,6 +798,9 @@ export type IWeeklyClassesMembers = {
   family_id?: number
   membership_plan: any
   life_cycle_membership: string
+  date_of_booking?: string
+  who_booked?: string
+  lifecycle_of_membership?: string
   booked_by: any
   created_at: number | null
   deleted_at: number | null
@@ -988,6 +992,7 @@ export type ISubscriptionPlanResponse = {
 }
 
 export type IFeedbackItem = {
+  created_date(created_date: any): unknown
   id: number
   weeklyClass: {
     id: number

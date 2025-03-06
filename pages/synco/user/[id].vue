@@ -251,7 +251,13 @@ const addBooking = async (booking: string) => {
     default:
       break
   }
-  await router.push({ path: `${path}` })
+  await router.push({
+    path,
+    query: {
+      class_id: serviceHistoryWeecklyClasses.value?.[0].weekly_class.id,
+      venue_id: serviceHistoryWeecklyClasses.value?.[0].weekly_class.venue.id,
+    },
+  })
 }
 
 // const cleanDate = (date: any) => {
@@ -846,7 +852,7 @@ const getBtnColor = (status: accountStatus) => {
                     <template #body>
                       <template v-if="selectedDetails == 'weekly-classes'">
                         <SyncoWeeklyClassesComponentsServiceHistoryWeeklyClassesCardItem
-                          :data="getServiceHistory(index)"
+                          :data="getServiceHistory(0)"
                         />
                       </template>
                       <template v-if="selectedDetails == 'birthday-party'">
@@ -1118,10 +1124,10 @@ const getBtnColor = (status: accountStatus) => {
             <tbody>
               <tr v-for="item in feedbackItems" style="vertical-align: middle">
                 <!-- <td><input type="checkbox" /></td> -->
-                <td>{{ cleanDate(item.created_at) }}</td>
-                <td>{{ item.feedbackType.name }}</td>
-                <td>{{ item.weeklyClass.venue.name }}</td>
-                <td>{{ item.feedbackCategory.name }}</td>
+                <td>{{ cleanDate(item.created_date) }}</td>
+                <td>{{ item.feedbackType?.name }}</td>
+                <td>{{ item.weeklyClass?.venue?.name }}</td>
+                <td>{{ item.feedbackCategory?.name }}</td>
                 <td>{{ item.additional_notes }}</td>
                 <td>
                   <img :src="item.agent?.avatar_image" class="me-2" /><span
@@ -1131,7 +1137,7 @@ const getBtnColor = (status: accountStatus) => {
                 </td>
                 <td>
                   <span class="badge-warning rounded-4 px-3 py-1">{{
-                    item.feedbackStatus.name
+                    item.feedbackStatus?.name
                   }}</span>
                 </td>
                 <td>
@@ -1139,7 +1145,7 @@ const getBtnColor = (status: accountStatus) => {
                     type="button"
                     class="btn btn-primary text-white"
                     :disabled="
-                      blockButtons || item.feedbackStatus.name == 'Solved'
+                      blockButtons || item.feedbackStatus?.name == 'Solved'
                     "
                     @click="resolveFeedback(item.id)"
                   >

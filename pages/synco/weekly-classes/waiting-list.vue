@@ -63,7 +63,7 @@
           </thead>
           <tbody>
             <template v-for="(lead, index) in leads" :key="index">
-              <LazySyncoWeeklyClassesMembersTableItem
+              <LazySyncoWeeklyClassesWaitingListTableItem
                 :lead="lead"
                 :status-type="'waitingListStatus'"
                 @selected-guardian="selectedGuardian"
@@ -102,16 +102,26 @@ const selectedGuardians = ref<string[]>([])
 const reporting = ref<IWeeklyClassesWaitingListReportingObject | null>(null)
 
 const cleanLeadsData = (data: any) => {
+  const durationMapping = {
+    30: 'Monthly',
+    90: 'Quarterly',
+    180: 'Half Yearly',
+    365: 'Yearly',
+  }
+
   return data.map((item: any) => {
     return {
       id: item.id,
       student: item.student,
       venue: item.weekly_class.venue.name ?? 'N/A',
-      date_of_booking: item.date_of_booking?.date ?? 'N/A',
+      date_of_booking: item.date_of_booking?.date ?? null,
       who_booked: item.booked_by?.user_name ?? 'N/A',
       membership_plan: item?.subscription_plan_price ?? 'N/A',
-      lifecycle_of_membership:
-        item.subscription_plan_price?.lifecycle_of_membership ?? 'Monthly',
+      life_cycle_membership:
+        durationMapping[
+          item.subscription_plan_price?.subscription_plan
+            ?.duration as keyof typeof durationMapping
+        ] || 'Monthly',
       status: item.waiting_list_status ?? 'N/A',
     }
   })
