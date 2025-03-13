@@ -4,7 +4,7 @@
       <div
         class="card-body d-flex align-items-center justify-content-between p-3"
       >
-        <NuxtLink class="h4 text-light m-0" to="/synco/weekly-classes/leads">
+        <NuxtLink class="h4 text-light m-0" @click.prevent="goBack">
           <Icon name="material-symbols:arrow-back" class="me-2" />Book a
           Membership
         </NuxtLink>
@@ -350,6 +350,9 @@ export default {
     },
     togglePlanBreakdown() {
       this.showPlanBreakdown = !this.showPlanBreakdown
+    },
+    goBack() {
+      router.back()
     },
   },
 }

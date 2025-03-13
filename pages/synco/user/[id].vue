@@ -607,7 +607,7 @@ const getBtnColor = (status: accountStatus) => {
               </div>
             </div>
           </div>
-          <div class="dropdown">
+          <!-- <div class="dropdown">
             <button
               type="button"
               class="btn btn-primary text-light dropdown-toggle mx-2"
@@ -642,7 +642,7 @@ const getBtnColor = (status: accountStatus) => {
                 Book Membership
               </button>
             </div>
-          </div>
+          </div> -->
         </div>
       </template>
       <template v-if="selection == 'Feedback'">

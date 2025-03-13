@@ -4,7 +4,7 @@
       <div
         class="card-body d-flex align-items-center justify-content-between p-3"
       >
-        <NuxtLink class="h4 text-light m-0" to="/synco/weekly-classes/leads">
+        <NuxtLink class="h4 text-light m-0" @click.prevent="goBack">
           <Icon name="material-symbols:arrow-back" class="me-2" />Book a Free
           Trial
         </NuxtLink>
@@ -247,6 +247,8 @@
 </template>
 
 <script>
+const router = useRouter()
+
 const classes = ref([
   { label: 'Select from drop down', value: '' },
   { label: '4-7 years', value: 'Merchandise' },
@@ -325,6 +327,9 @@ export default {
       this.showScriptCard = !this.showScriptCard
       this.showSubscriptionCard = false
       this.showCalculatorCard = false
+    },
+    goBack() {
+      router.back()
     },
   },
 }
