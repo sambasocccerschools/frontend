@@ -153,6 +153,7 @@ const toggleCard = (card: string) => {
                     :alt="`Time Icon for ${c.name}`"
                     height="19px"
                     width="19px"
+                    class="me-2"
                   />
                   {{
                     `${$dayjs(c.start_time, 'HH:mm:ss').format('HH:mm a')} - ${$dayjs(c.end_time, 'HH:mm:ss').format('HH:mm a')}`
