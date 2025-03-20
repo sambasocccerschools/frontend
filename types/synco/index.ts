@@ -389,6 +389,7 @@ export type IWeeklyClassesLeadCreate = {
   guardians: IGuardianCreate[]
   emergency_contacts: IEmregencyContactCreate[]
   comments: string[]
+  lead_status_code?: string
 }
 export type IWeeklyClassesLeadCreateResponse =
   IBaseResponse<IWeeklyClassesLeadCreate> & {}
