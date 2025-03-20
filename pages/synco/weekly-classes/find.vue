@@ -33,7 +33,7 @@ import type {
   IWeeklyClassesFindAClassFilterObject,
 } from '~/types/synco/index'
 
-import titleBackground from '~/assets/styles/synco/Section-Title.png'
+import search from '~/assets/styles/synco/Search.svg'
 
 const blockButtons = ref(false)
 const store = generalStore()
@@ -128,8 +128,9 @@ const filterWeeklyClassesByClass = (value: string) => {
     <div class="card">
       <!-- <img :src="titleBackground" :alt="`find a class title background`" /> -->
       <div class="card-body title-container">
-        <span class="h3 text-white">
-          <Icon name="ic:baseline-search" /> Find a Class
+        <span class="h3 title text-white">
+          <img :src="search" alt="search icon" class="me-2" height="28px" />
+          Find a Class
         </span>
       </div>
     </div>
@@ -165,5 +166,11 @@ const filterWeeklyClassesByClass = (value: string) => {
   align-items: center;
   height: 100px;
   border-radius: 25px;
+}
+.title {
+  display: flex;
+  gap: 5px;
+  font-size: 28px;
+  margin: 0;
 }
 </style>
