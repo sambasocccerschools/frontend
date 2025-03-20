@@ -32,6 +32,9 @@ import type {
   IFindAClassItem,
   IWeeklyClassesFindAClassFilterObject,
 } from '~/types/synco/index'
+
+import titleBackground from '~/assets/styles/synco/Section-Title.png'
+
 const blockButtons = ref(false)
 const store = generalStore()
 const { $api } = useNuxtApp()
@@ -122,9 +125,10 @@ const filterWeeklyClassesByClass = (value: string) => {
 
 <template>
   <NuxtLayout name="syncolayout" page-title="Weekly Classes">
-    <div class="card bg-success bg-gradient text-bg-dark">
-      <div class="card-body">
-        <span class="h3">
+    <div class="card">
+      <!-- <img :src="titleBackground" :alt="`find a class title background`" /> -->
+      <div class="card-body title-container">
+        <span class="h3 text-white">
           <Icon name="ic:baseline-search" /> Find a Class
         </span>
       </div>
@@ -150,3 +154,16 @@ const filterWeeklyClassesByClass = (value: string) => {
     </div>
   </NuxtLayout>
 </template>
+
+<style scoped>
+.title-container {
+  position: relative;
+  background: url('~/assets/styles/synco/Section-Title.png') no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  height: 100px;
+  border-radius: 25px;
+}
+</style>
