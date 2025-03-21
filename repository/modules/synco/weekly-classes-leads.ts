@@ -169,7 +169,6 @@ class WeeklyClassesLeadsModule extends FetchFactory {
     const fetchOptions: FetchOptions<'json'> = {
       headers: {
         // Authorization: `${token.value}`,
-        'x-api-key': '8170fcb2-ef45-4173-9a1b-f682d38ddae9',
       },
     }
     return this.call<IWeeklyClassesLeadCreateResponse>(
