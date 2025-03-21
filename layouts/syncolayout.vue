@@ -58,7 +58,7 @@ const userFullName = computed(() => {
               </div>
 
               <div class="d-flex align-items-center">
-                <div class="d-flex gap-3">
+                <!-- <div class="d-flex gap-3">
                   <input
                     type="text"
                     class="form-control form-control-lg"
@@ -70,7 +70,7 @@ const userFullName = computed(() => {
                       class="h4 text-muuted m-0"
                     />
                   </button>
-                </div>
+                </div> -->
                 <div
                   class="border-end border-1 border-muted d-flex flex-column align-items-end px-4 text-end"
                 >
@@ -87,7 +87,7 @@ const userFullName = computed(() => {
                   />
                   <h5>
                     {{ userFullName }}
-                    <Icon name="bi:chevron-down" />
+                    <!-- <Icon name="bi:chevron-down" /> -->
                   </h5>
                 </div>
               </div>

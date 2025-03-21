@@ -2,6 +2,8 @@
 import { ref, computed, watchEffect } from 'vue'
 
 import type { IAvailableVenueObject } from '~/types/synco/index'
+import inputSearchIcon from '~/assets/styles/synco/input-search-icon.svg'
+
 const props = defineProps<{
   venues?: IAvailableVenueObject[]
   blockButtons?: boolean
@@ -52,12 +54,12 @@ watchEffect(() => {
       <!-- <button class="btn btn-primary btn-sm text-light shadow-sm">Apply Filter</button> -->
       <div class="input-group mb-3">
         <span id="search-addon" class="input-group-text">
-          <Icon name="ic:baseline-search" />
+          <img :src="inputSearchIcon" alt="search icon" height="20px" />
         </span>
         <input
           v-model="searchVenue"
           type="text"
-          class="form-control"
+          class="form-control search-input"
           placeholder="Search Venue"
           aria-label="Search Venue"
           aria-describedby="search-addon"
@@ -65,12 +67,12 @@ watchEffect(() => {
       </div>
       <div class="input-group mb-3">
         <span id="class-addon" class="input-group-text">
-          <Icon name="ic:baseline-search" />
+          <img :src="inputSearchIcon" alt="search icon" height="20px" />
         </span>
         <input
           v-model="class_name"
           type="text"
-          class="form-control"
+          class="form-control search-input"
           placeholder="Search by class"
           aria-label="Search by class"
           aria-describedby="class-addon"
@@ -82,7 +84,7 @@ watchEffect(() => {
       <div class="form-group mb-4">
         <label
           for="venue"
-          class="form-label border-bottom border-1 d-flex border-secondary-subtle mb-3 pb-2"
+          class="form-label border-bottom border-1 d-flex border-secondary-subtle h5 filterby mb-3 pb-2"
           >Venues</label
         >
         <!-- <div class="form-check mb-3">
@@ -104,7 +106,7 @@ watchEffect(() => {
             class="form-check-input"
             :value="venue.id"
           />
-          <label class="form-check-label" :for="venue.id">{{
+          <label class="form-check-label text" :for="venue.id">{{
             venue.name
           }}</label>
         </div>
@@ -115,7 +117,7 @@ watchEffect(() => {
       <div class="form-group mb-4">
         <label
           for="days"
-          class="form-label border-bottom border-1 d-flex border-secondary-subtle mb-3 pb-2"
+          class="form-label border-bottom border-1 d-flex border-secondary-subtle h5 filterby mb-3 pb-2"
           >Days</label
         >
         <div v-for="day in days" :key="day.value" class="form-check mb-3">
@@ -126,7 +128,7 @@ watchEffect(() => {
             type="checkbox"
             class="form-check-input"
           />
-          <label class="form-check-label" :for="day.value">{{
+          <label class="form-check-label text" :for="day.value">{{
             day.name
           }}</label>
         </div>
@@ -134,3 +136,19 @@ watchEffect(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.filterby {
+  color: #212529;
+}
+.text {
+  font-family: 'Gilroy-Semibold', sans-serif;
+  font-size: 16px;
+}
+.search-input {
+  font-size: 16px;
+  line-height: normal;
+  letter-spacing: 0.16px;
+  padding: 15px 16px;
+}
+</style>
