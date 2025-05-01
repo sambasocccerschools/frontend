@@ -178,22 +178,22 @@ const toggleCard = (card: string) => {
                   }}</span
                 >
               </div>
-              <div class="d-flex justify-content-end flex-1 flex-row">
+              <div class="d-flex justify-content-end flex-1 flex-row gap-2">
                 <NuxtLink
                   :to="`/synco/weekly-classes/create/membership?class_id=${c.id}&venue_id=${item.id}`"
-                  class="btn btn-outline-primary btn-sm text me-3"
+                  class="btn btn-outline-primary btn-sm text"
                 >
                   <strong>Book a Membership</strong>
                 </NuxtLink>
                 <NuxtLink
                   v-if="c.is_free_trail_dates"
                   :to="`/synco/weekly-classes/create/free-trial?class_id=${c.id}&venue_id=${item.id}`"
-                  class="btn btn-outline-primary btn-sm text me-3"
+                  class="btn btn-outline-primary btn-sm text"
                   ><strong>Book a Free Trial</strong></NuxtLink
                 >
                 <NuxtLink
                   :to="`/synco/weekly-classes/create/waiting-list?class_id=${c.id}&venue_id=${item.id}`"
-                  class="btn btn-primary btn-sm text-light text me-3"
+                  class="btn btn-primary btn-sm text-light text"
                   ><strong>Add to Waiting List</strong></NuxtLink
                 >
               </div>
