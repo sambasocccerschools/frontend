@@ -1,6 +1,6 @@
 <template>
-  <section class="lets-be-friends py-4">
-    <div class="container-fluid">
+  <section class="lets-be-friends pmy-0 py-4">
+    <div class="container-fluid container-md pmx-35 pmy-60">
       <div class="row align-items-center">
         <div class="col-sm-5">
           <h3 class="h1 text-light font-custom mt-3">Let's be friends</h3>
@@ -45,15 +45,13 @@
             <Icon name="mdi:twitter" />
           </NuxtLink>
         </div>
-        <div class="col-auto">
+        <div class="col-12 col-md-auto text-md-start text-center">
           <NuxtLink
             to="/"
-            class="btn btn-light rounded-5 text-info btn-lg d-flex align-items-center px-4"
+            class="btn btn-light rounded-5 text-info btn-lg d-flex justify-content-center justify-content-md-start align-items-center w-100 w-md-auto mt-md-0 mt-4 px-4"
           >
-            <Icon
-              name="material-symbols:shopping-cart-outline"
-              class="me-2"
-            /><strong>Shop Online</strong>
+            <Icon name="material-symbols:shopping-cart-outline" class="me-2" />
+            <strong>Shop Online</strong>
           </NuxtLink>
         </div>
       </div>
@@ -68,6 +66,16 @@ section.lets-be-friends {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
+}
+
+@media (max-width: 767px) {
+  section.lets-be-friends {
+    background-image: url('@/src/assets/home/bg-lets-be-friends.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-color: #00a6e3;
+  }
 }
 
 .btn-social {

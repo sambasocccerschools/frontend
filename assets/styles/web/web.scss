@@ -68,6 +68,13 @@
   // font-display: swap;
 }
 
+@font-face {
+  font-family: 'Roam';
+  src: url('@/assets/styles/fonts/Roam-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
 .font-custom {
@@ -190,6 +197,9 @@ em {
   }
 }
 
+.color-navy {
+  color: #042c89 !important;
+}
 // Custom Accordions
 
 .accordion {
@@ -210,4 +220,276 @@ em {
   &-body {
     @extend .rounded-bottom-4;
   }
+}
+
+/* Margins */
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-18 {
+  margin-top: 18px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mt-25 {
+  margin-top: 25px;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.mt-40 {
+  margin-top: 40px;
+}
+
+.ml-100 {
+  margin-left: 100px;
+}
+
+.ml--130 {
+  margin-left: -130px;
+}
+
+.ml--130 {
+  margin-left: -130px;
+}
+
+/* Width */
+
+.w-500 {
+  width: 500px !important;
+}
+
+.w-515 {
+  width: 100%;
+  max-width: 515px;
+}
+
+/* Paddings */
+
+.pt-25 {
+  padding-top: 25px;
+}
+
+.pt-30 {
+  padding-top: 30px;
+}
+
+.pt-120 {
+  padding-top: 120px;
+}
+
+.pb-30 {
+  padding-bottom: 30px;
+}
+
+.pb-100 {
+  padding-bottom: 100px;
+}
+
+/* Font Size */
+.fs-16 {
+  font-size: 16px;
+}
+
+.fs-40 {
+  font-size: 40px;
+}
+
+.fb-700 {
+  font-weight: 700;
+}
+
+.color-neutral {
+  color: #797a88;
+}
+
+.section-title {
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 72px; /* 128.571% */
+}
+
+.marker-text {
+  font-family: 'Permanent Marker';
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 400 !important;
+  line-height: 72px;
+}
+
+.text-content {
+  font-family: Poppins;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 30px; /* 187.5% */
+}
+
+.text-content-2 {
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 30px; /* 187.5% */
+}
+
+.lh-62-5 {
+  line-height: 62.5px !important; /* 111.607% */
+}
+
+.br-20 {
+  border-radius: 20px !important;
+}
+
+@media (max-width: 767px) {
+  .text-content {
+    font-size: 14px;
+    line-height: 24px; /* 171.429% */
+  }
+
+  /* Paddings Movil */
+  .pmy-0 {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+
+  .pmy-60 {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+
+  .pmx-35 {
+    padding-left: 35px !important;
+    padding-right: 35px !important
+  }
+
+  .mtm-25 {
+    margin-top: 25px !important;
+  }
+
+  .mtm-35 {
+    margin-top: 35px !important;
+  }
+
+  .mtm-60 {
+    margin-top: 60px !important;
+  }
+
+  .mtm--120 {
+    margin-top: -120px !important;
+  }
+
+  .mlm-0 {
+    margin-left: 0px !important;
+  }
+
+  .mtm-0 {
+    margin-top: 0px !important;
+  }
+
+  .mtm--80 {
+    margin-top: -80px;
+  }
+
+  .mbm-10 {
+    margin-bottom: 10px !important;
+  }
+
+  .mbm-20 {
+    margin-bottom: 20px !important;
+  }
+
+  .mbm--70 {
+    margin-bottom: -70px !important;
+  }
+
+  .mbm--125 {
+    margin-bottom: -125px !important;
+  }
+
+  .mbm--210 {
+    margin-bottom: -210px !important;
+  }
+
+  .mbm--330 {
+    margin-bottom: -330px !important;
+  }
+
+  .pym-8 {
+    padding: 8px 0px !important;
+  }
+
+  .pxm-16 {
+    padding: 0px 16px !important;
+  }
+
+  .text-button-m {
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 12px;
+  }
+
+  /* Font Sizes */
+  .fsm-14 {
+    font-size: 14px !important;
+  }
+
+  .fsm-16 {
+    font-size: 16px !important;
+  }
+
+  .fsm-24 {
+    font-size: 24px !important;
+  }
+
+  .fsm-32 {
+    font-size: 32px;
+  }
+
+  .fsm-37 {
+    font-size: 37px;
+  }
+
+  .fsm-38 {
+    font-size: 38px !important;
+  }
+
+  .fsm-48 {
+    font-size: 48px !important;
+  }
+
+  .fsm-70 {
+    font-size: 70px;
+  }
+
+  .fsm-116 {
+    font-size: 110px !important;
+  }
+
+  /* Line Heights */
+  .lhm-47 {
+    line-height: 47px !important;
+  }
+
+  .lhm-24 {
+    line-height: 24px !important;
+  }
+
+  .lhm-52 {
+    line-height: 52px !important;
+  }
+
+  .lhm-116-per{
+    line-height: 116.5%; /* 55.92px */
+  }
+  
 }

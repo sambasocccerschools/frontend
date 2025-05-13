@@ -40,7 +40,7 @@
                   <NuxtLink
                     to="/services/weekly-classes"
                     class="text-light btn btn-link px-0"
-                    >Services?????</NuxtLink
+                    >Services</NuxtLink
                   >
                 </li>
                 <li class="col">
@@ -86,17 +86,17 @@
                   Join our Mailing List
                 </h4>
                 <p class="text-light">Sign-up for the SSS Newsletter</p>
-                <form action="" class="row g-3 mt-1">
-                  <div class="col">
+                <form action="" class="row g-3 d-grid d-md-flex mt-1">
+                  <div class="col-12 col-md">
                     <input
                       type="text"
-                      class="form-control form-control-lg rounded-5"
+                      class="form-control form-control-lg rounded-5 w-100"
                       placeholder="Enter your email"
                     />
                   </div>
-                  <div class="col-auto">
+                  <div class="col-12 col-md-auto">
                     <button
-                      class="btn btn-success rounded-5 text-light btn-lg px-4"
+                      class="btn btn-success rounded-5 text-light btn-lg w-100 w-md-auto px-4"
                     >
                       <strong>Subscribe</strong>
                     </button>
@@ -105,7 +105,7 @@
               </div>
             </div>
           </div>
-          <div class="col-auto">
+          <div class="mtm-35 col-12 col-md-auto">
             <div
               class="card-contact card rounded-5 h-100 d-grid align-items-center border-0 shadow"
             >
@@ -115,20 +115,38 @@
                 <ul class="list-unstyled text-light">
                   <li class="d-flex align-items-center">
                     <span class="icon-circle me-2">
-                      <Icon
-                        name="material-symbols:phone-iphone-outline"
-                      /> </span
-                    >020 72052723
+                      <Icon name="material-symbols:phone-iphone-outline" />
+                    </span>
+                    <a
+                      href="tel:02072052723"
+                      class="text-light text-decoration-none"
+                    >
+                      020 72052723
+                    </a>
                   </li>
                   <li class="d-flex align-items-center my-2">
                     <span class="icon-circle me-2">
-                      <Icon name="mdi:map-marker-outline" /> </span
-                    >Find us on Google Maps
+                      <Icon name="mdi:map-marker-outline" />
+                    </span>
+                    <a
+                      href="#"
+                      target="_blank"
+                      rel="noopener"
+                      class="text-light text-decoration-none"
+                    >
+                      Find us on Google Maps
+                    </a>
                   </li>
                   <li class="d-flex align-items-center">
                     <span class="icon-circle me-2">
-                      <Icon name="akar-icons:envelope" /> </span
-                    >info@sambasoccerschools.com
+                      <Icon name="akar-icons:envelope" />
+                    </span>
+                    <a
+                      href="mailto:info@sambasoccerschools.com"
+                      class="text-light text-decoration-none"
+                    >
+                      info@sambasoccerschools.com
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -138,7 +156,8 @@
       </div>
 
       <p class="pt-5 text-center">
-        © 2023, Samba Soccer Schools Global Ltd | All Rights Reserved.
+        © {{ new Date().getFullYear() }}, Samba Soccer Schools Global Ltd | All
+        Rights Reserved.
       </p>
     </div>
   </footer>
