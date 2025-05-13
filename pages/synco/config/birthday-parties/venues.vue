@@ -152,82 +152,86 @@ const restoreVenue = async (id: string) => {
           </button>
         </div>
 
-        <table class="table-hover table-sm rounded-4 table border shadow-sm">
-          <thead class="rounded-top-4">
-            <tr class="table-light">
-              <!-- <th scope="col">Checkbox</th> -->
-              <th scope="col">
-                <input
-                  id="all-table"
-                  class="form-check-input"
-                  type="checkbox"
-                  disabled
-                />
-                <label class="form-check-label text-muted ms-3" for="all-table">
-                  Area
-                </label>
-              </th>
-              <th class="text-muted" scope="col">Name of the venue</th>
-              <th class="text-muted" scope="col">Address</th>
-              <th class="text-muted" scope="col">Region</th>
-              <th scope="col"></th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody class="">
-            <tr class="align-middle" v-for="venue in venues">
-              <th scope="row">
-                <input
-                  :id="venue.id"
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                />
-                <label class="form-check-label text-muted ms-3" :for="venue.id">
-                  {{ venue.area }}
-                </label>
-              </th>
-              <td>{{ venue.name }}</td>
-              <td>{{ venue.address }}</td>
-              <td>{{ venue.region }}</td>
-              <td>
-                <button class="btn btn-link px-1" v-if="venue.has_congestion">
-                  <Icon name="emojione-monotone:letter-c" class="text-danger" />
-                </button>
-                <button class="btn btn-link px-1" v-if="venue.has_parking">
-                  <Icon
-                    name="emojione-monotone:letter-p"
-                    class="text-success"
+        <div class="table-responsive">
+          <table
+            class="table-bordered table-sm w-100 rounded-4 table shadow-sm"
+          >
+            <thead class="rounded-top-4">
+              <tr class="table-light">
+                <!-- <th scope="col">Checkbox</th> -->
+                <th scope="col">
+                  <input
+                    id="all-table"
+                    class="form-check-input"
+                    type="checkbox"
+                    disabled
                   />
-                </button>
-              </td>
-              <td>
-                <button class="btn btn-link mx-1 px-1">
-                  <Icon name="solar:calendar-line-duotone" />
-                </button>
-                <button
-                  class="btn btn-link mx-1 px-1"
-                  @click="openPanel(venue)"
-                >
-                  <Icon name="ph:pencil-simple-line" />
-                </button>
-                <button
-                  class="btn btn-link mx-1 px-1"
-                  @click="
-                    !!venue.deleted_at
-                      ? restoreVenue(venue.id)
-                      : deleteVenue(venue.id)
-                  "
-                  :disabled="blockButtons"
-                >
-                  <Icon
-                    :name="!!venue.deleted_at ? 'ph:recycle' : 'ph:trash'"
+                  <label class="form-check-label text-muted ms-3" for="all-table">
+                    Area
+                  </label>
+                </th>
+                <th class="text-muted" scope="col">Name of the venue</th>
+                <th class="text-muted" scope="col">Address</th>
+                <th class="text-muted" scope="col">Region</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody class="">
+              <tr class="align-middle" v-for="venue in venues">
+                <th scope="row">
+                  <input
+                    :id="venue.id"
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
                   />
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  <label class="form-check-label text-muted ms-3" :for="venue.id">
+                    {{ venue.area }}
+                  </label>
+                </th>
+                <td>{{ venue.name }}</td>
+                <td>{{ venue.address }}</td>
+                <td>{{ venue.region.title }}</td>
+                <td>
+                  <button class="btn btn-link px-1" v-if="venue.has_congestion">
+                    <Icon name="emojione-monotone:letter-c" class="text-danger" />
+                  </button>
+                  <button class="btn btn-link px-1" v-if="venue.has_parking">
+                    <Icon
+                      name="emojione-monotone:letter-p"
+                      class="text-success"
+                    />
+                  </button>
+                </td>
+                <td>
+                  <button class="btn btn-link mx-1 px-1">
+                    <Icon name="solar:calendar-line-duotone" />
+                  </button>
+                  <button
+                    class="btn btn-link mx-1 px-1"
+                    @click="openPanel(venue)"
+                  >
+                    <Icon name="ph:pencil-simple-line" />
+                  </button>
+                  <button
+                    class="btn btn-link mx-1 px-1"
+                    @click="
+                      !!venue.deleted_at
+                        ? restoreVenue(venue.id)
+                        : deleteVenue(venue.id)
+                    "
+                    :disabled="blockButtons"
+                  >
+                    <Icon
+                      :name="!!venue.deleted_at ? 'ph:recycle' : 'ph:trash'"
+                    />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div v-if="panel" class="col-sm-4">
         <div class="card">
@@ -412,3 +416,49 @@ const restoreVenue = async (id: string) => {
     </div>
   </NuxtLayout>
 </template>
+<style scoped>
+.table {
+  border: 1px solid #e2e1e5;
+  border-radius: 12px;
+  overflow: hidden; /* para que las esquinas redondeadas se vean */
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+  border: none; /* importante: elimina las líneas internas */
+  font-size: 14px;
+  padding: 0.75rem;
+}
+
+.table thead th {
+  background-color: #f4f4f4; /* gris claro */
+  color: #6b7280; /* gris opaco, como tailwind's text-gray-500 */
+  font-weight: 600;
+  font-size: 14px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table thead th:first-child {
+  border-top-left-radius: 12px;
+}
+.table thead th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+}
+.table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
+}
+
+.table .btn-link {
+  font-size: 22px;
+  color: #717073;
+}
+
+.table .btn-link:hover {
+  color: #252526;
+}
+</style>
