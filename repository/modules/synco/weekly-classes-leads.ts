@@ -106,60 +106,75 @@ class WeeklyClassesLeadsModule extends FetchFactory {
     )
   }
 
-  async create(term: IWeeklyClassesLeadCreate) {
+  // async create(term: IWeeklyClassesLeadCreate) {
+  //   const token = useCookie('token')
+  //   const fetchOptions: FetchOptions<'json'> = {
+  //     headers: {
+  //       Authorization: `${token.value}`,
+  //     },
+  //   }
+  //   const guardians: ICreateGuardian[] = []
+  //   term.guardians.forEach((x) => {
+  //     guardians.push({
+  //       first_name: x.first_name,
+  //       last_name: x.last_name,
+  //       email: x.email,
+  //       phone_number: x.phone_number,
+  //       relationship_code: x.relationship_code,
+  //       referral_source_code: x.referral_source_code,
+  //     })
+  //   })
+  //   const students: ICreateStudent[] = []
+  //   term.students.forEach((x) => {
+  //     students.push({
+  //       first_name: x.first_name,
+  //       last_name: x.last_name,
+  //       dob: x.dob,
+  //       age: x.age,
+  //       gender_id: x.gender_id,
+  //       medical_information: x.medical_information,
+  //     })
+  //   })
+  //   const emergency_contacts: ICreateEmergencyContact[] = []
+  //   term.emergency_contacts.forEach((x) => {
+  //     emergency_contacts.push({
+  //       first_name: x.first_name,
+  //       last_name: x.last_name,
+  //       phone_number: x.phone_number,
+  //       relationship_id: x.relationship_id,
+  //     })
+  //   })
+  //   const comments: string[] = []
+  //   term.comments.forEach((x) => {
+  //     comments.push(x)
+  //   })
+
+  //   const body = {
+  //     weekly_class_id: term.weekly_class_id,
+  //     guardians: guardians,
+  //     students: students,
+  //     emergency_contacts: emergency_contacts,
+  //     comments: comments,
+  //   }
+  //   return this.call<IWeeklyClassesLeadCreateResponse>(
+  //     'POST',
+  //     `${this.RESOURCE}/add`,
+  //     body,
+  //     fetchOptions,
+  //   )
+  // }
+
+  async addLead(data: any) {
     const token = useCookie('token')
     const fetchOptions: FetchOptions<'json'> = {
       headers: {
-        Authorization: `${token.value}`,
+        // Authorization: `${token.value}`,
       },
-    }
-    const guardians: ICreateGuardian[] = []
-    term.guardians.forEach((x) => {
-      guardians.push({
-        first_name: x.first_name,
-        last_name: x.last_name,
-        email: x.email,
-        phone_number: x.phone_number,
-        relationship_code: x.relationship_code,
-        referral_source_code: x.referral_source_code,
-      })
-    })
-    const students: ICreateStudent[] = []
-    term.students.forEach((x) => {
-      students.push({
-        first_name: x.first_name,
-        last_name: x.last_name,
-        dob: x.dob,
-        age: x.age,
-        gender_id: x.gender_id,
-        medical_information: x.medical_information,
-      })
-    })
-    const emergency_contacts: ICreateEmergencyContact[] = []
-    term.emergency_contacts.forEach((x) => {
-      emergency_contacts.push({
-        first_name: x.first_name,
-        last_name: x.last_name,
-        phone_number: x.phone_number,
-        relationship_id: x.relationship_id,
-      })
-    })
-    const comments: string[] = []
-    term.comments.forEach((x) => {
-      comments.push(x)
-    })
-
-    const body = {
-      weekly_class_id: term.weekly_class_id,
-      guardians: guardians,
-      students: students,
-      emergency_contacts: emergency_contacts,
-      comments: comments,
     }
     return this.call<IWeeklyClassesLeadCreateResponse>(
       'POST',
-      `${this.RESOURCE}/add`,
-      body,
+      `${this.RESOURCE}/add_front`,
+      data,
       fetchOptions,
     )
   }

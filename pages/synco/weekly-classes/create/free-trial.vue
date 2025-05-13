@@ -4,7 +4,7 @@
       <div
         class="card-body d-flex align-items-center justify-content-between p-3"
       >
-        <NuxtLink class="h4 text-light m-0" to="/synco/weekly-classes/leads">
+        <NuxtLink class="h4 text-light m-0" @click.prevent="goBack">
           <Icon name="material-symbols:arrow-back" class="me-2" />Book a Free
           Trial
         </NuxtLink>
@@ -359,6 +359,10 @@ watch(
   },
   { deep: true },
 )
+
+const goBack = () => {
+  router.back()
+}
 
 const getClassData = async () => {
   try {

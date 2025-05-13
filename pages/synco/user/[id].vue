@@ -303,6 +303,7 @@ const submitFeedback = async () => {
     await $api.feedback.create(feedbackItem.value)
 
     openCloseCleanFeedbackItem(false)
+    await getAccountInformation()
   } catch (error: any) {
     console.log(error)
     toast.error(error?.data?.messages ?? 'Error')
@@ -607,7 +608,7 @@ const getBtnColor = (status: accountStatus) => {
               </div>
             </div>
           </div>
-          <div class="dropdown">
+          <!-- <div class="dropdown">
             <button
               type="button"
               class="btn btn-primary text-light dropdown-toggle mx-2"
@@ -642,7 +643,7 @@ const getBtnColor = (status: accountStatus) => {
                 Book Membership
               </button>
             </div>
-          </div>
+          </div> -->
         </div>
       </template>
       <template v-if="selection == 'Feedback'">
@@ -1125,9 +1126,9 @@ const getBtnColor = (status: accountStatus) => {
               <tr v-for="item in feedbackItems" style="vertical-align: middle">
                 <!-- <td><input type="checkbox" /></td> -->
                 <td>{{ cleanDate(item.created_date) }}</td>
-                <td>{{ item.feedbackType?.name }}</td>
-                <td>{{ item.weeklyClass?.venue?.name }}</td>
-                <td>{{ item.feedbackCategory?.name }}</td>
+                <td>{{ item.feedback_type?.title }}</td>
+                <td>{{ item.weekly_class?.venue?.name }}</td>
+                <td>{{ item.feedback_category?.title }}</td>
                 <td>{{ item.additional_notes }}</td>
                 <td>
                   <img :src="item.agent?.avatar_image" class="me-2" /><span

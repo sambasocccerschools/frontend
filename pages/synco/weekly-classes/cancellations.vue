@@ -94,60 +94,64 @@
             @send-text="sendText"
           />
         </div>
-        <table class="table-hover rounded-4 mt-4 table border">
-          <thead class="rounded-top-4">
-            <tr class="table-light">
-              <!-- <th scope="col">Checkbox</th> -->
-              <th scope="col">
-                <input
-                  id="all-table"
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                />
-              </th>
-              <th scope="col">
-                <label class="form-check-label text-muted" for="all-table">
-                  Parent name
-                </label>
-              </th>
-              <th class="text-muted" scope="col">Number of Student</th>
-              <th class="text-muted" scope="col">Venue</th>
-              <th class="text-muted" scope="col">Date booked</th>
-              <th class="text-muted" scope="col">Date of request</th>
-              <th class="text-muted" scope="col">Reason</th>
-              <th class="text-muted" scope="col">Status</th>
-            </tr>
-          </thead>
-          <!-- <tbody>
-            <template
-              v-for="cancellation in cancellations"
-              :key="Number(cancellation.id)"
-            >
-              <LazySyncoWeeklyClassesCancellationsTableItem
-                :cancellation="cancellation"
-                @selected-guardian="selectedGuardian"
-              />
-            </template>
-          </tbody> -->
-          <tbody>
-            <template
-              v-for="(cancellation, index) in cancellations"
-              :key="cancellation?.id || `cancellation-${index}`"
-            >
-              <LazySyncoWeeklyClassesCancellationsTableItem
-                v-if="cancellation && cancellation.id"
-                :cancellation="cancellation"
-                @selected-guardian="selectedGuardian"
-              />
-              <tr v-else>
-                <td colspan="8" class="text-danger text-center">
-                  Invalid cancellation data
-                </td>
+        <div class="table-responsive">
+          <table
+            class="table-bordered table-sm w-100 rounded-4 table shadow-sm"
+          >
+            <thead class="rounded-top-4">
+              <tr class="table-light">
+                <!-- <th scope="col">Checkbox</th> -->
+                <th scope="col">
+                  <input
+                    id="all-table"
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                  />
+                </th>
+                <th scope="col">
+                  <label class="form-check-label text-muted" for="all-table">
+                    Parent name
+                  </label>
+                </th>
+                <th class="text-muted" scope="col">Number of Student</th>
+                <th class="text-muted" scope="col">Venue</th>
+                <th class="text-muted" scope="col">Date booked</th>
+                <th class="text-muted" scope="col">Date of request</th>
+                <th class="text-muted" scope="col">Reason</th>
+                <th class="text-muted" scope="col">Status</th>
               </tr>
-            </template>
-          </tbody>
-        </table>
+            </thead>
+            <!-- <tbody>
+              <template
+                v-for="cancellation in cancellations"
+                :key="Number(cancellation.id)"
+              >
+                <LazySyncoWeeklyClassesCancellationsTableItem
+                  :cancellation="cancellation"
+                  @selected-guardian="selectedGuardian"
+                />
+              </template>
+            </tbody> -->
+            <tbody>
+              <template
+                v-for="(cancellation, index) in cancellations"
+                :key="cancellation?.id || `cancellation-${index}`"
+              >
+                <LazySyncoWeeklyClassesCancellationsTableItem
+                  v-if="cancellation && cancellation.id"
+                  :cancellation="cancellation"
+                  @selected-guardian="selectedGuardian"
+                />
+                <tr v-else>
+                  <td colspan="8" class="text-danger text-center">
+                    Invalid cancellation data
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="col">
         <SyncoWeeklyClassesFormsFindCancellation @apply-filter="applyFilter" />
@@ -303,3 +307,49 @@ const applyFilter = async (data: IWeeklyClassesCancellationFilterObject) => {
   }
 }
 </script>
+<style scoped>
+.table {
+  border: 1px solid #e2e1e5;
+  border-radius: 12px;
+  overflow: hidden; /* para que las esquinas redondeadas se vean */
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+  border: none; /* importante: elimina las líneas internas */
+  font-size: 14px;
+  padding: 0.75rem;
+}
+
+.table thead th {
+  background-color: #f4f4f4; /* gris claro */
+  color: #6b7280; /* gris opaco, como tailwind's text-gray-500 */
+  font-weight: 600;
+  font-size: 14px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table thead th:first-child {
+  border-top-left-radius: 12px;
+}
+.table thead th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+}
+.table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
+}
+
+.table .btn-link {
+  font-size: 22px;
+  color: #717073;
+}
+
+.table .btn-link:hover {
+  color: #252526;
+}
+</style>

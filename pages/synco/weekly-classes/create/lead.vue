@@ -423,7 +423,8 @@ const createLead = async (newLead: IWeeklyClassesLeadCreate) => {
   try {
     changeLoadingState(true)
     newLead.weekly_class_id = weekly_class_id.value
-    const response = await $api.wcLeads.create(newLead)
+    newLead.lead_status_code = 'CALL_PENDING_LS'
+    const response = await $api.wcLeads.addLead(newLead)
     await router.push({ path: `/synco/weekly-classes/leads` })
     console.log(response)
   } catch (error: any) {

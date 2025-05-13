@@ -4,9 +4,9 @@
       <div
         class="card-body d-flex align-items-center justify-content-between p-3"
       >
-        <NuxtLink class="h4 text-light m-0" to="/synco/weekly-classes/leads">
-          <Icon name="material-symbols:arrow-back" class="me-2" />Add to waiting
-          list
+        <NuxtLink class="h4 text-light m-0" @click.prevent="goBack">
+          <Icon name="material-symbols:arrow-back" class="me-2" />Add to Waiting
+          List
         </NuxtLink>
 
         <div class="d-flex align-items-center">
@@ -467,6 +467,10 @@ watch(
   },
   { deep: true },
 )
+
+const goBack = () => {
+  router.back()
+}
 
 const isParentInfoFilled = (): boolean => {
   const requiredFields: Array<keyof typeof parent.value> = [

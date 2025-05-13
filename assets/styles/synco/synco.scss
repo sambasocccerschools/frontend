@@ -54,6 +54,40 @@
 @import '../bootstrap/utilities/api';
 // scss-docs-end import-stack
 
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../fonts/Gilroy-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy-Semibold';
+  src: url('../fonts/Gilroy-Semibold.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy-Bold';
+  src: url('../fonts/Gilroy-Bold.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy-Medium';
+  src: url('../fonts/Gilroy-Medium.ttf') format('truetype');
+  font-style: normal;
+}
+
+/* Aplicar la fuente en el cuerpo del documento */
+body {
+  font-family: 'Gilroy', sans-serif !important;
+}
+
+h2, h3, h4, h5, h6 , .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Gilroy-Medium', sans-serif !important;
+}
+
 // Navigation
 
 .btn-nav {
