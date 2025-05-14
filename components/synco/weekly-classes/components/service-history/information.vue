@@ -6,11 +6,12 @@
     <div class="row">
       <div class="col-6">
         <div class="form-group w-100 mb-3">
-          <label for="studentFirstName" class="form-labelform-label-light"
-            >First name</label
-          >
+          <label for="studentFirstName" class="form-labelform-label-light">
+            First name
+          </label>
           <input
             id="studentFirstName"
+            v-model="data.student.firstName"
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter first name"
@@ -19,11 +20,12 @@
       </div>
       <div class="col-6">
         <div class="form-group w-100 mb-3">
-          <label for="studentLastName" class="form-labelform-label-light"
-            >Last name</label
-          >
+          <label for="studentLastName" class="form-labelform-label-light">
+            Last name
+          </label>
           <input
             id="studentLastName"
+            v-model="data.student.lastName"
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter last name"
@@ -37,11 +39,12 @@
     <div class="row">
       <div class="col-6">
         <div class="form-group w-100 mb-3">
-          <label for="startDate" class="form-labelform-label-light"
-            >Start Date</label
-          >
+          <label for="startDate" class="form-labelform-label-light">
+            Start Date
+          </label>
           <input
             id="startDate"
+            v-model="data.bookingInfo.startDate"
             type="date"
             class="form-control form-control-lg"
           />
@@ -52,9 +55,9 @@
           <label for="venue" class="form-labelform-label-light">Venue</label>
           <input
             id="venue"
+            v-model="data.bookingInfo.venue"
             type="text"
             class="form-control form-control-lg"
-            placeholder="Automatic entry"
             readonly
           />
         </div>
@@ -74,6 +77,7 @@
           <label for="time" class="form-labelform-label-light">Time</label>
           <input
             id="time"
+            v-model="data.bookingInfo.time"
             type="text"
             class="form-control form-control-lg"
             placeholder="Automatic entry"
@@ -84,3 +88,12 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const props = defineProps<{
+  data: any
+}>()
+const data = ref<any>(props.data).value
+</script>

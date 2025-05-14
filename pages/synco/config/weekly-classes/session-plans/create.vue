@@ -10,10 +10,10 @@ const router = useRouter()
 const { $api } = useNuxtApp()
 const toast = useToast()
 
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
-let abilityId = ref<number | null>(null)
-let newExcercise = ref<ISessionPlanExcerciseCreateItem>({
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
+const abilityId = ref<number | null>(null)
+const newExcercise = ref<ISessionPlanExcerciseCreateItem>({
   title: '',
   subtitle: '',
   description: '',
@@ -21,7 +21,7 @@ let newExcercise = ref<ISessionPlanExcerciseCreateItem>({
   video: null,
   title_duration: '',
 })
-let newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
+const newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
   title: '',
   description: '',
   ability_group_id: 0,
@@ -32,8 +32,8 @@ let newSessionPlan = ref<ISessionPlanCreateUpdateItem>({
 
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/session-plans/create.vue')
-  let queryAbilityId = router.currentRoute.value.query?.abilityId
-  abilityId.value = !!queryAbilityId ? +queryAbilityId : -1
+  const queryAbilityId = router.currentRoute.value.query?.abilityId
+  abilityId.value = queryAbilityId ? +queryAbilityId : -1
   newSessionPlan.value.ability_group_id = abilityId.value
   addNewExercise()
 })
@@ -46,39 +46,39 @@ const addNewExercise = () => {
   // let index = newSessionPlan.value.exercises.length - 1
 }
 
-let bannerInput = ref<HTMLInputElement | null>(null)
-let banner = ref<File>()
-let bannerPreview = ref<string | null>(null)
+const bannerInput = ref<HTMLInputElement | null>(null)
+const banner = ref<File>()
+const bannerPreview = ref<string | null>(null)
 
 const handleBannerChange = async () => {
   const files = bannerInput.value?.files!
   const file = files?.[0]
   banner.value = file
-  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
+  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
     type: file.type,
   })
   newSessionPlan.value.banner = fileBlob
   bannerPreview.value = file ? URL.createObjectURL(file) : null
 }
 
-let videoInput = ref<HTMLInputElement | null>(null)
-let video = ref<File>()
-let videoPreview = ref<string | null>(null)
+const videoInput = ref<HTMLInputElement | null>(null)
+const video = ref<File>()
+const videoPreview = ref<string | null>(null)
 
 const handleVideoChange = async () => {
   const files = videoInput.value?.files!
   const file = files?.[0]
   video.value = file
-  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
+  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
     type: file.type,
   })
   newSessionPlan.value.video = fileBlob
   videoPreview.value = file ? URL.createObjectURL(file) : null
 }
 
-let imageInput = ref<Array<HTMLInputElement | null>>([])
-let image = ref<Array<File>>([])
-let imagePreview = ref<Array<string | null>>([])
+const imageInput = ref<Array<HTMLInputElement | null>>([])
+const image = ref<Array<File>>([])
+const imagePreview = ref<Array<string | null>>([])
 
 const handleImageInput = (event: Event, index: number) => {
   if (event.target instanceof HTMLInputElement) {
@@ -94,16 +94,16 @@ const handleImageChange = async (index: number) => {
   if (image.value[index] != null) {
     image.value[index] = file
   }
-  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
+  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
     type: file.type,
   })
   newSessionPlan.value.exercises[index].banner = fileBlob
   imagePreview.value[index] = file ? URL.createObjectURL(file) : null
 }
 
-let video2Input = ref<Array<HTMLInputElement | null>>([])
-let video2 = ref<Array<File>>([])
-let video2Preview = ref<Array<string | null>>([])
+const video2Input = ref<Array<HTMLInputElement | null>>([])
+const video2 = ref<Array<File>>([])
+const video2Preview = ref<Array<string | null>>([])
 
 const handleVideo2Input = (event: Event, index: number) => {
   if (event.target instanceof HTMLInputElement) {
@@ -118,7 +118,7 @@ const handleVideo2Change = async (index: number) => {
   if (video2.value[index] != null) {
     video2.value[index] = file
   }
-  let fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
+  const fileBlob = new Blob([new Uint8Array(await file.arrayBuffer())], {
     type: file.type,
   })
   newSessionPlan.value.exercises[index].video = fileBlob
@@ -167,7 +167,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Create Session">
+  <NuxtLayout name="syncolayout" page-title="Create Session">
     <div class="card rounded-4">
       <div class="row my-2">
         <div class="col-1"></div>
@@ -210,7 +210,8 @@ const onSubmit = async () => {
         </div>
         <div class="col-1"></div>
       </div>
-      <div class="row my-4">
+      <SyncoConfigSessionPlansCreateForm></SyncoConfigSessionPlansCreateForm>
+      <!-- <div class="row my-4">
         <div class="col-2"></div>
         <div class="col-8">
           <div class="d-flex flex-column">
@@ -415,11 +416,6 @@ const onSubmit = async () => {
         </div>
         <div class="col-1"></div>
         <div class="col-4">
-          <!-- <button
-              class="btn btn-primary text-light w-100"
-              @click="save"
-              :disabled="blockButtons"
-            > -->
           <button
             class="btn btn-primary text-light w-100"
             type="submit"
@@ -430,7 +426,7 @@ const onSubmit = async () => {
           </button>
         </div>
         <div class="col-2"></div>
-      </div>
+      </div> -->
     </div>
   </NuxtLayout>
 </template>

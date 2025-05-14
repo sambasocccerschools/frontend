@@ -1,74 +1,48 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useToast } from 'vue-toast-notification'
-
-import type { IGender, IMedicalInformation } from '~/types/index'
 import type { IStudentCreate } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
+
 const props = defineProps<{
   student: IStudentCreate
   noBorder?: boolean | null
 }>()
 
-const { $api } = useNuxtApp()
-const toast = useToast()
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
 const changeLoadingState = (state: boolean) => {
   isLoading.value = state
   blockButtons.value = state
 }
 
-let student = ref<IStudentCreate>(props.student)
-let noBorder = ref<boolean>(props.noBorder ?? false)
+const student = ref<IStudentCreate>(props.student)
+const noBorder = ref<boolean>(props.noBorder ?? false)
 
-let gender = ref<IGender[]>([])
-let medicalInformation = ref<IMedicalInformation[]>([])
+const gender = store.gender
+const medicalInformation = store.medicalInformation
 
 watch(
   () => student.value.dob,
   (newValue: string, oldValue: string) => {
-    let dob = new Date(newValue)
-    let today = new Date()
-    let ageDifference = today.getTime() - dob.getTime()
-    var ageDate = new Date(ageDifference)
-    let age = Math.abs(ageDate.getUTCFullYear() - 1970)
+    const dob = new Date(newValue)
+    const today = new Date()
+    const ageDifference = today.getTime() - dob.getTime()
+    const ageDate = new Date(ageDifference)
+    const age = Math.abs(ageDate.getUTCFullYear() - 1970)
     student.value.age = age
   },
 )
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/forms/student-form.vue')
-  await getGender()
-  await getMedicalInformation()
+  await store.fetchAllData()
+  if (!gender.length) {
+    await store.getGenders()
+  }
 })
-const getGender = async () => {
-  try {
-    changeLoadingState(true)
-    const response = await $api.datasets.getGender()
-    console.log(response)
-    gender.value = response?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-    gender.value = []
-  } finally {
-    changeLoadingState(false)
-  }
-}
-const getMedicalInformation = async () => {
-  try {
-    changeLoadingState(true)
-    const response = await $api.datasets.getMedicalInformation()
-    console.log(response)
-    medicalInformation.value = response?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-    medicalInformation.value = []
-  } finally {
-    changeLoadingState(false)
-  }
-}
+
+console.log('components/synco/weekly-classes/forms/student-form.vue')
 </script>
 
 <template>
@@ -83,10 +57,10 @@ const getMedicalInformation = async () => {
           >
           <input
             id="studentFirstName"
+            v-model="student.first_name"
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter first name"
-            v-model="student.first_name"
           />
         </div>
       </div>
@@ -97,10 +71,10 @@ const getMedicalInformation = async () => {
           >
           <input
             id="studentLastName"
+            v-model="student.last_name"
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter last name"
-            v-model="student.last_name"
           />
         </div>
       </div>
@@ -113,10 +87,10 @@ const getMedicalInformation = async () => {
           >
           <input
             id="studentDoB"
+            v-model="student.dob"
             type="date"
             class="form-control form-control-lg"
             placeholder="Enter date of birth"
-            v-model="student.dob"
           />
         </div>
       </div>
@@ -125,10 +99,10 @@ const getMedicalInformation = async () => {
           <label for="studentAge" class="form-labelform-label-light">Age</label>
           <input
             id="studentAge"
+            v-model="student.age"
             type="text"
             class="form-control form-control-lg"
             placeholder="Automatic entry"
-            v-model="student.age"
             readonly
           />
         </div>
@@ -136,20 +110,20 @@ const getMedicalInformation = async () => {
     </div>
     <div class="row">
       <div class="col-6">
-        <div class="form-group w-100 mb-3">
+        <div v-if="gender.length" class="form-group w-100 mb-3">
           <label for="studentGender" class="form-labelform-label-light"
             >Gender</label
           >
           <select
             id="studentGender"
-            class="form-control form-control-lg"
             v-model="student.gender_id"
+            class="form-control form-control-lg"
           >
             <option :value="0">Select option</option>
             <option
               v-for="(item, index) in gender"
-              :value="item.id"
               :key="index"
+              :value="item.id"
             >
               {{ item.title }}
             </option>
@@ -157,7 +131,19 @@ const getMedicalInformation = async () => {
         </div>
       </div>
       <div class="col-6">
-        <div class="form-group w-100 mb-3">
+        <div class="form-studentMedicalInformation w-100 mb-3">
+          <label for="studentAge" class="form-labelform-label-light"
+            >Medical information</label
+          >
+          <input
+            id="studentMedicalInformation"
+            v-model="student.medical_information"
+            type="text"
+            class="form-control form-control-lg"
+            placeholder="Medical information"
+          />
+        </div>
+        <!-- <div class="form-group w-100 mb-3" v-if="medicalInformation.length">
           <label
             for="studentMedicalInformation"
             class="form-labelform-label-light"
@@ -177,7 +163,7 @@ const getMedicalInformation = async () => {
               {{ item.title }}
             </option>
           </select>
-        </div>
+        </div> -->
       </div>
     </div>
     <slot name="additional_rows"></slot>

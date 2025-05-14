@@ -3,83 +3,94 @@ import FetchFactory from '../../factory'
 import type {
   ISessionPlanResponse,
   ISessionPlanCreateUpdateItem,
-  ITermEditItem,
-  ITermsSuccessfulResponse,
+  ISingleSessionPlanResponse,
 } from '~/types/synco'
 
 class SessionPlansModule extends FetchFactory {
-  private RESOURCE = '/v1/sessionPlans'
+  private RESOURCE = '/sessionPlans'
 
   async getByAbilityGroup(ability_group_id: number) {
+    const token = useCookie('token')
     const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
       params: {
         ability_group_id,
       },
     }
     return this.call<ISessionPlanResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
       fetchOptions,
     )
   }
 
-  private createFormData = (data: ISessionPlanCreateUpdateItem) => {
-    let formData = new FormData()
-    formData.append('title', data.title)
-    formData.append('description', data.description)
-    formData.append('ability_group_id', data.ability_group_id.toString())
-    formData.append('player', data.description)
-    if (data.banner) {
-      formData.append('banner', data.banner)
-    }
-    if (data.video) {
-      formData.append('video', data.video)
-    }
-    data.exercises.forEach((exercise, index) => {
-      formData.append(`exercises[${index}][title]`, exercise.title)
-      formData.append(`exercises[${index}][subtitle]`, exercise.subtitle)
-      formData.append(`exercises[${index}][description]`, exercise.description)
-      formData.append(
-        `exercises[${index}][title_duration]`,
-        exercise.title_duration,
-      )
-      if (exercise.banner) {
-        formData.append(`exercises[${index}][banner]`, exercise.banner)
-      }
-      if (exercise.video) {
-        formData.append(`exercises[${index}][video]`, exercise.video)
-      }
-    })
-
-    return formData
-  }
-
-  async create(data: ISessionPlanCreateUpdateItem) {
-    const formData = this.createFormData(data)
+  async getById(id: number) {
+    const token = useCookie('token')
     const fetchOptions: FetchOptions<'json'> = {
       headers: {
-        'X-Requested-With': 'XMLHttpRequest',
+        Authorization: `${token.value}`,
       },
     }
-
-    return this.call<ISessionPlanResponse>(
-      'POST',
-      `${this.RESOURCE}`,
-      formData,
+    return this.call<ISingleSessionPlanResponse>(
+      'GET',
+      `${this.RESOURCE}/get?id=${id}`,
+      undefined,
       fetchOptions,
     )
   }
 
-  async update(id: number, data: ISessionPlanCreateUpdateItem) {
-    let formData = await this.createFormData(data)
-    formData.append('_method', 'PUT')
-
-    const fetchOptions: FetchOptions<'json'> = {}
+  async create(data: ISessionPlanCreateUpdateItem) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
+    // const formData = this.createFormData(data)
+    // formData.append('ability_group_id', data.ability_group_id.toString())
     return this.call<ISessionPlanResponse>(
       'POST',
-      `${this.RESOURCE}/${id}`,
-      formData,
+      `${this.RESOURCE}/add`,
+      data,
+      fetchOptions,
+    )
+  }
+
+  // async update(id: number, data: ISessionPlanCreateUpdateItem) {
+  //   const token = useCookie('token')
+  //   const fetchOptions: FetchOptions<'json'> = {
+  //     headers: {
+  //       Authorization: `${token.value}`,
+  //     },
+  //   }
+  //   // let formData = await this.createFormData(data)
+  //   // formData.append('_method', 'PUT')
+
+  //   return this.call<ISessionPlanResponse>(
+  //     'PUT',
+  //     `${this.RESOURCE}/edit?id=${id}`,
+  //     data,
+  //     fetchOptions,
+  //   )
+  // }
+  async update(id: any, data: ISessionPlanCreateUpdateItem) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
+
+    console.log('id', id)
+    return this.call<ISessionPlanResponse>(
+      'PUT',
+      `${this.RESOURCE}/edit?id=${id}`,
+      data,
       fetchOptions,
     )
   }
@@ -101,6 +112,16 @@ class SessionPlansModule extends FetchFactory {
   //     undefined,
   //   )
   // }
+
+  async getBlobs(url: string) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
+    return this.callBlobs<Blob>('GET', `${url}`, undefined, fetchOptions)
+  }
 }
 
 export default SessionPlansModule

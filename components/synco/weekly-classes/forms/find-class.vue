@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, watchEffect } from 'vue'
 
-import type { IVenue } from '~/types/index'
+import type { IAvailableVenueObject } from '~/types/synco/index'
+import inputSearchIcon from '~/assets/styles/synco/input-search-icon.svg'
+
 const props = defineProps<{
-  venues?: IVenue[]
+  venues?: IAvailableVenueObject[]
+  blockButtons?: boolean
 }>()
 const days = ref([
   { name: 'Monday', value: 'Monday' },
@@ -15,19 +18,17 @@ const days = ref([
   { name: 'Sunday', value: 'Sunday' },
 ])
 const searchVenue = ref('')
-const searchPostcode = ref('')
+const class_name = ref('')
 const selectedVenues = ref<string[]>([])
 const selectedDays = ref([])
-const selectedAges = ref([])
 const emit = defineEmits(['filtered'])
 
 const filteredItems = computed(() => {
   return {
     venue: searchVenue.value,
-    postcode: searchPostcode.value,
+    class_name: class_name.value,
     venues: selectedVenues.value,
     days: selectedDays.value,
-    ages: selectedAges.value,
   }
 })
 
@@ -53,28 +54,28 @@ watchEffect(() => {
       <!-- <button class="btn btn-primary btn-sm text-light shadow-sm">Apply Filter</button> -->
       <div class="input-group mb-3">
         <span id="search-addon" class="input-group-text">
-          <Icon name="ic:baseline-search" />
+          <img :src="inputSearchIcon" alt="search icon" height="20px" />
         </span>
         <input
           v-model="searchVenue"
           type="text"
-          class="form-control"
+          class="form-control search-input"
           placeholder="Search Venue"
           aria-label="Search Venue"
           aria-describedby="search-addon"
         />
       </div>
       <div class="input-group mb-3">
-        <span id="postcode-addon" class="input-group-text">
-          <Icon name="ic:baseline-search" />
+        <span id="class-addon" class="input-group-text">
+          <img :src="inputSearchIcon" alt="search icon" height="20px" />
         </span>
         <input
-          v-model="searchPostcode"
+          v-model="class_name"
           type="text"
-          class="form-control"
-          placeholder="Search by postcode"
-          aria-label="Search by postcode"
-          aria-describedby="postcode-addon"
+          class="form-control search-input"
+          placeholder="Search by class"
+          aria-label="Search by class"
+          aria-describedby="class-addon"
         />
       </div>
     </div>
@@ -83,10 +84,10 @@ watchEffect(() => {
       <div class="form-group mb-4">
         <label
           for="venue"
-          class="form-label border-bottom border-1 d-flex border-secondary-subtle mb-3 pb-2"
+          class="form-label border-bottom border-1 d-flex border-secondary-subtle h5 filterby mb-3 pb-2"
           >Venues</label
         >
-        <div class="form-check mb-3">
+        <!-- <div class="form-check mb-3">
           <input
             id="all_venues"
             v-model="selectedVenues"
@@ -96,7 +97,7 @@ watchEffect(() => {
             @change="toggleAll($event.target?.checked)"
           />
           <label class="form-check-label" for="all_venues">All venues</label>
-        </div>
+        </div> -->
         <div v-for="venue in venues" :key="venue.id" class="form-check mb-3">
           <input
             :id="venue.id"
@@ -105,7 +106,7 @@ watchEffect(() => {
             class="form-check-input"
             :value="venue.id"
           />
-          <label class="form-check-label" :for="venue.id">{{
+          <label class="form-check-label text" :for="venue.id">{{
             venue.name
           }}</label>
         </div>
@@ -116,7 +117,7 @@ watchEffect(() => {
       <div class="form-group mb-4">
         <label
           for="days"
-          class="form-label border-bottom border-1 d-flex border-secondary-subtle mb-3 pb-2"
+          class="form-label border-bottom border-1 d-flex border-secondary-subtle h5 filterby mb-3 pb-2"
           >Days</label
         >
         <div v-for="day in days" :key="day.value" class="form-check mb-3">
@@ -127,29 +128,27 @@ watchEffect(() => {
             type="checkbox"
             class="form-check-input"
           />
-          <label class="form-check-label" :for="day.value">{{
+          <label class="form-check-label text" :for="day.value">{{
             day.name
           }}</label>
-        </div>
-      </div>
-
-      <!-- Students Years -->
-      <div class="form-group mb-3">
-        <label
-          for="venue"
-          class="form-label border-bottom border-1 d-flex border-secondary-subtle mb-3 pb-2"
-          >Student Age</label
-        >
-        <div v-for="age in ['4-7', '8-12']" :key="age" class="form-check mb-3">
-          <input
-            :id="age"
-            v-model="selectedAges"
-            type="checkbox"
-            class="form-check-input"
-          />
-          <label class="form-check-label" :for="age">{{ age }}</label>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.filterby {
+  color: #212529;
+}
+.text {
+  font-family: 'Gilroy-Semibold', sans-serif;
+  font-size: 16px;
+}
+.search-input {
+  font-size: 16px;
+  line-height: normal;
+  letter-spacing: 0.16px;
+  padding: 15px 16px;
+}
+</style>

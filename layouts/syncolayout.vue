@@ -1,12 +1,46 @@
 <script lang="ts" setup>
+import { onMounted } from 'vue'
+import { generalStore } from '~/stores'
 const store = generalStore()
+const { $api } = useNuxtApp()
+
+const currentDate = ref({ weekday: '', formattedDate: '' })
+
+const getCurrentDate = () => {
+  const date = new Date()
+  const weekday = date.toLocaleDateString('en-GB', { weekday: 'long' })
+
+  const formattedDate = date.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+
+  return { weekday, formattedDate }
+}
+
+onMounted(async () => {
+  console.log('pages/synco/dashboard/index.vue')
+  const token = useCookie('token').value
+  if (!store.user && token) {
+    const profileResponse = await $api.profile.getProfile(token as string)
+
+    store.setUser(profileResponse?.data || {})
+    store.updateAuthenticated(true)
+
+    // Call fetchAllData to fetch all miscellaneous data
+    await store.fetchAllData()
+  }
+
+  currentDate.value = getCurrentDate()
+})
 
 defineProps<{
   pageTitle: string
 }>()
 
 const userFullName = computed(() => {
-  return store.user ? `${store.user.first_name} ${store.user.last_name}` : ''
+  return store.user ? store.user.full_name : ''
 })
 </script>
 
@@ -19,12 +53,12 @@ const userFullName = computed(() => {
           <div class="col">
             <div class="d-flex align-items-center justify-content-between">
               <div class="d-flex flex-column">
-                <h4>Hi Nilio!</h4>
+                <h4>Hi {{ userFullName }}!</h4>
                 <h2>{{ pageTitle || 'Welcome back 👋' }}</h2>
               </div>
 
               <div class="d-flex align-items-center">
-                <div class="d-flex gap-3">
+                <!-- <div class="d-flex gap-3">
                   <input
                     type="text"
                     class="form-control form-control-lg"
@@ -36,12 +70,14 @@ const userFullName = computed(() => {
                       class="h4 text-muuted m-0"
                     />
                   </button>
-                </div>
+                </div> -->
                 <div
                   class="border-end border-1 border-muted d-flex flex-column align-items-end px-4 text-end"
                 >
-                  <span class="h5 m-0">January</span>
-                  <small class="text-muted">8 Monday, 2023</small>
+                  <span class="h5 m-0">{{ currentDate.weekday }}</span>
+                  <small class="text-muted date">{{
+                    currentDate.formattedDate
+                  }}</small>
                 </div>
                 <div class="d-flex align-items-center px-4">
                   <img
@@ -51,7 +87,7 @@ const userFullName = computed(() => {
                   />
                   <h5>
                     {{ userFullName }}
-                    <Icon name="bi:chevron-down" />
+                    <!-- <Icon name="bi:chevron-down" /> -->
                   </h5>
                 </div>
               </div>
@@ -69,3 +105,9 @@ const userFullName = computed(() => {
 </template>
 
 <style src="@/assets/styles/synco/synco.scss" />
+
+<style scoped>
+.date {
+  font-family: 'Gilroy-Medium', sans-serif;
+}
+</style>

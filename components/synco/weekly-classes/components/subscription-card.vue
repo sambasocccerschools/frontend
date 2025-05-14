@@ -14,7 +14,7 @@
       <hr />
     </div>
     <div class="card-body">
-      <p v-for="benefit in benefits">
+      <p v-for="benefit in benefits" :key="benefit">
         <span class="btn btn-primary text-light rounded-circle fixed-size p-0"
           ><Icon name="ph:check"
         /></span>
@@ -37,9 +37,9 @@ const props = defineProps<{
   benefits: string[]
 }>()
 
-let planName = ref(props.planName).value
-let planPrice = ref(props.planPrice).value
-let benefits = ref(props.benefits).value
+const planName = ref(props.planName).value
+const planPrice = ref(props.planPrice).value
+const benefits = ref(props.benefits).value
 </script>
 <style scoped>
 .fixed-size {

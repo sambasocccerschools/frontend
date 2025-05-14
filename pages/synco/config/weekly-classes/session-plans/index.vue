@@ -1,37 +1,21 @@
 <script setup lang="ts">
+import defaultIcon from '~/assets/styles/synco/default-icon.svg'
+
 import { ref } from 'vue'
 import { useToast } from 'vue-toast-notification'
-import type {
-  IAbilityGroupObject,
-  ISessionPlanObject,
-} from '~/types/synco/index'
+import type { ISessionPlanObject } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
 
 const { $api } = useNuxtApp()
 const toast = useToast()
 
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
 
-let abilityGroups = ref<IAbilityGroupObject[]>([])
-const getAbilityGroups = async () => {
-  try {
-    isLoading.value = true
-    blockButtons.value = true
-    const abilityGroupsResponse = await $api.abilityGroups.getAll(
-      'weekly-classes',
-      null,
-    )
-    abilityGroups.value = abilityGroupsResponse?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-  } finally {
-    isLoading.value = false
-    blockButtons.value = false
-  }
-}
+const abilityGroups = store.abilityGroups
 
-let sessionPlans = ref<ISessionPlanObject[]>([])
+const sessionPlans = ref<ISessionPlanObject[]>([])
 const getSessionPlans = async (abilityId: number) => {
   try {
     isLoading.value = true
@@ -48,8 +32,9 @@ const getSessionPlans = async (abilityId: number) => {
   }
 }
 
-let selectedAbilityGroupId = ref<number>(-1)
+const selectedAbilityGroupId = ref<number>(-1)
 const selectAbilityGroup = (id: number) => {
+  console.log('Selecting ability group:', id)
   if (blockButtons.value) return
   sessionPlans.value = []
   selectedAbilityGroupId.value = id
@@ -58,14 +43,17 @@ const selectAbilityGroup = (id: number) => {
 
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/session-plans/index.vue')
-  await getAbilityGroups()
-  console.log(abilityGroups.value)
-  selectAbilityGroup(abilityGroups.value[0].id)
+  await store.getAbilityGroups()
+  console.log('Ability groups:', abilityGroups)
+  if (abilityGroups.length > 0 && abilityGroups[0].icon) {
+    console.log('Selected ability group:', abilityGroups[0])
+    selectAbilityGroup(abilityGroups[0].id)
+  }
 })
 </script>
 
 <template>
-  <NuxtLayout name="syncolayout">
+  <NuxtLayout name="syncolayout" page-title="Session Plans">
     <h4 class="mb-4">Create Session Plans</h4>
     <div class="row">
       <div class="col-sm-3">
@@ -76,15 +64,15 @@ onMounted(async () => {
           <ul class="list-group">
             <li
               v-for="group in abilityGroups"
+              :key="group.id"
               class="list-group-item list-group-item-action border-top d-flex w-100 rounded-0 border-bottom-0 border-end-0 border-start-0 border py-3"
-              @click="selectAbilityGroup(group.id)"
               :class="selectedAbilityGroupId == group.id ? 'text-primary' : ''"
+              @click="selectAbilityGroup(group.id)"
             >
               <span class="w-100 d-flex">
-                <!-- <img src="@/src/assets/img-avatar-ability-group.png"/> -->
                 <img
-                  :src="group.icon.url"
-                  :alt="group.icon.name"
+                  :src="group.icon?.url || defaultIcon"
+                  :alt="group.icon?.name || 'No icon available'"
                   height="38px"
                 />
                 <span class="d-flex flex-column ms-3">
@@ -105,7 +93,11 @@ onMounted(async () => {
               <span class="h3 my-3">
                 <strong>BEGINNER SESSION PLANS</strong>
               </span>
-              <div v-for="session in sessionPlans" class="col-auto my-2">
+              <div
+                v-for="session in sessionPlans"
+                :key="session.id"
+                class="col-auto my-2"
+              >
                 <NuxtLink
                   class=""
                   :to="`/synco/config/weekly-classes/session-plans/edit?sessionPlanId=${session.id}`"

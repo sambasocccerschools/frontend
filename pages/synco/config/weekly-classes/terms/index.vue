@@ -9,20 +9,20 @@ import type {
   ISessionEditItem,
   ISessionItem,
   IPlanItem,
-  ISeasonItem,
-  IAbilityGroupObject,
   IPlanEditItem,
 } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
 
 const updateKey = ref<number>(0)
 const { $api } = useNuxtApp()
 const blockButtons = ref(false)
 const toast = useToast()
-let terms = ref<ITermItem[]>([])
-let selectedTerm = ref<ITermItem | null>(null)
-let selectedTermId = ref<number | null>(null)
-let seasons = ref<ISeasonItem[]>([])
-let emptyTermItem = ref<ITermCreateItem>({
+const terms = ref<any[]>([])
+const selectedTerm = ref<any | null>(null)
+const selectedTermId = ref<number | null>(null)
+const seasons = store.seasons
+const emptyTermItem = ref<any>({
   name: '',
   season_id: 0,
   start_date: '',
@@ -30,7 +30,7 @@ let emptyTermItem = ref<ITermCreateItem>({
   half_term_date: '',
   sessions: [],
 })
-let newEditTermItem = ref<ITermCreateItem | ITermEditItem>({
+const newEditTermItem = ref<any>({
   name: '',
   season_id: 0,
   start_date: '',
@@ -38,31 +38,32 @@ let newEditTermItem = ref<ITermCreateItem | ITermEditItem>({
   half_term_date: '',
   sessions: [],
 })
-let showModal = ref<boolean>(false)
+const showModal = ref<boolean>(false)
 
 let title = ref<string>('Create new').value
 
 const toggleCreateEdit = async (item: ITermItem | null) => {
-  console.log(item)
   showModal.value = !showModal.value
-  if (!!item) {
+  if (item) {
     title = 'Edit'
     selectedTermId.value = item.id
     selectedTerm.value = item
-    let sessions: ISessionEditItem[] = item.sessions?.map((x: ISessionItem) => {
-      let plans = x.plans.map((y: IPlanItem) => {
+    const sessions: ISessionEditItem[] = item.sessions?.map(
+      (x: ISessionItem) => {
+        const plans = x.plans.map((y: IPlanItem) => {
+          return {
+            id: y.id,
+            ability_group_id: y.ability_group.id,
+            session_plan_id: y.session_plan.id,
+          }
+        })
         return {
-          id: y.id,
-          ability_group_id: y.ability_group.id,
-          session_plan_id: y.session_plan.id,
+          id: x.id,
+          plans: plans,
         }
-      })
-      return {
-        id: x.id,
-        plans: plans,
-      }
-    })
-    newEditTermItem = JSON.parse(
+      },
+    )
+    newEditTermItem.value = JSON.parse(
       JSON.stringify({
         name: item.name,
         season_id: item.season?.id,
@@ -75,7 +76,7 @@ const toggleCreateEdit = async (item: ITermItem | null) => {
   } else {
     title = 'Create new'
     selectedTermId.value = null
-    newEditTermItem = JSON.parse(JSON.stringify(emptyTermItem.value))
+    newEditTermItem.value = JSON.parse(JSON.stringify(emptyTermItem.value))
   }
   // if (item == true) {
   //   updateKey.value++
@@ -86,14 +87,14 @@ const toggleCreateEdit = async (item: ITermItem | null) => {
 onMounted(async () => {
   console.log('pages/synco/config/weekly-classes/terms/index.vue')
   await getTerms()
-  await getSeasons()
-  // await getAbilityGroups()
+  if (!store.seasons.length) {
+    await store.fetchDatasetDataByType('SEASONS')
+  }
 })
 
 const getTerms = async (limit: number = 25) => {
   try {
     const termResponse = await $api.terms.getAll(limit)
-    console.log(termResponse)
     terms.value = termResponse?.data
   } catch (error: any) {
     console.log(error)
@@ -133,37 +134,45 @@ const restoreTerm = async (id: number) => {
   }
 }
 
-let showTermCard = ref<boolean>(false)
-let newEditState = ref<string>('')
+const showTermCard = ref<boolean>(false)
+const newEditState = ref<string>('')
 
-let showAssignSessionCard = ref<boolean>(false)
+const showAssignSessionCard = ref<boolean>(false)
 
 const toggleShowTermCard = (data: any) => {
   showTermCard.value = !showTermCard.value
   newEditState.value = data.newEditText
   if (data.selected != 0) {
-    let term = terms.value.find((x) => x.id == data.selected)
+    const term = terms.value.find((x) => x.id == Number(data.selected))
     if (term == null) return
-    let sessions = term.sessions.map((x) => {
-      let plans = x.plans.map((y) => {
+    const sessions = term?.sessions?.map((x: any) => {
+      const plans = x.plans.map((y: any) => {
         return {
-          id: y.id,
-          ability_group_id: y.ability_group.id,
-          session_plan_id: y.session_plan.id,
+          // id: y.id,
+          ability_group: y.ability_group.id,
+          session_plan: y.session_plan.id,
         }
       })
       return {
-        id: x.id,
+        // id: Number(x.id),
         plans,
       }
     })
+
     newEditTermItem.value = {
       name: term.name,
-      end_date: term.end_date,
-      half_term_date: term.half_term_date,
-      season_id: term.season.id,
-      start_date: term.start_date,
-      sessions: sessions,
+      end_date: cleanDate(term.end_date),
+      half_term_date: cleanDate(term.half_term_date),
+      season_code: term.season.code,
+      start_date: cleanDate(term.start_date),
+      sessions: sessions.map((session: any) => ({
+        id: session.id,
+        plans: session.plans.map((plan: any) => ({
+          id: Number(plan.id),
+          ability_group: plan.ability_group,
+          session_plan: plan.session_plan,
+        })),
+      })),
     }
     selectedTerm.value = term
   } else {
@@ -176,34 +185,34 @@ const selectTerm = (termId: number, term: ITermItem) => {
   selectedTermId.value = termId
   selectedTerm.value = term
 }
-let selectedSessionId = ref<number>(-1)
-let selectedPlanId = ref<number>(-1)
-let selectedSessionPlanId = ref<number>(-1)
-let selectedAbilityId = ref<number>(-1)
+const selectedSessionId = ref<number>(-1)
+const selectedPlanId = ref<number>(-1)
+const selectedSessionPlanId = ref<number>(-1)
+const selectedAbilityId = ref<number>(-1)
 
 const assignSelectedSession = (selected: any) => {
   if (selected != '') {
     selectedPlanId.value = selected?.planId
-    selectedAbilityId.value = selected?.abilityId
+    selectedAbilityId.value = Number(selected?.abilityId)
     selectedSessionPlanId.value = selected?.sessionPlanId
-    selectedSessionId.value = selected?.sessionId
+    selectedSessionId.value = Number(selected?.sessionId)
   }
   toggleAssignSessionCard()
 }
 
 const assignPlan = (selected: any) => {
   if (!selectedTerm.value) return
-  let inUseSession = selectedTerm.value.sessions.find(
-    (x) => x.id == selectedSessionId.value,
+  const inUseSession = selectedTerm.value.sessions.find(
+    (x: any) => x.id == selectedSessionId.value,
   )
-  let sessions = selectedTerm.value.sessions.filter(
-    (x) => x.id != selectedSessionId.value,
+  const sessions = selectedTerm.value.sessions.filter(
+    (x: any) => x.id != selectedSessionId.value,
   )
-  let inUsePlan = inUseSession?.plans.find(
-    (x) => x.ability_group.id == selectedAbilityId.value,
+  const inUsePlan = inUseSession?.plans.find(
+    (x: any) => x.ability_group.id == selectedAbilityId.value,
   )
-  let plans = inUseSession?.plans.filter(
-    (x) => x.ability_group.id != selectedAbilityId.value,
+  const plans = inUseSession?.plans.filter(
+    (x: any) => x.ability_group.id != selectedAbilityId.value,
   )
   if (!!inUsePlan && !!inUseSession) {
     inUsePlan.session_plan.id = selected.id
@@ -223,29 +232,11 @@ const toggleAssignSessionCard = async () => {
   showAssignSessionCard.value = !showAssignSessionCard.value
 }
 
-const getSeasons = async () => {
-  try {
-    const seasonsResponse = await $api.datasets.getSeasons()
-    console.log(seasonsResponse)
-    seasons.value = seasonsResponse?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-  } finally {
-    blockButtons.value = false
-    updateKey.value++
-  }
-}
-
-let updateTerm = ref<ITermEditItem | null>(null)
+const updateTerm = ref<ITermEditItem | null>(null)
 const putTerm = async () => {
   if (selectedTerm.value == null || updateTerm.value == null) return
   try {
-    const termResponse = await $api.terms.update(
-      selectedTerm.value.id,
-      updateTerm.value,
-    )
-    console.log(termResponse)
+    await $api.terms.updateNew(selectedTerm.value.id, updateTerm.value)
   } catch (error: any) {
     console.log(error)
     toast.error(error?.data?.messages ?? 'Error')
@@ -255,50 +246,54 @@ const putTerm = async () => {
   }
 }
 const save = () => {
-  let currentTerm = selectedTerm.value
+  const currentTerm = selectedTerm.value
   if (currentTerm != null) {
-    let sessions = currentTerm.sessions
-    let newSessionObject: ISessionEditItem[] = []
-    sessions.forEach((session) => {
+    const sessions = currentTerm.sessions
+    const newSessionObject: ISessionEditItem[] = []
+    sessions.forEach((session: any) => {
       return session
     })
-    sessions.forEach((x) => {
-      let plans: IPlanEditItem[] = []
-      x.plans.forEach((plan) => {
+
+    sessions?.forEach((x: any) => {
+      const plans: any[] = []
+      x.plans?.forEach((plan: any) => {
         plans.push({
-          id: plan.id,
-          ability_group_id: plan.ability_group.id,
-          session_plan_id: plan.session_plan.id,
+          ability_group: Number(plan.ability_group.id),
+          session_plan: Number(plan.session_plan.id),
         })
       })
-      let session: ISessionEditItem = {
-        id: x.id,
+      const session: ISessionEditItem = {
         plans: plans,
       }
       newSessionObject.push(session)
     })
+
     updateTerm.value = {
       name: currentTerm.name,
       end_date: cleanDate(currentTerm.end_date),
       half_term_date: cleanDate(currentTerm.half_term_date),
-      season_id: currentTerm.season.id,
+      season_code: currentTerm.season.code,
       start_date: cleanDate(currentTerm.start_date),
       sessions: newSessionObject,
     }
-    putTerm()
+    if (!showTermCard.value) putTerm()
   } else close()
 }
-const cleanDate = (date: string) => {
-  let cleanedDate = date
-  if (date.includes('T')) {
-    cleanedDate = date.split('T')[0]
-  }
+
+const buttonSave = () => {
+  showTermCard.value = !showTermCard.value
+  save()
+}
+
+const cleanDate = (date: any) => {
+  if (!Number.isInteger(date)) return date
+  const cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
   return cleanedDate
 }
 </script>
 
 <template>
-  <NuxtLayout name="syncolayout" pageTitle="Terms">
+  <NuxtLayout name="syncolayout" page-title="Terms">
     <div class="d-flex flex-column">
       <span class="h3 my-4">Term Dates & Mapping Session Plans</span>
       <div class="d-flex justify-content-between my-4 flex-row">
@@ -310,8 +305,12 @@ const cleanDate = (date: string) => {
           Add new term
         </NuxtLink>
       </div>
-      <div class="card rounded-4" :key="updateKey">
-        <div v-for="term in terms" @click="selectTerm(term.id, term)">
+      <div :key="updateKey" class="card rounded-4">
+        <div
+          v-for="term in terms"
+          :key="term.id"
+          @click="selectTerm(term.id, term)"
+        >
           <SyncoConfigTermsSessionCard
             :term="term"
             :sessions="newEditTermItem"
@@ -338,7 +337,7 @@ const cleanDate = (date: string) => {
               :sessions="newEditTermItem"
               @assign-selected-session="assignSelectedSession"
             >
-              <template v-slot:header>
+              <template #header>
                 <div class="d-flex justify-content-between flex-row">
                   <span class="h4">Edit term</span>
                   <button
@@ -349,7 +348,7 @@ const cleanDate = (date: string) => {
                   </button>
                 </div>
               </template>
-              <template v-slot:footer>
+              <template #footer>
                 <div class="d-flex justify-content-end flex-row">
                   <button
                     class="btn btn-outline-secondary me-2"
@@ -357,7 +356,10 @@ const cleanDate = (date: string) => {
                   >
                     Cancel
                   </button>
-                  <button class="btn btn-primary text-light" @click="save">
+                  <button
+                    class="btn btn-primary text-light"
+                    @click="buttonSave"
+                  >
                     Save
                   </button>
                 </div>
@@ -381,7 +383,7 @@ const cleanDate = (date: string) => {
               :term="selectedTerm"
               :plan-id="selectedPlanId"
               :session-plan-id="selectedSessionPlanId"
-              :session-id="selectedSessionId"
+              :session-id="Number(selectedSessionId)"
               :ability-id="selectedAbilityId"
               @toggle-assign-session-card="assignSelectedSession"
               @assign-plan="changePlan"

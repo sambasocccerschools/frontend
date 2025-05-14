@@ -1,63 +1,30 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useToast } from 'vue-toast-notification'
-
-import type { IRelationship, IReferralSource } from '~/types/index'
 import type { IGuardianCreate } from '~/types/synco/index'
 const props = defineProps<{
   parent: IGuardianCreate
   noBorder?: boolean | null
 }>()
+import { generalStore } from '~/stores'
+const store = generalStore()
 
-const { $api } = useNuxtApp()
-const toast = useToast()
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
 const changeLoadingState = (state: boolean) => {
   isLoading.value = state
   blockButtons.value = state
 }
 
-let parent = ref<IGuardianCreate>(props.parent)
-let noBorder = ref<boolean>(props.noBorder ?? false)
+const parent = ref<IGuardianCreate>(props.parent)
+const noBorder = ref<boolean>(props.noBorder ?? false)
 
-const relationships = ref<IRelationship[]>()
-
-const referralSources = ref<IReferralSource[]>()
+const relationships = store.relationships
+const referralSources = store.referralSources
 
 onMounted(async () => {
   console.log('components/synco/weekly-classes/forms/parent-form.vue')
-  await getRelationships()
-  await getReferralSource()
+  await store.fetchAllData()
 })
-const getRelationships = async () => {
-  try {
-    changeLoadingState(true)
-    const response = await $api.datasets.getRelationship()
-    console.log(response)
-    relationships.value = response?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-    relationships.value = []
-  } finally {
-    changeLoadingState(false)
-  }
-}
-const getReferralSource = async () => {
-  try {
-    changeLoadingState(true)
-    const response = await $api.datasets.getReferralSource()
-    console.log(response)
-    referralSources.value = response?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-    referralSources.value = []
-  } finally {
-    changeLoadingState(false)
-  }
-}
 </script>
 
 <template>
@@ -72,10 +39,10 @@ const getReferralSource = async () => {
           >
           <input
             id="parentFirstName"
+            v-model="parent.first_name"
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter first name"
-            v-model="parent.first_name"
           />
         </div>
       </div>
@@ -86,10 +53,10 @@ const getReferralSource = async () => {
           >
           <input
             id="parentLastName"
+            v-model="parent.last_name"
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter last name"
-            v-model="parent.last_name"
           />
         </div>
       </div>
@@ -102,10 +69,10 @@ const getReferralSource = async () => {
           >
           <input
             id="parentEmail"
+            v-model="parent.email"
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter email address"
-            v-model="parent.email"
           />
         </div>
       </div>
@@ -116,30 +83,30 @@ const getReferralSource = async () => {
           >
           <input
             id="parentPhoneNumber"
+            v-model="parent.phone_number"
             type="phone"
             class="form-control form-control-lg"
             placeholder="+44"
-            v-model="parent.phone_number"
           />
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-6">
-        <div class="form-group w-100 mb-3">
+        <div v-if="relationships.length" class="form-group w-100 mb-3">
           <label for="parentRelation" class="form-labelform-label-light"
             >Relation to child</label
           >
           <select
             id="parentRelation"
+            v-model="parent.relationship_code"
             class="form-control form-control-lg"
-            v-model="parent.relationship_id"
           >
             <option :value="0">Select option</option>
             <option
               v-for="(relation, index) in relationships"
-              :value="relation.id"
               :key="index"
+              :value="relation.code"
             >
               {{ relation.title }}
             </option>
@@ -147,20 +114,20 @@ const getReferralSource = async () => {
         </div>
       </div>
       <div class="col-6">
-        <div class="form-group w-100 mb-3">
+        <div v-if="referralSources.length" class="form-group w-100 mb-3">
           <label for="parentMarketingChannel" class="form-labelform-label-light"
             >How did you hear about us?</label
           >
           <select
             id="parentMarketingChannel"
+            v-model="parent.referral_source_code"
             class="form-control form-control-lg"
-            v-model="parent.referral_source_id"
           >
             <option :value="0">Select option</option>
             <option
               v-for="(channel, index) in referralSources"
-              :value="channel.id"
               :key="index"
+              :value="channel.code"
             >
               {{ channel.title }}
             </option>

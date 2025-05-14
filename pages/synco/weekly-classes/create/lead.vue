@@ -122,7 +122,7 @@
         <template v-slot:internal_title>
           <h5 class="py-4"><strong>Student information</strong></h5>
         </template>
-        <!-- <template v-slot:additional_rows>
+        <template v-slot:additional_rows>
           <div class="row">
             <div class="col-6">
               <div class="form-group w-100 mb-3">
@@ -132,8 +132,9 @@
                 <select
                   id="studentAoI"
                   class="form-control form-control-lg"
-                  v-model="student.activityOfInterest"
+                  v-model="weekly_class_id"
                 >
+                  <option value="0">Select a class</option>
                   <option
                     v-for="(activity, index) in activities"
                     :value="activity.value"
@@ -146,7 +147,7 @@
             </div>
             <div class="col-6"></div>
           </div>
-        </template> -->
+        </template>
         <!-- <template v-slot:footer>
           <div class="card rounded-4 mt-4 px-3">
             <div class="d-flex justify-content-between my-4">
@@ -210,7 +211,10 @@
         </template>
       </SyncoWeeklyClassesFormsEmergencyContactForm>
 
-      <SyncoWeeklyClassesFormsCommentFormList />
+      <SyncoWeeklyClassesFormsCommentFormList
+        :comments="comments"
+        @add-comment="addComment"
+      />
     </div>
   </NuxtLayout>
 </template>
@@ -228,13 +232,18 @@ import type {
   IGuardianByName,
   IEmregencyContactByName,
   IService,
+  IComment,
 } from '~/types/index'
 import type {
   IGuardianCreate,
   IStudentCreate,
   IEmregencyContactCreate,
   IWeeklyClassesLeadCreate,
+  IAutoCompleteObject,
 } from '~/types/synco/index'
+
+import { generalStore } from '~/stores'
+const store = generalStore()
 
 const router = useRouter()
 const { $api } = useNuxtApp()
@@ -247,8 +256,10 @@ const changeLoadingState = (state: boolean) => {
 }
 
 let updateKey = ref<number>(0)
+let weekly_class_id = ref<number>(0)
 let createParent = ref<boolean>(false)
 let parentName = ref<string>('')
+let newComment = ref<string>('')
 let parentExists = ref<boolean>(false)
 let searched = ref<boolean>(false)
 let searchedParent = ref<IGuardianByName[]>([])
@@ -268,7 +279,7 @@ let student = ref<IStudentCreate>({
   dob: '',
   age: 0,
   gender_id: 0,
-  medical_information_id: 0,
+  medical_information: '',
 })
 let emergency_contact = ref<IEmregencyContactCreate>({
   id: 0,
@@ -277,7 +288,15 @@ let emergency_contact = ref<IEmregencyContactCreate>({
   phone_number: '',
   relationship_id: 0,
 })
-let activities = ref<IService[]>([])
+let comments = ref<Array<IComment>>([
+  {
+    text: '',
+    avatar: '',
+    name: '',
+    created: '',
+  },
+])
+// let activities = ref<IService[]>([])
 
 const search = async () => {
   searched.value = false
@@ -292,7 +311,7 @@ const search = async () => {
       .includes(parentName.value.toLowerCase()),
   )
   console.log('3', parentInfo)
-  parentExists.value = !!parentInfo && parentInfo.length > 0
+  parentExists.value = !!parentInfo && parentInfo.length
 }
 
 const selectParent = (guardian: IGuardianByName) => {
@@ -343,22 +362,46 @@ const create = () => {
 }
 const addLead = async () => {
   let newLead: IWeeklyClassesLeadCreate = {
+    weekly_class_id: null,
     guardians: [parent.value],
-    student: student.value,
-    emergency_contact: emergency_contact.value,
-    comments: ['Test'],
+    students: [student.value],
+    emergency_contacts: [emergency_contact.value],
+    comments: [newComment.value],
   }
   console.log('add lead', newLead)
   await createLead(newLead)
 }
-const cancel = () => {
-  console.log('cancel')
+const cancel = async () => {
+  await router.push({ path: `/synco/weekly-classes/leads` })
 }
+let venues = store.availableVenues
+
+const activities = computed(() => {
+  console.log(venues)
+  let classes: IAutoCompleteObject[] = []
+  venues.forEach((venue) => {
+    if (!venue.classesByYear) return
+    venue.classesByYear.forEach((years) => {
+      if (!years.classes) return
+      years.classes.forEach((yearClass) => {
+        classes.push({
+          label: `${years.year} - ${yearClass.name}`,
+          value: `${yearClass.id}`,
+        })
+      })
+    })
+  })
+  console.log(classes)
+  return classes
+})
 
 onMounted(async () => {
   console.log('pages/synco/weekly-classes/create/lead.vue')
   // await getWeeklyClasses()
   // await getSeasons()
+
+  await store.fetchAllData()
+  await store.getAvailableVenues('weekly-classes')
 })
 
 const getGuardianByName = async (name: string) => {
@@ -379,7 +422,10 @@ const getGuardianByName = async (name: string) => {
 const createLead = async (newLead: IWeeklyClassesLeadCreate) => {
   try {
     changeLoadingState(true)
-    const response = await $api.wcLeads.create(newLead)
+    newLead.weekly_class_id = weekly_class_id.value
+    newLead.lead_status_code = 'CALL_PENDING_LS'
+    const response = await $api.wcLeads.addLead(newLead)
+    await router.push({ path: `/synco/weekly-classes/leads` })
     console.log(response)
   } catch (error: any) {
     console.log(error)
@@ -387,6 +433,10 @@ const createLead = async (newLead: IWeeklyClassesLeadCreate) => {
   } finally {
     changeLoadingState(false)
   }
+}
+
+const addComment = (comment: string) => {
+  newComment.value = comment
 }
 </script>
 

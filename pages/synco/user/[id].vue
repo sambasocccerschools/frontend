@@ -1,10 +1,7 @@
-<script>
-const router = useRouter()
+<!-- <script>
 export default {
   data() {
     return {
-      previousRoute: '/synco/weekly-classes/waiting-list',
-      selection: 'Service History',
       parent: {
         firstName: '',
         lastName: '',
@@ -28,7 +25,6 @@ export default {
         phoneNumber: '',
         relationToChild: '',
       },
-      showFilter: false,
       ServiceHistoryAccountCardHeaders: [
         {
           Status: 'Active',
@@ -39,7 +35,6 @@ export default {
           Color: '#A4A5A6',
         },
       ],
-      showBookings: false,
       feedbackList: [
         {
           SubmittedDate: '01/06/2023',
@@ -69,36 +64,353 @@ export default {
       ],
     }
   },
-  methods: {
-    selectInformation(selection) {
-      this.selection = selection
+}
+</script> -->
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useToast } from 'vue-toast-notification'
+import { date } from 'yup'
+import { generalStore } from '~/stores'
+import type { IComment, ICandidateEventItem, IIdTitleItem } from '~/types/index'
+import type {
+  IAccountInformationObject,
+  IGuardianCreate,
+  IStudentCreate,
+  IEmregencyContactCreate,
+  IFeedbackItem,
+  IAccountRefereeItem,
+  IRefereeReportingItem,
+  IAccountRewardHistoryItem,
+  IAccountLoyaltyPointsHistoryItem,
+  ICreateFeedbackItem,
+  IAccountWeeklyClassesServiceHistory,
+} from '~/types/synco/index'
+
+const router = useRouter()
+const { $api } = useNuxtApp()
+const toast = useToast()
+const store = generalStore()
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
+const changeLoadingState = (state: boolean) => {
+  isLoading.value = state
+  blockButtons.value = state
+}
+
+const accountId = ref<number>(-1)
+const accountInformation = ref<IAccountInformationObject>()
+const selection = ref<string>('Service History')
+const previousRoute = ref<string>('/synco/weekly-classes/members')
+const showFilter = ref<boolean>(false)
+const showBookings = ref<boolean>(false)
+const showServiceHistoryDetails = ref<boolean>(false)
+const showFeedbackModal = ref<boolean>(false)
+
+const loyalty_points = ref<number>(0)
+// const parent = ref<IGuardianCreate[]>()
+const parent = ref<any[]>()
+// const student = ref<IStudentCreate[]>()
+const student = ref<any[]>()
+const emergencyContact = ref<IEmregencyContactCreate[]>()
+const comment = ref<IEmregencyContactCreate[]>()
+// let ServiceHistoryAccountCardHeaders = [
+//   {
+//     Status: 'Active',
+//     Color: '#43BE4F',
+//   },
+//   {
+//     Status: 'Waiting List',
+//     Color: '#A4A5A6',
+//   },
+// ]
+const feedbackItems = ref<IFeedbackItem[]>()
+const referralsList = ref<IAccountRefereeItem[]>([])
+const referralReporting = ref<IRefereeReportingItem>()
+const loyaltyPointsRewards = ref<IAccountRewardHistoryItem[]>()
+const loyaltyPointsHistory = ref<IAccountLoyaltyPointsHistoryItem[]>()
+
+const eventList = ref<ICandidateEventItem[]>()
+
+const serviceHistoryWeecklyClasses = ref<any[]>()
+
+const weeklyClassId = ref<number>(0)
+
+const feedbackItem = ref<ICreateFeedbackItem>({
+  weekly_class_id: 0,
+  feedback_type_code: '',
+  feedback_category_code: '',
+  feedback_status_code: 'PENDING_FS',
+  additional_notes: '',
+  family_id: accountId.value,
+  // agent_id: '',
+})
+
+// const feedbackStatus = store.feedbackStatus
+const feedbackCategory = store.feedbackCategory
+const feedbackType = store.feedbackType
+
+const agents = store.agents
+const enrolledClasses = ref<IIdTitleItem[]>([])
+
+onMounted(async () => {
+  console.log('pages/synco/user/[id].vue')
+  const queryAccountId = router.currentRoute.value.params.id
+  accountId.value = queryAccountId ? +queryAccountId : -1
+  await getAccountInformation()
+  // await getEnrolledWeeklyClasses(accountId.value)
+
+  // Call fetchAllData to fetch all miscellaneous data
+  await store.fetchAllData()
+})
+
+const getAccountInformation = async () => {
+  try {
+    changeLoadingState(true)
+    const response = await $api.accountInformation.getById(accountId.value)
+    loyalty_points.value = response.data.loyalty_points
+    parent.value = response.data.guardians
+    student.value = response.data.students
+    feedbackItems.value = response.data.feedbacks
+    referralsList.value = response.data.referees
+    referralReporting.value = response.data.referee_reporting
+    loyaltyPointsRewards.value = response.data.rewardHistories
+    loyaltyPointsHistory.value = response.data.loyaltyPointHistories
+    eventList.value =
+      response.data.events?.map((x) => {
+        return {
+          Date: x.created_at,
+          Description: x.description,
+          EventType: x.eventType.title,
+          ImageUrl: x.performedBy.avatar_image,
+          Title: x.eventType.title,
+          ExtraInformation: null,
+        }
+      }) ?? []
+
+    serviceHistoryWeecklyClasses.value = response.data.service_history
+
+    weeklyClassId.value =
+      serviceHistoryWeecklyClasses.value?.[0]?.weekly_class.id
+
+    // response.data.service_history['weekly-classes']
+    const data = response?.data
+    accountInformation.value = data
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    changeLoadingState(false)
+  }
+}
+
+// const getEnrolledWeeklyClasses = async (familiId: number) => {
+//   try {
+//     changeLoadingState(true)
+//     const response = await $api.datasets.getEnrolledWeeklyClass(familiId, true)
+//     console.log('getEnrolledWeeklyClasses', response)
+//     const eClasses: IIdTitleItem[] = []
+//     response.data.forEach((x) => {
+//       x?.classes.forEach((y) => {
+//         eClasses.push({
+//           title: `${x.year} - ${y.name}`,
+//           id: y.id,
+//         })
+//       })
+//     })
+//     enrolledClasses.value = eClasses
+//   } catch (error: any) {
+//     console.log(error)
+//     toast.error(error?.data?.messages ?? 'Error')
+//   } finally {
+//     changeLoadingState(false)
+//   }
+// }
+
+const selectInformation = (selected: string) => {
+  selection.value = selected
+}
+const toggleFilter = () => {
+  showFilter.value = !showFilter.value
+}
+const toggleBooking = () => {
+  showBookings.value = !showBookings.value
+}
+const addBooking = async (booking: string) => {
+  let path = ''
+  switch (booking) {
+    case 'waiting-list':
+      path = '/synco/weekly-classes/create/waiting-list'
+      break
+    case 'free-trial':
+      path = '/synco/weekly-classes/create/free-trial'
+      break
+    case 'membership':
+      path = '/synco/weekly-classes/create/membership'
+      break
+    default:
+      break
+  }
+  await router.push({
+    path,
+    query: {
+      class_id: serviceHistoryWeecklyClasses.value?.[0].weekly_class.id,
+      venue_id: serviceHistoryWeecklyClasses.value?.[0].weekly_class.venue.id,
     },
-    toggleFilter() {
-      this.showFilter = !this.showFilter
+  })
+}
+
+// const cleanDate = (date: any) => {
+//   if (!Number.isInteger(date)) return date
+//   const cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
+//   return cleanedDate
+// }
+
+const cleanDate = (date: any) => {
+  if (!date) return ''
+
+  const parsedDate = new Date(date)
+  if (isNaN(parsedDate.getTime())) return date
+
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(parsedDate)
+}
+
+const resolveFeedback = async (id: number) => {
+  try {
+    changeLoadingState(true)
+    await $api.feedback.resolve(id)
+    await getAccountInformation()
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    changeLoadingState(false)
+  }
+}
+
+const submitFeedback = async () => {
+  try {
+    changeLoadingState(true)
+    feedbackItem.value.family_id = accountId.value
+    feedbackItem.value.weekly_class_id = weeklyClassId.value
+    await $api.feedback.create(feedbackItem.value)
+
+    openCloseCleanFeedbackItem(false)
+    await getAccountInformation()
+  } catch (error: any) {
+    console.log(error)
+    toast.error(error?.data?.messages ?? 'Error')
+  } finally {
+    changeLoadingState(false)
+  }
+}
+
+const openCloseCleanFeedbackItem = (state: boolean) => {
+  feedbackItem.value = {
+    weekly_class_id: 0,
+    feedback_category_code: '',
+    feedback_type_code: '',
+    feedback_status_code: 'PENDING_FS',
+    additional_notes: '',
+    family_id: accountId.value,
+    // agent_id: '',
+  }
+  showFeedbackModal.value = state
+}
+
+const selectedDetails = ref('')
+
+const seeDetails = (details: string) => {
+  selectedDetails.value = details
+  showServiceHistoryDetails.value = !showServiceHistoryDetails.value
+}
+
+const getServiceHistory = (index: number) => {
+  return {
+    accountInfo: {
+      holder: `${parent.value?.[index]?.first_name} ${parent.value?.[index]?.last_name}`,
+      membership:
+        serviceHistoryWeecklyClasses.value?.[index]?.subscription_plan_price
+          ?.name ?? '',
+      students:
+        serviceHistoryWeecklyClasses.value?.[index]?.subscription_plan_price
+          ?.student_coverage?.title ?? '',
+      venue:
+        serviceHistoryWeecklyClasses.value?.[index]?.weekly_class?.venue.name,
+      monthlyPrice:
+        serviceHistoryWeecklyClasses.value?.[index]?.subscription_plan_price
+          ?.monthly_subscription_fee ?? '',
+      dateOfBooking:
+        serviceHistoryWeecklyClasses.value?.[index]?.created_date ?? '',
+      bookingSource: `${serviceHistoryWeecklyClasses.value?.[index]?.agent?.first_name ?? ''} ${serviceHistoryWeecklyClasses.value?.[index]?.agent?.last_name ?? ''}`,
     },
-    toggleBooking() {
-      this.showBookings = !this.showBookings
+  }
+}
+
+const getStudentBookingInfo = (index: number) => {
+  return {
+    student: {
+      firstName: student.value?.[index]?.first_name ?? '',
+      lastName: student.value?.[index]?.last_name ?? '',
     },
-    async addBooking(booking) {
-      let path = ''
-      switch (booking) {
-        case 'waiting-list':
-          path = '/synco/weekly-classes/create/waiting-list'
-          break
-        case 'free-trial':
-          path = '/synco/weekly-classes/create/free-trial'
-          break
-        case 'membership':
-          path = '/synco/weekly-classes/create/membership'
-          break
-        default:
-          break
-      }
-      await router.push({ path: `${path}` })
+    bookingInfo: {
+      startDate: serviceHistoryWeecklyClasses.value?.[index]?.start_date ?? '',
+      venue:
+        serviceHistoryWeecklyClasses.value?.[index]?.weekly_class.venue?.name ??
+        '',
+      classAgeRange: `${serviceHistoryWeecklyClasses.value?.[index]?.weekly_class?.min_age ?? ''} - ${serviceHistoryWeecklyClasses.value?.[index]?.weekly_class?.max_age ?? ''} years`,
+      time: `${serviceHistoryWeecklyClasses.value?.[index]?.weekly_class?.start_time ?? ''} - ${serviceHistoryWeecklyClasses.value?.[index]?.weekly_class?.end_time ?? ''}`,
+      dateOfBooking:
+        serviceHistoryWeecklyClasses.value?.[index]?.created_date ?? '',
     },
-  },
+  }
+}
+
+type accountStatus =
+  | 'Active'
+  | 'Waiting List'
+  | 'Pay Pending'
+  | 'Expired'
+  | 'Request Cancel'
+  | 'Cancelled'
+  | 'Frozen'
+
+const getColorHeader = (status: accountStatus) => {
+  const colors: Record<accountStatus, string> = {
+    'Waiting List': '#A4A5A6',
+    'Pay Pending': '#ffc107',
+    'Request Cancel': '#fe7058',
+    Active: '#43BE4F',
+    Expired: '#fe7058',
+    Cancelled: '#fe7058',
+    Frozen: '#509EF9',
+  }
+
+  return colors[status] ?? '#A4A5A6'
+}
+
+const getBtnColor = (status: accountStatus) => {
+  const colors: Record<accountStatus, string> = {
+    Active: 'btn-success',
+    'Waiting List': 'btn-secondary',
+    'Pay Pending': 'btn-warning',
+    'Request Cancel': 'btn-danger',
+    Expired: 'btn-danger',
+    Cancelled: 'btn-danger',
+    Frozen: 'btn-primary',
+  }
+
+  return colors[status] ?? 'btn-secondary'
 }
 </script>
+
 <template>
   <NuxtLayout name="syncolayout" page-title="Account Information">
     <!-- Some ID -->
@@ -166,34 +478,34 @@ export default {
         <div class="card rounded-4 d-flex mx-2 flex-row p-1">
           <SyncoDashboardMetricsItem
             name="Total points"
-            value="543"
+            :value="loyalty_points"
             change=""
             icon="ph:star"
           />
         </div>
-        <div class="card rounded-4 d-flex mx-2 flex-row p-1">
+        <!-- <div class="card rounded-4 d-flex mx-2 flex-row p-1">
           <SyncoDashboardMetricsItem
             name="Total Leads"
             value="£0.00"
             change=""
             icon="ph:currency-gbp"
           />
-        </div>
+        </div> -->
         <div class="d-flex flex-row p-1">
           <div class="dropdown">
             <button
               type="button"
               class="btn btn-light mx-2 border bg-white"
-              @click="toggleFilter"
               data-toggle="dropdown"
               :aria-expanded="showFilter"
               data-display="static"
+              @click="toggleFilter"
             >
               <Icon name="ph:faders" /> Filters
             </button>
             <div
-              class="dropdown-menu dropdown-menu-right card rounded-3 position-absolute shadow-lg"
               v-if="showFilter"
+              class="dropdown-menu dropdown-menu-right card rounded-3 position-absolute shadow-lg"
               style="width: 510px; right: -100px; top: 70px"
             >
               <div
@@ -296,20 +608,20 @@ export default {
               </div>
             </div>
           </div>
-          <div class="dropdown">
+          <!-- <div class="dropdown">
             <button
               type="button"
               class="btn btn-primary text-light dropdown-toggle mx-2"
-              @click="toggleBooking"
               data-toggle="dropdown"
               :aria-expanded="showBookings"
               data-display="static"
+              @click="toggleBooking"
             >
               + Add booking
             </button>
             <div
-              class="position-absolute card rounded-4 bg-white p-4 shadow-lg"
               v-if="showBookings"
+              class="position-absolute card rounded-4 bg-white p-4 shadow-lg"
               style="right: 0px; top: 40px; z-index: 1000"
             >
               <button
@@ -331,10 +643,19 @@ export default {
                 Book Membership
               </button>
             </div>
-          </div>
+          </div> -->
         </div>
       </template>
-      <template v-else-if="selection == 'Student Profile'">
+      <template v-if="selection == 'Feedback'">
+        <button
+          type="button"
+          class="btn btn-primary text-light mx-2"
+          @click="openCloseCleanFeedbackItem(true)"
+        >
+          + Add Feedback
+        </button>
+      </template>
+      <!-- <template v-else-if="selection == 'Student Profile'">
         <div class="d-flex flex-row p-1" style="margin-left: auto">
           <button
             type="button"
@@ -344,7 +665,7 @@ export default {
             + Add new student
           </button>
         </div>
-      </template>
+      </template> -->
     </div>
 
     <div>
@@ -352,6 +673,7 @@ export default {
         <SyncoWeeklyClassesComponentsAccountInformationParentProfile
           :parent="parent"
           :emergency-contact="emergencyContact"
+          :comment="comment"
         />
       </template>
 
@@ -362,17 +684,434 @@ export default {
       </template>
 
       <template v-else-if="selection == 'Service History'">
-        <SyncoWeeklyClassesComponentsAccountInformationServiceHistory
+        <!-- <SyncoWeeklyClassesComponentsAccountInformationServiceHistory
           :header="ServiceHistoryAccountCardHeaders[1]"
-        />
+        /> -->
+        <template
+          v-for="(weeklyClasses, index) in serviceHistoryWeecklyClasses"
+        >
+          <template v-if="selectedDetails == ''">
+            <div :key="weeklyClasses.id">
+              <SyncoWeeklyClassesServiceHistoryItem>
+                <template #title>
+                  <Icon name="ph:crown" class="h5 m-0" />
+                  <span class="h5 m-0 mx-2">Weekly Classes Membership</span>
+                  <span class="mx-2"
+                    ><strong>{{
+                      cleanDate(weeklyClasses.start_date)
+                    }}</strong></span
+                  >
+                </template>
+                <template #status>
+                  <button
+                    class="btn btn-sm text-light border-0"
+                    :class="getBtnColor(weeklyClasses.member_status.title)"
+                    style="width: 95px"
+                  >
+                    {{ weeklyClasses.member_status.title }}
+                  </button>
+                </template>
+                <template #fields>
+                  <!-- <SyncoWeeklyClassesComponentsServiceHistoryWeeklyClassesListItem /> -->
+                  <div class="d-flex flex-column px-3">
+                    <label>Membership Plan</label>
+                    <span>{{
+                      weeklyClasses.subscription_plan_price.name
+                    }}</span>
+                  </div>
+                  <div class="d-flex flex-column px-3">
+                    <label>Students</label>
+                    <span>{{
+                      weeklyClasses.subscription_plan_price.student_coverage
+                        .title || ''
+                    }}</span>
+                  </div>
+                  <div class="d-flex flex-column px-3">
+                    <label>Venue</label>
+                    <!-- <span>{{ weeklyClasses.venue.name }}</span> -->
+                    <span>{{ weeklyClasses.weekly_class.venue.name }}</span>
+                  </div>
+                  <div class="d-flex flex-column px-3">
+                    <label>Monthly price</label>
+                    <span
+                      >£{{
+                        weeklyClasses.subscription_plan_price
+                          .monthly_subscription_fee
+                      }}</span
+                    >
+                  </div>
+                  <div class="d-flex flex-column px-3">
+                    <label>Date of booking</label>
+                    <span>{{ cleanDate(weeklyClasses.created_date) }}</span>
+                  </div>
+                  <!-- <div class="d-flex flex-column px-3">
+                      <label>Progress</label>
+                      <span>6/12 months</span>
+                    </div> -->
+                  <div class="d-flex flex-column px-3">
+                    <label>Booking Source</label>
+                    <span
+                      >{{ weeklyClasses.agent?.first_name || '-' }}
+                      {{ weeklyClasses.agent?.last_name || '-' }}</span
+                    >
+                  </div>
+                </template>
+                <template #footer>
+                  <div class="mt-3">
+                    <button
+                      class="btn btn-light me-1 border bg-transparent"
+                      @click="seeDetails('weekly-classes')"
+                    >
+                      See details
+                    </button>
+                  </div>
+                </template>
+              </SyncoWeeklyClassesServiceHistoryItem>
+            </div>
+          </template>
+          <!-- <template v-else>
+            <div :key="weeklyClasses.id">
+              <div class="row">
+                <div class="col-8">
+                  <SyncoWeeklyClassesComponentsServiceHistoryInformation>
+                    <template #title>
+                      <span
+                        style="padding-right: 0.5rem; cursor: pointer"
+                        @click="seeDetails('')"
+                        ><Icon name="material-symbols:arrow-back"
+                      /></span>
+                      <h5 class="m-0 py-4">
+                        <strong>Student information</strong>
+                      </h5>
+                    </template>
+                  </SyncoWeeklyClassesComponentsServiceHistoryInformation>
+                  <SyncoWeeklyClassesFormsCommentFormList />
+                </div>
+                <div class="col-4">
+                  <SyncoWeeklyClassesComponentsServiceHistoryAccountCard
+                    :header-color="
+                      weeklyClasses.member_status.title == 'Active'
+                        ? '#43BE4F'
+                        : '#A4A5A6'
+                    "
+                    :account-status="weeklyClasses.member_status.title"
+                  >
+                    <template v-slot:body>
+                      <template v-if="selectedDetails == 'weekly-classes'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryWeeklyClassesCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'birthday-party'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryBirthdayPartyCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'one-to-one'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryOneToOneCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'holiday-camp'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryHolidayCampCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'club'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryClubCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'merchandise'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryMerchandiseCardItem />
+                      </template>
+                    </template>
+                  </SyncoWeeklyClassesComponentsServiceHistoryAccountCard>
+                  <div class="card rounded-4 mb-3 p-2"></div>
+                </div>
+              </div>
+            </div>
+          </template> -->
+          <template v-else>
+            <div :key="weeklyClasses.id">
+              <div class="row">
+                <div class="col-8">
+                  <SyncoWeeklyClassesComponentsServiceHistoryInformation
+                    :data="getStudentBookingInfo(index)"
+                  >
+                    <template #title>
+                      <span
+                        style="padding-right: 0.5rem; cursor: pointer"
+                        @click="seeDetails('')"
+                        ><Icon name="material-symbols:arrow-back"
+                      /></span>
+                      <h5 class="m-0 py-4">
+                        <strong>Student information</strong>
+                      </h5>
+                    </template>
+                  </SyncoWeeklyClassesComponentsServiceHistoryInformation>
+                  <SyncoWeeklyClassesFormsCommentFormList />
+                </div>
+                <div class="col-4">
+                  <SyncoWeeklyClassesComponentsServiceHistoryAccountCard
+                    :holder="parent"
+                    :header-color="
+                      getColorHeader(weeklyClasses.member_status.title)
+                    "
+                    :account-status="weeklyClasses.member_status.title"
+                  >
+                    <template #body>
+                      <template v-if="selectedDetails == 'weekly-classes'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryWeeklyClassesCardItem
+                          :data="getServiceHistory(0)"
+                        />
+                      </template>
+                      <template v-if="selectedDetails == 'birthday-party'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryBirthdayPartyCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'one-to-one'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryOneToOneCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'holiday-camp'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryHolidayCampCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'club'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryClubCardItem />
+                      </template>
+                      <template v-if="selectedDetails == 'merchandise'">
+                        <SyncoWeeklyClassesComponentsServiceHistoryMerchandiseCardItem />
+                      </template>
+                    </template>
+                  </SyncoWeeklyClassesComponentsServiceHistoryAccountCard>
+                  <div class="card rounded-4 mb-3 p-2">
+                    <div class="d-flex flex-column">
+                      <div
+                        class="d-flex justify-content-between align-items-center my-2 flex-row"
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-light mx-2 border bg-white"
+                          @click="sendMessage('email')"
+                        >
+                          <span class="px-4"
+                            ><Icon name="ph:envelope-simple" /><span
+                              class="mx-2"
+                              >Send Email</span
+                            ></span
+                          >
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-light mx-2 border bg-white"
+                          @click="sendMessage('text')"
+                        >
+                          <span class="px-4"
+                            ><Icon name="ph:text-a-underline" /><span
+                              class="mx-2"
+                              >Send text</span
+                            ></span
+                          >
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        class="btn btn-primary text-light m-2"
+                        @click="bookMembership"
+                      >
+                        Book a membership
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-light m-2 border bg-white"
+                        @click="leaveWaitingList"
+                      >
+                        Leave waiting list
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </template>
       </template>
 
       <template v-else-if="selection == 'Feedback'">
+        <template v-if="showFeedbackModal">
+          <div class="modal-backdrop fade show"></div>
+          <div
+            class="modal fade show centered d-block"
+            aria-modal="true"
+            role="dialog"
+            tabindex="-1"
+          >
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+              <div class="modal-content">
+                <div class="card">
+                  <div
+                    class="card-header"
+                    style="border-bottom: 1px solid lightgray"
+                  >
+                    <div class="row">
+                      <div class="col-4">
+                        <button
+                          class="btn btn-outline-secondary border-0"
+                          @click="showFeedbackModal = false"
+                        >
+                          <Icon name="ph:x" />
+                        </button>
+                      </div>
+                      <div class="col-4 text-center">
+                        <span class="h4">
+                          <strong> Add Feedback </strong>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="card-body"
+                    style="overflow: scroll; max-height: 80vh"
+                  >
+                    <div class="d-flex justify-content-between flex-column">
+                      <div
+                        v-if="enrolledClasses?.length"
+                        class="form-group w-100 mb-3"
+                      >
+                        <label
+                          for="feedbackClass"
+                          class="form-labelform-label-light"
+                        >
+                          Please select the class you whish to add feedback for
+                        </label>
+                        <select
+                          id="feedbackClass"
+                          v-model="feedbackItem.weekly_class_id"
+                          class="form-control form-control-lg"
+                        >
+                          <option :value="0">Select option</option>
+                          <option
+                            v-for="(item, index) in enrolledClasses"
+                            :key="index"
+                            :value="item.id"
+                          >
+                            {{ item.title }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div
+                        v-if="feedbackType?.length"
+                        class="form-group w-100 mb-3"
+                      >
+                        <label
+                          for="feedbackType"
+                          class="form-labelform-label-light"
+                        >
+                          Feedback type</label
+                        >
+                        <select
+                          id="feedbackType"
+                          v-model="feedbackItem.feedback_type_code"
+                          class="form-control form-control-lg"
+                        >
+                          <option :value="0">Select option</option>
+                          <option
+                            v-for="(item, index) in feedbackType"
+                            :key="index"
+                            :value="item.code"
+                          >
+                            {{ item.title }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div
+                        v-if="feedbackCategory?.length"
+                        class="form-group w-100 mb-3"
+                      >
+                        <label
+                          for="feedbackCategory"
+                          class="form-labelform-label-light"
+                        >
+                          Feedback Category</label
+                        >
+                        <select
+                          id="feedbackCategory"
+                          v-model="feedbackItem.feedback_category_code"
+                          class="form-control form-control-lg"
+                        >
+                          <option :value="0">Select option</option>
+                          <option
+                            v-for="(item, index) in feedbackCategory"
+                            :key="index"
+                            :value="item.code"
+                          >
+                            {{ item.title }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="form-group w-100 mb-3">
+                        <label
+                          for="feedbackNotes"
+                          class="form-labelform-label-light"
+                        >
+                          Notes
+                        </label>
+                        <textarea
+                          id="feedbackNotes"
+                          v-model="feedbackItem.additional_notes"
+                          class="form-control form-control-lg"
+                          placeholder=""
+                          rows="4"
+                        >
+                        </textarea>
+                      </div>
+
+                      <div v-if="agents?.length" class="form-group w-100 mb-3">
+                        <label
+                          for="feedbackAgent"
+                          class="form-labelform-label-light"
+                        >
+                          Assign agent
+                        </label>
+                        <select
+                          id="feedbackAgent"
+                          v-model="feedbackItem.agent_id"
+                          class="form-control form-control-lg"
+                        >
+                          <option :value="0">Select option</option>
+                          <option
+                            v-for="(item, index) in agents"
+                            :key="index"
+                            :value="item.id"
+                          >
+                            {{ item.first_name }} {{ item.last_name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <div class="row">
+                      <div class="col-6">
+                        <button
+                          class="btn btn-outline-secondary w-100"
+                          @click="showFeedbackModal = false"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                      <div class="col-6">
+                        <button
+                          class="btn btn-primary text-light w-100"
+                          @click="submitFeedback"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
         <div class="rounded-4 mt-4">
           <table class="table">
             <thead>
               <tr class="">
-                <th></th>
+                <!-- <th></th> -->
                 <th>Date submitted</th>
                 <th>Type of feedback</th>
                 <th>Venue</th>
@@ -384,40 +1123,55 @@ export default {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in feedbackList" style="vertical-align: middle">
-                <td><input type="checkbox" /></td>
-                <td>{{ item.SubmittedDate }}</td>
-                <td>{{ item.FeedbackType }}</td>
-                <td>{{ item.Venue }}</td>
-                <td>{{ item.Category }}</td>
-                <td>{{ item.Notes }}</td>
+              <tr v-for="item in feedbackItems" style="vertical-align: middle">
+                <!-- <td><input type="checkbox" /></td> -->
+                <td>{{ cleanDate(item.created_date) }}</td>
+                <td>{{ item.feedback_type?.title }}</td>
+                <td>{{ item.weekly_class?.venue?.name }}</td>
+                <td>{{ item.feedback_category?.title }}</td>
+                <td>{{ item.additional_notes }}</td>
                 <td>
-                  <img
-                    src="@/src/assets/img-avatar-jaffar.png"
-                    class="me-2"
-                  /><span>{{ item.User }}</span>
+                  <img :src="item.agent?.avatar_image" class="me-2" /><span
+                    >{{ item.agent?.first_name }}
+                    {{ item.agent?.last_name }}</span
+                  >
                 </td>
                 <td>
                   <span class="badge-warning rounded-4 px-3 py-1">{{
-                    item.Status
+                    item.feedbackStatus?.name
                   }}</span>
                 </td>
                 <td>
-                  <button type="button" class="btn btn-primary">Resolve</button>
+                  <button
+                    type="button"
+                    class="btn btn-primary text-white"
+                    :disabled="
+                      blockButtons || item.feedbackStatus?.name == 'Solved'
+                    "
+                    @click="resolveFeedback(item.id)"
+                  >
+                    Resolve
+                  </button>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </template>
-      <template v-else-if="selection == 'Rewards'">
-        <SyncoUserRewards></SyncoUserRewards>
+      <!-- <template v-else-if="selection == 'Rewards'">
+        <SyncoUserRewards
+          :referrals-list="referralsList"
+          :reporting="referralReporting"
+          :loyalty-points-rewards="loyaltyPointsRewards"
+          :loyalty-points-history="loyaltyPointsHistory"
+          :current-poitns="loyalty_points"
+        ></SyncoUserRewards>
       </template>
       <template v-else-if="selection == 'Events'">
         <div class="mt-4">
           <SyncoRecruitmentEvents :event-list="eventList" />
         </div>
-      </template>
+      </template> -->
     </div>
   </NuxtLayout>
 </template>

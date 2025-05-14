@@ -1,16 +1,32 @@
+export type IStatusResponse = {
+  id: number
+  message: string
+  http_code: number
+}
+
+export type IDataLoginResponse = {
+  access_token: string
+  refresh_token: string
+  screen_access: []
+}
+
 export type ILoginInput = {
   email: string
   password: string
-  remember: boolean
+  // remember: boolean
+  // user_name: string | null
 }
 
 export type ILoginResponse = {
-  access_token: string
-  expires_in: number
+  status: IStatusResponse
+  data: IDataLoginResponse
+  info: string
 }
 
 export type ILogoutResponse = {
-  message: string
+  status: IStatusResponse
+  data: any
+  info: string
 }
 // Weekly classes
 
@@ -151,7 +167,8 @@ type ICity = {
 export type IUser = {
   id: string
   first_name: string
-  last_name: string
+  full_name: string
+  lastName: string
   phone_number: string
   email: string
   position: string | null
@@ -214,7 +231,9 @@ export type ICreateUserResponse = {
 }
 
 export type GenericResponse<T> = {
+  status: IStatusResponse
   data: T
+  info: string
 }
 
 export type IGetUserResponse = GenericResponse<IUser>
@@ -251,7 +270,7 @@ export type IComment = {
   text: string
   avatar: string
   name: string
-  created: string
+  created: string | null
 }
 
 export type IStudentListItem = {
@@ -485,25 +504,73 @@ export type IBaseResponse<T> = {
 
 export type IBaseDatasetItem = {
   id: number
-  title: string
   created_at: Date | null
   deleted_at: Date | null
 }
 
-export type IGender = IBaseDatasetItem & {}
+export type IGender = IBaseDatasetItem & {
+  title: string
+}
+
+export type IGenderNew = {
+  title: string
+  value: string
+}
+
 export type IGenderResponse = IBaseResponse<IGender> & {}
 
-export type IMedicalInformation = IBaseDatasetItem & {}
+export type IMedicalInformation = IBaseDatasetItem & {
+  title: string
+}
 export type IMedicalInformationResponse =
   IBaseResponse<IMedicalInformation> & {}
 
-export type IRelationship = IBaseDatasetItem & {}
+export type IRelationship = {
+  id: string
+  code: string
+  type: string
+  title: string
+  title_es: string | null
+  slug: string
+  father_code: string | null
+  value1: string | null
+  value2: string | null
+  created_date: Date | null
+  updated_date: Date | null
+  user_updated_id: string | null
+}
 export type IRelationshipResponse = IBaseResponse<IRelationship> & {}
 
-export type IReferralSource = IBaseDatasetItem & {}
+export type IReferralSource = {
+  id: string
+  code: string
+  type: string
+  title: string
+  title_es: string | null
+  slug: string
+  father_code: string | null
+  value1: string | null
+  value2: string | null
+  created_date: Date | null
+  updated_date: Date | null
+  user_updated_id: string | null
+}
 export type IReferralSourceResponse = IBaseResponse<IReferralSource> & {}
 
-export type ILeadStatus = IBaseDatasetItem & {}
+export type ILeadStatus = {
+  code: string
+  created_date: Date | null
+  father_code: string | null
+  id: string | number
+  slug: string
+  title: string
+  title_es: string | null
+  type: string
+  updated_date: Date | null
+  user_updated_id: string | number | null
+  value1: string | null
+  value2: string | null
+}
 export type ILeadStatusResponse = IBaseResponse<ILeadStatus> & {}
 
 export type IStudentByName = {
@@ -544,5 +611,231 @@ export type IEmregencyContactByName = {
 export type IEmregencyContactByNameResponse =
   IBaseResponse<IEmregencyContactByName> & {}
 
-export type IService = IBaseDatasetItem & {}
+export type IService = IBaseDatasetItem & {
+  title: string
+}
 export type IServiceResponse = IBaseResponse<IService> & {}
+
+export type IRegionItem = {
+  id: number
+  code: string
+  type: string
+  title: string
+  title_es: null
+  slug: string
+  father_code: null
+  value1: string | null
+  value2: string | null
+  created_date: string
+  updated_date: string | null
+  is_deleted: boolean
+  user_updated_id: string | null
+}
+export type IRegionResponse = IBaseResponse<IRegionItem> & {}
+
+export type IServicePackage = IBaseDatasetItem & {
+  name: string
+}
+export type IServicePackageResponse = IBaseResponse<IServicePackage> & {}
+
+export type ICountryResponse = IBaseResponse<ICountry> & {}
+
+export type ICities = IBaseDatasetItem & {
+  name: string
+  acsii: string
+  lat: number
+  lng: number
+}
+export type ICitiesResponse = IBaseResponse<ICities> & {}
+
+export type IPaymenType = IBaseDatasetItem & {
+  name: string
+}
+export type IPaymenTypeResponse = IBaseResponse<IPaymenType> & {}
+
+export type IStudentCoverage = IBaseDatasetItem & {
+  name: string
+}
+export type IStudentCoverageResponse = IBaseResponse<IStudentCoverage> & {}
+
+// export type ISubscriptionPlans = IBaseDatasetItem & {
+//   name: string
+//   venue: any
+// }
+// export type ISubscriptionPlanResponse = IBaseResponse<ISubscriptionPlans> & {}
+
+export type ICampType = IBaseDatasetItem & {
+  title: string
+}
+export type ICampTypeResponse = IBaseResponse<ICampType> & {}
+
+export type IHolidayCampDate = IBaseDatasetItem & {
+  name: string
+  start_date: string
+  end_date: string
+}
+export type IHolidayCampDateResponse = IBaseResponse<IHolidayCampDate> & {}
+
+export type IUniqueWeeklyClassResponse = IBaseResponse<string> & {}
+
+export type IReason = IBaseDatasetItem & {
+  name: string
+}
+export type IMembershipCancelReason = IBaseDatasetItem & {
+  name: string
+  reasons: IReason[]
+}
+export type IMembershipCancelReasonResponse =
+  IBaseResponse<IMembershipCancelReason> & {}
+
+export type IRole = IBaseDatasetItem & {
+  name: string
+}
+export type IRoleResponse = IBaseResponse<IRole> & {}
+
+export type IWaitingListStatus = {
+  id: string | number
+  code: string
+  type: string
+  title: string
+  title_es: string | null
+  slug: string
+  father_code: string | null
+  value1: string | null
+  value2: string | null
+  created_date: string
+  updated_date: Date | null
+  user_updated_id: Date | null
+}
+export type IWaitingListStatusResponse = IBaseResponse<IWaitingListStatus> & {}
+
+export type IAgentObject = {
+  id: string
+  first_name: string
+  last_name: string
+  position: string
+  bio: string
+  phone_number: string
+  email: string
+  postal_code: string
+  created_at: Date | null
+  deleted_at: Date | null
+}
+export type IAgentObjectResponse = IBaseResponse<IAgentObject> & {}
+
+export type IFreeTrialStatus = {
+  code: string
+  created_date: string
+  father_code: any
+  id: string | number
+  slug: string
+  title: string
+  title_es: string
+  type: string
+  updated_date: string
+  user_updated_id: any
+  value1: any
+  value2: any
+}
+
+export type IFreeTrialStatusResponse = IBaseResponse<IFreeTrialStatus> & {}
+
+export type IGuardianAndStudent = {
+  id: string
+  name: string
+  family_id: number
+}
+export type IGuardianAndStudentResponse =
+  IBaseResponse<IGuardianAndStudent> & {}
+
+export type IMemberCancelStatus = IBaseDatasetItem & {
+  title: string
+}
+export type IMemberCancelStatusResponse =
+  IBaseResponse<IMemberCancelStatus> & {}
+
+export type IMemberCancelType = IBaseDatasetItem & {
+  title: string
+  subtitle: string
+}
+export type IMemberCancelTypeResponse = IBaseResponse<IMemberCancelType> & {}
+
+export type IMemberStatus = {
+  code: string
+  created_date: string
+  father_code: any
+  id: number
+  is_deleted: boolean
+  slug: string
+  title: string
+  title_es: string
+  type: string
+  updated_date: string
+  user_updated_id: number
+  value1: any
+  value2: any
+}
+
+export type IMemberStatusResponse = IBaseResponse<IMemberStatus> & {}
+
+export type IReferralSourceFilter = {
+  id: number
+  title: string
+}
+export type IReferralSourceFilterResponse =
+  IBaseResponse<IReferralSourceFilter> & {}
+
+export type ISaleStatus = IBaseDatasetItem & {
+  title: string
+}
+export type ISaleStatusResponse = IBaseResponse<ISaleStatus> & {}
+
+export type IFeedbackStatus = IBaseDatasetItem & {
+  name: string
+}
+export type IFeedbackStatusResponse = IBaseResponse<IFeedbackStatus> & {}
+
+export type IFeedbackCategory = IBaseDatasetItem & {
+  title: string
+}
+export type IFeedbackCategoryResponse = IBaseResponse<IFeedbackCategory> & {}
+
+export type IFeedbackType = IBaseDatasetItem & {
+  title: string
+}
+export type IFeedbackTypeResponse = IBaseResponse<IFeedbackType> & {}
+
+export type IDatasetEnrolledClassesItem = {
+  id: number
+  name: string
+  capacity: number
+  free_trial_capacity: number
+  member_capacity: number
+  remaining_capacity: number
+  days: string
+  start_time: string
+  end_time: string
+  autumn_term: any
+  is_autumn_indoor: boolean
+  spring_term: any
+  is_spring_indoor: boolean
+  summer_term: any
+  is_summer_indoor: boolean
+  indoor_outdoor_options: string
+  is_free_trail_dates: boolean
+  free_trial_dates: any | null
+  created_at: any | null
+  deleted_at: any | null
+}
+
+export type IDatasetEnrolledWeeklyClasses = {
+  year: number
+  classes: IDatasetEnrolledClassesItem[]
+}
+export type IDatasetEnrolledWeeklyClassesResponse =
+  IBaseResponse<IDatasetEnrolledWeeklyClasses> & {}
+
+export type IIdTitleItem = {
+  id: any
+  title: string
+}

@@ -6,8 +6,8 @@ const props = defineProps<{
   term: ITermItem
 }>()
 
-let showSessionPlans = ref<boolean>(false)
-let term = ref<ITermItem>(props.term).value
+const showSessionPlans = ref<boolean>(false)
+const term = ref<any>(props.term).value
 
 const toggleSessionPlans = () => {
   showSessionPlans.value = !showSessionPlans.value
@@ -16,10 +16,8 @@ onMounted(() => {
   console.log('components/synco/config/schedule-classes/term-card.vue')
 })
 const cleanDate = (date: string) => {
-  let cleanedDate = date
-  if (date.includes('T')) {
-    cleanedDate = date.split('T')[0]
-  }
+  if (!Number.isInteger(date)) return date
+  const cleanedDate = new Date(+date * 1000).toISOString()?.split('T')[0]
   return cleanedDate
 }
 </script>
@@ -56,13 +54,13 @@ const cleanDate = (date: string) => {
         </div>
       </div>
     </div>
-    <div class="card-body bg-gray border-0" v-if="showSessionPlans">
-      <template v-for="item in term.sessions">
+    <div v-if="showSessionPlans" class="card-body bg-gray border-0">
+      <template v-for="item in term.sessions" :key="item.id">
         <div class="row align-items-center">
           <div class="col-auto">
             <span class="text-sm">Session {{ item.id }}</span>
           </div>
-          <div class="col-auto" v-for="plan in item.plans">
+          <div v-for="plan in item.plans" :key="plan.id" class="col-auto">
             <span class="text-sm"
               ><span class="text-muted">{{ plan.ability_group.name }}</span>
               {{ plan.session_plan.title }}</span

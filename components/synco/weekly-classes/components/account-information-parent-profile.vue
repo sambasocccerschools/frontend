@@ -1,32 +1,39 @@
 <template>
-  <SyncoWeeklyClassesFormsParentForm :parent="parent">
-    <template v-slot:internal_title>
-      <div class="d-flex justify-content-between align-items-center flex-row">
-        <h5 class="m-0 py-4">
-          <strong>Parent information</strong>
-          <Icon name="ph:pencil-simple-line" />
+  <template v-for="parent in parents">
+    <SyncoWeeklyClassesFormsParentForm :parent="parent">
+      <template #internal_title>
+        <div class="d-flex justify-content-between align-items-center flex-row">
+          <h5 class="m-0 py-4">
+            <strong>Parent information</strong>
+            <!-- <Icon name="ph:pencil-simple-line" /> -->
+          </h5>
+          <!-- <button
+            type="button"
+            class="btn btn-primary text-light"
+            @click="addParent"
+          >
+            Add Parent
+          </button> -->
+        </div>
+      </template>
+    </SyncoWeeklyClassesFormsParentForm>
+  </template>
+  <template v-for="emergencyContact in emergencyContacts">
+    <SyncoWeeklyClassesFormsEmergencyContactForm
+      :emergency-contact="emergencyContact"
+    >
+      <template #internal_title>
+        <h5 class="py-4">
+          <strong>Emergency contact details</strong>
+          <!-- <Icon name="ph:pencil-simple-line" /> -->
         </h5>
-        <button
-          type="button"
-          class="btn btn-primary text-light"
-          @click="addParent"
-        >
-          Add Parent
-        </button>
-      </div>
-    </template>
-  </SyncoWeeklyClassesFormsParentForm>
-  <SyncoWeeklyClassesFormsEmergencyContactForm
-    :emergencyContact="emergencyContact"
-  >
-    <template v-slot:internal_title>
-      <h5 class="py-4">
-        <strong>Emergency contact details</strong>
-        <Icon name="ph:pencil-simple-line" />
-      </h5>
-    </template>
-  </SyncoWeeklyClassesFormsEmergencyContactForm>
-  <SyncoWeeklyClassesFormsCommentFormList />
+      </template>
+    </SyncoWeeklyClassesFormsEmergencyContactForm>
+  </template>
+  <SyncoWeeklyClassesFormsCommentFormList
+    :comments="comments"
+    @add-comment="addComment"
+  />
   <div class="d-flex justify-content-end align-items-center my-4 flex-row">
     <button
       type="button"
@@ -55,20 +62,35 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-
-import type { IEmergencyContact, IParent } from '~/types/index'
+import type { IComment } from '~/types/index'
+import type {
+  IGuardianCreate,
+  IEmregencyContactCreate,
+} from '~/types/synco/index'
 const props = defineProps<{
-  parent: IParent
-  emergencyContact: IEmergencyContact
+  parent: IGuardianCreate[]
+  emergencyContact: IEmregencyContactCreate[]
+  comment: IComment[]
 }>()
 
-let parent = ref<IParent>(props.parent).value
-let emergencyContact = ref<IEmergencyContact>(props.emergencyContact).value
+console.log('props', props)
 
-let addParent = () => {
+const parents = ref<IGuardianCreate[]>(props.parent).value
+const emergencyContacts = ref<IEmregencyContactCreate[]>(
+  props.emergencyContact,
+).value
+const comments = ref<IComment[]>(props.comment).value
+
+const newComment = ref<string>('')
+
+const addParent = () => {
   console.log('addParent')
 }
-let sendMessage = (type: string) => {
+const sendMessage = (type: string) => {
   console.log('sendMessage', type)
+}
+
+const addComment = (comment: string) => {
+  newComment.value = comment
 }
 </script>

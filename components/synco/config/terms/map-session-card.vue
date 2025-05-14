@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="card-body px-3 py-1 text-sm">
-      <div class="row" v-for="plan in sessionItem?.plans">
+      <div v-for="plan in sessionItem?.plans" :key="plan.id" class="row">
         <div class="col-3 text-muted">{{ plan.ability_group.name }}</div>
         <div class="col-9">
           {{ plan.session_plan.title }}
@@ -46,9 +46,9 @@ const props = defineProps<{
   sessionId: number
 }>()
 
-let item = ref<ISessionCreateItem | ISessionEditItem | null>(props.item).value
-let sessionItem = ref<ISessionItem | null>(props.sessionItem).value
-let sessionId = ref<number>(props.sessionId).value
+const item = ref<ISessionCreateItem | ISessionEditItem | null>(props.item).value
+const sessionItem = ref<ISessionItem | null>(props.sessionItem).value
+const sessionId = ref<number>(props.sessionId).value
 
 const emit = defineEmits(['toggleAssignSessionCard', 'removeSession'])
 
@@ -66,7 +66,7 @@ onMounted(() => {
 })
 
 const removeSession = () => {
-  emit('removeSession', sessionId)
+  emit('removeSession', Number(sessionId))
 }
 </script>
 

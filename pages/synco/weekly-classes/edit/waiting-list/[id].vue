@@ -4,7 +4,7 @@
       <div
         class="card-body d-flex align-items-center justify-content-between p-3"
       >
-        <NuxtLink class="h4 text-light m-0" to="/synco/weekly-classes/leads">
+        <NuxtLink class="h4 text-light m-0" @click.prevent="goBack">
           <Icon name="material-symbols:arrow-back" class="me-2" />Add to waiting
           list
         </NuxtLink>
@@ -364,6 +364,9 @@ export default {
       this.showScriptCard = !this.showScriptCard
       this.showSubscriptionCard = false
       this.showCalculatorCard = false
+    },
+    goBack() {
+      router.back()
     },
   },
 }

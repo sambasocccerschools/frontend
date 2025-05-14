@@ -4,7 +4,7 @@
       <div
         class="card-body d-flex align-items-center justify-content-between p-3"
       >
-        <NuxtLink class="h4 text-light m-0" to="/synco/weekly-classes/leads">
+        <NuxtLink class="h4 text-light m-0" @click.prevent="goBack">
           <Icon name="material-symbols:arrow-back" class="me-2" />Book a Free
           Trial
         </NuxtLink>
@@ -22,7 +22,7 @@
             </button>
             <template v-if="showSubscriptionCard">
               <SyncoWeeklyClassesComponentsSubscriptionPlanCard
-                @toggleSubscriptionCard="toggleSubscriptionCard"
+                @toggle-subscription-card="toggleSubscriptionCard"
               />
             </template>
           </div>
@@ -128,13 +128,13 @@
         </div>
         <div class="card rounded-4 mt-4 px-3">
           <h5 class="py-4"><strong>Select start date</strong></h5>
-          <SyncoFilterByCalendar :classDate="classDate" />
+          <SyncoFilterByCalendar :class-date="classDate" />
         </div>
       </div>
 
       <div class="col-8">
         <SyncoWeeklyClassesFormsParentForm :parent="parent">
-          <template v-slot:internal_title>
+          <template #internal_title>
             <div
               class="d-flex justify-content-between align-items-center flex-row"
             >
@@ -153,10 +153,10 @@
         </SyncoWeeklyClassesFormsParentForm>
 
         <SyncoWeeklyClassesFormsStudentForm :student="student">
-          <template v-slot:internal_title>
+          <template #internal_title>
             <h5 class="py-4"><strong>Student information</strong></h5>
           </template>
-          <template v-slot:additional_rows>
+          <template #additional_rows>
             <div class="row">
               <div class="col-6">
                 <div class="form-group w-100 mb-3">
@@ -165,13 +165,13 @@
                   >
                   <select
                     id="studentClass"
-                    class="form-control form-control-lg"
                     v-model="student.class"
+                    class="form-control form-control-lg"
                   >
                     <option
                       v-for="(cls, index) in classes"
-                      :value="cls.value"
                       :key="index"
+                      :value="cls.value"
                     >
                       {{ cls.label }}
                     </option>
@@ -185,13 +185,13 @@
                   >
                   <select
                     id="studentTime"
-                    class="form-control form-control-lg"
                     v-model="student.time"
+                    class="form-control form-control-lg"
                   >
                     <option
                       v-for="(time, index) in times"
-                      :value="time.value"
                       :key="index"
+                      :value="time.value"
                     >
                       {{ time.label }}
                     </option>
@@ -203,9 +203,9 @@
         </SyncoWeeklyClassesFormsStudentForm>
 
         <SyncoWeeklyClassesFormsEmergencyContactForm
-          :emergencyContact="emergencyContact"
+          :emergency-contact="emergencyContact"
         >
-          <template v-slot:internal_title>
+          <template #internal_title>
             <h5 class="py-4">
               <strong>Emergency contact details</strong>
               <Icon name="ph:pencil-simple-line" />
@@ -247,6 +247,8 @@
 </template>
 
 <script>
+const router = useRouter()
+
 const classes = ref([
   { label: 'Select from drop down', value: '' },
   { label: '4-7 years', value: 'Merchandise' },
@@ -290,11 +292,11 @@ export default {
   }),
   watch: {
     'student.dateOfBirth'(newDate, oldDate) {
-      let dob = new Date(newDate)
-      let today = new Date()
-      let ageDifference = today.getTime() - dob.getTime()
-      var ageDate = new Date(ageDifference)
-      let age = Math.abs(ageDate.getUTCFullYear() - 1970)
+      const dob = new Date(newDate)
+      const today = new Date()
+      const ageDifference = today.getTime() - dob.getTime()
+      const ageDate = new Date(ageDifference)
+      const age = Math.abs(ageDate.getUTCFullYear() - 1970)
       this.student.age = age
     },
   },
@@ -325,6 +327,9 @@ export default {
       this.showScriptCard = !this.showScriptCard
       this.showSubscriptionCard = false
       this.showCalculatorCard = false
+    },
+    goBack() {
+      router.back()
     },
   },
 }

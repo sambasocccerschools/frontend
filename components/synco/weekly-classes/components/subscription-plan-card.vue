@@ -2,7 +2,7 @@
   <!-- Filter By Date  -->
   <div
     class="dropdown-menu dropdown-menu-right card rounded-4 position-absolute shadow-lg"
-    style="width: 840px; right: -100px; top: 45px"
+    style="width: 840px; right: -10px; top: 45px; position: absolute"
   >
     <div class="card-header d-flex justify-content-between">
       <h5 class="card-title"><strong>Subscription Plan</strong></h5>
@@ -88,7 +88,7 @@ import { ref } from 'vue'
 
 const emit = defineEmits(['toggleSubscriptionCard'])
 
-let students = ref(1)
+const students = ref(1)
 const changeStudents = (quantity: number) => {
   students.value = quantity
 }

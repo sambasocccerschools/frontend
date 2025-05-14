@@ -3,6 +3,12 @@
   <div class="card mb-4">
     <div class="card-header d-flex flex-column">
       <h5 class="card-title h2 my-3">Search now</h5>
+      <button
+        class="btn btn-primary btn-sm text-light shadow-sm"
+        @click="applyFilter"
+      >
+        <Icon name="octicon:settings" class="me-2" />Apply Filter
+      </button>
     </div>
     <div class="card-body">
       <div class="form-group mb-3">
@@ -17,17 +23,56 @@
             placeholder="Search by student name"
             aria-label="Search by student name"
             aria-describedby="search-addon"
+            v-model="student"
           />
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group mb-3">
         <label for="choose-venue" class="form-label">Venue</label>
-        <select class="form-select" aria-label="choose-venue">
-          <option selected>Open this select menu</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+        <select
+          id="choose-venue"
+          class="form-control form-control-lg"
+          v-model="venue_id"
+        >
+          <option value="0">All</option>
+          <option v-for="venue in availableVenues" :value="venue.id">
+            {{ venue.name }}
+          </option>
         </select>
+      </div>
+      <div class="form-group mb-3">
+        <label for="lead_status" class="form-label">Choose status</label>
+        <div class="container">
+          <div class="row row-cols-2">
+            <select
+              id="lead_status"
+              class="form-control form-control-lg"
+              v-model="status_id"
+            >
+              <option value="0">All</option>
+              <option v-for="status in cancelStatus" :value="status.id">
+                {{ status.title }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group mb-3">
+        <label for="lead_status" class="form-label">Choose type</label>
+        <div class="container">
+          <div class="row row-cols-2">
+            <select
+              id="lead_status"
+              class="form-control form-control-lg"
+              v-model="type_id"
+            >
+              <option value="0">All</option>
+              <option v-for="status in cancelType" :value="status.id">
+                {{ status.title }}
+              </option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -36,44 +81,64 @@
   <div class="card">
     <div class="card-header d-flex justify-content-between">
       <h5 class="card-title">Filter by date</h5>
-      <button class="btn btn-primary btn-sm text-light shadow-sm">
-        <Icon name="octicon:settings" class="me-2" />Apply Filter
-      </button>
     </div>
-    <div class="card-body">
-      <!-- Choose Type -->
-      <div class="bg-light rounded-4 mb-5 px-3 py-2">
-        <label for="" class="form-label">Status</label>
-        <div class="container">
-          <div class="row row-cols-2">
-            <div class="form-check col">
-              <input
-                id="request-to-cancel"
-                class="form-check-input"
-                type="radio"
-                name="filter-type"
-              />
-              <label class="form-check-label" for="request-to-cancel">
-                Request to cancel
-              </label>
-            </div>
-            <div class="form-check col">
-              <input
-                id="cancelled"
-                class="form-check-input"
-                type="radio"
-                name="filter-type"
-              />
-              <label class="form-check-label" for="cancelled">
-                Cancelled
-              </label>
-            </div>
-          </div>
-        </div>
+    <div class="card-body d-flex flex-row">
+      <div class="form-group w-50 mb-3 me-2">
+        <label for="start-date" class="form-label">Start date</label>
+        <input type="date" class="form-control" v-model="startDate" />
       </div>
-
+      <div class="form-group w-50 mb-3 ms-2">
+        <label for="end-date" class="form-label">End date</label>
+        <input type="date" class="form-control" v-model="endDate" />
+      </div>
       <!-- Calendar Selector  -->
-      <SyncoFilterByCalendar />
+      <!-- <SyncoFilterByCalendar /> -->
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { IWeeklyClassesLeadFilterObject } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
+
+let isLoading = ref<boolean>(false)
+let blockButtons = ref<boolean>(false)
+const changeLoadingState = (state: boolean) => {
+  isLoading.value = state
+  blockButtons.value = state
+}
+
+const cancelStatus = store.memberCancelStatus
+const cancelType = store.memberCancelType
+const availableVenues = store.availableVenues
+
+let student = ref<string>('')
+let venue_id = ref<number>(0)
+let status_id = ref<number>(0)
+let type_id = ref<number>(0)
+let startDate = ref<string>('')
+let endDate = ref<string>('')
+
+onMounted(async () => {
+  console.log('components/synco/weekly-classes/forms/parent-form.vue')
+  await store.fetchAllData()
+  if (!store.availableVenues.length) {
+    await store.getAvailableVenues('weekly-classes')
+  }
+})
+
+const emit = defineEmits(['applyFilter'])
+
+const applyFilter = () => {
+  emit('applyFilter', {
+    student: student.value,
+    venue_id: venue_id.value,
+    member_cancel_status_id: status_id.value,
+    member_cancel_type_id: status_id.value,
+    start_date: startDate.value,
+    end_date: endDate.value,
+  })
+}
+</script>

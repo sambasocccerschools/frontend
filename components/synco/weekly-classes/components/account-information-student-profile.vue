@@ -1,28 +1,22 @@
 <template>
-  <SyncoWeeklyClassesFormsStudentForm :student="student">
-    <template v-slot:internal_title>
-      <h5 class="py-4">
-        <strong>Student 1 information</strong>
-        <Icon name="ph:pencil-simple-line" />
-      </h5>
-    </template>
-  </SyncoWeeklyClassesFormsStudentForm>
-  <SyncoWeeklyClassesFormsStudentForm :student="student">
-    <template v-slot:internal_title>
-      <h5 class="py-4">
-        <strong>Student 2 information</strong>
-        <Icon name="ph:pencil-simple-line" />
-      </h5>
-    </template>
-  </SyncoWeeklyClassesFormsStudentForm>
+  <template v-for="student in students">
+    <SyncoWeeklyClassesFormsStudentForm :student="student">
+      <template v-slot:internal_title>
+        <h5 class="py-4">
+          <strong>Student 1 information</strong>
+          <!-- <Icon name="ph:pencil-simple-line" /> -->
+        </h5>
+      </template>
+    </SyncoWeeklyClassesFormsStudentForm>
+  </template>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import type { IStudent } from '~/types/index'
+import type { IStudentCreate } from '~/types/synco/index'
 const props = defineProps<{
-  student: IStudent
+  student: IStudentCreate[]
 }>()
 
-let student = ref<IStudent>(props.student).value
+let students = ref<IStudentCreate[]>(props.student).value
 </script>

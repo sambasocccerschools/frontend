@@ -8,44 +8,50 @@ import type {
 } from '~/types/synco'
 
 class AbilityGroupsModule extends FetchFactory {
-  private RESOURCE = '/v1/abilityGroups'
+  private RESOURCE = '/abilityGroups'
 
-  async getAll(
-    service:
-      | 'weekly-classes'
-      | 'one-to-one'
-      | 'holiday-camps'
-      | 'birthday-parties'
-      | 'club',
-    service_package_id: number | null = null,
-  ) {
+  async getAll() {
+    // service_package_id: number | null = null, //   | 'club', //   | 'birthday-parties' //   | 'holiday-camps' //   | 'one-to-one' //   | 'weekly-classes' // service:
+    // if (service_package_id != null && fetchOptions.params != undefined) {
+    //   fetchOptions.params.service_package_id = service_package_id
+    // }
+    const token = useCookie('token')
     const fetchOptions: FetchOptions<'json'> = {
-      params: {
-        service,
+      headers: {
+        Authorization: `${token.value}`,
       },
-    }
-    if (service_package_id != null && fetchOptions.params != undefined) {
-      fetchOptions.params.service_package_id = service_package_id
     }
     return this.call<IAbilityGroupsObjectResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
       fetchOptions,
     )
   }
 
   async getById(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IAbilityGroupObjectResponse>(
       'GET',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/get_all?id=${id}`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 
   async create(data: IAbilityGroupCreateItem) {
-    let formData = new FormData()
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
+    const formData = new FormData()
     formData.append('name', data.name)
     formData.append('min_age', data.min_age as any)
     formData.append('max_age', data.max_age as any)
@@ -56,12 +62,18 @@ class AbilityGroupsModule extends FetchFactory {
       'POST',
       `${this.RESOURCE}`,
       formData,
-      undefined,
+      fetchOptions,
     )
   }
 
   async update(id: number, data: IAbilityGroupUpdateItem) {
-    let formData = new FormData()
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
+    const formData = new FormData()
     formData.append('name', data.name)
     formData.append('min_age', data.min_age as any)
     formData.append('max_age', data.max_age as any)
@@ -69,27 +81,39 @@ class AbilityGroupsModule extends FetchFactory {
     formData.append('_method', 'PUT')
     return this.call<IAbilityGroupObjectResponse>(
       'PUT',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/edit?id=${id}`,
       formData,
-      undefined,
+      fetchOptions,
     )
   }
 
   async delete(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IAbilityGroupObjectResponse>(
       'DELETE',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/delete?id${id}`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 
   async restore(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+    }
     return this.call<IAbilityGroupObjectResponse>(
       'POST',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/restore?id=${id}`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 }

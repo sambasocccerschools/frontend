@@ -99,34 +99,42 @@ const login = async () => {
   try {
     isLogging.value = true
 
+    if (!email.value || !password.value) {
+      toast.error('Email and password are required.')
+      return
+    }
+
     const credentials: ILoginInput = {
       email: email.value,
       password: password.value,
-      remember: remember.value,
     }
     const loginResponse = await $api.auth.login(credentials)
 
-    token.value = loginResponse.access_token
-    // store.updateAuthenticated(true)
+    token.value = loginResponse.data.access_token
 
-    $api.profile
-      .getProfile({
-        headers: {
-          Authorization: `Bearer ${token.value}`,
-        },
-      })
-      .then((response) => {
-        console.log('response', response)
-        store.setUser(response?.data)
-        store.updateAuthenticated(true)
-      })
+    if (!token.value) {
+      throw new Error('No token provided')
+    }
 
-    window.location.href = '/synco/dashboard'
-    // await navigateTo({
-    //   path: '/synco/dashboard',
-    // })
+    const profileResponse = await $api.profile.getProfile(token.value)
+
+    store.setUser(profileResponse?.data || {})
+    store.updateAuthenticated(true)
+
+    // Call fetchAllData to fetch all miscellaneous data
+    await store.fetchAllData()
+
+    // Fetch all data for weekly classes
+    await store.getAvailableVenues()
+    await store.getAbilityGroups()
+
+    await navigateTo({
+      path: '/synco/dashboard',
+    })
   } catch (error: any) {
-    toast.error(error?.data?.messages)
+    toast.error(
+      error?.message || 'Something went wrong. Please try again later.',
+    )
   } finally {
     isLogging.value = false
   }

@@ -7,10 +7,14 @@ import type {
 } from '~/types/synco'
 
 class ClassesModule extends FetchFactory {
-  private RESOURCE = '/v1/weeklyClasses'
+  private RESOURCE = '/weeklyClasses'
 
   async getAll(venue_id: string, limit: number = 25) {
+    const token = useCookie('token')
     const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
       params: {
         limit,
         venue_id,
@@ -18,45 +22,73 @@ class ClassesModule extends FetchFactory {
     }
     return this.call<IWeeklyClassesResponse>(
       'GET',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/get_all`,
       undefined,
       fetchOptions,
     )
   }
 
   async create(classes: IWeeklyClassesCreateItem) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
     return this.call<IWeeklyClassesSuccessfulResponse>(
       'POST',
-      `${this.RESOURCE}`,
+      `${this.RESOURCE}/add`,
       classes,
-      undefined,
+      fetchOptions,
     )
   }
 
   async update(id: number, classes: IWeeklyClassesCreateItem) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
     return this.call<IWeeklyClassesSuccessfulResponse>(
       'PUT',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/edit?id=${id}`,
       classes,
-      undefined,
+      fetchOptions,
     )
   }
 
   async delete(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
     return this.call<IWeeklyClassesSuccessfulResponse>(
       'DELETE',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/delete?id=${id}`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 
   async restore(id: number) {
+    const token = useCookie('token')
+    const fetchOptions: FetchOptions<'json'> = {
+      headers: {
+        Authorization: `${token.value}`,
+      },
+      params: {},
+    }
     return this.call<IWeeklyClassesSuccessfulResponse>(
       'POST',
-      `${this.RESOURCE}/${id}`,
+      `${this.RESOURCE}/restore?id=${id}`,
       undefined,
-      undefined,
+      fetchOptions,
     )
   }
 }

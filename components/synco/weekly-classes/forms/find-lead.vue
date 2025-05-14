@@ -3,6 +3,12 @@
   <div class="card mb-4">
     <div class="card-header d-flex flex-column">
       <h5 class="card-title h2 my-3">Search now</h5>
+      <button
+        class="btn btn-primary btn-sm text-light shadow-sm"
+        @click="applyFilter"
+      >
+        <Icon name="octicon:settings" class="me-2" />Apply Filter
+      </button>
     </div>
     <div class="card-body">
       <div class="form-group mb-3">
@@ -12,6 +18,7 @@
             <Icon name="ic:baseline-search" />
           </span>
           <input
+            v-model="student"
             type="text"
             class="form-control"
             placeholder="Search by student name"
@@ -20,14 +27,35 @@
           />
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group mb-3">
         <label for="choose-venue" class="form-label">Venue</label>
-        <select class="form-select" aria-label="choose-venue">
-          <option selected>Open this select menu</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+        <select
+          id="choose-venue"
+          v-model="venue_id"
+          class="form-control form-control-lg"
+        >
+          <option value="0">All</option>
+          <option v-for="venue in availableVenues" :value="venue.id">
+            {{ venue.name }}
+          </option>
         </select>
+      </div>
+      <div class="form-group mb-3">
+        <label for="lead_status" class="form-label">Choose status</label>
+        <div class="container">
+          <div class="row row-cols-2">
+            <select
+              id="lead_status"
+              v-model="lead_status_id"
+              class="form-control form-control-lg"
+            >
+              <option value="0">All</option>
+              <option v-for="status in leadStatus" :value="status.id">
+                {{ status.title }}
+              </option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -36,73 +64,64 @@
   <div class="card">
     <div class="card-header d-flex justify-content-between">
       <h5 class="card-title">Filter by date</h5>
-      <button class="btn btn-primary btn-sm text-light shadow-sm">
-        <Icon name="octicon:settings" class="me-2" />Apply Filter
-      </button>
     </div>
-    <div class="card-body">
-      <!-- Choose Type -->
-      <div class="bg-light rounded-4 mb-5 px-3 py-2">
-        <label for="" class="form-label">Choose type</label>
-        <div class="container">
-          <div class="row row-cols-2">
-            <div class="form-check col">
-              <input
-                id="active"
-                class="form-check-input"
-                type="radio"
-                name="filter-type"
-              />
-              <label class="form-check-label" for="active"> Active </label>
-            </div>
-            <div class="form-check col">
-              <input
-                id="call-pending"
-                class="form-check-input"
-                type="radio"
-                name="filter-type"
-              />
-              <label class="form-check-label" for="call-pending">
-                Call pending
-              </label>
-            </div>
-            <div class="form-check col">
-              <input
-                id="not-interested"
-                class="form-check-input"
-                type="radio"
-                name="filter-type"
-              />
-              <label class="form-check-label" for="not-interested">
-                Not interested
-              </label>
-            </div>
-            <div class="form-check col">
-              <input
-                id="purchased"
-                class="form-check-input"
-                type="radio"
-                name="filter-type"
-              />
-              <label class="form-check-label" for="purchased">
-                Purchased
-              </label>
-            </div>
-            <div class="form-check col">
-              <input
-                id="all"
-                class="form-check-input"
-                type="radio"
-                name="filter-type"
-              />
-              <label class="form-check-label" for="all"> All </label>
-            </div>
-          </div>
-        </div>
+    <div class="card-body d-flex flex-row">
+      <div class="form-group w-50 mb-3 me-2">
+        <label for="start-date" class="form-label">Start date</label>
+        <input v-model="startDate" type="date" class="form-control" />
       </div>
-
+      <div class="form-group w-50 mb-3 ms-2">
+        <label for="end-date" class="form-label">End date</label>
+        <input v-model="endDate" type="date" class="form-control" />
+      </div>
       <!-- Calendar Selector  -->
-      <SyncoFilterByCalendar />
+      <!-- <SyncoFilterByCalendar /> -->
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { IWeeklyClassesLeadFilterObject } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
+
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
+const changeLoadingState = (state: boolean) => {
+  isLoading.value = state
+  blockButtons.value = state
+}
+
+const leadStatus = store.leadStatus
+const availableVenues = store.availableVenues
+
+const student = ref<string>('')
+const venue_id = ref<number>(0)
+const lead_status_id = ref<number>(0)
+const startDate = ref<string>('')
+const endDate = ref<string>('')
+
+onMounted(async () => {
+  console.log('components/synco/weekly-classes/forms/parent-form.vue')
+  // Call fetchAllData to fetch all miscellaneous data
+  if (!store.leadStatus) {
+    await store.fetchDatasetDataByType('LEAD-STATUS')
+  }
+  if (!store.availableVenues) {
+    await store.getAvailableVenues('weekly-classes')
+  }
+})
+
+const emit = defineEmits(['applyFilter'])
+
+const applyFilter = () => {
+  emit('applyFilter', {
+    student: student.value,
+    venue_id: venue_id.value,
+    lead_status_id: lead_status_id.value,
+    start_date: startDate.value,
+    end_date: endDate.value,
+  })
+}
+</script>

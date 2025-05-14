@@ -1,49 +1,34 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useToast } from 'vue-toast-notification'
-
-import type { IRelationship } from '~/types/index'
 import type { IEmregencyContactCreate } from '~/types/synco/index'
+import { generalStore } from '~/stores'
+const store = generalStore()
 
 const props = defineProps<{
   emergencyContact: IEmregencyContactCreate
   noBorder?: boolean | null
 }>()
 
-const { $api } = useNuxtApp()
-const toast = useToast()
-let isLoading = ref<boolean>(false)
-let blockButtons = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
+const blockButtons = ref<boolean>(false)
 const changeLoadingState = (state: boolean) => {
   isLoading.value = state
   blockButtons.value = state
 }
 
-let emergencyContact = ref<IEmregencyContactCreate>(props.emergencyContact)
-let noBorder = ref<boolean>(props.noBorder ?? false)
+const emergencyContact = ref<IEmregencyContactCreate>(props.emergencyContact)
+const noBorder = ref<boolean>(props.noBorder ?? false)
 
-const relationships = ref<IRelationship[]>()
+const relationships = store.relationships
 
 onMounted(async () => {
   console.log(
     'components/synco/weekly-classes/forms/emergency-contact-form.vue',
   )
-  await getRelationships()
-})
-const getRelationships = async () => {
-  try {
-    changeLoadingState(true)
-    const response = await $api.datasets.getRelationship()
-    console.log(response)
-    relationships.value = response?.data
-  } catch (error: any) {
-    console.log(error)
-    toast.error(error?.data?.messages ?? 'Error')
-    relationships.value = []
-  } finally {
-    changeLoadingState(false)
+  if (!store.relationships.length) {
+    await store.fetchDatasetDataByType('RELATIONSHIP_TYPES')
   }
-}
+})
 </script>
 
 <template>
@@ -60,10 +45,10 @@ const getRelationships = async () => {
           >
           <input
             id="emergencyContactFirstName"
+            v-model="emergencyContact.first_name"
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter first name"
-            v-model="emergencyContact.first_name"
           />
         </div>
       </div>
@@ -76,10 +61,10 @@ const getRelationships = async () => {
           >
           <input
             id="emergencyContactLastName"
+            v-model="emergencyContact.last_name"
             type="text"
             class="form-control form-control-lg"
             placeholder="Enter last name"
-            v-model="emergencyContact.last_name"
           />
         </div>
       </div>
@@ -94,15 +79,15 @@ const getRelationships = async () => {
           >
           <input
             id="emergencyContactPhoneNumber"
+            v-model="emergencyContact.phone_number"
             type="phone"
             class="form-control form-control-lg"
             placeholder="+44"
-            v-model="emergencyContact.phone_number"
           />
         </div>
       </div>
       <div class="col-6">
-        <div class="form-group w-100 mb-3">
+        <div v-if="relationships.length" class="form-group w-100 mb-3">
           <label
             for="emergencyContactRelation"
             class="form-labelform-label-light"
@@ -110,13 +95,14 @@ const getRelationships = async () => {
           >
           <select
             id="emergencyContactRelation"
-            class="form-control form-control-lg"
             v-model="emergencyContact.relationship_id"
+            class="form-control form-control-lg"
           >
+            <option :value="0">Select option</option>
             <option
               v-for="(relation, index) in relationships"
-              :value="relation.id"
               :key="index"
+              :value="relation.code"
             >
               {{ relation.title }}
             </option>

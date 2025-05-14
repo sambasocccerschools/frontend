@@ -9,13 +9,14 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-tiptap-editor',
+    '@ant-design-vue/nuxt',
   ],
   dayjs: {
     plugins: ['relativeTime', 'customParseFormat'],
   },
   runtimeConfig: {
     public: {
-      API_BASE_URL: process.env.API_BASE_URL,
+      apiBaseUrl: 'http://3.147.88.179:3000',
     },
   },
   // Don't prerender SSR Synco and Parents Platform
@@ -34,4 +35,5 @@ export default defineNuxtConfig({
   tiptap: {
     prefix: 'Tiptap',
   },
+  antd: {},
 })
