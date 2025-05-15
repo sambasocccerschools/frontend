@@ -15,7 +15,10 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBaseUrl: 'http://3.147.88.179:3000',
+      apiBaseUrl:
+        process.env.NODE_ENV === 'production'
+          ? '/api'
+          : 'http://3.147.88.179:3000',
     },
   },
   // Don't prerender SSR Synco and Parents Platform
