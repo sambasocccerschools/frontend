@@ -21,7 +21,3 @@ logs
 # Local env
 .vscode/
 .env
-.env.*
-!.env.example
-!.env.staging
-!.env.production
