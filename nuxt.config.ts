@@ -9,7 +9,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-tiptap-editor',
-    '@ant-design-vue/nuxt',
   ],
   dayjs: {
     plugins: ['relativeTime', 'customParseFormat'],
@@ -35,5 +34,4 @@ export default defineNuxtConfig({
   tiptap: {
     prefix: 'Tiptap',
   },
-  antd: {},
 })
