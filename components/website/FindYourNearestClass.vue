@@ -6,29 +6,25 @@
     <div class="card-body px-5 pt-0">
       <form action="/find-a-class">
         <p
-          class="h2 custom-border text-primary font-custom mx-3 pb-4 pt-4 text-center"
+          class="h2 custom-border text-primary font-custom mx-3 pb-4 pt-4 text-center fsm-32"
         >
           Find your nearest class
         </p>
         <div class="row">
-          <div class="col">
+          <div class="col-12 col-md-6 mb-md-0 mb-3">
             <input
               type="text"
               placeholder="Enter your postcode"
               class="form-control"
             />
           </div>
-          <div class="col">
-            <select
-              id=""
-              name=""
-              placeholder="Or select a venue"
-              class="form-select"
-            >
+          <div class="col-12 col-md-6">
+            <select name="" class="form-select">
               <option value="">Or select a venue</option>
             </select>
           </div>
         </div>
+
         <div class="d-grid pb-4 pt-4">
           <button
             class="btn btn-success rounded-5 btn-lg text-white"
