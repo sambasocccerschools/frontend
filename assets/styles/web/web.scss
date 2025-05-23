@@ -197,9 +197,19 @@ em {
   }
 }
 
+/* Colors */
 .color-navy {
   color: #042c89 !important;
 }
+
+.c-green {
+  color: $colorLight-Green;
+}
+
+.b-green {
+  background: $colorLight-Green;
+}
+
 // Custom Accordions
 
 .accordion {
@@ -227,6 +237,10 @@ em {
   margin-top: 10px;
 }
 
+.mt-14 {
+  margin-top: 14px !important;
+}
+
 .mt-18 {
   margin-top: 18px;
 }
@@ -241,6 +255,14 @@ em {
 
 .mt-30 {
   margin-top: 30px;
+}
+
+.mb-14 {
+  margin-bottom: 14px !important;
+}
+
+.mb-38 {
+  margin-bottom: 38px !important;
 }
 
 .mt-40 {
@@ -271,6 +293,17 @@ em {
 }
 
 /* Paddings */
+.py-140 {
+  padding: 140px 0px;
+}
+
+.pt-200 {
+  padding-top: 200px;
+}
+
+.pb-80 {
+  padding-bottom: 80px;
+}
 
 .pt-25 {
   padding-top: 25px;
@@ -297,8 +330,20 @@ em {
   font-size: 16px;
 }
 
+.fs-18 {
+  font-size: 18px !important;
+}
+
 .fs-40 {
   font-size: 40px;
+}
+
+.fs-52 {
+  font-size: 52px !important;
+}
+
+.fs-64 {
+  font-size: 64px !important;
 }
 
 .fb-700 {
@@ -340,6 +385,10 @@ em {
   line-height: 30px; /* 187.5% */
 }
 
+.font-poppins {
+  font-family: $font-poppins;
+}
+
 .lh-62-5 {
   line-height: 62.5px !important; /* 111.607% */
 }
@@ -365,9 +414,57 @@ em {
     padding-bottom: 60px !important;
   }
 
+  .ptm-60 {
+    padding-top: 60px !important;
+  }
+
+  .ptm-100 {
+    padding-top: 100px !important;
+  }
+
+  .pbm-60 {
+    padding-bottom: 60px !important;
+  }
+
   .pmx-35 {
     padding-left: 35px !important;
-    padding-right: 35px !important
+    padding-right: 35px !important;
+  }
+
+  .plm-20 {
+    padding-left: 20px !important;
+  }
+
+  .prm-20 {
+    padding-right: 20px !important;
+  }
+
+  .plm-40 {
+    padding-left: 40px !important;
+  }
+
+  .prm-40 {
+    padding-right: 40px !important;
+  }
+
+  .plm-42 {
+    padding-left: 42px !important;
+  }
+
+  .prm-42 {
+    padding-right: 42px !important;
+  }
+
+  .ptm-45 {
+    padding-top: 45px !important;
+  }
+
+  .pbm-45 {
+    padding-bottom: 45px !important;
+  }
+
+  .mtm-10 {
+    margin-top: 10px !important;
   }
 
   .mtm-25 {
@@ -380,6 +477,10 @@ em {
 
   .mtm-60 {
     margin-top: 60px !important;
+  }
+
+  .mtm-100 {
+    margin-top: 100px !important;
   }
 
   .mtm--120 {
@@ -404,6 +505,14 @@ em {
 
   .mbm-20 {
     margin-bottom: 20px !important;
+  }
+
+  .mbm-23 {
+    margin-bottom: 23px !important;
+  }
+
+  .mbm-28 {
+    margin-bottom: 28px !important;
   }
 
   .mbm--70 {
@@ -471,6 +580,10 @@ em {
     font-size: 70px;
   }
 
+  .fsm-72 {
+    font-size: 72px !important;
+  }
+
   .fsm-116 {
     font-size: 110px !important;
   }
@@ -484,12 +597,126 @@ em {
     line-height: 24px !important;
   }
 
+  .lhm-25 {
+    line-height: 25px !important;
+  }
+
+  .lhm-38 {
+    line-height: 38px !important;
+  }
+
   .lhm-52 {
     line-height: 52px !important;
   }
 
-  .lhm-116-per{
+  .lhm-116-per {
     line-height: 116.5%; /* 55.92px */
   }
-  
+}
+
+/* Services Pages */
+.title-services {
+  color: #042c89;
+  font-family: Recline;
+  font-size: 94px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 91.195px;
+}
+
+.title-services-market {
+  color: #042c89;
+  font-family: 'Permanent Marker';
+  font-size: 94px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 91.195px; /* 97.015% */
+  text-transform: upperca;
+}
+
+@mixin services-title-style($font-family, $font-weight) {
+  color: $services-title-color;
+  font-family: $font-family;
+  font-size: $services-title-size-xl;
+  font-style: normal;
+  font-weight: $font-weight;
+  line-height: $services-title-line-height-xl;
+}
+
+.title-services-hero {
+  font-family: $services-title-font-primary;
+  font-size: $services-title-size-xl;
+  font-weight: $services-title-weight-bold;
+  line-height: $services-title-line-height-xl;
+  color: $services-title-color;
+
+  .marker-text-services {
+    font-family: $services-title-font-secondary;
+    font-weight: $services-title-weight-regular;
+  }
+
+  .normal-text {
+    font-family: $services-title-font-primary;
+    font-weight: $services-title-weight-bold;
+  }
+
+  // Solo para pantallas móviles
+  @media (max-width: 767px) {
+    line-height: 80px !important;
+  }
+}
+
+// Título general
+.title-services {
+  font-family: $services-title-font-primary;
+  font-size: $font-size-services;
+  font-style: normal;
+  font-weight: 700;
+  line-height: $line-height-services;
+  letter-spacing: $letter-spacing-services;
+}
+
+// Parte con fuente "Permanent Marker"
+.title-services--marker {
+  font-family: $services-title-font-secondary;
+  font-weight: 400;
+}
+
+.wave-top {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+}
+
+.wave-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  display: block;
+  transform: rotate(180deg); /* 🔄 Invertimos la ola */
+}
+
+.wave-top-left {
+  position: relative;
+  background: #024aa8;
+  color: white;
+  overflow: hidden;
+  height: 100px;
+}
+
+.wave-svg-left {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+}
+
+@media (max-width: 767px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
 }
