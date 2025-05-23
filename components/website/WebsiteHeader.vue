@@ -4,16 +4,21 @@
   <!-- Header móvil -->
   <div
     class="d-block d-lg-none"
-    style="
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 9999;
-      min-height: 150px;
-      justify-content: center;
-      align-content: center;
-    "
+    :style="{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      zIndex: 9999,
+      justifyContent: 'center',
+      alignContent: 'center',
+      backgroundImage: isTransparentBackground
+        ? 'none'
+        : `url(${menuMobileBg})`,
+      backgroundColor: isTransparentBackground ? 'transparent' : '#000', // opcional
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    }"
   >
     <!-- Capa de overlay oscuro -->
     <div
@@ -160,10 +165,14 @@
                   v-show="isSubmenuOpen(item.label)"
                   class="list-unstyled mt-2"
                 >
-                  <li v-for="(child, i) in item.children" :key="i" class="mb-2 pl-40">
+                  <li
+                    v-for="(child, i) in item.children"
+                    :key="i"
+                    class="mb-2 pl-40"
+                  >
                     <NuxtLink
                       :to="child.to"
-                      class="text-decoration-none text-white sub-menu-text"
+                      class="text-decoration-none sub-menu-text text-white"
                       style="font-size: 1rem"
                     >
                       {{ child.label }}
@@ -200,6 +209,8 @@
       </div>
     </transition>
   </div>
+
+  <!-- Mobil -->
 
   <div
     class="d-none d-lg-block bg-primary text-light bg-primary-texture shadow-lg"
@@ -415,7 +426,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import RoundedButton from '@/components/website/RoundedButton.vue'
 import iconHome from '@/src/assets/icons/icon-home.svg'
@@ -426,15 +437,16 @@ import iconFranchise from '@/src/assets/icons/icon-franchise.svg'
 import iconVacancies from '@/src/assets/icons/icon-vacancies.svg'
 import iconContact from '@/src/assets/icons/icon-contact.svg'
 import iconCall from '@/src/assets/icons/icon-call.svg'
+import menuMobileBg from '@/src/assets/header/menu-nav-mobil.png'
 
 const isMobileMenuOpen = ref(false)
 
 const openSubmenus = ref([])
 const route = useRoute()
 
-const isActive = (to) => {
+/* const isActive = (to) => {
   return route.path === to || route.path.startsWith(to + '/')
-}
+} */
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
@@ -489,6 +501,19 @@ const menuItems = [
   },
   { icon: iconContact, label: 'Contact', to: '/contact' },
 ]
+
+// ✅ Lista de rutas donde el fondo será transparente
+const transparentRoutes = ['/']
+
+// ✅ Computada que verifica si la ruta actual está en la lista
+const isTransparentBackground = computed(() => {
+  return transparentRoutes.includes(route.path)
+})
+
+// Función para resaltar links activos
+const isActive = (to) => {
+  return route.path === to || route.path.startsWith(to + '/')
+}
 </script>
 
 <style lang="scss">
@@ -512,7 +537,7 @@ const menuItems = [
 
 .mobile-menu {
   padding: 50px;
-  overflow-y: auto; 
+  overflow-y: auto;
 }
 
 .mobile-menu-fullscreen {
@@ -536,7 +561,7 @@ const menuItems = [
 }
 
 .bg-menu {
-  background-image: url('@/src/assets/header/bg-menu.jpg'); 
+  background-image: url('@/src/assets/header/bg-menu.jpg');
   position: fixed;
   top: 0;
   right: 0;
@@ -627,7 +652,7 @@ const menuItems = [
 }
 
 .pl-40 {
-  padding-left: 40px ;
+  padding-left: 40px;
 }
 
 .menu-link {
@@ -694,7 +719,7 @@ ul li .text-white:hover {
   display: flex;
   align-items: center;
   cursor: pointer;
-  text-align: left; 
+  text-align: left;
 }
 
 .sub-menu-text {
@@ -702,8 +727,7 @@ ul li .text-white:hover {
   font-size: 15px;
   font-style: normal;
   font-weight: 700;
-  line-height: 132%; 
+  line-height: 132%;
   letter-spacing: 0.2px;
 }
-
 </style>

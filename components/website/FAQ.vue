@@ -9,10 +9,15 @@ export default {
 <template>
   <section class="py-5">
     <div class="container">
-      <h2 class="font-custom h1 text-primary text-center">
-        Let’s answer your <span class="text-success">questions</span>
+      <h2 class="font-custom h1 text-primary text-center"></h2>
+
+      <h2 class="title-services text-center">
+        <span class="color-primary">
+          Let’s answer your <span class="text-success">questions</span>
+        </span>
       </h2>
-      <p class="col-sm-9 text-muted mx-auto mb-5">
+
+      <p class="col-sm-9 text-muted mx-auto mb-5 text-content-2">
         You’ve probably got a few questions, so here are the answers to some of
         the most common we get. If you can’t find what you’re looking for,
         please give us a call, and we’ll be more than happy to answer any
@@ -21,35 +26,35 @@ export default {
       <div class="row g-5">
         <div class="col-sm-5">
           <button
-            class="btn-faq mb-3"
+            class="btn-faq mb-3 fs-18"
             :class="question === 1 ? 'btn-active' : 'btn-inactive'"
             @click="question = 1"
           >
             Where and When Do Your Weekly Classes Take Place?
           </button>
           <button
-            class="btn-faq mb-3"
+            class="btn-faq mb-3 fs-18"
             :class="question === 2 ? 'btn-active' : 'btn-inactive'"
             @click="question = 2"
           >
             What is Brazilian football & What do you teach in the lessons?
           </button>
           <button
-            class="btn-faq mb-3"
+            class="btn-faq mb-3 fs-18"
             :class="question === 3 ? 'btn-active' : 'btn-inactive'"
             @click="question = 3"
           >
             Can my child attend weekly classes even if they have no experience?
           </button>
           <button
-            class="btn-faq mb-3"
+            class="btn-faq mb-3 fs-18"
             :class="question === 4 ? 'btn-active' : 'btn-inactive'"
             @click="question = 4"
           >
             Who runs your weekly football classes? 
           </button>
           <button
-            class="btn-faq"
+            class="btn-faq fs-18"
             :class="question === 5 ? 'btn-active' : 'btn-inactive'"
             @click="question = 5"
           >

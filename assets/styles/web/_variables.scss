@@ -1840,3 +1840,24 @@ $kbd-bg: var(--#{$prefix}body-color) !default;
 $nested-kbd-font-weight: null !default; // Deprecated in v5.2.0, removing in v6
 
 $pre-color: null !default;
+
+/* Servicios */
+// Colores
+$services-title-color: #042c89;
+$colorLight-Green : #0DD180;
+ 
+// Tipografías
+$services-title-font-primary: 'Recline';
+$services-title-font-secondary: 'Permanent Marker';
+$font-poppins:'Poppins';
+
+// Tamaños y estilos
+$services-title-size-xl: 94px;
+$services-title-size-56: 56px;
+$services-title-line-height-xl: 91.195px;
+$services-title-weight-bold: 700;
+$services-title-weight-regular: 400;
+
+$font-size-services: 56px;
+$line-height-services: 118%;
+$letter-spacing-services: 0.2px;
